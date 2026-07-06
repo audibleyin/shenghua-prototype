@@ -423,7 +423,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         </div>
       </div>
 
-      <div class="m-project">
+      <div class="m-project" onclick="showModal('project-detail')">
         <div class="mp-thumb" style="background:linear-gradient(135deg,#667eea,#764ba2);">
           🌃
           <div class="mp-budget">¥12,000</div>
@@ -446,15 +446,15 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <span class="more" onclick="switchTab('plaza')">更多 →</span>
       </div>
       <div style="display:flex;gap:10px;padding:0 16px 20px;overflow-x:auto;">
-        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;">
+        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
           <div style="height:120px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);display:flex;align-items:center;justify-content:center;font-size:36px;">🐉</div>
           <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《龙吟九天》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">👁 12.5万 · ❤️ 8,342</div></div>
         </div>
-        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;">
+        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
           <div style="height:120px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);display:flex;align-items:center;justify-content:center;font-size:36px;">🌸</div>
           <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《花间令》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">👁 8.7万 · ❤️ 5,621</div></div>
         </div>
-        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;">
+        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
           <div style="height:120px;background:linear-gradient(135deg,#2c3e50,#3498db);display:flex;align-items:center;justify-content:center;font-size:36px;">🕵️</div>
           <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《深夜档案》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">👁 9.4万 · ❤️ 6,789</div></div>
         </div>
@@ -725,18 +725,18 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="profile-menu">
         <div class="pm-group">
-          <div class="pm-item"><span class="pm-icon">💼</span><span class="pm-text">我的订单</span><span class="pm-value">3进行中</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item"><span class="pm-icon">🎨</span><span class="pm-text">作品集</span><span class="pm-value">12个</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item"><span class="pm-icon">📦</span><span class="pm-text">我的资产</span><span class="pm-value">¥2,340</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item"><span class="pm-icon">💰</span><span class="pm-text">收益明细</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="switchTab('orders')"><span class="pm-icon">💼</span><span class="pm-text">我的订单</span><span class="pm-value">3进行中</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="switchTab('plaza')"><span class="pm-icon">🎨</span><span class="pm-text">作品集</span><span class="pm-value">12个</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showSubPage('assets')"><span class="pm-icon">📦</span><span class="pm-text">我的资产</span><span class="pm-value">¥2,340</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon">💰</span><span class="pm-text">收益明细</span><span class="pm-arrow">›</span></div>
         </div>
         <div class="pm-group">
-          <div class="pm-item"><span class="pm-icon">🏆</span><span class="pm-text">等级成长</span><span class="pm-value">L3精英</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item"><span class="pm-icon">🎓</span><span class="pm-text">培训记录</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item"><span class="pm-icon">⭐</span><span class="pm-text">我的评价</span><span class="pm-value">4.8分</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showSubPage('levels')"><span class="pm-icon">🏆</span><span class="pm-text">等级成长</span><span class="pm-value">L3精英</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showSubPage('training')"><span class="pm-icon">🎓</span><span class="pm-text">培训记录</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon">⭐</span><span class="pm-text">我的评价</span><span class="pm-value">4.8分</span><span class="pm-arrow">›</span></div>
         </div>
         <div class="pm-group">
-          <div class="pm-item"><span class="pm-icon">🔔</span><span class="pm-text">消息通知</span><span class="pm-value">5条未读</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon">🔔</span><span class="pm-text">消息通知</span><span class="pm-value">5条未读</span><span class="pm-arrow">›</span></div>
           <div class="pm-item"><span class="pm-icon">⚙️</span><span class="pm-text">设置</span><span class="pm-arrow">›</span></div>
           <div class="pm-item"><span class="pm-icon">❓</span><span class="pm-text">帮助与反馈</span><span class="pm-arrow">›</span></div>
         </div>
@@ -962,18 +962,18 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
             <div style="text-align:center;flex:1;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:14px;font-weight:700;">5</div><div style="font-size:10px;color:var(--text-secondary);">验收</div></div>
           </div>
         </div>
-        <button class="btn-primary" style="width:100%;padding:14px;border:none;border-radius:14px;background:var(--primary);color:white;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;">+ 发布新项目</button>
+        <button class="btn-primary" style="width:100%;padding:14px;border:none;border-radius:14px;background:var(--primary);color:white;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;" onclick="showModal('publish-project')">+ 发布新项目</button>
         <div style="background:var(--card);border-radius:16px;padding:16px;">
           <div style="font-size:15px;font-weight:600;margin-bottom:12px;">我的项目</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:0.5px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="showModal('project-detail')">
             <div><div style="font-size:14px;font-weight:500;">品牌宣传漫剧</div><div style="font-size:11px;color:var(--text-secondary);">L3精英 · ¥25,000</div></div>
             <span style="font-size:11px;padding:3px 10px;border-radius:8px;background:#F0FFF4;color:var(--success);">制作中</span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:0.5px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="showModal('project-detail')">
             <div><div style="font-size:14px;font-weight:500;">产品演示动画</div><div style="font-size:11px;color:var(--text-secondary);">L2新锐 · ¥8,000</div></div>
             <span style="font-size:11px;padding:3px 10px;border-radius:8px;background:#EBF8FF;color:var(--info);">待验收</span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;cursor:pointer;" onclick="showModal('project-detail')">
             <div><div style="font-size:14px;font-weight:500;">系列IP开发</div><div style="font-size:11px;color:var(--text-secondary);">L4资深 · ¥120,000</div></div>
             <span style="font-size:11px;padding:3px 10px;border-radius:8px;background:#FFFAF0;color:var(--warning);">招标中</span>
           </div>
@@ -1144,7 +1144,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <div style="padding:6px 0;">✅ 含配音、字幕、音效</div>
         <div style="padding:6px 0;">✅ 分阶段验收</div>
       </div>
-      <button class="btn-primary">提交投标</button>
+      <button class="btn-primary" onclick="hideModal('project-detail')">提交投标</button>
       <button class="btn-secondary" onclick="hideModal('project-detail')">关闭</button>
     </div>
   </div>
@@ -1187,8 +1187,24 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
           <div style="width:70px;height:70px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text-secondary);">+</div>
         </div>
       </div>
-      <button class="btn-primary">发布</button>
+      <button class="btn-primary" onclick="hideModal('new-post')">发布</button>
       <button class="btn-secondary" onclick="hideModal('new-post')">取消</button>
+    </div>
+  </div>
+
+  <!-- Publish Project Modal -->
+  <div class="m-modal-overlay" id="modal-publish-project">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3 style="text-align:center;margin-bottom:16px;">发布新项目</h3>
+      <div class="form-group"><label>项目名称</label><input type="text" placeholder="如：《大唐妖闻录》12集系列漫剧"></div>
+      <div class="form-group"><label>项目类型</label><select><option>品牌定制</option><option>IP改编</option><option>个人项目</option><option>系列剧</option></select></div>
+      <div class="form-group"><label>预算范围</label><select><option>¥5,000以下</option><option>¥5,000-20,000</option><option>¥20,000-50,000</option><option>¥50,000-100,000</option><option>¥100,000以上</option></select></div>
+      <div class="form-group"><label>创作者等级要求</label><select><option>L1+ 新星</option><option>L2+ 新锐</option><option>L3+ 精英</option><option>L4+ 资深</option></select></div>
+      <div class="form-group"><label>截止日期</label><input type="date"></div>
+      <div class="form-group"><label>项目描述</label><textarea rows="4" placeholder="详细描述你的项目需求..."></textarea></div>
+      <button class="btn-primary" onclick="hideModal('publish-project')">发布项目</button>
+      <button class="btn-secondary" onclick="hideModal('publish-project')">取消</button>
     </div>
   </div>
 
