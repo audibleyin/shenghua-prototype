@@ -668,7 +668,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <div class="pf-avatar">👩‍🎨</div>
         <div class="pf-name">墨染青山</div>
         <span class="pf-level" style="background:var(--l3);">L3 精英创作者</span>
-        <button onclick="showRoleSheetM()" style="margin-top:12px;padding:8px 20px;border-radius:18px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;">🎬 当前：创作者 · 点击切换</button>
+        <button id="profileRoleBtn" onclick="showRoleSheetM()" style="margin-top:12px;padding:8px 20px;border-radius:18px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;">🎬 当前：创作者 · 点击切换</button>
         <button onclick="doLogoutM()" style="margin-top:8px;padding:6px 18px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;">退出登录</button>
         <div class="pf-stats">
           <div class="pfs"><div class="pfs-val">47</div><div class="pfs-lbl">完成项目</div></div>
@@ -1035,8 +1035,8 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="tab-item active" onclick="switchTab('home')">
       <div class="tab-icon">🏠</div><div class="tab-label">首页</div>
     </div>
-    <div class="tab-item" onclick="switchTab('orders')">
-      <div class="tab-icon">📋</div><div class="tab-label">接单</div>
+    <div class="tab-item" id="tabRole" onclick="switchTab('orders')">
+      <div class="tab-icon" id="tabRoleIcon">📋</div><div class="tab-label" id="tabRoleLabel">接单</div>
     </div>
     <div class="tab-item" onclick="switchTab('plaza')">
       <div class="tab-icon">🎬</div><div class="tab-label">广场</div>
@@ -1203,6 +1203,24 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
 </div><!-- /phone-frame -->
 
+<!-- Role Switch Bottom Sheet -->
+<div class="m-bottom-sheet" id="roleSheetM" onclick="hideRoleSheetM()">
+  <div class="m-bs-content" onclick="event.stopPropagation()">
+    <div class="m-bs-handle"></div>
+    <h3 style="text-align:center;margin-bottom:16px;font-size:16px;">切换身份</h3>
+    <div class="m-bs-item active" id="bsItemCreator" onclick="switchRoleM('creator')">
+      <span class="mbsi-icon">🎬</span>
+      <div><div class="mbsi-title">创作者</div><div class="mbsi-desc">接单赚钱 · 管理作品</div></div>
+      <span class="mbsi-check" id="bsCheckCreator">✓</span>
+    </div>
+    <div class="m-bs-item" id="bsItemClient" onclick="switchRoleM('client')">
+      <span class="mbsi-icon">📋</span>
+      <div><div class="mbsi-title">需求方</div><div class="mbsi-desc">发布项目 · 筛选人才</div></div>
+      <span class="mbsi-check" id="bsCheckClient" style="display:none;">✓</span>
+    </div>
+  </div>
+</div>
+
 <div class="page-label">生花 App · 手机端交互原型 — 点击各Tab和按钮体验</div>
 
 <script>
@@ -1239,16 +1257,33 @@ function updateRoleTagM(role) {
   if (bl) bl.style.display = role === 'client' ? 'inline' : 'none';
   if (ic) ic.className = 'm-bs-item' + (role === 'creator' ? ' active' : '');
   if (il) il.className = 'm-bs-item' + (role === 'client' ? ' active' : '');
+  // Update profile button
+  var pBtn = document.getElementById('profileRoleBtn');
+  if (pBtn) pBtn.textContent = (role === 'creator' ? '🎬' : '📋') + ' 当前：' + (role === 'creator' ? '创作者' : '需求方') + ' · 点击切换';
 }
 
 function switchRoleM(role) {
   currentRoleM = role;
   updateRoleTagM(role);
   hideRoleSheetM();
+  // Update tab bar based on role
+  var tabIcon = document.getElementById('tabRoleIcon');
+  var tabLabel = document.getElementById('tabRoleLabel');
+  var tabItem = document.getElementById('tabRole');
   if (role === 'client') {
-    switchTab('orders');
+    // 需求方: Tab 2 = 发项目
+    if (tabIcon) tabIcon.textContent = '💼';
+    if (tabLabel) tabLabel.textContent = '发项目';
+    if (tabItem) tabItem.setAttribute('onclick', "switchTab('client')");
+    tabs[1] = 'client';
+    switchTab('home');
   } else {
-    switchTab('orders');
+    // 创作者: Tab 2 = 接单
+    if (tabIcon) tabIcon.textContent = '📋';
+    if (tabLabel) tabLabel.textContent = '接单';
+    if (tabItem) tabItem.setAttribute('onclick', "switchTab('orders')");
+    tabs[1] = 'orders';
+    switchTab('home');
   }
 }
 
@@ -1265,8 +1300,8 @@ function handleAvatarClick() {
 function doLoginM() {
   hideModal('login-m');
   isLoggedInM = true;
-  var sw = document.getElementById('idSwitchM');
-  if (sw) sw.style.display = 'flex';
+  var tag = document.getElementById('roleTagM');
+  if (tag) tag.style.display = 'inline-flex';
   var avatar = document.getElementById('headerAvatar');
   if (avatar) avatar.textContent = '👩\u200d🎨';
   switchRoleM(currentRoleM);
@@ -1275,8 +1310,8 @@ function doLoginM() {
 function doRegisterM() {
   hideModal('register-m');
   isLoggedInM = true;
-  var sw = document.getElementById('idSwitchM');
-  if (sw) sw.style.display = 'flex';
+  var tag = document.getElementById('roleTagM');
+  if (tag) tag.style.display = 'inline-flex';
   var avatar = document.getElementById('headerAvatar');
   if (avatar) avatar.textContent = '👩\u200d🎨';
   switchRoleM(currentRoleM);
@@ -1284,22 +1319,34 @@ function doRegisterM() {
 
 function doLogoutM() {
   isLoggedInM = false;
-  var sw = document.getElementById('idSwitchM');
-  if (sw) sw.style.display = 'none';
+  var tag = document.getElementById('roleTagM');
+  if (tag) tag.style.display = 'none';
   var avatar = document.getElementById('headerAvatar');
   if (avatar) avatar.textContent = '👤';
+  // Reset to creator defaults
+  currentRoleM = 'creator';
+  var tabIcon = document.getElementById('tabRoleIcon');
+  var tabLabel = document.getElementById('tabRoleLabel');
+  var tabItem = document.getElementById('tabRole');
+  if (tabIcon) tabIcon.textContent = '📋';
+  if (tabLabel) tabLabel.textContent = '接单';
+  if (tabItem) tabItem.setAttribute('onclick', "switchTab('orders')");
+  tabs[1] = 'orders';
+  hideRoleSheetM();
   switchTab('home');
 }
 
 function switchTab(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
+  var el = document.getElementById('screen-' + id);
+  if (el) el.classList.add('active');
   document.querySelectorAll('.tab-item').forEach((t,i) => {
     t.classList.toggle('active', tabs[i] === id);
   });
   document.getElementById('screenContainer').scrollTop = 0;
   // Show FAB only on community
-  document.querySelector('.fab').style.display = (id === 'community') ? 'flex' : 'flex';
+  var fab = document.querySelector('.fab');
+  if (fab) fab.style.display = (id === 'community') ? 'flex' : 'none';
 }
 
 function showSubPage(id) {
