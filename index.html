@@ -379,6 +379,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .talent-sidebar .role-item .role-count { margin-left: auto; font-size: 11px; background: #EDF2F7; padding: 1px 8px; border-radius: 10px; }
 .talent-sidebar .role-sub { padding: 6px 12px 6px 38px; font-size: 12px; color: var(--text-secondary); cursor: pointer; transition: color 0.2s; }
 .talent-sidebar .role-sub:hover { color: var(--primary); }
+.talent-sidebar .role-sub.active { color: var(--primary); font-weight: 600; background: #FFF5F5; border-radius: 6px; }
+.talent-empty { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+.talent-empty .empty-icon { font-size: 48px; margin-bottom: 16px; }
 .talent-main { min-width: 0; }
 .talent-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
 .talent-filters select { padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; }
@@ -1770,17 +1773,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
       <!-- Sidebar: 角色分类 -->
       <div class="talent-sidebar">
         <h4>🎭 专业角色分类</h4>
-        <div class="role-item active" onclick="filterTalent(this,'all')"><span class="role-icon">👥</span>全部人才<span class="role-count">4,514</span></div>
-        <div class="role-item" onclick="filterTalent(this,'director')"><span class="role-icon">🎬</span>导演<span class="role-count">328</span></div>
-        <div class="role-item" onclick="filterTalent(this,'producer')"><span class="role-icon">📋</span>制作人<span class="role-count">215</span></div>
-        <div class="role-item" onclick="filterTalent(this,'writer')"><span class="role-icon">✍️</span>编剧<span class="role-count">567</span></div>
-        <div class="role-item" onclick="filterTalent(this,'generator')"><span class="role-icon">🤖</span>生成师<span class="role-count">1,892</span></div>
-        <div class="role-item" onclick="filterTalent(this,'editor')"><span class="role-icon">✂️</span>后期剪辑<span class="role-count">445</span></div>
-        <div class="role-item" onclick="filterTalent(this,'art')"><span class="role-icon">🎨</span>美术<span class="role-count">678</span></div>
+        <div class="role-item active" onclick="filterTalent(this,'all')"><span class="role-icon">👥</span>全部人才<span class="role-count">42</span></div>
+        <div class="role-item" onclick="filterTalent(this,'director')"><span class="role-icon">🎬</span>导演<span class="role-count">5</span></div>
+        <div class="role-item" onclick="filterTalent(this,'producer')"><span class="role-icon">📋</span>制作人<span class="role-count">4</span></div>
+        <div class="role-item" onclick="filterTalent(this,'writer')"><span class="role-icon">✍️</span>编剧<span class="role-count">5</span></div>
+        <div class="role-item" onclick="filterTalent(this,'generator')"><span class="role-icon">🤖</span>生成师<span class="role-count">6</span></div>
+        <div class="role-item" onclick="filterTalent(this,'editor')"><span class="role-icon">✂️</span>后期剪辑<span class="role-count">4</span></div>
+        <div class="role-item" onclick="filterTalent(this,'art')"><span class="role-icon">🎨</span>美术<span class="role-count">9</span></div>
         <div class="role-sub" onclick="filterTalent(this,'art-char')">└ 角色设计</div>
         <div class="role-sub" onclick="filterTalent(this,'art-scene')">└ 场景设计</div>
         <div class="role-sub" onclick="filterTalent(this,'art-concept')">└ 概念美术</div>
-        <div class="role-item" onclick="filterTalent(this,'storyboard')"><span class="role-icon">📐</span>分镜师<span class="role-count">389</span></div>
+        <div class="role-item" onclick="filterTalent(this,'storyboard')"><span class="role-icon">📐</span>分镜师<span class="role-count">9</span></div>
         <div class="role-sub" onclick="filterTalent(this,'sb-script')">└ 分镜脚本</div>
         <div class="role-sub" onclick="filterTalent(this,'sb-camera')">└ 运镜设计</div>
         <div class="role-sub" onclick="filterTalent(this,'sb-dynamic')">└ 动态分镜</div>
@@ -1811,149 +1814,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
           </select>
         </div>
 
-        <div class="talent-grid">
-          <!-- 导演 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#E53E3E,#DD6B20);">🎬
-              <div class="tc-verify">✓ 已认证</div>
-              <div class="tc-level" style="background:var(--l4);">L4 资深</div>
-            </div>
-            <div class="tc-body">
-              <h4>陈导 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
-              <div class="tc-role">🎬 导演</div>
-              <div class="tc-meta"><span>📍 上海</span><span>📈 从业4年</span></div>
-              <div class="tc-skills"><span class="tc-skill">古风</span><span class="tc-skill">科幻</span><span class="tc-skill">品牌定制</span></div>
-              <div class="tc-works">代表作品：《龙吟九天》《大唐妖闻录》</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 12集 作品32部</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-
-          <!-- 制作人 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#4299E1,#3182CE);">📋
-              <div class="tc-verify">✓ 已认证</div>
-              <div class="tc-level" style="background:var(--l3);">L3 精英</div>
-            </div>
-            <div class="tc-body">
-              <h4>林制片 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 女</span></h4>
-              <div class="tc-role">📋 制作人</div>
-              <div class="tc-meta"><span>📍 杭州</span><span>📈 从业3年</span></div>
-              <div class="tc-skills"><span class="tc-skill">项目管理</span><span class="tc-skill">预算控制</span><span class="tc-skill">团队搭建</span></div>
-              <div class="tc-works">代表项目：红果分账系列x3、品牌定制x8</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 管理26个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-
-          <!-- 编剧 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#9F7AEA,#6B46C1);">✍️
-              <div class="tc-verify">✓ 已认证</div>
-              <div class="tc-level" style="background:var(--l3);">L3 精英</div>
-            </div>
-            <div class="tc-body">
-              <h4>剧本炼金师 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
-              <div class="tc-role">✍️ 编剧</div>
-              <div class="tc-meta"><span>📍 成都</span><span>📈 从业3年</span></div>
-              <div class="tc-skills"><span class="tc-skill">玄幻</span><span class="tc-skill">甜宠</span><span class="tc-skill">悬疑</span></div>
-              <div class="tc-works">代表作品：《星河彼岸》《深夜档案》</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 完成45个剧本</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-
-          <!-- 生成师 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#38B2AC,#2C7A7B);">🤖
-              <div class="tc-verify">✓ 已认证</div>
-              <div class="tc-level" style="background:var(--l3);">L3 精英</div>
-            </div>
-            <div class="tc-body">
-              <h4>墨染青山 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 女</span></h4>
-              <div class="tc-role">🤖 生成师 · 角色一致性</div>
-              <div class="tc-meta"><span>📍 北京</span><span>📈 从业2年</span></div>
-              <div class="tc-skills"><span class="tc-skill">Seedance</span><span class="tc-skill">可灵</span><span class="tc-skill">Midjourney</span></div>
-              <div class="tc-works">代表作品：《龙吟九天》《大唐妖闻录》</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 完成47个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-
-          <!-- 生成师-大学生 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#48BB78,#38A169);">🤖
-              <div class="tc-level" style="background:var(--l1);">L1 新星</div>
-            </div>
-            <div class="tc-body">
-              <h4>小林同学 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
-              <div class="tc-role">🤖 生成师 · 大学生</div>
-              <div class="tc-meta"><span>📍 广州</span><span>🎓 大三在读</span></div>
-              <div class="tc-skills"><span class="tc-skill">ComfyUI</span><span class="tc-skill">Stable Diffusion</span></div>
-              <div class="tc-works">作品：《校园爱情AI版》3集样片</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 完成3个作品</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-
-          <!-- 后期剪辑 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#ED8936,#DD6B20);">✂️
-              <div class="tc-verify">✓ 已认证</div>
-              <div class="tc-level" style="background:var(--l2);">L2 新锐</div>
-            </div>
-            <div class="tc-body">
-              <h4>剪辑老王 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
-              <div class="tc-role">✂️ 后期剪辑 · 调色</div>
-              <div class="tc-meta"><span>📍 深圳</span><span>📈 从业2年</span></div>
-              <div class="tc-skills"><span class="tc-skill">Premiere</span><span class="tc-skill">DaVinci</span><span class="tc-skill">AE</span></div>
-              <div class="tc-works">代表项目：品牌定制x12、分账漫剧x5</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 完成18个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-
-          <!-- 美术-角色设计 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#f093fb,#f5576c);">🎨
-              <div class="tc-verify">✓ 已认证</div>
-              <div class="tc-level" style="background:var(--l3);">L3 精英</div>
-            </div>
-            <div class="tc-body">
-              <h4>花间词 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 女</span></h4>
-              <div class="tc-role">🎨 美术 · 角色设计</div>
-              <div class="tc-meta"><span>📍 杭州</span><span>📈 从业4年</span></div>
-              <div class="tc-skills"><span class="tc-skill">角色立绘</span><span class="tc-skill">服装设计</span><span class="tc-skill">表情包</span></div>
-              <div class="tc-works">代表作品：《花间令》《总裁的替身新娘》</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 设计68个角色</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-
-          <!-- 美术-场景设计 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">🎨
-              <div class="tc-level" style="background:var(--l2);">L2 新锐</div>
-            </div>
-            <div class="tc-body">
-              <h4>梦境画家 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 女</span></h4>
-              <div class="tc-role">🎨 美术 · 场景设计</div>
-              <div class="tc-meta"><span>📍 西安</span><span>📈 从业1年</span></div>
-              <div class="tc-skills"><span class="tc-skill">场景绘制</span><span class="tc-skill">氛围渲染</span></div>
-              <div class="tc-works">作品：《马戏团奇遇记》《樱花树下》</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 完成8个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-
-          <!-- 分镜师-运镜设计 -->
-          <div class="talent-card" onclick="showModal('talent-detail')">
-            <div class="tc-cover" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">📐
-              <div class="tc-verify">✓ 已认证</div>
-              <div class="tc-level" style="background:var(--l2);">L2 新锐</div>
-            </div>
-            <div class="tc-body">
-              <h4>闪电侠 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
-              <div class="tc-role">📐 分镜师 · 运镜设计</div>
-              <div class="tc-meta"><span>📍 武汉</span><span>📈 从业2年</span></div>
-              <div class="tc-skills"><span class="tc-skill">运镜设计</span><span class="tc-skill">节奏控制</span></div>
-              <div class="tc-works">作品：品牌定制x9、分账漫剧x4</div>
-            </div>
-            <div class="tc-footer"><span class="tc-loc">👥 完成14个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
-          </div>
-        </div>
+        <div class="talent-grid" id="talent-grid"></div>
 
         <!-- 加载更多 -->
         <div style="text-align:center;padding:32px 0;">
@@ -2353,10 +2214,101 @@ function filterAssets(el) {
   el.style.borderColor = 'var(--primary)';
 }
 
-function filterTalent(el, role) {
-  document.querySelectorAll('.talent-sidebar .role-item').forEach(r => r.classList.remove('active'));
-  el.classList.add('active');
+// ===== TALENT DATABASE DATA =====
+var TALENT_DATA = [
+  // 导演 (5)
+  {n:'陈导',g:'男',r:'director',rl:'🎬 导演',city:'上海',exp:'从业4年',lv:'L4',lc:'l4',v:true,av:true,sk:['古风','科幻','品牌定制'],wk:'代表作品：《龙吟九天》《大唐妖闻录》',st:'👥 12集 作品32部',gd:'linear-gradient(135deg,#E53E3E,#DD6B20)',ic:'🎬'},
+  {n:'张导',g:'男',r:'director',rl:'🎬 导演',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['悬疑','都市','刑侦'],wk:'代表作品：《深夜档案》《都市迷踪》',st:'👥 8集 作品18部',gd:'linear-gradient(135deg,#E53E3E,#C53030)',ic:'🎬'},
+  {n:'王导',g:'女',r:'director',rl:'🎬 导演',city:'成都',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['甜宠','校园','日常'],wk:'代表作品：《樱花树下》《初恋那件小事》',st:'👥 6集 作品9部',gd:'linear-gradient(135deg,#FC8181,#F56565)',ic:'🎬'},
+  {n:'李导',g:'男',r:'director',rl:'🎬 导演',city:'广州',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['玄幻','动作','热血'],wk:'代表作品：《破天录》《剑影江湖》',st:'👥 10集 作品22部',gd:'linear-gradient(135deg,#D53F8C,#B83280)',ic:'🎬'},
+  {n:'赵导',g:'男',r:'director',rl:'🎬 导演 · 大学生',city:'杭州',exp:'大四在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['现代','情感'],wk:'作品：《毕业季》短片系列',st:'👥 完成2个作品',gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎬'},
+  // 制作人 (4)
+  {n:'林制片',g:'女',r:'producer',rl:'📋 制作人',city:'杭州',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['项目管理','预算控制','团队搭建'],wk:'代表项目：红果分账系列x3、品牌定制x8',st:'👥 管理26个项目',gd:'linear-gradient(135deg,#4299E1,#3182CE)',ic:'📋'},
+  {n:'周制片',g:'男',r:'producer',rl:'📋 制作人',city:'上海',exp:'从业5年',lv:'L4',lc:'l4',v:true,av:true,sk:['全流程管理','分账优化','资源整合'],wk:'代表项目：年番系列x2、S级定制x5',st:'👥 管理41个项目',gd:'linear-gradient(135deg,#2B6CB0,#2C5282)',ic:'📋'},
+  {n:'吴制片',g:'女',r:'producer',rl:'📋 制作人',city:'深圳',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['品牌定制','短视频','节奏把控'],wk:'代表项目：品牌定制x6、短剧x12',st:'👥 管理19个项目',gd:'linear-gradient(135deg,#63B3ED,#4299E1)',ic:'📋'},
+  {n:'钱制片',g:'男',r:'producer',rl:'📋 制作人 · 工作室',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['工作室运营','批量交付','品控'],wk:'代表项目：分账系列x4、IP改编x3',st:'👥 管理33个项目',gd:'linear-gradient(135deg,#3182CE,#2C5282)',ic:'📋',studio:true},
+  // 编剧 (5)
+  {n:'剧本炼金师',g:'男',r:'writer',rl:'✍️ 编剧',city:'成都',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['玄幻','甜宠','悬疑'],wk:'代表作品：《星河彼岸》《深夜档案》',st:'👥 完成45个剧本',gd:'linear-gradient(135deg,#9F7AEA,#6B46C1)',ic:'✍️'},
+  {n:'故事猎人',g:'女',r:'writer',rl:'✍️ 编剧',city:'上海',exp:'从业5年',lv:'L4',lc:'l4',v:true,av:true,sk:['古风','权谋','大女主'],wk:'代表作品：《凤鸣九霄》《长安秘闻》',st:'👥 完成62个剧本',gd:'linear-gradient(135deg,#6B46C1,#553C9A)',ic:'✍️'},
+  {n:'甜文妹妹',g:'女',r:'writer',rl:'✍️ 编剧',city:'杭州',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['甜宠','霸总','校园'],wk:'代表作品：《总裁的替身新娘》《偷偷喜欢你》',st:'👥 完成28个剧本',gd:'linear-gradient(135deg,#B794F4,#9F7AEA)',ic:'✍️'},
+  {n:'悬笔翁',g:'男',r:'writer',rl:'✍️ 编剧',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['悬疑','刑侦','惊悚'],wk:'代表作品：《凶案现场》《暗夜追踪》',st:'👥 完成31个剧本',gd:'linear-gradient(135deg,#7E46C1,#553C9A)',ic:'✍️'},
+  {n:'新人小刘',g:'男',r:'writer',rl:'✍️ 编剧 · 大学生',city:'广州',exp:'大四在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['都市','搞笑'],wk:'作品：《宿舍日常》3集剧本',st:'👥 完成3个剧本',gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'✍️'},
+  // 生成师 (6)
+  {n:'墨染青山',g:'女',r:'generator',rl:'🤖 生成师 · 角色一致性',city:'北京',exp:'从业2年',lv:'L3',lc:'l3',v:true,av:true,sk:['Seedance','可灵','Midjourney'],wk:'代表作品：《龙吟九天》《大唐妖闻录》',st:'👥 完成47个项目',gd:'linear-gradient(135deg,#38B2AC,#2C7A7B)',ic:'🤖'},
+  {n:'小林同学',g:'男',r:'generator',rl:'🤖 生成师 · 大学生',city:'广州',exp:'大三在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['ComfyUI','Stable Diffusion'],wk:'作品：《校园爱情AI版》3集样片',st:'👥 完成3个作品',gd:'linear-gradient(135deg,#48BB78,#38A169)',ic:'🤖'},
+  {n:'AI画手阿杰',g:'男',r:'generator',rl:'🤖 生成师 · 场景生成',city:'深圳',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['ComfyUI','ControlNet','Flux'],wk:'代表项目：品牌定制x6、分账漫剧x4',st:'👥 完成15个项目',gd:'linear-gradient(135deg,#0BC5EA,#00A3C4)',ic:'🤖'},
+  {n:'风灵制片',g:'女',r:'generator',rl:'🤖 生成师 · 动效生成',city:'上海',exp:'从业2年',lv:'L3',lc:'l3',v:true,av:true,sk:['Runway','Pika','即梦'],wk:'代表作品：《破天录》《剑影江湖》',st:'👥 完成29个项目',gd:'linear-gradient(135deg,#2C7A7B,#234E52)',ic:'🤖'},
+  {n:'灵境工坊',g:'男',r:'generator',rl:'🤖 生成师 · 工作室',city:'成都',exp:'从业3年',lv:'L4',lc:'l4',v:true,av:false,sk:['全流程','批量生成','角色一致性'],wk:'代表项目：年番系列x2、S级定制x3',st:'👥 完成52个项目',gd:'linear-gradient(135deg,#1A202C,#2D3748)',ic:'🤖',studio:true},
+  {n:'星河视觉',g:'女',r:'generator',rl:'🤖 生成师 · 大学生',city:'杭州',exp:'研一在读',stu:true,lv:'L2',lc:'l2',v:false,av:true,sk:['ComfyUI','AnimateDiff','Stable Video'],wk:'作品：《星河传说》2集demo',st:'👥 完成5个作品',gd:'linear-gradient(135deg,#68D391,#48BB78)',ic:'🤖'},
+  // 后期剪辑 (4)
+  {n:'剪辑老王',g:'男',r:'editor',rl:'✂️ 后期剪辑 · 调色',city:'深圳',exp:'从业2年',lv:'L2',lc:'l2',v:true,av:true,sk:['Premiere','DaVinci','AE'],wk:'代表项目：品牌定制x12、分账漫剧x5',st:'👥 完成18个项目',gd:'linear-gradient(135deg,#ED8936,#DD6B20)',ic:'✂️'},
+  {n:'调色师阿伟',g:'男',r:'editor',rl:'✂️ 后期剪辑 · 调色 specialist',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['DaVinci','Baselight','FilmConvert'],wk:'代表项目：S级定制x4、年番x1',st:'👥 完成22个项目',gd:'linear-gradient(135deg,#DD6B20,#C05621)',ic:'✂️'},
+  {n:'音效大师阿强',g:'男',r:'editor',rl:'✂️ 后期剪辑 · 音效',city:'广州',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['AU','Cubase','音效库'],wk:'代表项目：分账漫剧x8、品牌定制x10',st:'👥 完成24个项目',gd:'linear-gradient(135deg,#C05621,#9C4221)',ic:'✂️'},
+  {n:'剪辑小美',g:'女',r:'editor',rl:'✂️ 后期剪辑 · 大学生',city:'成都',exp:'大三在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['Premiere','剪映'],wk:'作品：《校园日记》2集',st:'👥 完成2个作品',gd:'linear-gradient(135deg,#F6AD55,#ED8936)',ic:'✂️'},
+  // 美术-角色设计 (3)
+  {n:'花间词',g:'女',r:'art-char',rl:'🎨 美术 · 角色设计',city:'杭州',exp:'从业4年',lv:'L3',lc:'l3',v:true,av:true,sk:['角色立绘','服装设计','表情包'],wk:'代表作品：《花间令》《总裁的替身新娘》',st:'👥 设计68个角色',gd:'linear-gradient(135deg,#f093fb,#f5576c)',ic:'🎨'},
+  {n:'画师阿月',g:'女',r:'art-char',rl:'🎨 美术 · 角色设计',city:'上海',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['角色立绘','Q版','道具'],wk:'代表作品：《甜心日记》《校园恋爱物语》',st:'👥 设计34个角色',gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎨'},
+  {n:'角色控',g:'男',r:'art-char',rl:'🎨 美术 · 角色设计 · 大学生',city:'北京',exp:'大四在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['角色立绘','表情设计'],wk:'作品：《末世行》角色设定5套',st:'👥 设计5个角色',gd:'linear-gradient(135deg,#FBB6CE,#F687B3)',ic:'🎨'},
+  // 美术-场景设计 (3)
+  {n:'梦境画家',g:'女',r:'art-scene',rl:'🎨 美术 · 场景设计',city:'西安',exp:'从业1年',lv:'L2',lc:'l2',v:false,av:true,sk:['场景绘制','氛围渲染'],wk:'作品：《马戏团奇遇记》《樱花树下》',st:'👥 完成8个项目',gd:'linear-gradient(135deg,#a18cd1,#fbc2eb)',ic:'🎨'},
+  {n:'场景王',g:'男',r:'art-scene',rl:'🎨 美术 · 场景设计',city:'成都',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['场景绘制','光影设计','氛围渲染'],wk:'代表作品：《龙吟九天》《破天录》场景',st:'👥 完成19个项目',gd:'linear-gradient(135deg,#9F7AEA,#B794F4)',ic:'🎨'},
+  {n:'小景',g:'女',r:'art-scene',rl:'🎨 美术 · 场景设计 · 大学生',city:'广州',exp:'大二在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['场景绘制'],wk:'作品：《校园风光》场景6张',st:'👥 完成1个作品',gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'🎨'},
+  // 美术-概念美术 (3)
+  {n:'概念猫',g:'男',r:'art-concept',rl:'🎨 美术 · 概念美术',city:'上海',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['概念设计','世界观设定','风格探索'],wk:'代表作品：《星河彼岸》《暗夜追踪》概念稿',st:'👥 完成16个项目',gd:'linear-gradient(135deg,#667eea,#764ba2)',ic:'🎨'},
+  {n:'设绘师',g:'女',r:'art-concept',rl:'🎨 美术 · 概念美术',city:'杭州',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['概念设计','分镜插画'],wk:'代表作品：《樱花树下》概念图集',st:'👥 完成7个项目',gd:'linear-gradient(135deg,#a18cd1,#8E70C8)',ic:'🎨'},
+  {n:'灵感集',g:'女',r:'art-concept',rl:'🎨 美术 · 概念美术 · 大学生',city:'北京',exp:'大三在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['概念设计','风格探索'],wk:'作品：《未来都市》概念设计4张',st:'👥 完成2个作品',gd:'linear-gradient(135deg,#E9D8FD,#D6BCFA)',ic:'🎨'},
+  // 分镜师-分镜脚本 (3)
+  {n:'分镜侠',g:'男',r:'sb-script',rl:'📐 分镜师 · 分镜脚本',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['分镜脚本','叙事节奏','镜头语言'],wk:'代表作品：《大唐妖闻录》《龙吟九天》分镜',st:'👥 完成21个项目',gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},
+  {n:'脚本姑娘',g:'女',r:'sb-script',rl:'📐 分镜师 · 分镜脚本',city:'成都',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['分镜脚本','情感表达'],wk:'代表作品：《甜心日记》《初恋那件小事》分镜',st:'👥 完成11个项目',gd:'linear-gradient(135deg,#43E97B,#38A169)',ic:'📐'},
+  {n:'故事板小张',g:'男',r:'sb-script',rl:'📐 分镜师 · 分镜脚本 · 大学生',city:'武汉',exp:'大三在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['分镜脚本'],wk:'作品：《宿舍日常》分镜3集',st:'👥 完成1个作品',gd:'linear-gradient(135deg,#90F1EF,#4facfe)',ic:'📐'},
+  // 分镜师-运镜设计 (3)
+  {n:'闪电侠',g:'男',r:'sb-camera',rl:'📐 分镜师 · 运镜设计',city:'武汉',exp:'从业2年',lv:'L2',lc:'l2',v:true,av:true,sk:['运镜设计','节奏控制'],wk:'作品：品牌定制x9、分账漫剧x4',st:'👥 完成14个项目',gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},
+  {n:'运镜师老陈',g:'男',r:'sb-camera',rl:'📐 分镜师 · 运镜设计',city:'上海',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['运镜设计','3D运镜','镜头转场'],wk:'代表作品：《破天录》《剑影江湖》运镜',st:'👥 完成17个项目',gd:'linear-gradient(135deg,#0098D4,#006B9D)',ic:'📐'},
+  {n:'镜头控',g:'女',r:'sb-camera',rl:'📐 分镜师 · 运镜设计 · 大学生',city:'广州',exp:'大四在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['运镜设计'],wk:'作品：《校园恋爱》运镜2集',st:'👥 完成2个作品',gd:'linear-gradient(135deg,#6EE2FF,#4facfe)',ic:'📐'},
+  // 分镜师-动态分镜 (3)
+  {n:'动态分镜阿飞',g:'男',r:'sb-dynamic',rl:'📐 分镜师 · 动态分镜',city:'杭州',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['动态分镜','AE','节奏控制'],wk:'代表作品：《星河彼岸》《深夜档案》动态分镜',st:'👥 完成12个项目',gd:'linear-gradient(135deg,#43E97B,#38F9D7)',ic:'📐'},
+  {n:'动效师小周',g:'女',r:'sb-dynamic',rl:'📐 分镜师 · 动态分镜',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['动态分镜','Blender','AE','动效'],wk:'代表作品：《凤鸣九霄》《长安秘闻》动态分镜',st:'👥 完成16个项目',gd:'linear-gradient(135deg,#0BA360,#3CBA92)',ic:'📐'},
+  {n:'动画手小李',g:'男',r:'sb-dynamic',rl:'📐 分镜师 · 动态分镜 · 大学生',city:'成都',exp:'大二在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['动态分镜','AE'],wk:'作品：《校园日记》动态分镜1集',st:'👥 完成1个作品',gd:'linear-gradient(135deg,#84FAB0,#8FD3F4)',ic:'📐'}
+];
+var LV_LABELS = {L1:'新星', L2:'新锐', L3:'精英', L4:'资深'};
+
+function renderTalentGrid(role) {
+  var grid = document.getElementById('talent-grid');
+  if (!grid) return;
+  var list = role === 'all' ? TALENT_DATA : TALENT_DATA.filter(function(t){ return t.r === role; });
+  // 美术父分类包含3个子类
+  if (role === 'art') list = TALENT_DATA.filter(function(t){ return ['art-char','art-scene','art-concept'].indexOf(t.r) >= 0; });
+  // 分镜师父分类包含3个子类
+  if (role === 'storyboard') list = TALENT_DATA.filter(function(t){ return ['sb-script','sb-camera','sb-dynamic'].indexOf(t.r) >= 0; });
+
+  if (list.length === 0) {
+    grid.innerHTML = '<div class="talent-empty"><div class="empty-icon">🔍</div><p>暂无该分类人才</p><p style="font-size:13px;margin-top:8px;">成为第一个登记的人才吧！</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(function(t){
+    var skills = t.sk.map(function(s){ return '<span class="tc-skill">'+s+'</span>'; }).join('');
+    var verify = t.v ? '<div class="tc-verify">✓ 已认证</div>' : '';
+    var expStr = t.stu ? '🎓 '+t.exp : '📈 '+t.exp;
+    return '<div class="talent-card" onclick="showModal(\'talent-detail\')">'+
+      '<div class="tc-cover" style="background:'+t.gd+';">'+t.ic+verify+
+      '<div class="tc-level" style="background:var(--'+t.lc+');">'+t.lv+' '+LV_LABELS[t.lv]+'</div></div>'+
+      '<div class="tc-body"><h4>'+t.n+' <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· '+t.g+'</span></h4>'+
+      '<div class="tc-role">'+t.rl+'</div>'+
+      '<div class="tc-meta"><span>📍 '+t.city+'</span><span>'+expStr+'</span></div>'+
+      '<div class="tc-skills">'+skills+'</div>'+
+      '<div class="tc-works">'+t.wk+'</div></div>'+
+      '<div class="tc-footer"><span class="tc-loc">'+t.st+'</span><button class="btn-contact" onclick="event.stopPropagation();showModal(\'talent-detail\')">联系</button></div></div>';
+  }).join('');
 }
+
+function filterTalent(el, role) {
+  document.querySelectorAll('.talent-sidebar .role-item, .talent-sidebar .role-sub').forEach(function(r){ r.classList.remove('active'); });
+  el.classList.add('active');
+  renderTalentGrid(role);
+}
+
+// Initialize talent grid on load
+renderTalentGrid('all');
 
 // Close modal on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {

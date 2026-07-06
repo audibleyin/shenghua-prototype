@@ -970,15 +970,15 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <button class="btn-reg-m" onclick="showModal('talent-register-m')">+ 登记</button>
       </div>
 
-      <div class="talent-chips-m">
-        <div class="talent-chip-m active"><div class="tc-icon-m">👥</div><div class="tc-label-m">全部</div><div class="tc-count-m">4514</div></div>
-        <div class="talent-chip-m"><div class="tc-icon-m">🎬</div><div class="tc-label-m">导演</div><div class="tc-count-m">328</div></div>
-        <div class="talent-chip-m"><div class="tc-icon-m">📋</div><div class="tc-label-m">制作人</div><div class="tc-count-m">215</div></div>
-        <div class="talent-chip-m"><div class="tc-icon-m">✍️</div><div class="tc-label-m">编剧</div><div class="tc-count-m">567</div></div>
-        <div class="talent-chip-m"><div class="tc-icon-m">🤖</div><div class="tc-label-m">生成师</div><div class="tc-count-m">1892</div></div>
-        <div class="talent-chip-m"><div class="tc-icon-m">✂️</div><div class="tc-label-m">后期</div><div class="tc-count-m">445</div></div>
-        <div class="talent-chip-m"><div class="tc-icon-m">🎨</div><div class="tc-label-m">美术</div><div class="tc-count-m">678</div></div>
-        <div class="talent-chip-m"><div class="tc-icon-m">📐</div><div class="tc-label-m">分镜师</div><div class="tc-count-m">389</div></div>
+      <div class="talent-chips-m" id="talent-chips-m">
+        <div class="talent-chip-m active" onclick="filterTalentM(this,'all')"><div class="tc-icon-m">👥</div><div class="tc-label-m">全部</div><div class="tc-count-m">42</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'director')"><div class="tc-icon-m">🎬</div><div class="tc-label-m">导演</div><div class="tc-count-m">5</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'producer')"><div class="tc-icon-m">📋</div><div class="tc-label-m">制作人</div><div class="tc-count-m">4</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'writer')"><div class="tc-icon-m">✍️</div><div class="tc-label-m">编剧</div><div class="tc-count-m">5</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'generator')"><div class="tc-icon-m">🤖</div><div class="tc-label-m">生成师</div><div class="tc-count-m">6</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'editor')"><div class="tc-icon-m">✂️</div><div class="tc-label-m">后期</div><div class="tc-count-m">4</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'art')"><div class="tc-icon-m">🎨</div><div class="tc-label-m">美术</div><div class="tc-count-m">9</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'storyboard')"><div class="tc-icon-m">📐</div><div class="tc-label-m">分镜师</div><div class="tc-count-m">9</div></div>
       </div>
 
       <div class="m-filters">
@@ -989,62 +989,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <span class="m-filter-chip" onclick="this.classList.toggle('active')">大学生</span>
       </div>
 
-      <div class="talent-grid-m">
-        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
-          <div class="tcm-cover" style="background:linear-gradient(135deg,#38B2AC,#2C7A7B);">🤖<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l3);">L3</div></div>
-          <div class="tcm-body">
-            <h5>墨染青山</h5>
-            <div class="tcm-role">🤖 生成师</div>
-            <div class="tcm-meta"><span>📍北京</span><span>📈2年</span></div>
-            <div class="tcm-skills"><span class="tcm-skill">Seedance</span><span class="tcm-skill">古风</span></div>
-          </div>
-        </div>
-        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
-          <div class="tcm-cover" style="background:linear-gradient(135deg,#E53E3E,#DD6B20);">🎬<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l4);">L4</div></div>
-          <div class="tcm-body">
-            <h5>陈导</h5>
-            <div class="tcm-role">🎬 导演</div>
-            <div class="tcm-meta"><span>📍上海</span><span>📈4年</span></div>
-            <div class="tcm-skills"><span class="tcm-skill">古风</span><span class="tcm-skill">科幻</span></div>
-          </div>
-        </div>
-        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
-          <div class="tcm-cover" style="background:linear-gradient(135deg,#9F7AEA,#6B46C1);">✍️<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l3);">L3</div></div>
-          <div class="tcm-body">
-            <h5>剧本炼金师</h5>
-            <div class="tcm-role">✍️ 编剧</div>
-            <div class="tcm-meta"><span>📍成都</span><span>📈3年</span></div>
-            <div class="tcm-skills"><span class="tcm-skill">玄幻</span><span class="tcm-skill">悬疑</span></div>
-          </div>
-        </div>
-        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
-          <div class="tcm-cover" style="background:linear-gradient(135deg,#f093fb,#f5576c);">🎨<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l3);">L3</div></div>
-          <div class="tcm-body">
-            <h5>花间词</h5>
-            <div class="tcm-role">🎨 美术·角色设计</div>
-            <div class="tcm-meta"><span>📍杭州</span><span>📈4年</span></div>
-            <div class="tcm-skills"><span class="tcm-skill">立绘</span><span class="tcm-skill">服装</span></div>
-          </div>
-        </div>
-        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
-          <div class="tcm-cover" style="background:linear-gradient(135deg,#48BB78,#38A169);">🤖<div class="tcm-lvl" style="background:var(--l1);">L1</div></div>
-          <div class="tcm-body">
-            <h5>小林同学</h5>
-            <div class="tcm-role">🤖 生成师·大学生</div>
-            <div class="tcm-meta"><span>📍广州</span><span>🎓大三</span></div>
-            <div class="tcm-skills"><span class="tcm-skill">ComfyUI</span><span class="tcm-skill">SD</span></div>
-          </div>
-        </div>
-        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
-          <div class="tcm-cover" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">📐<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l2);">L2</div></div>
-          <div class="tcm-body">
-            <h5>闪电侠</h5>
-            <div class="tcm-role">📐 分镜师·运镜</div>
-            <div class="tcm-meta"><span>📍武汉</span><span>📈2年</span></div>
-            <div class="tcm-skills"><span class="tcm-skill">运镜</span><span class="tcm-skill">节奏</span></div>
-          </div>
-        </div>
-      </div>
+      <div class="talent-grid-m" id="talent-grid-m"></div>
     </div>
 
   </div><!-- /screen-container -->
@@ -1289,6 +1234,80 @@ function hideModal(id) {
 document.querySelectorAll('.m-modal-overlay').forEach(o => {
   o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
 });
+
+// ===== TALENT DATA (MOBILE) =====
+var TALENT_DATA_M = [
+  {n:'陈导',r:'director',rl:'🎬 导演',city:'上海',exp:'4年',lv:'L4',lc:'l4',v:true,sk:['古风','科幻'],gd:'linear-gradient(135deg,#E53E3E,#DD6B20)',ic:'🎬'},
+  {n:'张导',r:'director',rl:'🎬 导演',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['悬疑','都市'],gd:'linear-gradient(135deg,#E53E3E,#C53030)',ic:'🎬'},
+  {n:'王导',r:'director',rl:'🎬 导演',city:'成都',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['甜宠','校园'],gd:'linear-gradient(135deg,#FC8181,#F56565)',ic:'🎬'},
+  {n:'李导',r:'director',rl:'🎬 导演',city:'广州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['玄幻','动作'],gd:'linear-gradient(135deg,#D53F8C,#B83280)',ic:'🎬'},
+  {n:'赵导',r:'director',rl:'🎬 导演·大学生',city:'杭州',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['现代','情感'],gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎬'},
+  {n:'林制片',r:'producer',rl:'📋 制作人',city:'杭州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['项目管理','预算'],gd:'linear-gradient(135deg,#4299E1,#3182CE)',ic:'📋'},
+  {n:'周制片',r:'producer',rl:'📋 制作人',city:'上海',exp:'5年',lv:'L4',lc:'l4',v:true,sk:['全流程','分账'],gd:'linear-gradient(135deg,#2B6CB0,#2C5282)',ic:'📋'},
+  {n:'吴制片',r:'producer',rl:'📋 制作人',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['品牌','短视频'],gd:'linear-gradient(135deg,#63B3ED,#4299E1)',ic:'📋'},
+  {n:'钱制片',r:'producer',rl:'📋 制作人·工作室',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['工作室','批量交付'],gd:'linear-gradient(135deg,#3182CE,#2C5282)',ic:'📋'},
+  {n:'剧本炼金师',r:'writer',rl:'✍️ 编剧',city:'成都',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['玄幻','悬疑'],gd:'linear-gradient(135deg,#9F7AEA,#6B46C1)',ic:'✍️'},
+  {n:'故事猎人',r:'writer',rl:'✍️ 编剧',city:'上海',exp:'5年',lv:'L4',lc:'l4',v:true,sk:['古风','权谋'],gd:'linear-gradient(135deg,#6B46C1,#553C9A)',ic:'✍️'},
+  {n:'甜文妹妹',r:'writer',rl:'✍️ 编剧',city:'杭州',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['甜宠','霸总'],gd:'linear-gradient(135deg,#B794F4,#9F7AEA)',ic:'✍️'},
+  {n:'悬笔翁',r:'writer',rl:'✍️ 编剧',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['悬疑','刑侦'],gd:'linear-gradient(135deg,#7E46C1,#553C9A)',ic:'✍️'},
+  {n:'新人小刘',r:'writer',rl:'✍️ 编剧·大学生',city:'广州',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['都市','搞笑'],gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'✍️'},
+  {n:'墨染青山',r:'generator',rl:'🤖 生成师',city:'北京',exp:'2年',lv:'L3',lc:'l3',v:true,sk:['Seedance','可灵'],gd:'linear-gradient(135deg,#38B2AC,#2C7A7B)',ic:'🤖'},
+  {n:'小林同学',r:'generator',rl:'🤖 生成师·大学生',city:'广州',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['ComfyUI','SD'],gd:'linear-gradient(135deg,#48BB78,#38A169)',ic:'🤖'},
+  {n:'AI画手阿杰',r:'generator',rl:'🤖 生成师',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['ComfyUI','Flux'],gd:'linear-gradient(135deg,#0BC5EA,#00A3C4)',ic:'🤖'},
+  {n:'风灵制片',r:'generator',rl:'🤖 生成师',city:'上海',exp:'2年',lv:'L3',lc:'l3',v:true,sk:['Runway','Pika'],gd:'linear-gradient(135deg,#2C7A7B,#234E52)',ic:'🤖'},
+  {n:'灵境工坊',r:'generator',rl:'🤖 生成师·工作室',city:'成都',exp:'3年',lv:'L4',lc:'l4',v:true,sk:['全流程','批量'],gd:'linear-gradient(135deg,#1A202C,#2D3748)',ic:'🤖'},
+  {n:'星河视觉',r:'generator',rl:'🤖 生成师·大学生',city:'杭州',exp:'研一',stu:true,lv:'L2',lc:'l2',v:false,sk:['ComfyUI','AnimateDiff'],gd:'linear-gradient(135deg,#68D391,#48BB78)',ic:'🤖'},
+  {n:'剪辑老王',r:'editor',rl:'✂️ 后期·调色',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:true,sk:['PR','DaVinci'],gd:'linear-gradient(135deg,#ED8936,#DD6B20)',ic:'✂️'},
+  {n:'调色师阿伟',r:'editor',rl:'✂️ 后期·调色',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['DaVinci','Baselight'],gd:'linear-gradient(135deg,#DD6B20,#C05621)',ic:'✂️'},
+  {n:'音效大师阿强',r:'editor',rl:'✂️ 后期·音效',city:'广州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['AU','Cubase'],gd:'linear-gradient(135deg,#C05621,#9C4221)',ic:'✂️'},
+  {n:'剪辑小美',r:'editor',rl:'✂️ 后期·大学生',city:'成都',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['PR','剪映'],gd:'linear-gradient(135deg,#F6AD55,#ED8936)',ic:'✂️'},
+  {n:'花间词',r:'art-char',rl:'🎨 美术·角色设计',city:'杭州',exp:'4年',lv:'L3',lc:'l3',v:true,sk:['立绘','服装'],gd:'linear-gradient(135deg,#f093fb,#f5576c)',ic:'🎨'},
+  {n:'画师阿月',r:'art-char',rl:'🎨 美术·角色设计',city:'上海',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['立绘','Q版'],gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎨'},
+  {n:'角色控',r:'art-char',rl:'🎨 美术·角色设计·大学生',city:'北京',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['立绘','表情'],gd:'linear-gradient(135deg,#FBB6CE,#F687B3)',ic:'🎨'},
+  {n:'梦境画家',r:'art-scene',rl:'🎨 美术·场景设计',city:'西安',exp:'1年',lv:'L2',lc:'l2',v:false,sk:['场景','氛围'],gd:'linear-gradient(135deg,#a18cd1,#fbc2eb)',ic:'🎨'},
+  {n:'场景王',r:'art-scene',rl:'🎨 美术·场景设计',city:'成都',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['场景','光影'],gd:'linear-gradient(135deg,#9F7AEA,#B794F4)',ic:'🎨'},
+  {n:'小景',r:'art-scene',rl:'🎨 美术·场景设计·大学生',city:'广州',exp:'大二',stu:true,lv:'L1',lc:'l1',v:false,sk:['场景'],gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'🎨'},
+  {n:'概念猫',r:'art-concept',rl:'🎨 美术·概念美术',city:'上海',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['概念设计','世界观'],gd:'linear-gradient(135deg,#667eea,#764ba2)',ic:'🎨'},
+  {n:'设绘师',r:'art-concept',rl:'🎨 美术·概念美术',city:'杭州',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['概念','分镜插画'],gd:'linear-gradient(135deg,#a18cd1,#8E70C8)',ic:'🎨'},
+  {n:'灵感集',r:'art-concept',rl:'🎨 美术·概念美术·大学生',city:'北京',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['概念','风格'],gd:'linear-gradient(135deg,#E9D8FD,#D6BCFA)',ic:'🎨'},
+  {n:'分镜侠',r:'sb-script',rl:'📐 分镜师·脚本',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['分镜脚本','叙事'],gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},
+  {n:'脚本姑娘',r:'sb-script',rl:'📐 分镜师·脚本',city:'成都',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['分镜','情感'],gd:'linear-gradient(135deg,#43E97B,#38A169)',ic:'📐'},
+  {n:'故事板小张',r:'sb-script',rl:'📐 分镜师·脚本·大学生',city:'武汉',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['分镜'],gd:'linear-gradient(135deg,#90F1EF,#4facfe)',ic:'📐'},
+  {n:'闪电侠',r:'sb-camera',rl:'📐 分镜师·运镜',city:'武汉',exp:'2年',lv:'L2',lc:'l2',v:true,sk:['运镜','节奏'],gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},
+  {n:'运镜师老陈',r:'sb-camera',rl:'📐 分镜师·运镜',city:'上海',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['运镜','3D','转场'],gd:'linear-gradient(135deg,#0098D4,#006B9D)',ic:'📐'},
+  {n:'镜头控',r:'sb-camera',rl:'📐 分镜师·运镜·大学生',city:'广州',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['运镜'],gd:'linear-gradient(135deg,#6EE2FF,#4facfe)',ic:'📐'},
+  {n:'动态分镜阿飞',r:'sb-dynamic',rl:'📐 分镜师·动态',city:'杭州',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['动态分镜','AE'],gd:'linear-gradient(135deg,#43E97B,#38F9D7)',ic:'📐'},
+  {n:'动效师小周',r:'sb-dynamic',rl:'📐 分镜师·动态',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['动态','Blender','AE'],gd:'linear-gradient(135deg,#0BA360,#3CBA92)',ic:'📐'},
+  {n:'动画手小李',r:'sb-dynamic',rl:'📐 分镜师·动态·大学生',city:'成都',exp:'大二',stu:true,lv:'L1',lc:'l1',v:false,sk:['动态','AE'],gd:'linear-gradient(135deg,#84FAB0,#8FD3F4)',ic:'📐'}
+];
+
+function renderTalentGridM(role) {
+  var grid = document.getElementById('talent-grid-m');
+  if (!grid) return;
+  var list = role === 'all' ? TALENT_DATA_M : TALENT_DATA_M.filter(function(t){ return t.r === role; });
+  if (role === 'art') list = TALENT_DATA_M.filter(function(t){ return ['art-char','art-scene','art-concept'].indexOf(t.r) >= 0; });
+  if (role === 'storyboard') list = TALENT_DATA_M.filter(function(t){ return ['sb-script','sb-camera','sb-dynamic'].indexOf(t.r) >= 0; });
+  if (list.length === 0) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-secondary);">暂无该分类人才</div>'; return; }
+  grid.innerHTML = list.map(function(t){
+    var vrf = t.v ? '<div class="tcm-vrf">✓</div>' : '';
+    var expStr = t.stu ? '🎓'+t.exp : '📈'+t.exp;
+    var sk = t.sk.map(function(s){ return '<span class="tcm-skill">'+s+'</span>'; }).join('');
+    return '<div class="talent-card-m" onclick="showModal(\'talent-detail-m\')">'+
+      '<div class="tcm-cover" style="background:'+t.gd+';">'+t.ic+vrf+'<div class="tcm-lvl" style="background:var(--'+t.lc+');">'+t.lv+'</div></div>'+
+      '<div class="tcm-body"><h5>'+t.n+'</h5>'+
+      '<div class="tcm-role">'+t.rl+'</div>'+
+      '<div class="tcm-meta"><span>📍'+t.city+'</span><span>'+expStr+'</span></div>'+
+      '<div class="tcm-skills">'+sk+'</div></div></div>';
+  }).join('');
+}
+
+function filterTalentM(el, role) {
+  document.querySelectorAll('.talent-chip-m').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  renderTalentGridM(role);
+}
+
+renderTalentGridM('all');
 
 function switchPlazaTab(el) {
   document.querySelectorAll('.plaza-tab').forEach(t => t.classList.remove('active'));
