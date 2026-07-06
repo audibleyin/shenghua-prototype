@@ -403,16 +403,16 @@ tr:nth-child(even) td { background:#F7FAFC; }
     <div class="flow-step" style="background:var(--secondary);">身份选择弹窗</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-branch">
-      <div class="flow-step" style="background:var(--primary);">🎬 老手 → 人才库登记入库 → 后续升级认证 → 获得等级+接单</div>
+      <div class="flow-step" style="background:var(--primary);">🎬 老手 → 提交作品集 → 平台审核定级 → 进入人才库 + 开通接单</div>
       <div class="flow-step" style="background:var(--info);">🌱 新手 → 培训学院 → 选课报名 → 学习考核</div>
     </div>
   </div>
 </div>
 
 <div class="info-box highlight">
-  <strong>老手入驻路径（递进式）：</strong>有经验的从业者先在人才库轻量登记（1个作品即可入库展示），后续在人才详情页一键升级为认证创作者（提交≥2个作品 + 平台审核定级）。<br>
+  <strong>老手入驻路径：</strong>有经验的从业者提交作品集，平台审核通过后直接进入人才库并获得等级（L1-L5），开通接单权限。审核不通过则无法入库。<br>
   审核维度：作品质量 40% · 技术能力 25% · 项目经验 20% · 持续能力 15%<br>
-  审核周期：1-3个工作日，通过后自动定级（L1-L5）并开通接单权限
+  审核周期：1-3个工作日，通过后自动定级并开通接单权限
 </div>
 
 <h3 class="section">4.2 接单大厅（交易撮合引擎）</h3>
@@ -641,28 +641,27 @@ tr:nth-child(even) td { background:#F7FAFC; }
 
 <h3 class="section">4.11 人才信息库（人才发现引擎）</h3>
 <h4 class="sub">功能定位</h4>
-<p>建立专业人才分类信息库。前期以信息登记+作品展示为主，积累行业互动量；后期在信息库基础上实现项目撮合与交易。<strong>先有信息库，后有交易。</strong></p>
+<p>建立专业人才分类信息库，汇聚AI行业从业者与大学生。从业者提交专业信息与作品，平台审核通过后进入人才库，获得等级并开通接单权限。<strong>审核不通过则无法入库。</strong></p>
 
 <div class="info-box highlight">
   <strong>核心策略：先建库，后交易</strong><br>
-  ① 前期目标：吸引AI行业从业者+大学生来登记，建立专业人才信息库<br>
+  ① 前期目标：吸引AI行业从业者+大学生提交作品审核，建立专业人才信息库<br>
   ② 互动价值：行业人互相发现、作品展示、建立个人品牌<br>
   ③ 后期变现：在信息库基础上撮合项目、对接需求方、实现交易闭环
 </div>
 
 <div class="info-box orange">
-  <strong>与「成为创作者」的关系：递进式设计，非并行入口</strong><br>
-  人才信息库登记是创作者入驻的第一步（轻量级入口），两者不是并行关系而是递进关系：<br>
-  · <strong>第一阶段 — 人才登记（轻量）</strong>：填写专业信息+上传1个作品 → 快速入库展示，建立个人品牌，无等级、无接单权限<br>
-  · <strong>第二阶段 — 认证升级（重量）</strong>：在人才库基础上提交≥2个作品 + 补充链接 → 平台审核定级 → 获得L1-L5等级 + 开通接单权限<br>
-  · 用户只需一个入口进入平台，先入库展示，再按需升级，避免重复登记与数据割裂
+  <strong>与「成为创作者」的关系：统一入口，审核入库</strong><br>
+  人才库不设单独的登记入口。用户通过「成为创作者」→「我是老手」提交作品集，平台审核通过后直接进入人才库并获得等级，开通接单权限。审核不通过则无法入库。<br>
+  · <strong>统一入口</strong>：「成为创作者」→ 选择身份 → 提交作品 → 平台审核<br>
+  · <strong>审核通过</strong>：进入人才库 + 获得L1-L5等级 + 开通接单权限<br>
+  · <strong>审核不通过</strong>：不进入人才库，可补充作品后重新提交
 </div>
 
 <h4 class="sub">核心功能</h4>
 <table>
   <tr><th>功能</th><th>说明</th><th>业务规则</th></tr>
-  <tr><td>人才登记</td><td>从业者免费登记专业信息+上传作品（1个起）</td><td>选择专业角色→填写信息→上传作品→快速入库展示，无需深度审核</td></tr>
-  <tr><td>认证升级</td><td>人才库用户提交更多作品（≥2个）升级为认证创作者</td><td>提交补充作品→平台审核定级→获得L1-L5等级→开通接单权限</td></tr>
+  <tr><td>加入人才库</td><td>从业者通过「成为创作者」提交专业信息+作品集</td><td>选择专业角色→填写信息→上传作品（≥2个）→平台审核→通过则入库+定级+开通接单</td></tr>
   <tr><td>分类浏览</td><td>按7大专业角色分类浏览人才</td><td>支持角色筛选、细分方向筛选、城市筛选</td></tr>
   <tr><td>人才搜索</td><td>按技能/工具/作品/城市搜索</td><td>支持关键词搜索+多维度组合筛选</td></tr>
   <tr><td>人才详情</td><td>展示个人信息、作品集、技能、等级</td><td>含联系方式（认证后可见）</td></tr>
@@ -670,44 +669,37 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>项目撮合</td><td>需求方可直接邀请人才投标</td><td>后期功能，前期以信息展示为主</td></tr>
 </table>
 
-<h4 class="sub">人才登记与认证升级流程</h4>
+<h4 class="sub">加入人才库流程</h4>
 <div class="flow-diagram">
-  <div class="arch-title">递进式路径：登记入库 → 认证升级 → 接单赚钱</div>
+  <div class="arch-title">提交作品 → 平台审核 → 入库定级 → 接单赚钱</div>
   <div class="flow-steps">
-    <div class="flow-step" style="background:var(--primary);">点击「免费登记」</div>
+    <div class="flow-step" style="background:var(--primary);">点击「成为创作者」</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--secondary);">选择专业角色</div>
+    <div class="flow-step" style="background:var(--secondary);">选择「我是老手」</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--info);">填写信息+上传1个作品</div>
-    <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--success);">入库展示</div>
-  </div>
-  <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
-    ↓ 后续可在人才详情页点击「升级为认证创作者」
-  </div>
-  <div class="flow-steps" style="margin-top:8px;">
-    <div class="flow-step" style="background:var(--accent);">提交≥2个作品+链接</div>
+    <div class="flow-step" style="background:var(--info);">填写信息+上传作品（≥2个）</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-step" style="background:var(--accent);">平台审核定级（1-3工作日）</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--l3);">获得L1-L5等级</div>
-    <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--primary);">开通接单权限</div>
+    <div class="flow-step" style="background:var(--success);">审核通过 → 入库+定级+接单</div>
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
+    ✗ 审核不通过 → 不入库，可补充作品后重新提交
   </div>
 </div>
 
 <h4 class="sub">与现有模块的关系</h4>
 <table>
   <tr><th>关联模块</th><th>关系</th></tr>
-  <tr><td>接单大厅</td><td>认证创作者（已升级）可接单，人才库用户可被需求方邀请投标</td></tr>
-  <tr><td>培训学院</td><td>人才库登记后可升级为培训学员，获得等级认证后开通接单</td></tr>
+  <tr><td>接单大厅</td><td>人才库中已审核通过的创作者可接单，需求方可邀请人才投标</td></tr>
+  <tr><td>培训学院</td><td>新手通过培训→考核→定级后进入人才库</td></tr>
   <tr><td>创作广场</td><td>人才的作品可同步展示在创作广场，进行版权交易</td></tr>
   <tr><td>资产库</td><td>人才上传的素材可资产化，实现持续分润</td></tr>
   <tr><td>社区</td><td>人才库用户可参与社区互动，组队招募</td></tr>
 </table>
 
 <div class="info-box green">
-  <strong>差异化优势：</strong>生花建立AI剧专业人才信息库，抢占行业第一认知，通过免费登记+作品展示快速积累用户，为后续交易撮合奠定基础。
+  <strong>差异化优势：</strong>生花建立AI剧专业人才信息库，抢占行业第一认知，通过审核入库+作品展示快速积累优质人才，为后续交易撮合奠定基础。
 </div>
 
 <h4 class="sub">分类数据概览（原型示例）</h4>
@@ -731,7 +723,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>父分类聚合</td><td>点击「美术」显示全部3个细分方向人才，点击「分镜师」显示全部3个细分方向人才</td><td>同PC端逻辑</td></tr>
   <tr><td>子分类精确筛选</td><td>点击「角色设计」仅显示角色设计方向人才</td><td>移动端按芯片筛选，仅显示父分类级别</td></tr>
   <tr><td>辅助筛选</td><td>已认证 / 有作品 / 可接单 / 大学生 / 工作室</td><td>已认证 / 有作品 / 可接单 / 大学生</td></tr>
-  <tr><td>空状态</td><td>显示“暂无该分类人才” + 引导登记</td><td>显示空状态提示</td></tr>
+  <tr><td>空状态</td><td>显示“暂无该分类人才” + 引导加入</td><td>显示空状态提示</td></tr>
 </table>
 
 <div class="info-box blue">
@@ -741,26 +733,22 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <!-- ===== 五、核心业务流程 ===== -->
 <h2 class="chapter">五、核心业务流程</h2>
 
-<h3 class="section">5.1 创作者入驻流程（递进式）</h3>
+<h3 class="section">5.1 创作者入驻流程</h3>
 <div class="flow-diagram">
-  <div class="arch-title">创作者入驻 · 递进式路径</div>
+  <div class="arch-title">创作者入驻 · 两条路径</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
     <div>
       <div style="text-align:center;font-weight:700;color:var(--primary);margin-bottom:12px;">🎬 有经验的老手</div>
       <div class="flow-steps" style="flex-direction:column;">
-        <div class="flow-step" style="background:var(--primary);width:100%;">点击「免费登记」进入人才库</div>
+        <div class="flow-step" style="background:var(--primary);width:100%;">点击「成为创作者」</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--secondary);width:100%;">选择专业角色</div>
+        <div class="flow-step" style="background:var(--secondary);width:100%;">选择「我是老手」</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--info);width:100%;">填写信息+上传1个作品</div>
-        <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--success);width:100%;">入库展示（建立个人品牌）</div>
-        <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--accent);width:100%;">升级认证：提交≥2个作品</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">填写信息+上传作品（≥2个）</div>
         <div class="flow-arrow-r">↓</div>
         <div class="flow-step" style="background:var(--accent);width:100%;">平台审核定级（1-3工作日）</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--success);width:100%;">获得等级 → 开通接单</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">审核通过 → 入才库 + 定级 + 接单</div>
       </div>
     </div>
     <div>
@@ -778,14 +766,14 @@ tr:nth-child(even) td { background:#F7FAFC; }
         <div class="flow-arrow-r">↓</div>
         <div class="flow-step" style="background:var(--accent);width:100%;">阶段考核 → 获得认证</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--success);width:100%;">自动定级 → 开通接单 → 学费返还</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">自动定级 → 入才库 → 开通接单 → 学费返还</div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="info-box blue">
-  <strong>递进式设计说明：</strong>有经验的老手不再走独立的「创作者入驻」审核流程，而是先在人才库轻量登记入库，后续在人才详情页一键升级为认证创作者。这样避免了同一用户面对两个入口的困惑，也避免了数据割裂。新手通道保持不变，通过培训→考核→定级的路径入驻。
+  <strong>统一审核入库：</strong>有经验的老手提交作品集后由平台审核定级，审核通过直接进入人才库并开通接单；审核不通过则无法入库，可补充作品后重新提交。新手通道通过培训→考核→定级的路径入驻，考核通过后同样进入人才库。
 </div>
 
 <h3 class="section">5.2 项目交易全流程</h3>
