@@ -267,14 +267,14 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 .talent-header-m h2 { font-size:18px; font-weight:700; margin-bottom:4px; }
 .talent-header-m p { font-size:11px; opacity:0.8; }
 .talent-header-m .btn-reg-m { padding:8px 16px; border-radius:16px; border:none; background:var(--primary); color:white; font-size:12px; font-weight:600; white-space:nowrap; cursor:pointer; }
-.talent-chips-m { display:flex; gap:8px; padding:0 16px 12px; overflow-x:auto; background:var(--card); }
+.talent-chips-m { display:flex; flex-wrap:wrap; gap:8px; padding:0 16px 12px; background:var(--card); }
 .talent-chips-m::-webkit-scrollbar { display:none; }
-.talent-chip-m { min-width:64px; padding:10px 6px; background:var(--card); border-radius:12px; text-align:center; cursor:pointer; flex-shrink:0; border:2px solid transparent; transition:all 0.2s; }
+.talent-chip-m { min-width:60px; padding:10px 6px; background:var(--card); border-radius:12px; text-align:center; cursor:pointer; border:2px solid var(--border); transition:all 0.2s; }
 .talent-chip-m.active { border-color:var(--primary); background:var(--primary-bg); }
 .talent-chip-m .tc-icon-m { font-size:22px; margin-bottom:2px; }
 .talent-chip-m .tc-label-m { font-size:10px; color:var(--text-secondary); }
 .talent-chip-m .tc-count-m { font-size:9px; color:var(--text-secondary); margin-top:1px; }
-.talent-chip-sub { min-width:52px; padding:7px 6px; background:var(--bg); border-radius:10px; text-align:center; cursor:pointer; flex-shrink:0; border:2px solid transparent; transition:all 0.2s; }
+.talent-chip-sub { min-width:52px; padding:7px 6px; background:var(--bg); border-radius:10px; text-align:center; cursor:pointer; border:2px solid transparent; transition:all 0.2s; }
 .talent-chip-sub.active { border-color:var(--primary); background:var(--primary-bg); }
 .talent-chip-sub .tcs-label { font-size:10px; color:var(--text-secondary); }
 .talent-chip-sub .tcs-count { font-size:9px; color:var(--text-secondary); margin-top:1px; }
