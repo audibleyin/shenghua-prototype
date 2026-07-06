@@ -485,8 +485,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
       <div class="stat"><div class="num">98.5%</div><div class="label">好评率</div></div>
     </div>
     <div class="hero-btns">
-      <button class="btn btn-primary" onclick="showModal('register')">成为创作者 · 接单赚钱</button>
-      <button class="btn btn-outline" onclick="showModal('register')">我是甲方 · 发布项目</button>
+      <button class="btn btn-primary" onclick="showModal('register')">免费注册</button>
+      <button class="btn btn-outline" onclick="showModal('login')">登录</button>
     </div>
   </div>
 
@@ -1860,11 +1860,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 <div class="modal-overlay" id="modal-login">
   <div class="modal">
     <button class="close-btn" onclick="hideModal('login')">✕</button>
-    <h3 style="text-align:center;margin-bottom:16px;">登录生花</h3>
-    <div class="id-tabs">
-      <div class="id-tab active creator" onclick="switchLoginTab(this,'creator')" id="loginTabCreator">我是乙方 · 创作者</div>
-      <div class="id-tab" onclick="switchLoginTab(this,'client')" id="loginTabClient">我是甲方 · 需求方</div>
-    </div>
+    <h3 style="text-align:center;margin-bottom:20px;">登录生花</h3>
     <div class="form-group"><label>手机号/邮箱</label><input type="text" placeholder="请输入手机号或邮箱"></div>
     <div class="form-group"><label>密码</label><input type="password" placeholder="请输入密码"></div>
     <button class="btn-register" style="width:100%;padding:12px;font-size:15px;margin-top:8px;" onclick="doLogin()">登录</button>
@@ -1875,25 +1871,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 <div class="modal-overlay" id="modal-register">
   <div class="modal" style="max-width:480px;">
     <button class="close-btn" onclick="hideModal('register')">✕</button>
-    <h3 style="text-align:center;margin-bottom:16px;">注册生花</h3>
-    <div class="id-role-select">
-      <div class="id-role-card selected" onclick="selectRegRole(this,'creator')" id="regRoleCreator">
-        <div class="idrc-icon">🎬</div>
-        <div class="idrc-title">我是乙方</div>
-        <div class="idrc-desc">创作者 · 接单赚钱</div>
-      </div>
-      <div class="id-role-card" onclick="selectRegRole(this,'client')" id="regRoleClient">
-        <div class="idrc-icon">📋</div>
-        <div class="idrc-title">我是甲方</div>
-        <div class="idrc-desc">需求方 · 发布项目</div>
-      </div>
-    </div>
+    <h3 style="text-align:center;margin-bottom:20px;">注册生花</h3>
     <div class="form-group"><label>手机号</label><input type="text" placeholder="请输入手机号"></div>
     <div class="form-group"><label>验证码</label><div style="display:flex;gap:8px;"><input type="text" placeholder="请输入验证码" style="flex:1;"><button style="padding:10px 16px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;white-space:nowrap;">发送验证码</button></div></div>
     <div class="form-group"><label>设置密码</label><input type="password" placeholder="至少6位"></div>
     <button class="btn-register" style="width:100%;padding:12px;font-size:15px;margin-top:8px;" onclick="doRegister()">注册</button>
     <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--text-secondary);">已有账号？<a href="#" onclick="hideModal('register');showModal('login');" style="color:var(--primary);">立即登录</a></p>
-    <p style="text-align:center;margin-top:4px;font-size:12px;color:var(--text-secondary);">注册后可在甲方端与乙方端之间自由切换</p>
+    <p style="text-align:center;margin-top:4px;font-size:12px;color:var(--text-secondary);">注册后登录，可在甲方端与乙方端之间自由切换</p>
   </div>
 </div>
 
@@ -2131,17 +2115,6 @@ function switchRole(role) {
   } else {
     showPage('creator');
   }
-}
-
-function switchLoginTab(el, role) {
-  document.querySelectorAll('.id-tab').forEach(function(t){ t.classList.remove('active'); });
-  el.classList.add('active');
-  el.className = 'id-tab active ' + role;
-}
-
-function selectRegRole(el, role) {
-  document.querySelectorAll('.id-role-card').forEach(function(c){ c.classList.remove('selected'); });
-  el.classList.add('selected');
 }
 
 function doLogin() {

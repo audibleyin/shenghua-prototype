@@ -382,7 +382,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <!-- ===== 3.4 双端身份体系 ===== -->
 <h3 class="section">3.4 双端身份体系（甲方端 / 乙方端）</h3>
 <h4 class="sub">设计理念</h4>
-<p>参照美团/饿了么的商家端与用户端模式，以及Boss直聘的招人版与求职版切换逻辑，平台采用「双端身份」设计：用户在注册/登录时选择身份角色（甲方或乙方），平台根据所选身份展示对应的功能界面和操作入口。已登录用户可在两端之间自由切换。</p>
+<p>参照美团/饿了么的商家端与用户端模式，以及Boss直聘的招人版与求职版切换逻辑，平台采用「双端身份」设计：用户注册/登录时不绑定身份角色，注册后通过导航栏的切换按钮在「甲方端」和「乙方端」之间自由切换，平台根据当前身份展示对应的功能界面和操作入口。</p>
 
 <div class="info-box highlight">
   <strong>核心设计原则：</strong><br>
@@ -403,11 +403,13 @@ tr:nth-child(even) td { background:#F7FAFC; }
 
 <h4 class="sub">身份选择与切换流程</h4>
 <div class="flow-diagram">
-  <div class="arch-title">注册选择身份 → 登录匹配界面 → 随时切换</div>
+  <div class="arch-title">注册 → 登录 → 切换身份端</div>
   <div class="flow-steps">
-    <div class="flow-step" style="background:var(--primary);">注册/登录</div>
+    <div class="flow-step" style="background:var(--primary);">注册（不选身份）</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--secondary);">选择身份（甲方/乙方）</div>
+    <div class="flow-step" style="background:var(--secondary);">登录</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">点击切换「甲方端 / 乙方端」</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-branch">
       <div class="flow-step" style="background:var(--info);">📋 甲方端 — 提需求、选人才、管项目</div>
@@ -415,7 +417,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
     </div>
   </div>
   <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
-    ↻ 已登录用户可随时点击「切换为甲方/乙方」按钮切换身份
+    ↻ 参照Boss直聘，已登录用户可随时切换身份端，数据各自保留
   </div>
 </div>
 
@@ -439,7 +441,70 @@ tr:nth-child(even) td { background:#F7FAFC; }
   · PC端：导航栏右侧设置「甲方端 / 乙方端」切换按钮，点击后导航项和默认页面即时切换<br>
   · 移动端：首页头部设置身份切换条，个人中心设置切换入口<br>
   · 切换不影响数据：甲方发布的项目和乙方接的单在不同端各自展示，数据互通<br>
-  · 首次注册选择身份后，系统记住偏好，后续登录自动进入上次使用的身份端
+  · 首次登录后默认进入乙方端，用户可随时切换到甲方端
+</div>
+
+<h4 class="sub">创作者评级体系（双入口 + 动态升级）</h4>
+<p>创作者等级（L1-L5）是平台核心信用评价体系，决定可接项目等级、佣金比例和推荐权重。评级体系采用「双入口 + 动态升级」设计：</p>
+
+<table>
+  <tr><th>评级路径</th><th>适用人群</th><th>流程</th><th>初始等级</th></tr>
+  <tr><td><strong>入口一：培训定级</strong></td><td>零基础新手、转行从业者</td><td>报名课程 → 系统学习 → 阶段考核 → 获得初始等级</td><td>通常L1-L2</td></tr>
+  <tr><td><strong>入口二：作品定级</strong></td><td>已有AI漫剧经验的从业者</td><td>提交代表作品（≥2个）→ 平台审核 → 获得初始等级</td><td>根据作品质量L1-L4</td></tr>
+</table>
+
+<h4 class="sub">动态升级机制</h4>
+<table>
+  <tr><th>升级维度</th><th>权重</th><th>说明</th></tr>
+  <tr><td>接单完成量</td><td>40%</td><td>累计完成项目数量，完成越多升级越快</td></tr>
+  <tr><td>用户反馈评分</td><td>35%</td><td>甲方验收评分（1-5星），平均分需≥4.0方可升级</td></tr>
+  <tr><td>作品质量提升</td><td>15%</td><td>持续在创作广场发布高质量作品</td></tr>
+  <tr><td>社区活跃度</td><td>10%</td><td>发帖、回复、组队等社区贡献</td></tr>
+</table>
+
+<div class="info-box highlight">
+  <strong>等级升降规则：</strong><br>
+  · 升级条件：综合评分达到上一级标准 + 最近10个项目平均评分≥4.0<br>
+  · 降级条件：连续3个项目评分低于3.5，或30天无接单活动<br>
+  · 评级周期：每月1日系统自动结算，T+1公示<br>
+  · 申诉机制：对评级结果有异议可提交作品重新审核
+</div>
+
+<div class="flow-diagram">
+  <div class="arch-title">创作者评级双入口流程</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div>
+      <div style="text-align:center;font-weight:700;color:var(--info);margin-bottom:12px;">🎓 入口一：培训定级</div>
+      <div class="flow-steps" style="flex-direction:column;">
+        <div class="flow-step" style="background:var(--primary);width:100%;">注册登录</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">进入培训学院</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">选课报名 → 在线学习</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">阶段考核</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">获得初始等级（L1-L2）+ 开通接单</div>
+      </div>
+    </div>
+    <div>
+      <div style="text-align:center;font-weight:700;color:var(--primary);margin-bottom:12px;">🎬 入口二：作品定级</div>
+      <div class="flow-steps" style="flex-direction:column;">
+        <div class="flow-step" style="background:var(--primary);width:100%;">注册登录</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--secondary);width:100%;">提交代表作品（≥2个）</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">平台审核（1-3工作日）</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">审核维度：作品质量40%·技术25%·经验20%·持续力15%</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">获得初始等级（L1-L4）+ 进入人才库 + 开通接单</div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--text2);">
+    ↻ 获得初始等级后，通过接单完成量 + 用户评分动态升级
+  </div>
 </div>
 
 <!-- ===== 四、核心模块功能设计 ===== -->
@@ -452,7 +517,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <h4 class="sub">页面结构</h4>
 <table>
   <tr><th>区域</th><th>内容</th><th>功能逻辑</th></tr>
-  <tr><td>Hero Banner</td><td>平台Slogan + 核心数据 + CTA按钮</td><td>「成为创作者 · 接单赚钱」→ 注册（选乙方身份）；「我是甲方 · 发布项目」→ 注册（选甲方身份）</td></tr>
+  <tr><td>Hero Banner</td><td>平台Slogan + 核心数据 + CTA按钮</td><td>「免费注册」→ 注册弹窗（不选身份）；「登录」→ 登录弹窗</td></tr>
   <tr><td>身份切换器</td><td>甲方端 / 乙方端 切换按钮</td><td>已登录用户可一键切换身份端，导航项和默认页面随之变化（参照Boss直聘）</td></tr>
   <tr><td>四大引擎卡片</td><td>培训/接单/广场/资产</td><td>点击跳转到对应模块页面，hover显示详细描述</td></tr>
   <tr><td>五级体系展示</td><td>L1-L5等级卡片</td><td>展示每级权益、可接项目类型、佣金比例</td></tr>
