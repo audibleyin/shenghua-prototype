@@ -274,6 +274,10 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 .talent-chip-m .tc-icon-m { font-size:22px; margin-bottom:2px; }
 .talent-chip-m .tc-label-m { font-size:10px; color:var(--text-secondary); }
 .talent-chip-m .tc-count-m { font-size:9px; color:var(--text-secondary); margin-top:1px; }
+.talent-chip-sub { min-width:52px; padding:7px 6px; background:var(--bg); border-radius:10px; text-align:center; cursor:pointer; flex-shrink:0; border:2px solid transparent; transition:all 0.2s; }
+.talent-chip-sub.active { border-color:var(--primary); background:var(--primary-bg); }
+.talent-chip-sub .tcs-label { font-size:10px; color:var(--text-secondary); }
+.talent-chip-sub .tcs-count { font-size:9px; color:var(--text-secondary); margin-top:1px; }
 .talent-grid-m { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:0 16px 16px; }
 .talent-card-m { background:var(--card); border-radius:14px; overflow:hidden; cursor:pointer; transition:all 0.2s; }
 .talent-card-m:active { transform:scale(0.97); }
@@ -978,7 +982,13 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <div class="talent-chip-m" onclick="filterTalentM(this,'generator')"><div class="tc-icon-m">🤖</div><div class="tc-label-m">生成师</div><div class="tc-count-m">6</div></div>
         <div class="talent-chip-m" onclick="filterTalentM(this,'editor')"><div class="tc-icon-m">✂️</div><div class="tc-label-m">后期</div><div class="tc-count-m">4</div></div>
         <div class="talent-chip-m" onclick="filterTalentM(this,'art')"><div class="tc-icon-m">🎨</div><div class="tc-label-m">美术</div><div class="tc-count-m">9</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'art-char')"><div class="tcs-label">角色设计</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'art-scene')"><div class="tcs-label">场景设计</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'art-concept')"><div class="tcs-label">概念美术</div><div class="tcs-count">3</div></div>
         <div class="talent-chip-m" onclick="filterTalentM(this,'storyboard')"><div class="tc-icon-m">📐</div><div class="tc-label-m">分镜师</div><div class="tc-count-m">9</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-script')"><div class="tcs-label">分镜脚本</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-camera')"><div class="tcs-label">运镜设计</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-dynamic')"><div class="tcs-label">动态分镜</div><div class="tcs-count">3</div></div>
       </div>
 
       <div class="m-filters">
@@ -1302,7 +1312,7 @@ function renderTalentGridM(role) {
 }
 
 function filterTalentM(el, role) {
-  document.querySelectorAll('.talent-chip-m').forEach(function(c){ c.classList.remove('active'); });
+  document.querySelectorAll('.talent-chip-m, .talent-chip-sub').forEach(function(c){ c.classList.remove('active'); });
   el.classList.add('active');
   renderTalentGridM(role);
 }
