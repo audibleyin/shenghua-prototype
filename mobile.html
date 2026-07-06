@@ -301,6 +301,20 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 .level-line { width:2px; height:20px; background:var(--border); margin-left:17px; }
 .level-info h5 { font-size:14px; font-weight:600; }
 .level-info p { font-size:11px; color:var(--text-secondary); }
+/* ===== IDENTITY SYSTEM ===== */
+.id-switch-m { display:flex; background:var(--bg); border-radius:20px; padding:3px; margin:0 16px 12px; }
+.id-switch-m .id-btn-m { flex:1; padding:8px; border-radius:16px; font-size:13px; font-weight:600; border:none; background:transparent; color:var(--text-secondary); cursor:pointer; transition:all 0.2s; }
+.id-switch-m .id-btn-m.active.client { background:var(--info); color:white; }
+.id-switch-m .id-btn-m.active.creator { background:var(--primary); color:white; }
+.id-badge-m { display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:600; }
+.id-badge-m.client { background:#EBF8FF; color:var(--info); }
+.id-badge-m.creator { background:var(--primary-bg); color:var(--primary); }
+.id-role-select-m { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.id-role-card-m { border:2px solid var(--border); border-radius:12px; padding:16px 10px; text-align:center; cursor:pointer; transition:all 0.2s; }
+.id-role-card-m.selected { border-color:var(--primary); background:var(--primary-bg); }
+.id-role-card-m .idrc-icon-m { font-size:32px; margin-bottom:4px; }
+.id-role-card-m .idrc-title-m { font-size:14px; font-weight:700; }
+.id-role-card-m .idrc-desc-m { font-size:11px; color:var(--text-secondary); }
 </style>
 </head>
 <body>
@@ -325,8 +339,12 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <h1>生花</h1>
         <div class="header-actions">
           <div class="header-icon" style="position:relative;" onclick="showModal('notif')">🔔<div class="notif-dot" style="position:absolute;top:4px;right:4px;"></div></div>
-          <div class="header-icon">🔍</div>
+          <div class="header-icon" onclick="showModal('login-m')">👤</div>
         </div>
+      </div>
+      <div class="id-switch-m" id="idSwitchM" style="display:none;">
+        <button class="id-btn-m" onclick="switchRoleM('client')" id="idBtnClientM">甲方端 · 发项目</button>
+        <button class="id-btn-m active creator" onclick="switchRoleM('creator')" id="idBtnCreatorM">乙方端 · 接单</button>
       </div>
 
       <!-- Banner -->
@@ -334,8 +352,8 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <h2>妙笔<span style="color:#FEB2B2;">生花</span></h2>
         <p>AI漫剧垂直撮合交易平台</p>
         <div class="banner-btns">
-          <button class="banner-btn banner-btn-primary" onclick="showModal('creator-choice')">成为创作者</button>
-          <button class="banner-btn banner-btn-outline" onclick="switchTab('orders')">浏览项目</button>
+          <button class="banner-btn banner-btn-primary" onclick="showModal('register-m')">成为创作者 · 接单赚钱</button>
+          <button class="banner-btn banner-btn-outline" onclick="showModal('register-m')">我是甲方 · 发项目</button>
         </div>
         <div class="banner-stats">
           <div class="bstat"><div class="bnum">12,680</div><div class="blbl">创作者</div></div>
@@ -643,6 +661,10 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <div class="pf-avatar">👩‍🎨</div>
         <div class="pf-name">墨染青山</div>
         <span class="pf-level" style="background:var(--l3);">L3 精英创作者</span>
+        <div style="margin-top:12px;display:inline-flex;align-items:center;gap:8px;background:var(--bg);border-radius:20px;padding:4px;">
+          <button style="padding:6px 14px;border-radius:14px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--text-secondary);" onclick="switchRoleM('client')">切换为甲方</button>
+          <button style="padding:6px 14px;border-radius:14px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:var(--primary);color:white;">当前：乙方</button>
+        </div>
         <div class="pf-stats">
           <div class="pfs"><div class="pfs-val">47</div><div class="pfs-lbl">完成项目</div></div>
           <div class="pfs"><div class="pfs-val">4.8</div><div class="pfs-lbl">平均评分</div></div>
@@ -1048,6 +1070,48 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     </div>
   </div>
 
+  <!-- Login Modal -->
+  <div class="m-modal-overlay" id="modal-login-m">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3 style="text-align:center;">登录生花</h3>
+      <div style="display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border);">
+        <div style="flex:1;padding:10px;text-align:center;cursor:pointer;font-size:14px;font-weight:600;color:var(--primary);border-bottom:3px solid var(--primary);" id="loginTabCreatorM" onclick="switchLoginTabM(this,'creator')">乙方 · 创作者</div>
+        <div style="flex:1;padding:10px;text-align:center;cursor:pointer;font-size:14px;font-weight:600;color:var(--text-secondary);border-bottom:3px solid transparent;" id="loginTabClientM" onclick="switchLoginTabM(this,'client')">甲方 · 需求方</div>
+      </div>
+      <div class="form-group"><label>手机号</label><input type="tel" placeholder="请输入手机号"></div>
+      <div class="form-group"><label>密码</label><input type="password" placeholder="请输入密码"></div>
+      <button class="btn-primary" onclick="doLoginM()">登录</button>
+      <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-secondary);">还没有账号？<a href="#" onclick="hideModal('login-m');showModal('register-m')" style="color:var(--primary);">立即注册</a></p>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="m-modal-overlay" id="modal-register-m">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3 style="text-align:center;">注册生花</h3>
+      <div class="id-role-select-m">
+        <div class="id-role-card-m selected" onclick="selectRegRoleM(this,'creator')" id="regRoleCreatorM">
+          <div class="idrc-icon-m">🎬</div>
+          <div class="idrc-title-m">我是乙方</div>
+          <div class="idrc-desc-m">创作者 · 接单赚钱</div>
+        </div>
+        <div class="id-role-card-m" onclick="selectRegRoleM(this,'client')" id="regRoleClientM">
+          <div class="idrc-icon-m">📋</div>
+          <div class="idrc-title-m">我是甲方</div>
+          <div class="idrc-desc-m">需求方 · 发布项目</div>
+        </div>
+      </div>
+      <div class="form-group"><label>手机号</label><input type="tel" placeholder="请输入手机号"></div>
+      <div class="form-group"><label>验证码</label><div style="display:flex;gap:8px;"><input type="text" placeholder="输入验证码" style="flex:1;"><button style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;">发送验证码</button></div></div>
+      <div class="form-group"><label>设置密码</label><input type="password" placeholder="至少6位"></div>
+      <button class="btn-primary" onclick="doRegisterM()">注册</button>
+      <p style="text-align:center;margin-top:8px;font-size:12px;color:var(--text-secondary);">已有账号？<a href="#" onclick="hideModal('register-m');showModal('login-m')" style="color:var(--primary);">立即登录</a></p>
+      <p style="text-align:center;margin-top:4px;font-size:11px;color:var(--text-secondary);">注册后可在甲方端与乙方端之间自由切换</p>
+    </div>
+  </div>
+
   <!-- Portfolio Submit -->
   <div class="m-modal-overlay" id="modal-portfolio">
     <div class="m-modal">
@@ -1155,6 +1219,50 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 <script>
 const tabs = ['home','orders','plaza','community','profile'];
 const subPages = ['assets','training','levels','activities','client','talent'];
+
+var currentRoleM = 'creator';
+
+function switchRoleM(role) {
+  currentRoleM = role;
+  var sw = document.getElementById('idSwitchM');
+  var bc = document.getElementById('idBtnClientM');
+  var br = document.getElementById('idBtnCreatorM');
+  if (sw) {
+    bc.className = 'id-btn-m' + (role === 'client' ? ' active client' : '');
+    br.className = 'id-btn-m' + (role === 'creator' ? ' active creator' : '');
+  }
+  if (role === 'client') {
+    switchTab('orders');
+  } else {
+    switchTab('orders');
+  }
+}
+
+function switchLoginTabM(el, role) {
+  var tabs = document.querySelectorAll('#modal-login-m [onclick^="switchLoginTabM"]');
+  tabs.forEach(function(t){ t.style.color = 'var(--text-secondary)'; t.style.borderBottom = '3px solid transparent'; });
+  el.style.color = role === 'client' ? 'var(--info)' : 'var(--primary)';
+  el.style.borderBottom = '3px solid ' + (role === 'client' ? 'var(--info)' : 'var(--primary)');
+}
+
+function selectRegRoleM(el, role) {
+  document.querySelectorAll('.id-role-card-m').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function doLoginM() {
+  hideModal('login-m');
+  var sw = document.getElementById('idSwitchM');
+  if (sw) sw.style.display = 'flex';
+  switchRoleM(currentRoleM);
+}
+
+function doRegisterM() {
+  hideModal('register-m');
+  var sw = document.getElementById('idSwitchM');
+  if (sw) sw.style.display = 'flex';
+  switchRoleM(currentRoleM);
+}
 
 function switchTab(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));

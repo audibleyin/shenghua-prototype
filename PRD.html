@@ -132,6 +132,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
     <li class="indent">3.1 需求方角色</li>
     <li class="indent">3.2 供给侧角色</li>
     <li class="indent">3.3 权限矩阵</li>
+    <li class="indent">3.4 双端身份体系</li>
     <li><span class="num">四</span>核心模块功能设计</li>
     <li class="indent">4.1 首页（流量分发引擎）</li>
     <li class="indent">4.2 接单大厅（交易撮合引擎）</li>
@@ -171,8 +172,8 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>产品定位</td><td>AI漫剧垂直撮合交易平台 — 不提供AI工具，专注供需匹配与质量管控</td></tr>
   <tr><td>核心Slogan</td><td>妙笔生花，人人皆可创作</td></tr>
   <tr><td>目标品类</td><td>AI漫剧（AI漫画短剧），不含真人短剧/传统动画/其他服务</td></tr>
-  <tr><td>核心用户</td><td>需求方 + 创作者 + 故事投稿者 + 资产上传者</td></tr>
-  <tr><td>平台模式</td><td>猪八戒网模式（垂直版）+ 自有培训体系作为供给侧核心引擎</td></tr>
+  <tr><td>核心用户</td><td>需求方（甲方） + 创作者（乙方） + 故事投稿者 + 资产上传者</td></tr>
+  <tr><td>平台模式</td><td>猪八戒网模式（垂直版）+ 双端身份体系（甲方端/乙方端）+ 自有培训体系作为供给侧核心引擎</td></tr>
 </table>
 
 <div class="info-box highlight">
@@ -378,6 +379,69 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>团队管理</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
 </table>
 
+<!-- ===== 3.4 双端身份体系 ===== -->
+<h3 class="section">3.4 双端身份体系（甲方端 / 乙方端）</h3>
+<h4 class="sub">设计理念</h4>
+<p>参照美团/饿了么的商家端与用户端模式，以及Boss直聘的招人版与求职版切换逻辑，平台采用「双端身份」设计：用户在注册/登录时选择身份角色（甲方或乙方），平台根据所选身份展示对应的功能界面和操作入口。已登录用户可在两端之间自由切换。</p>
+
+<div class="info-box highlight">
+  <strong>核心设计原则：</strong><br>
+  ① 一个账号，双重身份 — 用户注册后可同时拥有甲方和乙方身份，无需注册两个账号<br>
+  ② 场景隔离，功能聚焦 — 甲方端聚焦"提需求"，乙方端聚焦"成为创作者"，避免功能干扰<br>
+  ③ 一键切换，无缝衔接 — 参照Boss直聘，用户可随时在甲方端/乙方端之间切换
+</div>
+
+<h4 class="sub">身份定义与核心功能</h4>
+<table>
+  <tr><th>维度</th><th>甲方端（需求方）</th><th>乙方端（创作者/供给方）</th></tr>
+  <tr><td><strong>身份定位</strong></td><td>有AI漫剧制作需求的一方</td><td>提供AI漫剧制作服务的一方</td></tr>
+  <tr><td><strong>核心动作</strong></td><td>提需求 — 发布项目、筛选创作者、托管资金、验收交付</td><td>成为创作者 — 提交作品审核、进入人才库、接单赚钱、管理作品</td></tr>
+  <tr><td><strong>典型用户</strong></td><td>视频平台、品牌方、IP方、个人需求方、内容采购方</td><td>导演、编剧、生成师、后期剪辑、美术、分镜师、制作人</td></tr>
+  <tr><td><strong>导航可见项</strong></td><td>发项目、人才库、创作广场、资产库、社区</td><td>接单大厅、创作者中心、培训学院、人才库、社区</td></tr>
+  <tr><td><strong>首页CTA</strong></td><td>「我是甲方 · 发布项目」</td><td>「成为创作者 · 接单赚钱」</td></tr>
+</table>
+
+<h4 class="sub">身份选择与切换流程</h4>
+<div class="flow-diagram">
+  <div class="arch-title">注册选择身份 → 登录匹配界面 → 随时切换</div>
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--primary);">注册/登录</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">选择身份（甲方/乙方）</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-branch">
+      <div class="flow-step" style="background:var(--info);">📋 甲方端 — 提需求、选人才、管项目</div>
+      <div class="flow-step" style="background:var(--primary);">🎬 乙方端 — 成为创作者、接单、管理作品</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
+    ↻ 已登录用户可随时点击「切换为甲方/乙方」按钮切换身份
+  </div>
+</div>
+
+<h4 class="sub">双端功能对照</h4>
+<table>
+  <tr><th>功能模块</th><th>甲方端可见</th><th>乙方端可见</th><th>说明</th></tr>
+  <tr><td>发布项目</td><td>✅ 核心</td><td>❌</td><td>甲方端核心功能，发布AI漫剧项目需求</td></tr>
+  <tr><td>浏览人才库</td><td>✅ 核心</td><td>✅</td><td>甲方筛选创作者，乙方查看同行作品</td></tr>
+  <tr><td>接单大厅</td><td>❌</td><td>✅ 核心</td><td>乙方端核心功能，浏览可接项目并投标</td></tr>
+  <tr><td>创作者中心</td><td>❌</td><td>✅ 核心</td><td>乙方管理作品、接单记录、收入</td></tr>
+  <tr><td>培训学院</td><td>❌</td><td>✅</td><td>乙方新手学习通道</td></tr>
+  <tr><td>创作广场</td><td>✅</td><td>✅</td><td>双方均可浏览，甲方可采购版权</td></tr>
+  <tr><td>资产库</td><td>✅</td><td>✅</td><td>双方均可浏览，乙方可上传资产</td></tr>
+  <tr><td>社区</td><td>✅</td><td>✅</td><td>双方均可参与社区互动</td></tr>
+  <tr><td>资金托管</td><td>✅ 核心</td><td>❌</td><td>甲方托管资金，验收后释放</td></tr>
+  <tr><td>等级体系</td><td>✅</td><td>✅</td><td>双方均可查看，乙方关注自身等级</td></tr>
+</table>
+
+<div class="info-box blue">
+  <strong>切换机制设计（参照Boss直聘）：</strong><br>
+  · PC端：导航栏右侧设置「甲方端 / 乙方端」切换按钮，点击后导航项和默认页面即时切换<br>
+  · 移动端：首页头部设置身份切换条，个人中心设置切换入口<br>
+  · 切换不影响数据：甲方发布的项目和乙方接的单在不同端各自展示，数据互通<br>
+  · 首次注册选择身份后，系统记住偏好，后续登录自动进入上次使用的身份端
+</div>
+
 <!-- ===== 四、核心模块功能设计 ===== -->
 <h2 class="chapter">四、核心模块功能设计</h2>
 
@@ -388,19 +452,20 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <h4 class="sub">页面结构</h4>
 <table>
   <tr><th>区域</th><th>内容</th><th>功能逻辑</th></tr>
-  <tr><td>Hero Banner</td><td>平台Slogan + 核心数据 + CTA按钮</td><td>「成为创作者」→ 弹出身份选择弹窗（老手/新手）；「浏览项目」→ 跳转接单大厅</td></tr>
+  <tr><td>Hero Banner</td><td>平台Slogan + 核心数据 + CTA按钮</td><td>「成为创作者 · 接单赚钱」→ 注册（选乙方身份）；「我是甲方 · 发布项目」→ 注册（选甲方身份）</td></tr>
+  <tr><td>身份切换器</td><td>甲方端 / 乙方端 切换按钮</td><td>已登录用户可一键切换身份端，导航项和默认页面随之变化（参照Boss直聘）</td></tr>
   <tr><td>四大引擎卡片</td><td>培训/接单/广场/资产</td><td>点击跳转到对应模块页面，hover显示详细描述</td></tr>
   <tr><td>五级体系展示</td><td>L1-L5等级卡片</td><td>展示每级权益、可接项目类型、佣金比例</td></tr>
   <tr><td>平台活动专区</td><td>抖音/红果/快手/爱奇艺活动</td><td>展示各平台最新创作活动和奖励</td></tr>
   <tr><td>热门项目推荐</td><td>最新/最热门项目卡片</td><td>按用户等级展示可投标项目</td></tr>
 </table>
 
-<h4 class="sub">「成为创作者」入口逻辑</h4>
+<h4 class="sub">注册/登录与身份选择逻辑</h4>
 <div class="flow-diagram">
   <div class="flow-steps">
-    <div class="flow-step" style="background:var(--primary);">点击「成为创作者」</div>
+    <div class="flow-step" style="background:var(--primary);">点击「注册」</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--secondary);">身份选择弹窗</div>
+    <div class="flow-step" style="background:var(--secondary);">选择身份（甲方/乙方）</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-branch">
       <div class="flow-step" style="background:var(--primary);">🎬 老手 → 提交作品集 → 平台审核定级 → 进入人才库 + 开通接单</div>
