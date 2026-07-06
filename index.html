@@ -50,20 +50,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .page.active { display: block; }
 
 /* ===== HERO ===== */
-.hero { background: linear-gradient(135deg, #1A202C 0%, #2D3748 50%, #E53E3E 100%); color: white; padding: 80px 24px 60px; text-align: center; }
+.hero { background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 50%, #F0F7FF 100%); color: var(--text); padding: 80px 24px 60px; text-align: center; }
 .hero h1 { font-size: 48px; font-weight: 800; margin-bottom: 16px; }
-.hero h1 .highlight { color: #FEB2B2; }
-.hero .slogan { font-size: 20px; color: rgba(255,255,255,0.8); margin-bottom: 32px; }
+.hero h1 .highlight { color: var(--primary); }
+.hero .slogan { font-size: 20px; color: var(--text-secondary); margin-bottom: 32px; }
 .hero .hero-stats { display: flex; justify-content: center; gap: 48px; margin-bottom: 40px; }
 .hero .hero-stats .stat { text-align: center; }
 .hero .hero-stats .stat .num { font-size: 36px; font-weight: 700; }
-.hero .hero-stats .stat .label { font-size: 13px; color: rgba(255,255,255,0.7); }
+.hero .hero-stats .stat .label { font-size: 13px; color: var(--text-secondary); }
 .hero .hero-btns { display: flex; justify-content: center; gap: 16px; }
 .hero .hero-btns .btn { padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; border: none; transition: all 0.3s; }
 .hero .hero-btns .btn-primary { background: var(--primary); color: white; }
 .hero .hero-btns .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
-.hero .hero-btns .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); }
-.hero .hero-btns .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+.hero .hero-btns .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+.hero .hero-btns .btn-outline:hover { border-color: var(--primary-dark); background: var(--primary-bg, #FFF5F5); }
 
 /* ===== ENGINES ===== */
 .engines { padding: 60px 24px; max-width: 1200px; margin: 0 auto; }
@@ -135,9 +135,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .asset-item .asset-info .asset-price { color: var(--primary); font-weight: 600; font-size: 13px; }
 
 /* ===== TRAINING ===== */
-.training-hero { background: linear-gradient(135deg, #2D3748, #4A5568); color: white; padding: 48px 24px; text-align: center; border-radius: var(--radius); margin-bottom: 32px; }
+.training-hero { background: linear-gradient(135deg, #EBF8FF 0%, #F0FFF4 100%); color: var(--text); padding: 48px 24px; text-align: center; border-radius: var(--radius); margin-bottom: 32px; border: 1px solid var(--border); }
 .training-hero h2 { font-size: 32px; margin-bottom: 8px; }
-.training-hero p { color: rgba(255,255,255,0.8); }
+.training-hero p { color: var(--text-secondary); }
 .training-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
 .training-mode { background: var(--card); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); }
 .training-mode h3 { font-size: 22px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
@@ -364,9 +364,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 }
 
 /* ===== TALENT DATABASE ===== */
-.talent-banner { background: linear-gradient(135deg, #1A202C 0%, #2B6CB0 100%); color: white; padding: 40px 32px; border-radius: var(--radius); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
+.talent-banner { background: linear-gradient(135deg, #FFF5F5 0%, #EBF8FF 100%); color: var(--text); padding: 40px 32px; border-radius: var(--radius); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); }
 .talent-banner h2 { font-size: 28px; margin-bottom: 6px; }
-.talent-banner p { font-size: 14px; opacity: 0.8; }
+.talent-banner p { font-size: 14px; color: var(--text-secondary); }
 .talent-banner .btn-talent-register { padding: 12px 28px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
 .talent-banner .btn-talent-register:hover { background: var(--primary-dark); transform: translateY(-2px); }
 

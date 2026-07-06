@@ -13,11 +13,11 @@ body { font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; color:
 .doc { max-width:960px; margin:0 auto; background:white; box-shadow:0 0 40px rgba(0,0,0,0.08); }
 
 /* Cover */
-.cover { background:linear-gradient(135deg,#1A202C 0%,#2D3748 40%,#E53E3E 100%); color:white; padding:120px 60px 80px; text-align:center; }
+.cover { background:linear-gradient(135deg,#FFF5F5 0%,#F7FAFC 40%,#EBF8FF 100%); color:var(--text); padding:120px 60px 80px; text-align:center; border-bottom:3px solid var(--primary); }
 .cover h1 { font-size:42px; font-weight:800; margin-bottom:12px; letter-spacing:2px; }
-.cover .subtitle { font-size:20px; opacity:0.8; margin-bottom:40px; }
-.cover .meta { display:flex; justify-content:center; gap:40px; font-size:14px; opacity:0.7; }
-.cover .version-badge { display:inline-block; background:rgba(255,255,255,0.2); padding:6px 20px; border-radius:20px; font-size:14px; margin-top:20px; }
+.cover .subtitle { font-size:20px; color:var(--text2); margin-bottom:40px; }
+.cover .meta { display:flex; justify-content:center; gap:40px; font-size:14px; color:var(--text2); }
+.cover .version-badge { display:inline-block; background:var(--primary); color:white; padding:6px 20px; border-radius:20px; font-size:14px; margin-top:20px; }
 
 /* TOC */
 .toc { padding:40px 60px; border-bottom:2px solid var(--border); }
@@ -39,7 +39,7 @@ li { margin:4px 0; }
 
 /* Tables */
 table { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
-th { background:var(--secondary); color:white; padding:12px 14px; text-align:left; font-weight:600; }
+th { background:#F7FAFC; color:var(--text); padding:12px 14px; text-align:left; font-weight:600; border-bottom:2px solid var(--primary); }
 td { padding:10px 14px; border-bottom:1px solid var(--border); }
 tr:nth-child(even) td { background:#F7FAFC; }
 
@@ -56,7 +56,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
 .arch-box.purple { background:linear-gradient(135deg,#9F7AEA,#6B46C1); }
 .arch-box.orange { background:linear-gradient(135deg,#ED8936,#DD6B20); }
 .arch-box.green { background:linear-gradient(135deg,#38A169,#276749); }
-.arch-box.gray { background:linear-gradient(135deg,#718096,#4A5568); }
+.arch-box.gray { background:linear-gradient(135deg,#A0AEC0,#718096); }
 .arch-box.teal { background:linear-gradient(135deg,#38B2AC,#2C7A7B); }
 .arch-arrow { text-align:center; font-size:20px; color:var(--text2); margin:4px 0; }
 
