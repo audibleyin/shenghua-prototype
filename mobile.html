@@ -1144,42 +1144,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
   <div class="m-modal-overlay" id="modal-talent-detail-m">
     <div class="m-modal">
       <div class="modal-handle"></div>
-      <div style="display:flex;gap:12px;margin-bottom:16px;">
-        <div style="width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#38B2AC,#2C7A7B);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">🤖</div>
-        <div style="flex:1;">
-          <h3 style="font-size:18px;margin-bottom:4px;">墨染青山</h3>
-          <div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;">
-            <span style="padding:1px 8px;border-radius:4px;background:var(--l3);color:white;font-size:10px;font-weight:600;">L3 精英</span>
-            <span style="padding:1px 8px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:10px;font-weight:600;">✓ 已认证</span>
-          </div>
-          <div style="font-size:12px;color:var(--primary);font-weight:500;">🤖 生成师 · 角色一致性</div>
-        </div>
-      </div>
-      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px;">专注AI漫剧生成2年，擅长角色一致性控制与场景控制。角色一致性可达98%。已参与47个商业项目。</p>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
-        <div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">47</div><div style="font-size:9px;color:var(--text-secondary);">项目</div></div>
-        <div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">4.8</div><div style="font-size:9px;color:var(--text-secondary);">评分</div></div>
-        <div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">¥18.6w</div><div style="font-size:9px;color:var(--text-secondary);">收入</div></div>
-        <div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">2年</div><div style="font-size:9px;color:var(--text-secondary);">经验</div></div>
-      </div>
-      <div style="font-size:13px;font-weight:600;margin-bottom:8px;">擅长技能</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
-        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">Seedance</span>
-        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">可灵AI</span>
-        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">Midjourney</span>
-        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">角色一致性</span>
-        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">古风</span>
-      </div>
-      <div style="font-size:13px;font-weight:600;margin-bottom:8px;">代表作品</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px;">
-        <div style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);border-radius:8px;height:60px;display:flex;align-items:center;justify-content:center;font-size:24px;">🐉</div>
-        <div style="background:linear-gradient(135deg,#E53E3E,#DD6B20);border-radius:8px;height:60px;display:flex;align-items:center;justify-content:center;font-size:24px;">🏯</div>
-        <div style="background:linear-gradient(135deg,#2c3e50,#3498db);border-radius:8px;height:60px;display:flex;align-items:center;justify-content:center;font-size:24px;">🕵️</div>
-      </div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn-primary" style="flex:1;">联系TA</button>
-        <button class="btn-secondary" style="flex:1;margin-top:0;" onclick="hideModal('talent-detail-m')">关闭</button>
-      </div>
+      <div id="talent-detail-content-m"></div>
     </div>
   </div>
 
@@ -1302,13 +1267,53 @@ function renderTalentGridM(role) {
     var vrf = t.v ? '<div class="tcm-vrf">✓</div>' : '';
     var expStr = t.stu ? '🎓'+t.exp : '📈'+t.exp;
     var sk = t.sk.map(function(s){ return '<span class="tcm-skill">'+s+'</span>'; }).join('');
-    return '<div class="talent-card-m" onclick="showModal(\'talent-detail-m\')">'+
+    return '<div class="talent-card-m" onclick="showTalentDetailM(\''+t.n+'\')">'+
       '<div class="tcm-cover" style="background:'+t.gd+';">'+t.ic+vrf+'<div class="tcm-lvl" style="background:var(--'+t.lc+');">'+t.lv+'</div></div>'+
       '<div class="tcm-body"><h5>'+t.n+'</h5>'+
       '<div class="tcm-role">'+t.rl+'</div>'+
       '<div class="tcm-meta"><span>📍'+t.city+'</span><span>'+expStr+'</span></div>'+
       '<div class="tcm-skills">'+sk+'</div></div></div>';
   }).join('');
+}
+
+function showTalentDetailM(name) {
+  var t = TALENT_DATA_M.find(function(d){ return d.n === name; });
+  if (!t) return;
+  var container = document.getElementById('talent-detail-content-m');
+  if (!container) return;
+  var skills = t.sk.map(function(s){ return '<span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">'+s+'</span>'; }).join('');
+  var verify = t.v ? '<span style="padding:1px 8px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:10px;font-weight:600;">✓ 已认证</span>' : '<span style="padding:1px 8px;border-radius:4px;background:#EDF2F7;color:var(--text-secondary);font-size:10px;font-weight:600;">未认证</span>';
+  var expLabel = t.stu ? '🎓 '+t.exp : '📈 '+t.exp;
+  var bio = '专注'+t.rl+'，'+expLabel+'。擅长'+t.sk.join('、')+'。'+t.wk+'。';
+  var rating = t.lv === 'L4' ? '4.9' : t.lv === 'L3' ? '4.8' : t.lv === 'L2' ? '4.6' : '4.5';
+  var income = t.lv === 'L4' ? '¥32.5w' : t.lv === 'L3' ? '¥18.6w' : t.lv === 'L2' ? '¥6.2w' : '¥1.2w';
+  container.innerHTML =
+    '<div style="display:flex;gap:12px;margin-bottom:16px;">'+
+    '<div style="width:64px;height:64px;border-radius:14px;background:'+t.gd+';display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">'+t.ic+'</div>'+
+    '<div style="flex:1;">'+
+    '<h3 style="font-size:18px;margin-bottom:4px;">'+t.n+'</h3>'+
+    '<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;">'+
+    '<span style="padding:1px 8px;border-radius:4px;background:var(--'+t.lc+');color:white;font-size:10px;font-weight:600;">'+t.lv+'</span>'+verify+
+    '</div>'+
+    '<div style="font-size:12px;color:var(--primary);font-weight:500;">'+t.rl+'</div>'+
+    '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">📍 '+t.city+' · '+expLabel+'</div>'+
+    '</div></div>'+
+    '<p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px;">'+bio+'</p>'+
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">'+
+    '<div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">'+(t.st.match(/\d+/)?t.st.match(/\d+/)[0]:'—')+'</div><div style="font-size:9px;color:var(--text-secondary);">项目</div></div>'+
+    '<div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">'+rating+'</div><div style="font-size:9px;color:var(--text-secondary);">评分</div></div>'+
+    '<div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">'+income+'</div><div style="font-size:9px;color:var(--text-secondary);">收入</div></div>'+
+    '<div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">'+t.exp+'</div><div style="font-size:9px;color:var(--text-secondary);">经验</div></div>'+
+    '</div>'+
+    '<div style="font-size:13px;font-weight:600;margin-bottom:8px;">擅长技能</div>'+
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">'+skills+'</div>'+
+    '<div style="font-size:13px;font-weight:600;margin-bottom:8px;">代表作品</div>'+
+    '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;">'+t.wk+'</div>'+
+    '<div style="display:flex;gap:8px;">'+
+    '<button class="btn-primary" style="flex:1;">联系TA</button>'+
+    '<button class="btn-secondary" style="flex:1;margin-top:0;" onclick="hideModal(\'talent-detail-m\')">关闭</button>'+
+    '</div>';
+  showModal('talent-detail-m');
 }
 
 function filterTalentM(el, role) {
