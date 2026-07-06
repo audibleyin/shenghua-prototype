@@ -362,6 +362,53 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   .community-layout { grid-template-columns: 1fr; }
   .community-sidebar { position: static; }
 }
+
+/* ===== TALENT DATABASE ===== */
+.talent-banner { background: linear-gradient(135deg, #1A202C 0%, #2B6CB0 100%); color: white; padding: 40px 32px; border-radius: var(--radius); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
+.talent-banner h2 { font-size: 28px; margin-bottom: 6px; }
+.talent-banner p { font-size: 14px; opacity: 0.8; }
+.talent-banner .btn-talent-register { padding: 12px 28px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.talent-banner .btn-talent-register:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+.talent-layout { display: grid; grid-template-columns: 240px 1fr; gap: 24px; }
+.talent-sidebar { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); height: fit-content; position: sticky; top: 88px; }
+.talent-sidebar h4 { font-size: 15px; margin-bottom: 12px; }
+.talent-sidebar .role-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; color: var(--text-secondary); }
+.talent-sidebar .role-item:hover, .talent-sidebar .role-item.active { background: #FFF5F5; color: var(--primary); font-weight: 500; }
+.talent-sidebar .role-item .role-icon { font-size: 18px; }
+.talent-sidebar .role-item .role-count { margin-left: auto; font-size: 11px; background: #EDF2F7; padding: 1px 8px; border-radius: 10px; }
+.talent-sidebar .role-sub { padding: 6px 12px 6px 38px; font-size: 12px; color: var(--text-secondary); cursor: pointer; transition: color 0.2s; }
+.talent-sidebar .role-sub:hover { color: var(--primary); }
+.talent-main { min-width: 0; }
+.talent-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+.talent-filters select { padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; }
+.talent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.talent-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 2px solid transparent; }
+.talent-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.talent-card .tc-cover { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 44px; position: relative; }
+.talent-card .tc-cover .tc-level { position: absolute; top: 10px; right: 10px; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; color: white; }
+.talent-card .tc-cover .tc-verify { position: absolute; top: 10px; left: 10px; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(255,255,255,0.9); color: var(--success); }
+.talent-card .tc-body { padding: 14px 16px; }
+.talent-card .tc-body h4 { font-size: 16px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.talent-card .tc-body .tc-role { font-size: 13px; color: var(--primary); font-weight: 500; margin-bottom: 6px; }
+.talent-card .tc-body .tc-meta { display: flex; gap: 12px; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+.talent-card .tc-body .tc-skills { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+.talent-card .tc-body .tc-skill { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: #EDF2F7; color: var(--text-secondary); }
+.talent-card .tc-body .tc-works { font-size: 12px; color: var(--text-secondary); }
+.talent-card .tc-footer { padding: 10px 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.talent-card .tc-footer .tc-loc { font-size: 12px; color: var(--text-secondary); }
+.talent-card .tc-footer .btn-contact { padding: 5px 14px; border-radius: 6px; border: none; background: var(--primary); color: white; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+.talent-card .tc-footer .btn-contact:hover { background: var(--primary-dark); }
+
+@media (max-width: 1024px) {
+  .talent-layout { grid-template-columns: 1fr; }
+  .talent-sidebar { position: static; }
+  .talent-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .talent-grid { grid-template-columns: 1fr; }
+  .talent-banner { flex-direction: column; gap: 16px; text-align: center; }
+}
 </style>
 </head>
 <body>
@@ -376,6 +423,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
     <a onclick="showPage('home')" class="active" id="nav-home">首页</a>
     <a onclick="showPage('orders')" id="nav-orders">接单大厅</a>
     <a onclick="showPage('plaza')" id="nav-plaza">创作广场</a>
+    <a onclick="showPage('talent')" id="nav-talent">人才库</a>
     <a onclick="showPage('assets')" id="nav-assets">资产库</a>
     <a onclick="showPage('training')" id="nav-training">培训学院</a>
     <a onclick="showPage('levels')" id="nav-levels">等级体系</a>
@@ -501,6 +549,44 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
           <li>导师分成权益</li>
           <li>佣金 5%</li>
         </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="background: linear-gradient(135deg, #EBF8FF 0%, #F0FFF4 100%); margin: 0; padding: 60px 24px;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+        <div>
+          <h2 style="font-size:32px;">🧑‍💼 AI剧人才信息库</h2>
+          <p style="color:var(--text-secondary);font-size:15px;margin-top:4px;">对标真人剧「剧查查」· AI剧首个专业人才分类库 — 行业从业者互相找、作品展示、项目撮合</p>
+        </div>
+        <button class="btn-register" style="padding:12px 32px;font-size:15px;" onclick="showModal('talent-register')">+ 免费登记</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:12px;">
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="font-size:32px;margin-bottom:6px;">🎬</div><div style="font-size:14px;font-weight:600;">导演</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">328人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="font-size:32px;margin-bottom:6px;">📋</div><div style="font-size:14px;font-weight:600;">制作人</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">215人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="font-size:32px;margin-bottom:6px;">✍️</div><div style="font-size:14px;font-weight:600;">编剧</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">567人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;border:2px solid var(--primary);" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="font-size:32px;margin-bottom:6px;">🤖</div><div style="font-size:14px;font-weight:600;">生成师</div><div style="font-size:11px;color:var(--primary);margin-top:2px;">1,892人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="font-size:32px;margin-bottom:6px;">✂️</div><div style="font-size:14px;font-weight:600;">后期剪辑</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">445人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="font-size:32px;margin-bottom:6px;">🎨</div><div style="font-size:14px;font-weight:600;">美术</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">678人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="font-size:32px;margin-bottom:6px;">📐</div><div style="font-size:14px;font-weight:600;">分镜师</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">389人</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:24px;">
+        <button style="padding:12px 40px;border-radius:8px;border:2px solid var(--primary);background:white;color:var(--primary);font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;" onclick="showPage('talent')" onmouseover="this.style.background='var(--primary)';this.style.color='white'" onmouseout="this.style.background='white';this.style.color='var(--primary)'">浏览全部人才 →</button>
       </div>
     </div>
   </div>
@@ -669,6 +755,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
         <h5>创作者</h5>
         <a href="#" onclick="showPage('training')">培训学院</a>
         <a href="#" onclick="showPage('orders')">接单大厅</a>
+        <a href="#" onclick="showPage('talent')">人才库</a>
         <a href="#" onclick="showPage('levels')">等级体系</a>
         <a href="#" onclick="showPage('assets')">资产库</a>
         <a href="#" onclick="showPage('community')">生花社区</a>
@@ -1666,6 +1753,217 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   </div>
 </div>
 
+<!-- ============================= -->
+<!-- PAGE: TALENT DATABASE        -->
+<!-- ============================= -->
+<div class="page" id="page-talent">
+  <div class="container" style="padding-top:24px;">
+    <div class="talent-banner">
+      <div>
+        <h2>🧑‍💼 AI剧人才信息库</h2>
+        <p>对标真人剧「剧查查」· AI剧首个专业人才分类库 — 行业从业者互相找、作品展示、项目撮合</p>
+      </div>
+      <button class="btn-talent-register" onclick="showModal('talent-register')">+ 免费登记</button>
+    </div>
+
+    <div class="talent-layout">
+      <!-- Sidebar: 角色分类 -->
+      <div class="talent-sidebar">
+        <h4>🎭 专业角色分类</h4>
+        <div class="role-item active" onclick="filterTalent(this,'all')"><span class="role-icon">👥</span>全部人才<span class="role-count">4,514</span></div>
+        <div class="role-item" onclick="filterTalent(this,'director')"><span class="role-icon">🎬</span>导演<span class="role-count">328</span></div>
+        <div class="role-item" onclick="filterTalent(this,'producer')"><span class="role-icon">📋</span>制作人<span class="role-count">215</span></div>
+        <div class="role-item" onclick="filterTalent(this,'writer')"><span class="role-icon">✍️</span>编剧<span class="role-count">567</span></div>
+        <div class="role-item" onclick="filterTalent(this,'generator')"><span class="role-icon">🤖</span>生成师<span class="role-count">1,892</span></div>
+        <div class="role-item" onclick="filterTalent(this,'editor')"><span class="role-icon">✂️</span>后期剪辑<span class="role-count">445</span></div>
+        <div class="role-item" onclick="filterTalent(this,'art')"><span class="role-icon">🎨</span>美术<span class="role-count">678</span></div>
+        <div class="role-sub" onclick="filterTalent(this,'art-char')">└ 角色设计</div>
+        <div class="role-sub" onclick="filterTalent(this,'art-scene')">└ 场景设计</div>
+        <div class="role-sub" onclick="filterTalent(this,'art-concept')">└ 概念美术</div>
+        <div class="role-item" onclick="filterTalent(this,'storyboard')"><span class="role-icon">📐</span>分镜师<span class="role-count">389</span></div>
+        <div class="role-sub" onclick="filterTalent(this,'sb-script')">└ 分镜脚本</div>
+        <div class="role-sub" onclick="filterTalent(this,'sb-camera')">└ 运镜设计</div>
+        <div class="role-sub" onclick="filterTalent(this,'sb-dynamic')">└ 动态分镜</div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+          <h4 style="margin-bottom:12px;">💡 为什么登记?</h4>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.8;">
+            <div style="padding:4px 0;">✅ 行业内互相发现</div>
+            <div style="padding:4px 0;">✅ 作品集永久展示</div>
+            <div style="padding:4px 0;">✅ 平台项目优先撮合</div>
+            <div style="padding:4px 0;">✅ 接单赚钱机会</div>
+            <div style="padding:4px 0;">✅ 个人品牌建设</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main: 人才列表 -->
+      <div class="talent-main">
+        <div class="talent-filters">
+          <span class="filter-chip active">全部</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">已认证</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">有作品</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">可接单</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">大学生</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">工作室</span>
+          <select style="margin-left:auto;">
+            <option>排序: 综合推荐</option><option>作品最多</option><option>等级最高</option><option>最近活跃</option>
+          </select>
+        </div>
+
+        <div class="talent-grid">
+          <!-- 导演 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#E53E3E,#DD6B20);">🎬
+              <div class="tc-verify">✓ 已认证</div>
+              <div class="tc-level" style="background:var(--l4);">L4 资深</div>
+            </div>
+            <div class="tc-body">
+              <h4>陈导 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
+              <div class="tc-role">🎬 导演</div>
+              <div class="tc-meta"><span>📍 上海</span><span>📈 从业4年</span></div>
+              <div class="tc-skills"><span class="tc-skill">古风</span><span class="tc-skill">科幻</span><span class="tc-skill">品牌定制</span></div>
+              <div class="tc-works">代表作品：《龙吟九天》《大唐妖闻录》</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 12集 作品32部</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+
+          <!-- 制作人 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#4299E1,#3182CE);">📋
+              <div class="tc-verify">✓ 已认证</div>
+              <div class="tc-level" style="background:var(--l3);">L3 精英</div>
+            </div>
+            <div class="tc-body">
+              <h4>林制片 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 女</span></h4>
+              <div class="tc-role">📋 制作人</div>
+              <div class="tc-meta"><span>📍 杭州</span><span>📈 从业3年</span></div>
+              <div class="tc-skills"><span class="tc-skill">项目管理</span><span class="tc-skill">预算控制</span><span class="tc-skill">团队搭建</span></div>
+              <div class="tc-works">代表项目：红果分账系列x3、品牌定制x8</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 管理26个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+
+          <!-- 编剧 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#9F7AEA,#6B46C1);">✍️
+              <div class="tc-verify">✓ 已认证</div>
+              <div class="tc-level" style="background:var(--l3);">L3 精英</div>
+            </div>
+            <div class="tc-body">
+              <h4>剧本炼金师 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
+              <div class="tc-role">✍️ 编剧</div>
+              <div class="tc-meta"><span>📍 成都</span><span>📈 从业3年</span></div>
+              <div class="tc-skills"><span class="tc-skill">玄幻</span><span class="tc-skill">甜宠</span><span class="tc-skill">悬疑</span></div>
+              <div class="tc-works">代表作品：《星河彼岸》《深夜档案》</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 完成45个剧本</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+
+          <!-- 生成师 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#38B2AC,#2C7A7B);">🤖
+              <div class="tc-verify">✓ 已认证</div>
+              <div class="tc-level" style="background:var(--l3);">L3 精英</div>
+            </div>
+            <div class="tc-body">
+              <h4>墨染青山 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 女</span></h4>
+              <div class="tc-role">🤖 生成师 · 角色一致性</div>
+              <div class="tc-meta"><span>📍 北京</span><span>📈 从业2年</span></div>
+              <div class="tc-skills"><span class="tc-skill">Seedance</span><span class="tc-skill">可灵</span><span class="tc-skill">Midjourney</span></div>
+              <div class="tc-works">代表作品：《龙吟九天》《大唐妖闻录》</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 完成47个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+
+          <!-- 生成师-大学生 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#48BB78,#38A169);">🤖
+              <div class="tc-level" style="background:var(--l1);">L1 新星</div>
+            </div>
+            <div class="tc-body">
+              <h4>小林同学 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
+              <div class="tc-role">🤖 生成师 · 大学生</div>
+              <div class="tc-meta"><span>📍 广州</span><span>🎓 大三在读</span></div>
+              <div class="tc-skills"><span class="tc-skill">ComfyUI</span><span class="tc-skill">Stable Diffusion</span></div>
+              <div class="tc-works">作品：《校园爱情AI版》3集样片</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 完成3个作品</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+
+          <!-- 后期剪辑 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#ED8936,#DD6B20);">✂️
+              <div class="tc-verify">✓ 已认证</div>
+              <div class="tc-level" style="background:var(--l2);">L2 新锐</div>
+            </div>
+            <div class="tc-body">
+              <h4>剪辑老王 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
+              <div class="tc-role">✂️ 后期剪辑 · 调色</div>
+              <div class="tc-meta"><span>📍 深圳</span><span>📈 从业2年</span></div>
+              <div class="tc-skills"><span class="tc-skill">Premiere</span><span class="tc-skill">DaVinci</span><span class="tc-skill">AE</span></div>
+              <div class="tc-works">代表项目：品牌定制x12、分账漫剧x5</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 完成18个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+
+          <!-- 美术-角色设计 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#f093fb,#f5576c);">🎨
+              <div class="tc-verify">✓ 已认证</div>
+              <div class="tc-level" style="background:var(--l3);">L3 精英</div>
+            </div>
+            <div class="tc-body">
+              <h4>花间词 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 女</span></h4>
+              <div class="tc-role">🎨 美术 · 角色设计</div>
+              <div class="tc-meta"><span>📍 杭州</span><span>📈 从业4年</span></div>
+              <div class="tc-skills"><span class="tc-skill">角色立绘</span><span class="tc-skill">服装设计</span><span class="tc-skill">表情包</span></div>
+              <div class="tc-works">代表作品：《花间令》《总裁的替身新娘》</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 设计68个角色</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+
+          <!-- 美术-场景设计 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">🎨
+              <div class="tc-level" style="background:var(--l2);">L2 新锐</div>
+            </div>
+            <div class="tc-body">
+              <h4>梦境画家 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 女</span></h4>
+              <div class="tc-role">🎨 美术 · 场景设计</div>
+              <div class="tc-meta"><span>📍 西安</span><span>📈 从业1年</span></div>
+              <div class="tc-skills"><span class="tc-skill">场景绘制</span><span class="tc-skill">氛围渲染</span></div>
+              <div class="tc-works">作品：《马戏团奇遇记》《樱花树下》</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 完成8个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+
+          <!-- 分镜师-运镜设计 -->
+          <div class="talent-card" onclick="showModal('talent-detail')">
+            <div class="tc-cover" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">📐
+              <div class="tc-verify">✓ 已认证</div>
+              <div class="tc-level" style="background:var(--l2);">L2 新锐</div>
+            </div>
+            <div class="tc-body">
+              <h4>闪电侠 <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· 男</span></h4>
+              <div class="tc-role">📐 分镜师 · 运镜设计</div>
+              <div class="tc-meta"><span>📍 武汉</span><span>📈 从业2年</span></div>
+              <div class="tc-skills"><span class="tc-skill">运镜设计</span><span class="tc-skill">节奏控制</span></div>
+              <div class="tc-works">作品：品牌定制x9、分账漫剧x4</div>
+            </div>
+            <div class="tc-footer"><span class="tc-loc">👥 完成14个项目</span><button class="btn-contact" onclick="event.stopPropagation();showModal('talent-detail')">联系</button></div>
+          </div>
+        </div>
+
+        <!-- 加载更多 -->
+        <div style="text-align:center;padding:32px 0;">
+          <button style="padding:12px 48px;border-radius:8px;border:1px solid var(--border);background:white;font-size:14px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='var(--primary)';this.style.color='white';this.style.borderColor='var(--primary)'" onmouseout="this.style.background='white';this.style.color='var(--text)';this.style.borderColor='var(--border)'">加载更多人才</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== MODALS ===== -->
 <div class="modal-overlay" id="modal-login">
   <div class="modal">
@@ -1899,6 +2197,133 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   </div>
 </div>
 
+<!-- 人才详情弹窗 -->
+<div class="modal-overlay" id="modal-talent-detail">
+  <div class="modal" style="max-width:680px;">
+    <button class="close-btn" onclick="hideModal('talent-detail')">✕</button>
+    <div style="display:flex;gap:20px;margin-bottom:20px;">
+      <div style="width:100px;height:100px;border-radius:16px;background:linear-gradient(135deg,#38B2AC,#2C7A7B);display:flex;align-items:center;justify-content:center;font-size:48px;flex-shrink:0;">🤖</div>
+      <div style="flex:1;">
+        <h3 style="margin-bottom:6px;">墨染青山 <span style="font-size:14px;font-weight:400;color:var(--text-secondary);">· 女 · 北京</span></h3>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+          <span style="padding:2px 10px;border-radius:4px;background:var(--l3);color:white;font-size:12px;font-weight:600;">L3 精英</span>
+          <span style="padding:2px 10px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:12px;font-weight:600;">✓ 已认证</span>
+          <span style="font-size:13px;color:var(--primary);font-weight:500;">🤖 生成师 · 角色一致性</span>
+        </div>
+        <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">专注AI漫剧生成2年，擅长角色一致性控制与场景控制。使用Seedance/可灵等工具，角色一致性可达98%。已参与47个商业项目，好评率92%。</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+      <div style="background:#F7FAFC;padding:14px;border-radius:8px;text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary);">47</div><div style="font-size:11px;color:var(--text-secondary);">完成项目</div></div>
+      <div style="background:#F7FAFC;padding:14px;border-radius:8px;text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary);">4.8</div><div style="font-size:11px;color:var(--text-secondary);">平均评分</div></div>
+      <div style="background:#F7FAFC;padding:14px;border-radius:8px;text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary);">¥18.6万</div><div style="font-size:11px;color:var(--text-secondary);">累计收入</div></div>
+      <div style="background:#F7FAFC;padding:14px;border-radius:8px;text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary);">2年</div><div style="font-size:11px;color:var(--text-secondary);">从业经验</div></div>
+    </div>
+
+    <h4 style="margin-bottom:10px;">擅长技能</h4>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+      <span style="padding:4px 12px;border-radius:8px;background:#EDF2F7;font-size:13px;">Seedance 2.0</span>
+      <span style="padding:4px 12px;border-radius:8px;background:#EDF2F7;font-size:13px;">可灵 AI</span>
+      <span style="padding:4px 12px;border-radius:8px;background:#EDF2F7;font-size:13px;">Midjourney</span>
+      <span style="padding:4px 12px;border-radius:8px;background:#EDF2F7;font-size:13px;">角色一致性</span>
+      <span style="padding:4px 12px;border-radius:8px;background:#EDF2F7;font-size:13px;">古风</span>
+      <span style="padding:4px 12px;border-radius:8px;background:#EDF2F7;font-size:13px;">科幻</span>
+    </div>
+
+    <h4 style="margin-bottom:10px;">代表作品</h4>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;">
+      <div style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:32px;">🐉</div>
+      <div style="background:linear-gradient(135deg,#E53E3E,#DD6B20);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:32px;">🏯</div>
+      <div style="background:linear-gradient(135deg,#2c3e50,#3498db);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;font-size:32px;">🕵️</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;">《龙吟九天》3集样片 · 《大唐妖闻录》12集系列 · 《深夜档案》8集悬疑</div>
+
+    <div style="display:flex;gap:12px;">
+      <button class="btn-register" style="flex:1;padding:12px;font-size:15px;">联系TA</button>
+      <button style="flex:1;padding:12px;font-size:15px;border:1px solid var(--border);border-radius:6px;background:white;cursor:pointer;">邀请投标</button>
+    </div>
+  </div>
+</div>
+
+<!-- 人才登记弹窗 -->
+<div class="modal-overlay" id="modal-talent-register">
+  <div class="modal" style="max-width:640px;">
+    <button class="close-btn" onclick="hideModal('talent-register')">✕</button>
+    <h3>人才信息登记</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">免费登记你的专业信息与作品，让行业找到你。同时可参与平台项目撮合。</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label>姓名/昵称</label><input type="text" placeholder="你的姓名或昵称"></div>
+      <div class="form-group"><label>手机号</label><input type="text" placeholder="接收审核通知"></div>
+    </div>
+
+    <div class="form-group"><label>专业角色（选择你最擅长的）</label>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+        <div style="border:2px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="this.style.borderColor='var(--primary)';this.style.background='#FFF5F5'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">🎬<div style="font-size:11px;margin-top:2px;">导演</div></div>
+        <div style="border:2px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="this.style.borderColor='var(--primary)';this.style.background='#FFF5F5'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">📋<div style="font-size:11px;margin-top:2px;">制作人</div></div>
+        <div style="border:2px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="this.style.borderColor='var(--primary)';this.style.background='#FFF5F5'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">✍️<div style="font-size:11px;margin-top:2px;">编剧</div></div>
+        <div style="border:2px solid var(--primary);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;background:#FFF5F5;" onclick="this.style.borderColor='var(--border)';this.style.background='white'" onmouseout="this.style.borderColor='var(--primary)';this.style.background='#FFF5F5'">🤖<div style="font-size:11px;margin-top:2px;">生成师</div></div>
+        <div style="border:2px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="this.style.borderColor='var(--primary)';this.style.background='#FFF5F5'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">✂️<div style="font-size:11px;margin-top:2px;">后期剪辑</div></div>
+        <div style="border:2px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="this.style.borderColor='var(--primary)';this.style.background='#FFF5F5'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">🎨<div style="font-size:11px;margin-top:2px;">美术</div></div>
+        <div style="border:2px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="this.style.borderColor='var(--primary)';this.style.background='#FFF5F5'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">📐<div style="font-size:11px;margin-top:2px;">分镜师</div></div>
+        <div style="border:2px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="this.style.borderColor='var(--primary)';this.style.background='#FFF5F5'" onmouseout="this.style.borderColor='var(--border)';this.style.background='white'">➕<div style="font-size:11px;margin-top:2px;">其他</div></div>
+      </div>
+    </div>
+
+    <div class="form-group"><label>细分方向（选择角色后显示）</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span class="filter-chip" onclick="this.classList.toggle('active')">角色一致性</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">场景生成</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">运镜生成</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">角色设计</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">场景设计</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">分镜脚本</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">运镜设计</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label>所在城市</label><input type="text" placeholder="如：北京"></div>
+      <div class="form-group"><label>从业经验</label><select><option>在校学生</option><option>1年以内</option><option>1-3年</option><option>3-5年</option><option>5年以上</option></select></div>
+    </div>
+
+    <div class="form-group"><label>使用工具（可多选）</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span class="filter-chip" onclick="this.classList.toggle('active')">Seedance</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">可灵 AI</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">Midjourney</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">ComfyUI</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">Stable Diffusion</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">Premiere</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">DaVinci</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">AE</span>
+      </div>
+    </div>
+
+    <div class="form-group"><label>代表作品（至少1个）</label>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div style="border:2px dashed var(--primary);border-radius:10px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#FFF5F5;"><div style="font-size:24px;">+</div><div style="font-size:11px;color:var(--primary);">上传作品</div></div>
+        <div style="border:2px dashed var(--border);border-radius:10px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;"><div style="font-size:24px;color:var(--text-secondary);">+</div><div style="font-size:11px;color:var(--text-secondary);">更多作品</div></div>
+        <div style="border:2px dashed var(--border);border-radius:10px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;"><div style="font-size:24px;color:var(--text-secondary);">+</div><div style="font-size:11px;color:var(--text-secondary);">更多作品</div></div>
+      </div>
+      <p style="font-size:11px;color:var(--text-secondary);margin-top:6px;">支持：视频链接（抖音/B站/快手）、图片、PDF作品集</p>
+    </div>
+
+    <div class="form-group"><label>个人简介</label><textarea rows="3" placeholder="简要介绍你的创作经历、擅长风格、代表项目..."></textarea></div>
+
+    <div style="background:#EBF8FF;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;line-height:1.7;">
+      <strong>💡 登记说明：</strong><br>
+      · 免费登记，信息展示在人才库供行业查阅<br>
+      · 上传作品即可建立个人作品集<br>
+      · 平台将根据你的角色和作品优先撮合项目<br>
+      · 后续可升级为认证创作者，开通接单权限
+    </div>
+
+    <button class="btn-register" style="width:100%;padding:14px;font-size:16px;">提交登记</button>
+  </div>
+</div>
+
 <!-- ===== JAVASCRIPT ===== -->
 <script>
 function showPage(id) {
@@ -1926,6 +2351,11 @@ function switchPlazaTab(el) {
 function filterAssets(el) {
   document.querySelectorAll('.asset-cat').forEach(c => c.style.borderColor = 'transparent');
   el.style.borderColor = 'var(--primary)';
+}
+
+function filterTalent(el, role) {
+  document.querySelectorAll('.talent-sidebar .role-item').forEach(r => r.classList.remove('active'));
+  el.classList.add('active');
 }
 
 // Close modal on overlay click

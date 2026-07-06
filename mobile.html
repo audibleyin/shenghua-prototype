@@ -262,6 +262,31 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 /* Notification dot */
 .notif-dot { width:8px; height:8px; border-radius:50%; background:var(--primary); position:absolute; top:2px; right:2px; }
 
+/* ===== TALENT - mobile ===== */
+.talent-header-m { margin:12px 16px; background:linear-gradient(135deg,#1A202C,#2B6CB0); border-radius:16px; padding:20px; color:white; display:flex; justify-content:space-between; align-items:center; }
+.talent-header-m h2 { font-size:18px; font-weight:700; margin-bottom:4px; }
+.talent-header-m p { font-size:11px; opacity:0.8; }
+.talent-header-m .btn-reg-m { padding:8px 16px; border-radius:16px; border:none; background:var(--primary); color:white; font-size:12px; font-weight:600; white-space:nowrap; cursor:pointer; }
+.talent-chips-m { display:flex; gap:8px; padding:0 16px 12px; overflow-x:auto; background:var(--card); }
+.talent-chips-m::-webkit-scrollbar { display:none; }
+.talent-chip-m { min-width:64px; padding:10px 6px; background:var(--card); border-radius:12px; text-align:center; cursor:pointer; flex-shrink:0; border:2px solid transparent; transition:all 0.2s; }
+.talent-chip-m.active { border-color:var(--primary); background:var(--primary-bg); }
+.talent-chip-m .tc-icon-m { font-size:22px; margin-bottom:2px; }
+.talent-chip-m .tc-label-m { font-size:10px; color:var(--text-secondary); }
+.talent-chip-m .tc-count-m { font-size:9px; color:var(--text-secondary); margin-top:1px; }
+.talent-grid-m { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:0 16px 16px; }
+.talent-card-m { background:var(--card); border-radius:14px; overflow:hidden; cursor:pointer; transition:all 0.2s; }
+.talent-card-m:active { transform:scale(0.97); }
+.talent-card-m .tcm-cover { height:80px; display:flex; align-items:center; justify-content:center; font-size:30px; position:relative; }
+.talent-card-m .tcm-cover .tcm-lvl { position:absolute; top:6px; right:6px; padding:1px 6px; border-radius:4px; font-size:9px; font-weight:600; color:white; }
+.talent-card-m .tcm-cover .tcm-vrf { position:absolute; top:6px; left:6px; padding:1px 6px; border-radius:4px; font-size:9px; font-weight:600; background:rgba(255,255,255,0.9); color:var(--success); }
+.talent-card-m .tcm-body { padding:10px; }
+.talent-card-m .tcm-body h5 { font-size:13px; font-weight:600; margin-bottom:2px; }
+.talent-card-m .tcm-body .tcm-role { font-size:11px; color:var(--primary); font-weight:500; margin-bottom:4px; }
+.talent-card-m .tcm-body .tcm-meta { display:flex; gap:8px; font-size:10px; color:var(--text-secondary); margin-bottom:4px; }
+.talent-card-m .tcm-body .tcm-skills { display:flex; gap:3px; flex-wrap:wrap; }
+.talent-card-m .tcm-body .tcm-skill { font-size:9px; padding:1px 5px; border-radius:3px; background:var(--bg); color:var(--text-secondary); }
+
 /* ===== LABEL OUTSIDE PHONE ===== */
 .page-label { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); color:white; padding:8px 20px; border-radius:20px; font-size:13px; backdrop-filter:blur(10px); }
 
@@ -337,6 +362,9 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         </div>
         <div class="quick-action" onclick="switchTab('community')">
           <div class="qa-icon">💬</div><div class="qa-label">社区</div>
+        </div>
+        <div class="quick-action" onclick="showSubPage('talent')">
+          <div class="qa-icon">🧑‍💼</div><div class="qa-label">人才库</div>
         </div>
         <div class="quick-action" onclick="showSubPage('client')">
           <div class="qa-icon">💼</div><div class="qa-label">需求方</div>
@@ -922,6 +950,103 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       </div>
     </div>
 
+    <!-- ======================== -->
+    <!-- SUB-PAGE: TALENT         -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-talent">
+      <div class="nav-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
+          <h1 style="font-size:20px;">人才库</h1>
+        </div>
+        <div class="header-actions"><div class="header-icon">🔍</div></div>
+      </div>
+
+      <div class="talent-header-m">
+        <div>
+          <h2>🧑‍💼 AI剧人才信息库</h2>
+          <p>对标「剧查查」· 行业人互相找</p>
+        </div>
+        <button class="btn-reg-m" onclick="showModal('talent-register-m')">+ 登记</button>
+      </div>
+
+      <div class="talent-chips-m">
+        <div class="talent-chip-m active"><div class="tc-icon-m">👥</div><div class="tc-label-m">全部</div><div class="tc-count-m">4514</div></div>
+        <div class="talent-chip-m"><div class="tc-icon-m">🎬</div><div class="tc-label-m">导演</div><div class="tc-count-m">328</div></div>
+        <div class="talent-chip-m"><div class="tc-icon-m">📋</div><div class="tc-label-m">制作人</div><div class="tc-count-m">215</div></div>
+        <div class="talent-chip-m"><div class="tc-icon-m">✍️</div><div class="tc-label-m">编剧</div><div class="tc-count-m">567</div></div>
+        <div class="talent-chip-m"><div class="tc-icon-m">🤖</div><div class="tc-label-m">生成师</div><div class="tc-count-m">1892</div></div>
+        <div class="talent-chip-m"><div class="tc-icon-m">✂️</div><div class="tc-label-m">后期</div><div class="tc-count-m">445</div></div>
+        <div class="talent-chip-m"><div class="tc-icon-m">🎨</div><div class="tc-label-m">美术</div><div class="tc-count-m">678</div></div>
+        <div class="talent-chip-m"><div class="tc-icon-m">📐</div><div class="tc-label-m">分镜师</div><div class="tc-count-m">389</div></div>
+      </div>
+
+      <div class="m-filters">
+        <span class="m-filter-chip active">全部</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">已认证</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">有作品</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">可接单</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">大学生</span>
+      </div>
+
+      <div class="talent-grid-m">
+        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
+          <div class="tcm-cover" style="background:linear-gradient(135deg,#38B2AC,#2C7A7B);">🤖<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l3);">L3</div></div>
+          <div class="tcm-body">
+            <h5>墨染青山</h5>
+            <div class="tcm-role">🤖 生成师</div>
+            <div class="tcm-meta"><span>📍北京</span><span>📈2年</span></div>
+            <div class="tcm-skills"><span class="tcm-skill">Seedance</span><span class="tcm-skill">古风</span></div>
+          </div>
+        </div>
+        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
+          <div class="tcm-cover" style="background:linear-gradient(135deg,#E53E3E,#DD6B20);">🎬<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l4);">L4</div></div>
+          <div class="tcm-body">
+            <h5>陈导</h5>
+            <div class="tcm-role">🎬 导演</div>
+            <div class="tcm-meta"><span>📍上海</span><span>📈4年</span></div>
+            <div class="tcm-skills"><span class="tcm-skill">古风</span><span class="tcm-skill">科幻</span></div>
+          </div>
+        </div>
+        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
+          <div class="tcm-cover" style="background:linear-gradient(135deg,#9F7AEA,#6B46C1);">✍️<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l3);">L3</div></div>
+          <div class="tcm-body">
+            <h5>剧本炼金师</h5>
+            <div class="tcm-role">✍️ 编剧</div>
+            <div class="tcm-meta"><span>📍成都</span><span>📈3年</span></div>
+            <div class="tcm-skills"><span class="tcm-skill">玄幻</span><span class="tcm-skill">悬疑</span></div>
+          </div>
+        </div>
+        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
+          <div class="tcm-cover" style="background:linear-gradient(135deg,#f093fb,#f5576c);">🎨<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l3);">L3</div></div>
+          <div class="tcm-body">
+            <h5>花间词</h5>
+            <div class="tcm-role">🎨 美术·角色设计</div>
+            <div class="tcm-meta"><span>📍杭州</span><span>📈4年</span></div>
+            <div class="tcm-skills"><span class="tcm-skill">立绘</span><span class="tcm-skill">服装</span></div>
+          </div>
+        </div>
+        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
+          <div class="tcm-cover" style="background:linear-gradient(135deg,#48BB78,#38A169);">🤖<div class="tcm-lvl" style="background:var(--l1);">L1</div></div>
+          <div class="tcm-body">
+            <h5>小林同学</h5>
+            <div class="tcm-role">🤖 生成师·大学生</div>
+            <div class="tcm-meta"><span>📍广州</span><span>🎓大三</span></div>
+            <div class="tcm-skills"><span class="tcm-skill">ComfyUI</span><span class="tcm-skill">SD</span></div>
+          </div>
+        </div>
+        <div class="talent-card-m" onclick="showModal('talent-detail-m')">
+          <div class="tcm-cover" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">📐<div class="tcm-vrf">✓</div><div class="tcm-lvl" style="background:var(--l2);">L2</div></div>
+          <div class="tcm-body">
+            <h5>闪电侠</h5>
+            <div class="tcm-role">📐 分镜师·运镜</div>
+            <div class="tcm-meta"><span>📍武汉</span><span>📈2年</span></div>
+            <div class="tcm-skills"><span class="tcm-skill">运镜</span><span class="tcm-skill">节奏</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /screen-container -->
 
   <!-- Tab Bar -->
@@ -1060,13 +1185,81 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     </div>
   </div>
 
+  <!-- Talent Detail Modal -->
+  <div class="m-modal-overlay" id="modal-talent-detail-m">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <div style="display:flex;gap:12px;margin-bottom:16px;">
+        <div style="width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#38B2AC,#2C7A7B);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">🤖</div>
+        <div style="flex:1;">
+          <h3 style="font-size:18px;margin-bottom:4px;">墨染青山</h3>
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;">
+            <span style="padding:1px 8px;border-radius:4px;background:var(--l3);color:white;font-size:10px;font-weight:600;">L3 精英</span>
+            <span style="padding:1px 8px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:10px;font-weight:600;">✓ 已认证</span>
+          </div>
+          <div style="font-size:12px;color:var(--primary);font-weight:500;">🤖 生成师 · 角色一致性</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px;">专注AI漫剧生成2年，擅长角色一致性控制与场景控制。角色一致性可达98%。已参与47个商业项目。</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
+        <div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">47</div><div style="font-size:9px;color:var(--text-secondary);">项目</div></div>
+        <div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">4.8</div><div style="font-size:9px;color:var(--text-secondary);">评分</div></div>
+        <div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">¥18.6w</div><div style="font-size:9px;color:var(--text-secondary);">收入</div></div>
+        <div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">2年</div><div style="font-size:9px;color:var(--text-secondary);">经验</div></div>
+      </div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;">擅长技能</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">Seedance</span>
+        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">可灵AI</span>
+        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">Midjourney</span>
+        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">角色一致性</span>
+        <span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">古风</span>
+      </div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;">代表作品</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px;">
+        <div style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);border-radius:8px;height:60px;display:flex;align-items:center;justify-content:center;font-size:24px;">🐉</div>
+        <div style="background:linear-gradient(135deg,#E53E3E,#DD6B20);border-radius:8px;height:60px;display:flex;align-items:center;justify-content:center;font-size:24px;">🏯</div>
+        <div style="background:linear-gradient(135deg,#2c3e50,#3498db);border-radius:8px;height:60px;display:flex;align-items:center;justify-content:center;font-size:24px;">🕵️</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-primary" style="flex:1;">联系TA</button>
+        <button class="btn-secondary" style="flex:1;margin-top:0;" onclick="hideModal('talent-detail-m')">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Talent Register Modal -->
+  <div class="m-modal-overlay" id="modal-talent-register-m">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>人才信息登记</h3>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">免费登记，让行业找到你</p>
+      <div class="form-group"><label>姓名/昵称</label><input type="text" placeholder="你的姓名或昵称"></div>
+      <div class="form-group"><label>手机号</label><input type="tel" placeholder="接收审核通知"></div>
+      <div class="form-group"><label>专业角色</label>
+        <select><option>🎬 导演</option><option>📋 制作人</option><option>✍️ 编剧</option><option>🤖 生成师</option><option>✂️ 后期剪辑</option><option>🎨 美术</option><option>📐 分镜师</option></select>
+      </div>
+      <div class="form-group"><label>从业经验</label><select><option>在校学生</option><option>1年以内</option><option>1-3年</option><option>3-5年</option><option>5年以上</option></select></div>
+      <div class="form-group"><label>所在城市</label><input type="text" placeholder="如：北京"></div>
+      <div class="form-group"><label>代表作品（至少1个）</label>
+        <div style="display:flex;gap:8px;">
+          <div style="width:80px;height:80px;border:2px dashed var(--primary);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--primary-bg);"><span style="font-size:22px;color:var(--primary);">+</span><span style="font-size:10px;color:var(--primary);">上传</span></div>
+          <div style="width:80px;height:80px;border:2px dashed var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-size:22px;color:var(--text-secondary);">+</span><span style="font-size:10px;color:var(--text-secondary);">更多</span></div>
+        </div>
+      </div>
+      <div class="form-group"><label>个人简介</label><textarea rows="3" placeholder="创作经历、擅长风格..."></textarea></div>
+      <button class="btn-primary">提交登记</button>
+      <button class="btn-secondary" onclick="hideModal('talent-register-m')">取消</button>
+    </div>
+  </div>
+
 </div><!-- /phone-frame -->
 
 <div class="page-label">生花 App · 手机端交互原型 — 点击各Tab和按钮体验</div>
 
 <script>
 const tabs = ['home','orders','plaza','community','profile'];
-const subPages = ['assets','training','levels','activities','client'];
+const subPages = ['assets','training','levels','activities','client','talent'];
 
 function switchTab(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));

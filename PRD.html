@@ -143,6 +143,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
     <li class="indent">4.8 需求方服务</li>
     <li class="indent">4.9 创作者中心</li>
     <li class="indent">4.10 平台活动专区</li>
+    <li class="indent">4.11 人才信息库（人才发现引擎）</li>
     <li><span class="num">五</span>核心业务流程</li>
     <li class="indent">5.1 创作者入驻流程（双通道）</li>
     <li class="indent">5.2 项目交易全流程</li>
@@ -226,6 +227,9 @@ tr:nth-child(even) td { background:#F7FAFC; }
       <div class="arch-box orange" style="flex:2;">资产库<small>数字资产引擎</small></div>
       <div class="arch-box orange" style="flex:2;">培训学院<small>人才孵化引擎</small></div>
       <div class="arch-box orange" style="flex:2;">社区<small>用户运营引擎</small></div>
+    </div>
+    <div class="arch-row" style="margin-top:10px;">
+      <div class="arch-box teal" style="flex:3;">人才信息库<small>人才发现引擎 · 对标真人剧「剧查查」</small></div>
     </div>
   </div>
 
@@ -341,6 +345,23 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>故事投稿者</td><td>普通人，有好故事但不会制作</td><td>故事被选中、获得版权收益</td><td>投稿 → 生成剧本/样片 → 被选中 → 获版权费</td></tr>
   <tr><td>资产上传者</td><td>演员/模特/设计师/摄影师</td><td>人脸/素材资产化、被动收入</td><td>上传 → 审核入库 → 被使用 → 获使用费</td></tr>
 </table>
+
+<h4 class="sub">专业角色细分分类（人才信息库核心）</h4>
+<p>对标真人剧「剧查查」，AI剧领域尚无专业人才分类库。平台通过以下7大专业角色分类，将AI行业从业者与大学生全部纳入人才信息库，前期建立信息库积累互动量，后期在此基础上实现交易撮合。</p>
+<table>
+  <tr><th>专业角色</th><th>核心职能</th><th>细分方向</th><th>覆盖人群</th></tr>
+  <tr><td><strong>🎬 导演</strong></td><td>整体创意把控、叙事节奏、品质管理</td><td>—</td><td>行业从业者、资深创作者</td></tr>
+  <tr><td><strong>📋 制作人</strong></td><td>项目管理、预算控制、团队搭建、进度追踪</td><td>—</td><td>行业从业者、工作室</td></tr>
+  <tr><td><strong>✍️ 编剧</strong></td><td>故事创作、剧本编写、分集大纲</td><td>—</td><td>小说作者、编剧、大学生</td></tr>
+  <tr><td><strong>🤖 生成师</strong></td><td>AI图像/视频生成、角色一致性、场景控制</td><td>角色一致性、场景生成、运镜生成</td><td>AI从业者、大学生（最大人群）</td></tr>
+  <tr><td><strong>✂️ 后期剪辑</strong></td><td>视频剪辑、调色、音效、字幕</td><td>—</td><td>剪辑师、后期从业者</td></tr>
+  <tr><td><strong>🎨 美术</strong></td><td>视觉设计、角色/场景设计、概念美术</td><td>角色设计、场景设计、概念美术</td><td>设计师、美术专业学生</td></tr>
+  <tr><td><strong>📐 分镜师</strong></td><td>分镜脚本、运镜设计、动态分镜</td><td>分镜脚本、运镜设计、动态分镜</td><td>分镜师、动画专业学生</td></tr>
+</table>
+
+<div class="info-box blue">
+  <strong>分类逻辑：</strong>以上7大角色覆盖AI漫剧完整制作流程（策划→编剧→分镜→生成→美术→后期），可涵盖所有接触AI的创作人群，包括行业从业者和大学生群体。生成师是AI特有的新角色，也是最大的人群类别。
+</div>
 
 <h3 class="section">3.3 权限矩阵</h3>
 <table>
@@ -616,6 +637,62 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>🅱️ B站</td><td>内容分发</td><td>待开放</td></tr>
   <tr><td>📕 小红书</td><td>内容种草</td><td>待开放</td></tr>
 </table>
+
+<h3 class="section">4.11 人才信息库（人才发现引擎）</h3>
+<h4 class="sub">功能定位</h4>
+<p>对标真人剧「剧查查」，建立AI剧领域首个专业人才分类信息库。前期以信息登记+作品展示为主，积累行业互动量；后期在信息库基础上实现项目撮合与交易。<strong>先有信息库，后有交易。</strong></p>
+
+<div class="info-box highlight">
+  <strong>核心策略：先建库，后交易</strong><br>
+  ① 前期目标：吸引AI行业从业者+大学生来登记，建立专业人才信息库<br>
+  ② 互动价值：行业人互相发现、作品展示、建立个人品牌<br>
+  ③ 后期变现：在信息库基础上撮合项目、对接需求方、实现交易闭环
+</div>
+
+<h4 class="sub">核心功能</h4>
+<table>
+  <tr><th>功能</th><th>说明</th><th>业务规则</th></tr>
+  <tr><td>人才登记</td><td>从业者免费登记专业信息+上传作品</td><td>选择专业角色→填写信息→上传作品→审核入库</td></tr>
+  <tr><td>分类浏览</td><td>按7大专业角色分类浏览人才</td><td>支持角色筛选、细分方向筛选、城市筛选</td></tr>
+  <tr><td>人才搜索</td><td>按技能/工具/作品/城市搜索</td><td>支持关键词搜索+多维度组合筛选</td></tr>
+  <tr><td>人才详情</td><td>展示个人信息、作品集、技能、等级</td><td>含联系方式（认证后可见）</td></tr>
+  <tr><td>作品展示</td><td>每位人才可展示代表作品</td><td>支持视频链接、图片、PDF作品集</td></tr>
+  <tr><td>项目撮合</td><td>需求方可直接邀请人才投标</td><td>后期功能，前期以信息展示为主</td></tr>
+</table>
+
+<h4 class="sub">人才登记流程</h4>
+<div class="flow-diagram">
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--primary);">点击「免费登记」</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">选择专业角色</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--info);">填写个人信息</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--info);">上传代表作品</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">平台审核</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">入库展示</div>
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
+    ↩️ 后续可升级为认证创作者 → 获得等级 → 开通接单权限 → 参与项目交易
+  </div>
+</div>
+
+<h4 class="sub">与现有模块的关系</h4>
+<table>
+  <tr><th>关联模块</th><th>关系</th></tr>
+  <tr><td>接单大厅</td><td>人才库中的人才可被需求方邀请投标，后期直接对接交易</td></tr>
+  <tr><td>培训学院</td><td>人才库登记后可升级为培训学员，获得等级认证后开通接单</td></tr>
+  <tr><td>创作广场</td><td>人才的作品可同步展示在创作广场，进行版权交易</td></tr>
+  <tr><td>资产库</td><td>人才上传的素材可资产化，实现持续分润</td></tr>
+  <tr><td>社区</td><td>人才库用户可参与社区互动，组队招募</td></tr>
+</table>
+
+<div class="info-box green">
+  <strong>差异化优势：</strong>真人剧有「剧查查」做人才信息库，但AI剧领域尚无类似产品。生花率先建立AI剧人才信息库，抢占行业第一认知，通过免费登记+作品展示快速积累用户，为后续交易撮合奠定基础。
+</div>
 
 <!-- ===== 五、核心业务流程 ===== -->
 <h2 class="chapter">五、核心业务流程</h2>
