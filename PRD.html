@@ -403,14 +403,15 @@ tr:nth-child(even) td { background:#F7FAFC; }
     <div class="flow-step" style="background:var(--secondary);">身份选择弹窗</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-branch">
-      <div class="flow-step" style="background:var(--primary);">🎬 老手 → 作品集提交 → 平台审核 → 定级入驻</div>
+      <div class="flow-step" style="background:var(--primary);">🎬 老手 → 人才库登记入库 → 后续升级认证 → 获得等级+接单</div>
       <div class="flow-step" style="background:var(--info);">🌱 新手 → 培训学院 → 选课报名 → 学习考核</div>
     </div>
   </div>
 </div>
 
 <div class="info-box highlight">
-  <strong>老手入驻审核维度：</strong>作品质量 40% · 技术能力 25% · 项目经验 20% · 持续能力 15%<br>
+  <strong>老手入驻路径（递进式）：</strong>有经验的从业者先在人才库轻量登记（1个作品即可入库展示），后续在人才详情页一键升级为认证创作者（提交≥2个作品 + 平台审核定级）。<br>
+  审核维度：作品质量 40% · 技术能力 25% · 项目经验 20% · 持续能力 15%<br>
   审核周期：1-3个工作日，通过后自动定级（L1-L5）并开通接单权限
 </div>
 
@@ -649,10 +650,19 @@ tr:nth-child(even) td { background:#F7FAFC; }
   ③ 后期变现：在信息库基础上撮合项目、对接需求方、实现交易闭环
 </div>
 
+<div class="info-box orange">
+  <strong>与「成为创作者」的关系：递进式设计，非并行入口</strong><br>
+  人才信息库登记是创作者入驻的第一步（轻量级入口），两者不是并行关系而是递进关系：<br>
+  · <strong>第一阶段 — 人才登记（轻量）</strong>：填写专业信息+上传1个作品 → 快速入库展示，建立个人品牌，无等级、无接单权限<br>
+  · <strong>第二阶段 — 认证升级（重量）</strong>：在人才库基础上提交≥2个作品 + 补充链接 → 平台审核定级 → 获得L1-L5等级 + 开通接单权限<br>
+  · 用户只需一个入口进入平台，先入库展示，再按需升级，避免重复登记与数据割裂
+</div>
+
 <h4 class="sub">核心功能</h4>
 <table>
   <tr><th>功能</th><th>说明</th><th>业务规则</th></tr>
-  <tr><td>人才登记</td><td>从业者免费登记专业信息+上传作品</td><td>选择专业角色→填写信息→上传作品→审核入库</td></tr>
+  <tr><td>人才登记</td><td>从业者免费登记专业信息+上传作品（1个起）</td><td>选择专业角色→填写信息→上传作品→快速入库展示，无需深度审核</td></tr>
+  <tr><td>认证升级</td><td>人才库用户提交更多作品（≥2个）升级为认证创作者</td><td>提交补充作品→平台审核定级→获得L1-L5等级→开通接单权限</td></tr>
   <tr><td>分类浏览</td><td>按7大专业角色分类浏览人才</td><td>支持角色筛选、细分方向筛选、城市筛选</td></tr>
   <tr><td>人才搜索</td><td>按技能/工具/作品/城市搜索</td><td>支持关键词搜索+多维度组合筛选</td></tr>
   <tr><td>人才详情</td><td>展示个人信息、作品集、技能、等级</td><td>含联系方式（认证后可见）</td></tr>
@@ -660,30 +670,36 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>项目撮合</td><td>需求方可直接邀请人才投标</td><td>后期功能，前期以信息展示为主</td></tr>
 </table>
 
-<h4 class="sub">人才登记流程</h4>
+<h4 class="sub">人才登记与认证升级流程</h4>
 <div class="flow-diagram">
+  <div class="arch-title">递进式路径：登记入库 → 认证升级 → 接单赚钱</div>
   <div class="flow-steps">
     <div class="flow-step" style="background:var(--primary);">点击「免费登记」</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-step" style="background:var(--secondary);">选择专业角色</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--info);">填写个人信息</div>
-    <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--info);">上传代表作品</div>
-    <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--accent);">平台审核</div>
+    <div class="flow-step" style="background:var(--info);">填写信息+上传1个作品</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-step" style="background:var(--success);">入库展示</div>
   </div>
   <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
-    ↩️ 后续可升级为认证创作者 → 获得等级 → 开通接单权限 → 参与项目交易
+    ↓ 后续可在人才详情页点击「升级为认证创作者」
+  </div>
+  <div class="flow-steps" style="margin-top:8px;">
+    <div class="flow-step" style="background:var(--accent);">提交≥2个作品+链接</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">平台审核定级（1-3工作日）</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--l3);">获得L1-L5等级</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--primary);">开通接单权限</div>
   </div>
 </div>
 
 <h4 class="sub">与现有模块的关系</h4>
 <table>
   <tr><th>关联模块</th><th>关系</th></tr>
-  <tr><td>接单大厅</td><td>人才库中的人才可被需求方邀请投标，后期直接对接交易</td></tr>
+  <tr><td>接单大厅</td><td>认证创作者（已升级）可接单，人才库用户可被需求方邀请投标</td></tr>
   <tr><td>培训学院</td><td>人才库登记后可升级为培训学员，获得等级认证后开通接单</td></tr>
   <tr><td>创作广场</td><td>人才的作品可同步展示在创作广场，进行版权交易</td></tr>
   <tr><td>资产库</td><td>人才上传的素材可资产化，实现持续分润</td></tr>
@@ -725,30 +741,30 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <!-- ===== 五、核心业务流程 ===== -->
 <h2 class="chapter">五、核心业务流程</h2>
 
-<h3 class="section">5.1 创作者入驻流程（双通道）</h3>
+<h3 class="section">5.1 创作者入驻流程（递进式）</h3>
 <div class="flow-diagram">
-  <div class="arch-title">创作者入驻 · 双通道流程</div>
+  <div class="arch-title">创作者入驻 · 递进式路径</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
     <div>
-      <div style="text-align:center;font-weight:700;color:var(--primary);margin-bottom:12px;">🎬 老手通道</div>
+      <div style="text-align:center;font-weight:700;color:var(--primary);margin-bottom:12px;">🎬 有经验的老手</div>
       <div class="flow-steps" style="flex-direction:column;">
-        <div class="flow-step" style="background:var(--primary);width:100%;">点击「成为创作者」</div>
+        <div class="flow-step" style="background:var(--primary);width:100%;">点击「免费登记」进入人才库</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--secondary);width:100%;">选择「我是老手」</div>
+        <div class="flow-step" style="background:var(--secondary);width:100%;">选择专业角色</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--info);width:100%;">填写个人信息</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">填写信息+上传1个作品</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--info);width:100%;">上传代表作品（≥2个）</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">入库展示（建立个人品牌）</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--info);width:100%;">补充作品链接 + 简介</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">升级认证：提交≥2个作品</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--accent);width:100%;">提交审核（1-3工作日）</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">平台审核定级（1-3工作日）</div>
         <div class="flow-arrow-r">↓</div>
-        <div class="flow-step" style="background:var(--success);width:100%;">审核通过 → 自动定级 → 开通接单</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">获得等级 → 开通接单</div>
       </div>
     </div>
     <div>
-      <div style="text-align:center;font-weight:700;color:var(--info);margin-bottom:12px;">🌱 新手通道</div>
+      <div style="text-align:center;font-weight:700;color:var(--info);margin-bottom:12px;">🌱 零基础的新手</div>
       <div class="flow-steps" style="flex-direction:column;">
         <div class="flow-step" style="background:var(--primary);width:100%;">点击「成为创作者」</div>
         <div class="flow-arrow-r">↓</div>
@@ -766,6 +782,10 @@ tr:nth-child(even) td { background:#F7FAFC; }
       </div>
     </div>
   </div>
+</div>
+
+<div class="info-box blue">
+  <strong>递进式设计说明：</strong>有经验的老手不再走独立的「创作者入驻」审核流程，而是先在人才库轻量登记入库，后续在人才详情页一键升级为认证创作者。这样避免了同一用户面对两个入口的困惑，也避免了数据割裂。新手通道保持不变，通过培训→考核→定级的路径入驻。
 </div>
 
 <h3 class="section">5.2 项目交易全流程</h3>

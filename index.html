@@ -1933,15 +1933,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
     <p style="text-align:center;color:var(--text-secondary);font-size:14px;margin-bottom:24px;">选择你的身份，我们将为你匹配最合适的入驻路径</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
       <!-- 有经验的老手 -->
-      <div style="background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all 0.3s;" onclick="hideModal('creator-choice');showModal('portfolio-submit')" onmouseover="this.style.borderColor='var(--primary)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+      <div style="background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all 0.3s;" onclick="hideModal('creator-choice');showModal('talent-register')" onmouseover="this.style.borderColor='var(--primary)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
         <div style="font-size:48px;margin-bottom:12px;">🎬</div>
         <h4 style="font-size:18px;margin-bottom:8px;">我是老手</h4>
-        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px;">已有AI漫剧制作经验，<br>希望直接入驻接单</p>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px;">已有AI漫剧制作经验，<br>希望入驻平台展示作品</p>
         <div style="background:#FFF5F5;border-radius:8px;padding:10px;font-size:12px;color:var(--primary);line-height:1.6;">
-          📋 提交作品集 → 平台审核 → 定级入驻<br>
-          审核通过后可直接接单赚收益
+          📋 人才库登记 → 入库展示 → 升级认证<br>
+          先入库展示，后续升级接单赚收益
         </div>
-        <button style="margin-top:16px;padding:10px 0;width:100%;border:none;border-radius:8px;background:var(--primary);color:white;font-size:14px;font-weight:600;cursor:pointer;">提交作品入驻</button>
+        <button style="margin-top:16px;padding:10px 0;width:100%;border:none;border-radius:8px;background:var(--primary);color:white;font-size:14px;font-weight:600;cursor:pointer;">免费登记入驻</button>
       </div>
       <!-- 新手 -->
       <div style="background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all 0.3s;" onclick="hideModal('creator-choice');showPage('training')" onmouseover="this.style.borderColor='var(--info)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
@@ -1962,8 +1962,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 <div class="modal-overlay" id="modal-portfolio-submit">
   <div class="modal" style="max-width:640px;">
     <button class="close-btn" onclick="hideModal('portfolio-submit')">✕</button>
-    <h3>外部创作者入驻 · 作品集提交</h3>
-    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">请提交你的代表作品，平台将在 1-3 个工作日内完成审核并为你定级（L1-L5）</p>
+    <h3>升级为认证创作者</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">提交更多代表作品（≥2个），平台将在 1-3 个工作日内完成审核并为你定级（L1-L5），开通接单权限。</p>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <div class="form-group"><label>真实姓名</label><input type="text" placeholder="你的姓名"></div>
@@ -2071,7 +2071,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   <div class="modal" style="max-width:640px;">
     <button class="close-btn" onclick="hideModal('talent-register')">✕</button>
     <h3>人才信息登记</h3>
-    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">免费登记你的专业信息与作品，让行业找到你。同时可参与平台项目撮合。</p>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">免费登记你的专业信息与作品，进入人才库供行业查阅。这是成为认证创作者的第一步，后续可升级开通接单权限。</p>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
       <div class="form-group"><label>姓名/昵称</label><input type="text" placeholder="你的姓名或昵称"></div>
@@ -2133,11 +2133,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
     <div class="form-group"><label>个人简介</label><textarea rows="3" placeholder="简要介绍你的创作经历、擅长风格、代表项目..."></textarea></div>
 
     <div style="background:#EBF8FF;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;line-height:1.7;">
-      <strong>💡 登记说明：</strong><br>
-      · 免费登记，信息展示在人才库供行业查阅<br>
-      · 上传作品即可建立个人作品集<br>
-      · 平台将根据你的角色和作品优先撮合项目<br>
-      · 后续可升级为认证创作者，开通接单权限
+      <strong>💡 递进式路径说明：</strong><br>
+      · 第一步：免费登记入库，信息展示在人才库供行业查阅<br>
+      · 上传1个作品即可建立个人作品集，建立个人品牌<br>
+      · 第二步：后续可在人才详情页升级为认证创作者<br>
+      · 升级认证后获得等级（L1-L5），开通接单权限，参与项目交易
     </div>
 
     <button class="btn-register" style="width:100%;padding:14px;font-size:16px;">提交登记</button>
@@ -2294,7 +2294,7 @@ function showTalentDetail(name) {
     '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;line-height:1.8;">'+t.wk+'</div>'+
     '<div style="display:flex;gap:12px;">'+
     '<button class="btn-register" style="flex:1;padding:12px;font-size:15px;">联系TA</button>'+
-    '<button style="flex:1;padding:12px;font-size:15px;border:1px solid var(--border);border-radius:6px;background:white;cursor:pointer;">邀请投标</button>'+
+    '<button style="flex:1;padding:12px;font-size:15px;border:1px solid var(--primary);border-radius:6px;background:#FFF5F5;color:var(--primary);cursor:pointer;font-weight:600;" onclick="hideModal(\'talent-detail\');showModal(\'portfolio-submit\')">升级认证</button>'+
     '</div>';
   showModal('talent-detail');
 }
