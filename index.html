@@ -413,10 +413,22 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   .talent-banner { flex-direction: column; gap: 16px; text-align: center; }
 }
 /* ===== IDENTITY SWITCHER ===== */
-.identity-switch { display:flex; align-items:center; gap:4px; background:#EDF2F7; border-radius:20px; padding:3px; }
-.identity-switch .id-btn { padding:5px 14px; border-radius:16px; font-size:12px; font-weight:600; cursor:pointer; border:none; background:transparent; color:var(--text-secondary); transition:all 0.2s; }
-.identity-switch .id-btn.active.client { background:var(--info); color:white; }
-.identity-switch .id-btn.active.creator { background:var(--primary); color:white; }
+.role-badge-wrap { position:relative; }
+.role-badge { display:flex; align-items:center; gap:4px; padding:4px 12px; border-radius:16px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s; background:#EDF2F7; color:var(--text-secondary); user-select:none; }
+.role-badge:hover { background:#E2E8F0; }
+.role-badge.creator { background:#FFF5F5; color:var(--primary); }
+.role-badge.client { background:#EBF8FF; color:var(--info); }
+.role-badge-arrow { font-size:10px; opacity:0.5; transition:transform 0.2s; }
+.role-badge.open .role-badge-arrow { transform:rotate(180deg); }
+.role-dropdown { position:absolute; top:calc(100% + 6px); right:0; min-width:220px; background:white; border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,0.14); border:1px solid #E2E8F0; padding:4px; display:none; z-index:1000; }
+.role-dropdown.show { display:block; animation:dropIn 0.18s ease; }
+@keyframes dropIn { from{opacity:0;transform:translateY(-6px);} to{opacity:1;transform:translateY(0);} }
+.role-dropdown-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; transition:background 0.15s; }
+.role-dropdown-item:hover { background:var(--bg); }
+.role-dropdown-item .rdi-icon { font-size:20px; }
+.role-dropdown-item .rdi-title { font-size:14px; font-weight:600; }
+.role-dropdown-item .rdi-desc { font-size:11px; color:var(--text-secondary); }
+.role-dropdown-item .rdi-check { margin-left:auto; color:var(--primary); font-weight:700; font-size:14px; }
 .nav-links a[data-role="client"], .nav-links a[data-role="creator"] { display:none; }
 .nav-links a[data-role="common"] { display:block; }
 .nav-links.show-client a[data-role="client"] { display:block; }
@@ -461,9 +473,25 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
     <a onclick="showPage('community')" id="nav-community" data-role="common">社区</a>
   </div>
   <div class="nav-right">
-    <div class="identity-switch" id="identitySwitch" style="display:none;">
-      <button class="id-btn" onclick="switchRole('client')" id="idBtnClient">甲方端</button>
-      <button class="id-btn active creator" onclick="switchRole('creator')" id="idBtnCreator">乙方端</button>
+    <div style="display:none;align-items:center;gap:8px;" id="identitySwitch">
+      <div class="role-badge-wrap">
+        <div class="role-badge creator" id="roleBadge" onclick="toggleRoleDropdown()">
+          <span id="roleBadgeText">🎬 创作者</span>
+          <span class="role-badge-arrow">▾</span>
+        </div>
+        <div class="role-dropdown" id="roleDropdown">
+          <div class="role-dropdown-item" onclick="switchRole('creator');closeRoleDropdown()">
+            <span class="rdi-icon">🎬</span>
+            <div><div class="rdi-title">创作者</div><div class="rdi-desc">接单赚钱 · 管理作品</div></div>
+            <span class="rdi-check" id="check-creator">✓</span>
+          </div>
+          <div class="role-dropdown-item" onclick="switchRole('client');closeRoleDropdown()">
+            <span class="rdi-icon">📋</span>
+            <div><div class="rdi-title">需求方</div><div class="rdi-desc">发布项目 · 筛选人才</div></div>
+            <span class="rdi-check" id="check-client"></span>
+          </div>
+        </div>
+      </div>
     </div>
     <button class="btn-login" onclick="showModal('login')" id="navLogin">登录</button>
     <button class="btn-register" onclick="showModal('register')" id="navRegister">免费注册</button>
@@ -487,9 +515,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
       <div class="stat"><div class="num">¥2,800万</div><div class="label">累计交易额</div></div>
       <div class="stat"><div class="num">98.5%</div><div class="label">好评率</div></div>
     </div>
-    <div class="hero-btns">
-      <button class="btn btn-primary" onclick="showModal('register')">免费注册</button>
-      <button class="btn btn-outline" onclick="showModal('login')">登录</button>
+    <div style="margin-top:20px;display:flex;gap:16px;align-items:center;">
+      <a href="#" onclick="showModal('register');return false;" style="font-size:14px;color:var(--primary);font-weight:600;">免费注册 →</a>
+      <span style="color:var(--border);">|</span>
+      <a href="#" onclick="showModal('login');return false;" style="font-size:13px;color:var(--text-secondary);">登录</a>
     </div>
   </div>
 
@@ -1398,7 +1427,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
         <ul style="list-style:none; font-size:14px;">
           <li style="padding:8px 0; border-bottom:1px solid var(--border);">连续3个月无活跃接单记录</li>
           <li style="padding:8px 0; border-bottom:1px solid var(--border);">平均评分降至 3.5星以下</li>
-          <li style="padding:8px 0; border-bottom:1px solid var(--border);">收到3次以上甲方投诉</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">收到3次以上需求方投诉</li>
           <li style="padding:8px 0; border-bottom:1px solid var(--border);">交付质量严重不达标</li>
           <li style="padding:8px 0;">违反平台规则（如抄袭、作弊）</li>
         </ul>
@@ -1414,7 +1443,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
         <tbody>
           <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;font-size:13px;">作品质量</td><td style="padding:10px;font-size:13px;">40%</td><td style="padding:10px;font-size:13px;">一致性、叙事水平、画面完成度</td></tr>
           <tr style="border-bottom:1px solid var(--border);background:#F7FAFC;"><td style="padding:10px;font-size:13px;">技术能力</td><td style="padding:10px;font-size:13px;">25%</td><td style="padding:10px;font-size:13px;">AI工具运用、角色一致性、场景控制</td></tr>
-          <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;font-size:13px;">项目经验</td><td style="padding:10px;font-size:13px;">20%</td><td style="padding:10px;font-size:13px;">过往项目数量、规模、甲方评价</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;font-size:13px;">项目经验</td><td style="padding:10px;font-size:13px;">20%</td><td style="padding:10px;font-size:13px;">过往项目数量、规模、需求方评价</td></tr>
           <tr><td style="padding:10px;font-size:13px;">持续能力</td><td style="padding:10px;font-size:13px;">15%</td><td style="padding:10px;font-size:13px;">新作产出频率、稳定性</td></tr>
         </tbody>
       </table>
@@ -1427,7 +1456,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 <!-- ============================= -->
 <div class="page" id="page-client">
   <div class="section">
-    <h2>需求方（甲方）服务</h2>
+    <h2>需求方（需求方）服务</h2>
     <p class="section-desc">从发单到交付，全流程线上化管理</p>
 
     <h3 style="margin-bottom:16px;">合作流程</h3>
@@ -1688,7 +1717,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
             </div>
           </div>
           <div class="post-title">红果分账月入3万+，从选品到交付全流程复盘</div>
-          <div class="post-content">上个月通过生花接了红果的分账项目，最终收益超出预期。今天把整个流程拆解一下：如何筛选高分账潜力项目、怎样与甲方沟通交付标准、制作过程中的关键节点控制。先说结论：选对项目比埋头做更重要...</div>
+          <div class="post-content">上个月通过生花接了红果的分账项目，最终收益超出预期。今天把整个流程拆解一下：如何筛选高分账潜力项目、怎样与需求方沟通交付标准、制作过程中的关键节点控制。先说结论：选对项目比埋头做更重要...</div>
           <div class="post-tags">
             <span class="post-tag">#红果短剧</span>
             <span class="post-tag">#分账经验</span>
@@ -1880,7 +1909,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
     <div class="form-group"><label>设置密码</label><input type="password" placeholder="至少6位"></div>
     <button class="btn-register" style="width:100%;padding:12px;font-size:15px;margin-top:8px;" onclick="doRegister()">注册</button>
     <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--text-secondary);">已有账号？<a href="#" onclick="hideModal('register');showModal('login');" style="color:var(--primary);">立即登录</a></p>
-    <p style="text-align:center;margin-top:4px;font-size:12px;color:var(--text-secondary);">注册后登录，可在甲方端与乙方端之间自由切换</p>
+    <p style="text-align:center;margin-top:4px;font-size:12px;color:var(--text-secondary);">注册后登录，可在需求方与创作者之间自由切换</p>
   </div>
 </div>
 
@@ -1901,7 +1930,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
       <li>含配音、字幕、音效</li>
       <li>分阶段交付：每3集一个验收节点</li>
     </ul>
-    <h4 style="margin-bottom:8px;">甲方信息</h4>
+    <h4 style="margin-bottom:8px;">需求方信息</h4>
     <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">某头部视频平台 · 已认证 · 历史项目32个 · 平均评分4.9</p>
     <button class="btn-register" style="width:100%;padding:12px;font-size:15px;">提交投标</button>
   </div>
@@ -2104,15 +2133,47 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 <script>
 var currentRole = 'creator';
 
+function toggleRoleDropdown() {
+  var dd = document.getElementById('roleDropdown');
+  var badge = document.getElementById('roleBadge');
+  dd.classList.toggle('show');
+  badge.classList.toggle('open');
+}
+
+function closeRoleDropdown() {
+  document.getElementById('roleDropdown').classList.remove('show');
+  document.getElementById('roleBadge').classList.remove('open');
+}
+
+document.addEventListener('click', function(e) {
+  var wrap = e.target.closest('.role-badge-wrap');
+  if (!wrap) {
+    var dd = document.getElementById('roleDropdown');
+    var badge = document.getElementById('roleBadge');
+    if (dd) dd.classList.remove('show');
+    if (badge) badge.classList.remove('open');
+  }
+});
+
 function switchRole(role) {
   currentRole = role;
   var nav = document.getElementById('navLinks');
-  var sw = document.getElementById('identitySwitch');
-  var bc = document.getElementById('idBtnClient');
-  var br = document.getElementById('idBtnCreator');
   nav.className = 'nav-links show-' + role;
-  bc.className = 'id-btn' + (role === 'client' ? ' active client' : '');
-  br.className = 'id-btn' + (role === 'creator' ? ' active creator' : '');
+  var badge = document.getElementById('roleBadge');
+  var badgeText = document.getElementById('roleBadgeText');
+  var checkC = document.getElementById('check-creator');
+  var checkCl = document.getElementById('check-client');
+  if (role === 'creator') {
+    badge.className = 'role-badge creator';
+    badgeText.textContent = '🎬 创作者';
+    if (checkC) checkC.style.display = 'inline';
+    if (checkCl) checkCl.style.display = 'none';
+  } else {
+    badge.className = 'role-badge client';
+    badgeText.textContent = '📋 需求方';
+    if (checkC) checkC.style.display = 'none';
+    if (checkCl) checkCl.style.display = 'inline';
+  }
   if (role === 'client') {
     showPage('client');
   } else {
@@ -2123,10 +2184,10 @@ function switchRole(role) {
 function doLogin() {
   hideModal('login');
   document.getElementById('identitySwitch').style.display = 'flex';
+  switchRole(currentRole);
   document.getElementById('navLogin').style.display = 'none';
   document.getElementById('navRegister').style.display = 'none';
   document.getElementById('navUserWrap').style.display = 'flex';
-  switchRole(currentRole);
 }
 
 function doRegister() {
@@ -2140,6 +2201,7 @@ function doRegister() {
 
 function doLogout() {
   document.getElementById('identitySwitch').style.display = 'none';
+  closeRoleDropdown();
   document.getElementById('navLogin').style.display = 'block';
   document.getElementById('navRegister').style.display = 'block';
   document.getElementById('navUserWrap').style.display = 'none';

@@ -302,10 +302,22 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 .level-info h5 { font-size:14px; font-weight:600; }
 .level-info p { font-size:11px; color:var(--text-secondary); }
 /* ===== IDENTITY SYSTEM ===== */
-.id-switch-m { display:flex; background:var(--bg); border-radius:20px; padding:3px; margin:0 16px 12px; }
-.id-switch-m .id-btn-m { flex:1; padding:8px; border-radius:16px; font-size:13px; font-weight:600; border:none; background:transparent; color:var(--text-secondary); cursor:pointer; transition:all 0.2s; }
-.id-switch-m .id-btn-m.active.client { background:var(--info); color:white; }
-.id-switch-m .id-btn-m.active.creator { background:var(--primary); color:white; }
+.role-tag-m { display:inline-flex; align-items:center; gap:3px; padding:3px 10px; border-radius:14px; font-size:11px; font-weight:600; cursor:pointer; transition:all 0.2s; background:var(--bg); color:var(--text-secondary); }
+.role-tag-m.creator { background:#FFF5F5; color:var(--primary); }
+.role-tag-m.client { background:#EBF8FF; color:var(--info); }
+.m-bottom-sheet { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:9999; display:none; align-items:flex-end; }
+.m-bottom-sheet.show { display:flex; animation:fadeIn 0.2s; }
+.m-bs-content { width:100%; background:white; border-radius:20px 20px 0 0; padding:8px 20px 32px; animation:slideUp 0.25s ease; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+.m-bs-handle { width:36px; height:4px; background:#E2E8F0; border-radius:2px; margin:0 auto 16px; }
+.m-bs-item { display:flex; align-items:center; gap:12px; padding:14px 12px; border-radius:12px; cursor:pointer; transition:background 0.15s; }
+.m-bs-item:hover, .m-bs-item:active { background:var(--bg); }
+.m-bs-item.active { background:var(--bg); }
+.m-bs-item .mbsi-icon { font-size:24px; }
+.m-bs-item .mbsi-title { font-size:15px; font-weight:600; }
+.m-bs-item .mbsi-desc { font-size:12px; color:var(--text-secondary); }
+.m-bs-item .mbsi-check { margin-left:auto; color:var(--primary); font-weight:700; font-size:16px; }
 .id-badge-m { display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:600; }
 .id-badge-m.client { background:#EBF8FF; color:var(--info); }
 .id-badge-m.creator { background:var(--primary-bg); color:var(--primary); }
@@ -339,22 +351,17 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <h1>生花</h1>
         <div class="header-actions">
           <div class="header-icon" style="position:relative;" onclick="showModal('notif')">🔔<div class="notif-dot" style="position:absolute;top:4px;right:4px;"></div></div>
+          <div class="role-tag-m" id="roleTagM" style="display:none;" onclick="showRoleSheetM()">🎬 创作者 ▾</div>
           <div class="header-icon" id="headerAvatar" onclick="handleAvatarClick()">👤</div>
         </div>
       </div>
-      <div class="id-switch-m" id="idSwitchM" style="display:none;">
-        <button class="id-btn-m" onclick="switchRoleM('client')" id="idBtnClientM">甲方端 · 发项目</button>
-        <button class="id-btn-m active creator" onclick="switchRoleM('creator')" id="idBtnCreatorM">乙方端 · 接单</button>
-      </div>
+
 
       <!-- Banner -->
       <div class="home-banner">
         <h2>妙笔<span style="color:#FEB2B2;">生花</span></h2>
         <p>AI漫剧垂直撮合交易平台</p>
-        <div class="banner-btns">
-          <button class="banner-btn banner-btn-primary" onclick="showModal('register-m')">免费注册</button>
-          <button class="banner-btn banner-btn-outline" onclick="showModal('login-m')">登录</button>
-        </div>
+
         <div class="banner-stats">
           <div class="bstat"><div class="bnum">12,680</div><div class="blbl">创作者</div></div>
           <div class="bstat"><div class="bnum">3,450</div><div class="blbl">完成项目</div></div>
@@ -661,12 +668,8 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <div class="pf-avatar">👩‍🎨</div>
         <div class="pf-name">墨染青山</div>
         <span class="pf-level" style="background:var(--l3);">L3 精英创作者</span>
-        <div style="margin-top:12px;display:inline-flex;align-items:center;gap:8px;background:var(--bg);border-radius:20px;padding:4px;">
-          <button style="padding:6px 14px;border-radius:14px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--text-secondary);" onclick="switchRoleM('client')">切换为甲方</button>
-          <button style="padding:6px 14px;border-radius:14px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:var(--primary);color:white;">当前：乙方</button>
-        </div>
-        <button onclick="doLogoutM()" style="margin-top:12px;padding:6px 18px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;">退出登录</button>
-        <button onclick="doLogoutM()" style="margin-top:12px;padding:6px 18px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;">退出登录</button>
+        <button onclick="showRoleSheetM()" style="margin-top:12px;padding:8px 20px;border-radius:18px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;">🎬 当前：创作者 · 点击切换</button>
+        <button onclick="doLogoutM()" style="margin-top:8px;padding:6px 18px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;">退出登录</button>
         <div class="pf-stats">
           <div class="pfs"><div class="pfs-val">47</div><div class="pfs-lbl">完成项目</div></div>
           <div class="pfs"><div class="pfs-val">4.8</div><div class="pfs-lbl">平均评分</div></div>
@@ -1094,7 +1097,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       <div class="form-group"><label>设置密码</label><input type="password" placeholder="至少6位"></div>
       <button class="btn-primary" onclick="doRegisterM()">注册</button>
       <p style="text-align:center;margin-top:8px;font-size:12px;color:var(--text-secondary);">已有账号？<a href="#" onclick="hideModal('register-m');showModal('login-m')" style="color:var(--primary);">立即登录</a></p>
-      <p style="text-align:center;margin-top:4px;font-size:11px;color:var(--text-secondary);">注册后登录，可在甲方端与乙方端之间自由切换</p>
+      <p style="text-align:center;margin-top:4px;font-size:11px;color:var(--text-secondary);">注册后登录，可在需求方与创作者之间自由切换</p>
     </div>
   </div>
 
@@ -1157,7 +1160,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       </div>
       <div style="padding:14px 0;border-bottom:0.5px solid var(--border);display:flex;gap:12px;">
         <div style="width:36px;height:36px;border-radius:50%;background:#EBF8FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">💬</div>
-        <div><div style="font-size:14px;font-weight:500;">甲方消息</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">「大唐妖闻录」甲方发来新的修改意见</div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">5小时前</div></div>
+        <div><div style="font-size:14px;font-weight:500;">需求方消息</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">「大唐妖闻录」需求方发来新的修改意见</div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">5小时前</div></div>
       </div>
       <div style="padding:14px 0;border-bottom:0.5px solid var(--border);display:flex;gap:12px;">
         <div style="width:36px;height:36px;border-radius:50%;background:#FFFAF0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">🔥</div>
@@ -1208,15 +1211,40 @@ const subPages = ['assets','training','levels','activities','client','talent'];
 
 var currentRoleM = 'creator';
 
+function showRoleSheetM() {
+  var sheet = document.getElementById('roleSheetM');
+  if (sheet) sheet.classList.add('show');
+}
+
+function hideRoleSheetM() {
+  var sheet = document.getElementById('roleSheetM');
+  if (sheet) sheet.classList.remove('show');
+}
+
+function updateRoleTagM(role) {
+  var tag = document.getElementById('roleTagM');
+  if (!tag) return;
+  if (role === 'creator') {
+    tag.className = 'role-tag-m creator';
+    tag.textContent = '🎬 创作者 ▾';
+  } else {
+    tag.className = 'role-tag-m client';
+    tag.textContent = '📋 需求方 ▾';
+  }
+  var bc = document.getElementById('bsCheckCreator');
+  var bl = document.getElementById('bsCheckClient');
+  var ic = document.getElementById('bsItemCreator');
+  var il = document.getElementById('bsItemClient');
+  if (bc) bc.style.display = role === 'creator' ? 'inline' : 'none';
+  if (bl) bl.style.display = role === 'client' ? 'inline' : 'none';
+  if (ic) ic.className = 'm-bs-item' + (role === 'creator' ? ' active' : '');
+  if (il) il.className = 'm-bs-item' + (role === 'client' ? ' active' : '');
+}
+
 function switchRoleM(role) {
   currentRoleM = role;
-  var sw = document.getElementById('idSwitchM');
-  var bc = document.getElementById('idBtnClientM');
-  var br = document.getElementById('idBtnCreatorM');
-  if (sw) {
-    bc.className = 'id-btn-m' + (role === 'client' ? ' active client' : '');
-    br.className = 'id-btn-m' + (role === 'creator' ? ' active creator' : '');
-  }
+  updateRoleTagM(role);
+  hideRoleSheetM();
   if (role === 'client') {
     switchTab('orders');
   } else {

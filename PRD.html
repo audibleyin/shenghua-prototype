@@ -172,8 +172,8 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>产品定位</td><td>AI漫剧垂直撮合交易平台 — 不提供AI工具，专注供需匹配与质量管控</td></tr>
   <tr><td>核心Slogan</td><td>妙笔生花，人人皆可创作</td></tr>
   <tr><td>目标品类</td><td>AI漫剧（AI漫画短剧），不含真人短剧/传统动画/其他服务</td></tr>
-  <tr><td>核心用户</td><td>需求方（甲方） + 创作者（乙方） + 故事投稿者 + 资产上传者</td></tr>
-  <tr><td>平台模式</td><td>猪八戒网模式（垂直版）+ 双端身份体系（甲方端/乙方端）+ 自有培训体系作为供给侧核心引擎</td></tr>
+  <tr><td>核心用户</td><td>需求方（需求方） + 创作者（创作者） + 故事投稿者 + 资产上传者</td></tr>
+  <tr><td>平台模式</td><td>猪八戒网模式（垂直版）+ 双端身份体系（需求方/创作者）+ 自有培训体系作为供给侧核心引擎</td></tr>
 </table>
 
 <div class="info-box highlight">
@@ -207,8 +207,8 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <div class="arch-layer">
     <div class="arch-layer-label">👤 用户层 · User Layer</div>
     <div class="arch-row">
-      <div class="arch-box blue">需求方（甲方）<small>视频平台/品牌/IP方/个人</small></div>
-      <div class="arch-box purple">创作者（乙方）<small>内部学员/外部个人/工作室</small></div>
+      <div class="arch-box blue">需求方（需求方）<small>视频平台/品牌/IP方/个人</small></div>
+      <div class="arch-box purple">创作者（创作者）<small>内部学员/外部个人/工作室</small></div>
       <div class="arch-box teal">故事投稿者<small>普通人投稿好故事</small></div>
       <div class="arch-box green">资产上传者<small>演员/模特/设计师</small></div>
     </div>
@@ -328,7 +328,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <!-- ===== 三、用户角色 ===== -->
 <h2 class="chapter">三、用户角色与权限体系</h2>
 
-<h3 class="section">3.1 需求方角色（甲方）</h3>
+<h3 class="section">3.1 需求方角色（需求方）</h3>
 <table>
   <tr><th>角色</th><th>画像</th><th>核心诉求</th><th>典型场景</th></tr>
   <tr><td>视频平台</td><td>爱奇艺/快手/红果等</td><td>稳定供给、质量可控、分账合作</td><td>发项目 → 选创作者 → 批量交付 → 分账</td></tr>
@@ -380,25 +380,25 @@ tr:nth-child(even) td { background:#F7FAFC; }
 </table>
 
 <!-- ===== 3.4 双端身份体系 ===== -->
-<h3 class="section">3.4 双端身份体系（甲方端 / 乙方端）</h3>
+<h3 class="section">3.4 双端身份体系（需求方 / 创作者）</h3>
 <h4 class="sub">设计理念</h4>
-<p>参照美团/饿了么的商家端与用户端模式，以及Boss直聘的招人版与求职版切换逻辑，平台采用「双端身份」设计：用户注册/登录时不绑定身份角色，注册后通过导航栏的切换按钮在「甲方端」和「乙方端」之间自由切换，平台根据当前身份展示对应的功能界面和操作入口。</p>
+<p>参照美团/饿了么的商家端与用户端模式，以及Boss直聘的招人版与求职版切换逻辑，平台采用「双端身份」设计：用户注册/登录时不绑定身份角色，注册后通过导航栏的切换按钮在「需求方」和「创作者」之间自由切换，平台根据当前身份展示对应的功能界面和操作入口。</p>
 
 <div class="info-box highlight">
   <strong>核心设计原则：</strong><br>
-  ① 一个账号，双重身份 — 用户注册后可同时拥有甲方和乙方身份，无需注册两个账号<br>
-  ② 场景隔离，功能聚焦 — 甲方端聚焦"提需求"，乙方端聚焦"成为创作者"，避免功能干扰<br>
-  ③ 一键切换，无缝衔接 — 参照Boss直聘，用户可随时在甲方端/乙方端之间切换
+  ① 一个账号，双重身份 — 用户注册后可同时拥有需求方和创作者身份，无需注册两个账号<br>
+  ② 场景隔离，功能聚焦 — 需求方聚焦"提需求"，创作者聚焦"成为创作者"，避免功能干扰<br>
+  ③ 一键切换，无缝衔接 — 参照Boss直聘，用户可随时在需求方/创作者之间切换
 </div>
 
 <h4 class="sub">身份定义与核心功能</h4>
 <table>
-  <tr><th>维度</th><th>甲方端（需求方）</th><th>乙方端（创作者/供给方）</th></tr>
+  <tr><th>维度</th><th>需求方（需求方）</th><th>创作者（创作者/供给方）</th></tr>
   <tr><td><strong>身份定位</strong></td><td>有AI漫剧制作需求的一方</td><td>提供AI漫剧制作服务的一方</td></tr>
   <tr><td><strong>核心动作</strong></td><td>提需求 — 发布项目、筛选创作者、托管资金、验收交付</td><td>成为创作者 — 提交作品审核、进入人才库、接单赚钱、管理作品</td></tr>
   <tr><td><strong>典型用户</strong></td><td>视频平台、品牌方、IP方、个人需求方、内容采购方</td><td>导演、编剧、生成师、后期剪辑、美术、分镜师、制作人</td></tr>
   <tr><td><strong>导航可见项</strong></td><td>发项目、人才库、创作广场、资产库、社区</td><td>接单大厅、创作者中心、培训学院、人才库、社区</td></tr>
-  <tr><td><strong>首页CTA</strong></td><td>「我是甲方 · 发布项目」</td><td>「成为创作者 · 接单赚钱」</td></tr>
+  <tr><td><strong>首页CTA</strong></td><td>「我是需求方 · 发布项目」</td><td>「成为创作者 · 接单赚钱」</td></tr>
 </table>
 
 <h4 class="sub">身份选择与切换流程</h4>
@@ -409,11 +409,11 @@ tr:nth-child(even) td { background:#F7FAFC; }
     <div class="flow-arrow-r">→</div>
     <div class="flow-step" style="background:var(--secondary);">登录</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--accent);">点击切换「甲方端 / 乙方端」</div>
+    <div class="flow-step" style="background:var(--accent);">点击头像旁身份标签</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-branch">
-      <div class="flow-step" style="background:var(--info);">📋 甲方端 — 提需求、选人才、管项目</div>
-      <div class="flow-step" style="background:var(--primary);">🎬 乙方端 — 成为创作者、接单、管理作品</div>
+      <div class="flow-step" style="background:var(--info);">📋 需求方 — 提需求、选人才、管项目</div>
+      <div class="flow-step" style="background:var(--primary);">🎬 创作者 — 成为创作者、接单、管理作品</div>
     </div>
   </div>
   <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
@@ -423,25 +423,25 @@ tr:nth-child(even) td { background:#F7FAFC; }
 
 <h4 class="sub">双端功能对照</h4>
 <table>
-  <tr><th>功能模块</th><th>甲方端可见</th><th>乙方端可见</th><th>说明</th></tr>
-  <tr><td>发布项目</td><td>✅ 核心</td><td>❌</td><td>甲方端核心功能，发布AI漫剧项目需求</td></tr>
-  <tr><td>浏览人才库</td><td>✅ 核心</td><td>✅</td><td>甲方筛选创作者，乙方查看同行作品</td></tr>
-  <tr><td>接单大厅</td><td>❌</td><td>✅ 核心</td><td>乙方端核心功能，浏览可接项目并投标</td></tr>
-  <tr><td>创作者中心</td><td>❌</td><td>✅ 核心</td><td>乙方管理作品、接单记录、收入</td></tr>
-  <tr><td>培训学院</td><td>❌</td><td>✅</td><td>乙方新手学习通道</td></tr>
-  <tr><td>创作广场</td><td>✅</td><td>✅</td><td>双方均可浏览，甲方可采购版权</td></tr>
-  <tr><td>资产库</td><td>✅</td><td>✅</td><td>双方均可浏览，乙方可上传资产</td></tr>
+  <tr><th>功能模块</th><th>需求方可见</th><th>创作者可见</th><th>说明</th></tr>
+  <tr><td>发布项目</td><td>✅ 核心</td><td>❌</td><td>需求方核心功能，发布AI漫剧项目需求</td></tr>
+  <tr><td>浏览人才库</td><td>✅ 核心</td><td>✅</td><td>需求方筛选创作者，创作者查看同行作品</td></tr>
+  <tr><td>接单大厅</td><td>❌</td><td>✅ 核心</td><td>创作者核心功能，浏览可接项目并投标</td></tr>
+  <tr><td>创作者中心</td><td>❌</td><td>✅ 核心</td><td>创作者管理作品、接单记录、收入</td></tr>
+  <tr><td>培训学院</td><td>❌</td><td>✅</td><td>创作者新手学习通道</td></tr>
+  <tr><td>创作广场</td><td>✅</td><td>✅</td><td>双方均可浏览，需求方可采购版权</td></tr>
+  <tr><td>资产库</td><td>✅</td><td>✅</td><td>双方均可浏览，创作者可上传资产</td></tr>
   <tr><td>社区</td><td>✅</td><td>✅</td><td>双方均可参与社区互动</td></tr>
-  <tr><td>资金托管</td><td>✅ 核心</td><td>❌</td><td>甲方托管资金，验收后释放</td></tr>
-  <tr><td>等级体系</td><td>✅</td><td>✅</td><td>双方均可查看，乙方关注自身等级</td></tr>
+  <tr><td>资金托管</td><td>✅ 核心</td><td>❌</td><td>需求方托管资金，验收后释放</td></tr>
+  <tr><td>等级体系</td><td>✅</td><td>✅</td><td>双方均可查看，创作者关注自身等级</td></tr>
 </table>
 
 <div class="info-box blue">
   <strong>切换机制设计（参照Boss直聘）：</strong><br>
-  · PC端：导航栏右侧设置「甲方端 / 乙方端」切换按钮，点击后导航项和默认页面即时切换<br>
-  · 移动端：首页头部设置身份切换条，个人中心设置切换入口<br>
-  · 切换不影响数据：甲方发布的项目和乙方接的单在不同端各自展示，数据互通<br>
-  · 首次登录后默认进入乙方端，用户可随时切换到甲方端
+  · PC端：用户头像旁设置身份标签（如「🎬 创作者」），点击后弹出下拉菜单选择切换，导航项和默认页面平滑过渡<br>
+  · 移动端：头像旁集成身份标签，点击弹出底部弹层选择切换，个人中心亦设切换入口<br>
+  · 切换不影响数据：需求方发布的项目和创作者接的单在不同端各自展示，数据互通<br>
+  · 首次登录后默认进入创作者，用户可随时切换到需求方
 </div>
 
 <h4 class="sub">创作者评级体系（双入口 + 动态升级）</h4>
@@ -457,7 +457,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <table>
   <tr><th>升级维度</th><th>权重</th><th>说明</th></tr>
   <tr><td>接单完成量</td><td>40%</td><td>累计完成项目数量，完成越多升级越快</td></tr>
-  <tr><td>用户反馈评分</td><td>35%</td><td>甲方验收评分（1-5星），平均分需≥4.0方可升级</td></tr>
+  <tr><td>用户反馈评分</td><td>35%</td><td>需求方验收评分（1-5星），平均分需≥4.0方可升级</td></tr>
   <tr><td>作品质量提升</td><td>15%</td><td>持续在创作广场发布高质量作品</td></tr>
   <tr><td>社区活跃度</td><td>10%</td><td>发帖、回复、组队等社区贡献</td></tr>
 </table>
@@ -517,8 +517,8 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <h4 class="sub">页面结构</h4>
 <table>
   <tr><th>区域</th><th>内容</th><th>功能逻辑</th></tr>
-  <tr><td>Hero Banner</td><td>平台Slogan + 核心数据 + CTA按钮</td><td>「免费注册」→ 注册弹窗（不选身份）；「登录」→ 登录弹窗</td></tr>
-  <tr><td>身份切换器</td><td>甲方端 / 乙方端 切换按钮</td><td>已登录用户可一键切换身份端，导航项和默认页面随之变化（参照Boss直聘）</td></tr>
+  <tr><td>Hero Banner</td><td>平台Slogan + 核心数据 + CTA按钮</td><td>Slogan + 核心数据展示，注册/登录入口保留在导航栏，不在Hero重复展示</td></tr>
+  <tr><td>身份切换器</td><td>头像旁身份标签，点击弹出下拉菜单切换（参照Boss直聘）</td><td>已登录用户可一键切换身份端，导航项和默认页面随之变化（参照Boss直聘）</td></tr>
   <tr><td>四大引擎卡片</td><td>培训/接单/广场/资产</td><td>点击跳转到对应模块页面，hover显示详细描述</td></tr>
   <tr><td>五级体系展示</td><td>L1-L5等级卡片</td><td>展示每级权益、可接项目类型、佣金比例</td></tr>
   <tr><td>平台活动专区</td><td>抖音/红果/快手/爱奇艺活动</td><td>展示各平台最新创作活动和奖励</td></tr>
@@ -530,7 +530,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <div class="flow-steps">
     <div class="flow-step" style="background:var(--primary);">点击「注册」</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--secondary);">选择身份（甲方/乙方）</div>
+    <div class="flow-step" style="background:var(--secondary);">选择身份（需求方/创作者）</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-branch">
       <div class="flow-step" style="background:var(--primary);">🎬 老手 → 提交作品集 → 平台审核定级 → 进入人才库 + 开通接单</div>
@@ -554,7 +554,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><th>功能</th><th>说明</th><th>业务规则</th></tr>
   <tr><td>项目浏览</td><td>卡片式项目列表，展示预算/等级要求/截止日期</td><td>按等级过滤：不同等级创作者看到不同项目池</td></tr>
   <tr><td>多维筛选</td><td>按类型/等级/预算/紧急程度筛选</td><td>支持组合筛选，实时刷新结果</td></tr>
-  <tr><td>项目详情</td><td>完整项目描述、交付标准、甲方信息</td><td>弹窗展示，包含投标入口</td></tr>
+  <tr><td>项目详情</td><td>完整项目描述、交付标准、需求方信息</td><td>弹窗展示，包含投标入口</td></tr>
   <tr><td>投标/接单</td><td>创作者提交投标申请</td><td>需满足等级要求，附带个人简介和作品链接</td></tr>
   <tr><td>交付管理</td><td>分阶段验收、进度追踪</td><td>按合同约定的里程碑节点验收</td></tr>
   <tr><td>结算分账</td><td>验收通过后自动释放资金</td><td>扣除平台佣金后，创作者收到净额</td></tr>
@@ -656,7 +656,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>培训学员通过课程结业考核可自动升级</td></tr>
   <tr><td rowspan="5" style="vertical-align:top;"><strong>📉 降级规则</strong></td><td>连续3个月无活跃接单记录</td></tr>
   <tr><td>平均评分降至3.5星以下</td></tr>
-  <tr><td>收到3次以上甲方投诉</td></tr>
+  <tr><td>收到3次以上需求方投诉</td></tr>
   <tr><td>交付质量严重不达标</td></tr>
   <tr><td>违反平台规则（如抄袭、作弊）</td></tr>
 </table>
@@ -666,7 +666,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><th>评审维度</th><th>权重</th><th>说明</th></tr>
   <tr><td>作品质量</td><td>40%</td><td>一致性、叙事水平、画面完成度</td></tr>
   <tr><td>技术能力</td><td>25%</td><td>AI工具运用、角色一致性、场景控制</td></tr>
-  <tr><td>项目经验</td><td>20%</td><td>过往项目数量、规模、甲方评价</td></tr>
+  <tr><td>项目经验</td><td>20%</td><td>过往项目数量、规模、需求方评价</td></tr>
   <tr><td>持续能力</td><td>15%</td><td>新作产出频率、稳定性</td></tr>
 </table>
 
@@ -681,7 +681,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td>🎨 作品互评</td><td>发布作品寻求反馈</td><td>样片展示、分镜评审、风格讨论</td></tr>
   <tr><td>🔧 技术讨论</td><td>AI工具和技术问题</td><td>Seedance技巧、角色一致性、运镜方法</td></tr>
   <tr><td>📰 行业资讯</td><td>行业动态和趋势</td><td>平台活动、政策解读、市场分析</td></tr>
-  <tr><td>💼 接单心得</td><td>项目合作经验</td><td>甲方沟通、交付技巧、定价策略</td></tr>
+  <tr><td>💼 接单心得</td><td>项目合作经验</td><td>需求方沟通、交付技巧、定价策略</td></tr>
   <tr><td>🎓 学习打卡</td><td>培训学员学习记录</td><td>课程笔记、作业展示、成长记录</td></tr>
   <tr><td>❓ 问答求助</td><td>提问和解答</td><td>技术问题、业务困惑、资源求助</td></tr>
   <tr><td>🤝 组队招募</td><td>寻找合作伙伴</td><td>编剧/分镜/配音招募、团队组建</td></tr>
@@ -725,9 +725,9 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <h4 class="sub">交易保障</h4>
 <table>
   <tr><th>保障</th><th>说明</th></tr>
-  <tr><td>🔒 资金托管</td><td>甲方付款进入平台托管账户，验收通过后释放给创作者</td></tr>
+  <tr><td>🔒 资金托管</td><td>需求方付款进入平台托管账户，验收通过后释放给创作者</td></tr>
   <tr><td>⚖️ 争议仲裁</td><td>双方争议由平台仲裁团队介入，依据合同条款和交付记录裁决</td></tr>
-  <tr><td>📋 质量管控</td><td>分阶段验收机制，每个里程碑节点甲方确认后才进入下一阶段</td></tr>
+  <tr><td>📋 质量管控</td><td>分阶段验收机制，每个里程碑节点需求方确认后才进入下一阶段</td></tr>
   <tr><td>⭐ 信用评价</td><td>双向评价体系，影响信用分和等级升降</td></tr>
 </table>
 
@@ -910,15 +910,15 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <div class="flow-diagram">
   <div class="arch-title">从发单到交付 · 交易闭环</div>
   <div class="flow-steps" style="flex-wrap:wrap;justify-content:center;">
-    <div class="flow-step" style="background:var(--info);">甲方发布项目</div>
+    <div class="flow-step" style="background:var(--info);">需求方发布项目</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--info);">甲方托管资金</div>
+    <div class="flow-step" style="background:var(--info);">需求方托管资金</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-step" style="background:var(--secondary);">系统按等级推送</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-step" style="background:var(--primary);">创作者投标</div>
     <div class="flow-arrow-r">→</div>
-    <div class="flow-step" style="background:var(--info);">甲方选标</div>
+    <div class="flow-step" style="background:var(--info);">需求方选标</div>
     <div class="flow-arrow-r">→</div>
     <div class="flow-step" style="background:var(--accent);">分阶段交付</div>
     <div class="flow-arrow-r">→</div>
@@ -1021,11 +1021,11 @@ tr:nth-child(even) td { background:#F7FAFC; }
 <h3 class="section">6.5 交易保障规则</h3>
 <table>
   <tr><th>保障机制</th><th>触发条件</th><th>处理流程</th></tr>
-  <tr><td>资金托管</td><td>甲方发单时</td><td>付款→平台托管→验收通过→释放资金</td></tr>
+  <tr><td>资金托管</td><td>需求方发单时</td><td>付款→平台托管→验收通过→释放资金</td></tr>
   <tr><td>争议仲裁</td><td>任一方发起争议</td><td>提交证据→平台审核→48h内裁决→执行</td></tr>
-  <tr><td>质量管控</td><td>分阶段验收</td><td>里程碑验收→甲方确认→进入下一阶段</td></tr>
+  <tr><td>质量管控</td><td>分阶段验收</td><td>里程碑验收→需求方确认→进入下一阶段</td></tr>
   <tr><td>信用评价</td><td>项目完成后</td><td>双方互评→影响信用分→影响等级和推荐权重</td></tr>
-  <tr><td>违约处罚</td><td>创作者逾期/甲方拒收</td><td>警告→扣信用分→限制接单→封号</td></tr>
+  <tr><td>违约处罚</td><td>创作者逾期/需求方拒收</td><td>警告→扣信用分→限制接单→封号</td></tr>
 </table>
 
 <!-- ===== 七、关键产品指标 ===== -->
@@ -1053,7 +1053,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
   <tr><td rowspan="3">内容</td><td>广场作品数</td><td>10,000+</td><td>创作广场累计作品</td></tr>
   <tr><td>版权交易额</td><td>¥100万/月</td><td>月度版权交易金额</td></tr>
   <tr><td>资产库规模</td><td>20,000+</td><td>入库数字资产总数</td></tr>
-  <tr><td rowspan="2">质量</td><td>项目好评率</td><td>≥ 95%</td><td>甲方对交付项目的满意度</td></tr>
+  <tr><td rowspan="2">质量</td><td>项目好评率</td><td>≥ 95%</td><td>需求方对交付项目的满意度</td></tr>
   <tr><td>争议率</td><td>≤ 3%</td><td>需要仲裁的项目占比</td></tr>
 </table>
 
