@@ -467,7 +467,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
     </div>
     <button class="btn-login" onclick="showModal('login')" id="navLogin">登录</button>
     <button class="btn-register" onclick="showModal('register')" id="navRegister">免费注册</button>
-    <div class="user-avatar" id="navUser" style="display:none;" onclick="showPage('creator')">U</div>
+    <div style="display:none;align-items:center;gap:8px;" id="navUserWrap">
+      <div class="user-avatar" id="navUser" onclick="showPage('creator')">U</div>
+      <button class="btn-login" onclick="doLogout()" style="font-size:12px;padding:4px 12px;">退出</button>
+    </div>
   </div>
 </nav>
 
@@ -2122,7 +2125,7 @@ function doLogin() {
   document.getElementById('identitySwitch').style.display = 'flex';
   document.getElementById('navLogin').style.display = 'none';
   document.getElementById('navRegister').style.display = 'none';
-  document.getElementById('navUser').style.display = 'flex';
+  document.getElementById('navUserWrap').style.display = 'flex';
   switchRole(currentRole);
 }
 
@@ -2131,8 +2134,18 @@ function doRegister() {
   document.getElementById('identitySwitch').style.display = 'flex';
   document.getElementById('navLogin').style.display = 'none';
   document.getElementById('navRegister').style.display = 'none';
-  document.getElementById('navUser').style.display = 'flex';
+  document.getElementById('navUserWrap').style.display = 'flex';
   switchRole(currentRole);
+}
+
+function doLogout() {
+  document.getElementById('identitySwitch').style.display = 'none';
+  document.getElementById('navLogin').style.display = 'block';
+  document.getElementById('navRegister').style.display = 'block';
+  document.getElementById('navUserWrap').style.display = 'none';
+  var nav = document.getElementById('navLinks');
+  nav.className = 'nav-links show-creator';
+  showPage('home');
 }
 
 function showPage(id) {

@@ -339,7 +339,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <h1>生花</h1>
         <div class="header-actions">
           <div class="header-icon" style="position:relative;" onclick="showModal('notif')">🔔<div class="notif-dot" style="position:absolute;top:4px;right:4px;"></div></div>
-          <div class="header-icon" onclick="showModal('login-m')">👤</div>
+          <div class="header-icon" id="headerAvatar" onclick="handleAvatarClick()">👤</div>
         </div>
       </div>
       <div class="id-switch-m" id="idSwitchM" style="display:none;">
@@ -665,6 +665,8 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
           <button style="padding:6px 14px;border-radius:14px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--text-secondary);" onclick="switchRoleM('client')">切换为甲方</button>
           <button style="padding:6px 14px;border-radius:14px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:var(--primary);color:white;">当前：乙方</button>
         </div>
+        <button onclick="doLogoutM()" style="margin-top:12px;padding:6px 18px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;">退出登录</button>
+        <button onclick="doLogoutM()" style="margin-top:12px;padding:6px 18px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;">退出登录</button>
         <div class="pf-stats">
           <div class="pfs"><div class="pfs-val">47</div><div class="pfs-lbl">完成项目</div></div>
           <div class="pfs"><div class="pfs-val">4.8</div><div class="pfs-lbl">平均评分</div></div>
@@ -1222,18 +1224,43 @@ function switchRoleM(role) {
   }
 }
 
+var isLoggedInM = false;
+
+function handleAvatarClick() {
+  if (isLoggedInM) {
+    switchTab('profile');
+  } else {
+    showModal('login-m');
+  }
+}
+
 function doLoginM() {
   hideModal('login-m');
+  isLoggedInM = true;
   var sw = document.getElementById('idSwitchM');
   if (sw) sw.style.display = 'flex';
+  var avatar = document.getElementById('headerAvatar');
+  if (avatar) avatar.textContent = '👩\u200d🎨';
   switchRoleM(currentRoleM);
 }
 
 function doRegisterM() {
   hideModal('register-m');
+  isLoggedInM = true;
   var sw = document.getElementById('idSwitchM');
   if (sw) sw.style.display = 'flex';
+  var avatar = document.getElementById('headerAvatar');
+  if (avatar) avatar.textContent = '👩\u200d🎨';
   switchRoleM(currentRoleM);
+}
+
+function doLogoutM() {
+  isLoggedInM = false;
+  var sw = document.getElementById('idSwitchM');
+  if (sw) sw.style.display = 'none';
+  var avatar = document.getElementById('headerAvatar');
+  if (avatar) avatar.textContent = '👤';
+  switchTab('home');
 }
 
 function switchTab(id) {
