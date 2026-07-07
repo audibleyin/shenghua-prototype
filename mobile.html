@@ -928,7 +928,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-assets">
       <div class="nav-header">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
           <h1 style="font-size:20px;">资产库</h1>
         </div>
         <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">+</div></div>
@@ -960,7 +960,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-training">
       <div class="nav-header">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
           <h1 style="font-size:20px;">培训学院</h1>
         </div>
       </div>
@@ -1038,7 +1038,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-levels">
       <div class="nav-header">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
           <h1 style="font-size:20px;">等级体系</h1>
         </div>
       </div>
@@ -1091,7 +1091,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-activities">
       <div class="nav-header">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
           <h1 style="font-size:20px;">平台活动</h1>
         </div>
       </div>
@@ -1162,7 +1162,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-client">
       <div class="nav-header">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
           <h1 style="font-size:20px;">需求方服务</h1>
         </div>
       </div>
@@ -1202,7 +1202,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-talent">
       <div class="nav-header">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
           <h1 style="font-size:20px;">人才库</h1>
         </div>
         <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div></div>
@@ -1247,7 +1247,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
   <!-- Tab Bar -->
   <div class="tab-bar">
-    <div class="tab-item active" onclick="switchTab('home')">
+    <div class="tab-item active" onclick="goBack()">
       <div class="tab-icon"><div class="ico ico-sm gray">家</div></div><div class="tab-label">首页</div>
     </div>
     <div class="tab-item" id="tabRole" onclick="switchTab('orders')">
@@ -1280,7 +1280,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
           <h4>我是老手</h4>
           <p>已有AI漫剧经验，提交作品审核入驻<br><span style="color:var(--primary);font-weight:500;">审核通过进入人才库可接单</span></p>
         </div>
-        <div class="choice-card" onclick="hideModal('creator-choice');switchTab('home');showSubPage('training')" style="border-color:#BEE3F8;">
+        <div class="choice-card" onclick="hideModal('creator-choice');goBack();showSubPage('training')" style="border-color:#BEE3F8;">
           <div class="cc-icon"><div class="ico ico-md green">新</div></div>
           <h4>我是新手</h4>
           <p>零基础或刚接触，系统学习后入驻<br><span style="color:var(--info);font-weight:500;">培训学费可通过接单返还</span></p>
@@ -1455,149 +1455,162 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 <div class="page-label">生花 App · 手机端交互原型 — 点击各Tab和按钮体验</div>
 
 <script>
-const tabs = ['home','orders','plaza','community','profile'];
-const subPages = ['assets','training','levels','activities','client','talent'];
+  // ===== NAVIGATION SYSTEM =====
+  const MAIN_TABS = ['home','orders','plaza','community','profile'];
+  const SUB_PAGES = ['assets','training','levels','activities','client','talent'];
+  var navHistory = [];
+  var currentRoleM = 'creator';
+  var roleTabMap = { creator: 'orders', client: 'client' };
 
-var currentRoleM = 'creator';
-
-function showRoleSheetM() {
-  var sheet = document.getElementById('roleSheetM');
-  if (sheet) sheet.classList.add('show');
-}
-
-function hideRoleSheetM() {
-  var sheet = document.getElementById('roleSheetM');
-  if (sheet) sheet.classList.remove('show');
-}
-
-function updateRoleTagM(role) {
-  var tag = document.getElementById('roleTagM');
-  if (!tag) return;
-  if (role === 'creator') {
-    tag.className = 'role-tag-m creator';
-    tag.textContent = '创作者 ▾';
-  } else {
-    tag.className = 'role-tag-m client';
-    tag.textContent = '需求方 ▾';
+  function getTabId(idx) {
+    if (idx === 1) return roleTabMap[currentRoleM] || 'orders';
+    return MAIN_TABS[idx];
   }
-  var bc = document.getElementById('bsCheckCreator');
-  var bl = document.getElementById('bsCheckClient');
-  var ic = document.getElementById('bsItemCreator');
-  var il = document.getElementById('bsItemClient');
-  if (bc) bc.style.display = role === 'creator' ? 'inline' : 'none';
-  if (bl) bl.style.display = role === 'client' ? 'inline' : 'none';
-  if (ic) ic.className = 'm-bs-item' + (role === 'creator' ? ' active' : '');
-  if (il) il.className = 'm-bs-item' + (role === 'client' ? ' active' : '');
-  // Update profile button
-  var pBtn = document.getElementById('profileRoleBtn');
-  if (pBtn) pBtn.textContent = (role === 'creator' ? '🎬' : '📋') + ' 当前：' + (role === 'creator' ? '创作者' : '需求方') + ' · 点击切换';
-}
 
-function switchRoleM(role) {
-  currentRoleM = role;
-  updateRoleTagM(role);
-  hideRoleSheetM();
-  // Update tab bar based on role
-  var tabIcon = document.getElementById('tabRoleIcon');
-  var tabLabel = document.getElementById('tabRoleLabel');
-  var tabItem = document.getElementById('tabRole');
-  if (role === 'client') {
-    // 需求方: Tab 2 = 发项目
-    if (tabIcon) tabIcon.textContent = '💼';
-    if (tabLabel) tabLabel.textContent = '发项目';
-    if (tabItem) tabItem.setAttribute('onclick', "switchTab('client')");
-    tabs[1] = 'client';
-    switchTab('home');
-  } else {
-    // 创作者: Tab 2 = 接单
-    if (tabIcon) tabIcon.textContent = '📋';
-    if (tabLabel) tabLabel.textContent = '接单';
-    if (tabItem) tabItem.setAttribute('onclick', "switchTab('orders')");
-    tabs[1] = 'orders';
-    switchTab('home');
+  function navigateTo(id) {
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    var el = document.getElementById('screen-' + id);
+    if (el) el.classList.add('active');
+    document.getElementById('screenContainer').scrollTop = 0;
+    var tabIdx = MAIN_TABS.indexOf(id);
+    document.querySelectorAll('.tab-item').forEach(function(t, i) {
+      t.classList.toggle('active', getTabId(i) === id);
+    });
+    var fab = document.querySelector('.fab');
+    if (fab) fab.style.display = (id === 'community') ? 'flex' : 'none';
   }
-}
 
-var isLoggedInM = false;
-
-function handleAvatarClick() {
-  if (isLoggedInM) {
-    switchTab('profile');
-  } else {
-    showModal('login-m');
+  function switchTab(id) {
+    navHistory = [];
+    navigateTo(id);
   }
-}
 
-function doLoginM() {
-  hideModal('login-m');
-  isLoggedInM = true;
-  var tag = document.getElementById('roleTagM');
-  if (tag) tag.style.display = 'inline-flex';
-  var avatar = document.getElementById('headerAvatar');
-  if (avatar) avatar.textContent = '👩\u200d🎨';
-  switchRoleM(currentRoleM);
-}
+  function showSubPage(id) {
+    var current = document.querySelector('.screen.active');
+    if (current) {
+      var curId = current.id.replace('screen-', '');
+      if (curId !== id) navHistory.push(curId);
+    }
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    var el = document.getElementById('screen-' + id);
+    if (el) el.classList.add('active');
+    document.getElementById('screenContainer').scrollTop = 0;
+    document.querySelectorAll('.tab-item').forEach(function(t) { t.classList.remove('active'); });
+    var fab = document.querySelector('.fab');
+    if (fab) fab.style.display = 'none';
+  }
 
-function doRegisterM() {
-  hideModal('register-m');
-  isLoggedInM = true;
-  var tag = document.getElementById('roleTagM');
-  if (tag) tag.style.display = 'inline-flex';
-  var avatar = document.getElementById('headerAvatar');
-  if (avatar) avatar.textContent = '👩\u200d🎨';
-  switchRoleM(currentRoleM);
-}
+  function goBack() {
+    var prev = navHistory.pop();
+    if (prev) { navigateTo(prev); }
+    else { goBack(); }
+  }
 
-function doLogoutM() {
-  isLoggedInM = false;
-  var tag = document.getElementById('roleTagM');
-  if (tag) tag.style.display = 'none';
-  var avatar = document.getElementById('headerAvatar');
-  if (avatar) avatar.textContent = '👤';
-  // Reset to creator defaults
-  currentRoleM = 'creator';
-  var tabIcon = document.getElementById('tabRoleIcon');
-  var tabLabel = document.getElementById('tabRoleLabel');
-  var tabItem = document.getElementById('tabRole');
-  if (tabIcon) tabIcon.textContent = '📋';
-  if (tabLabel) tabLabel.textContent = '接单';
-  if (tabItem) tabItem.setAttribute('onclick', "switchTab('orders')");
-  tabs[1] = 'orders';
-  hideRoleSheetM();
-  switchTab('home');
-}
+  function updateRoleTabBar(role) {
+    var tabIcon = document.getElementById('tabRoleIcon');
+    var tabLabel = document.getElementById('tabRoleLabel');
+    var tabItem = document.getElementById('tabRole');
+    if (role === 'client') {
+      if (tabIcon) tabIcon.innerHTML = '<svg><use href="#ic-briefcase"/></svg>';
+      if (tabLabel) tabLabel.textContent = '发项目';
+      if (tabItem) tabItem.setAttribute('onclick', "switchTab('client')");
+    } else {
+      if (tabIcon) tabIcon.innerHTML = '<svg><use href="#ic-orders"/></svg>';
+      if (tabLabel) tabLabel.textContent = '接单';
+      if (tabItem) tabItem.setAttribute('onclick', "switchTab('orders')");
+    }
+  }
 
-function switchTab(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  var el = document.getElementById('screen-' + id);
-  if (el) el.classList.add('active');
-  document.querySelectorAll('.tab-item').forEach((t,i) => {
-    t.classList.toggle('active', tabs[i] === id);
+  function showRoleSheetM() {
+    var sheet = document.getElementById('roleSheetM');
+    if (sheet) sheet.classList.add('show');
+  }
+
+  function hideRoleSheetM() {
+    var sheet = document.getElementById('roleSheetM');
+    if (sheet) sheet.classList.remove('show');
+  }
+
+  function updateRoleTagM(role) {
+    var tag = document.getElementById('roleTagM');
+    if (!tag) return;
+    if (role === 'creator') {
+      tag.className = 'role-tag-m creator';
+      tag.textContent = '创作者 ▾';
+    } else {
+      tag.className = 'role-tag-m client';
+      tag.textContent = '需求方 ▾';
+    }
+    var bc = document.getElementById('bsCheckCreator');
+    var bl = document.getElementById('bsCheckClient');
+    var ic = document.getElementById('bsItemCreator');
+    var il = document.getElementById('bsItemClient');
+    if (bc) bc.style.display = role === 'creator' ? 'inline' : 'none';
+    if (bl) bl.style.display = role === 'client' ? 'inline' : 'none';
+    if (ic) ic.className = 'm-bs-item' + (role === 'creator' ? ' active' : '');
+    if (il) il.className = 'm-bs-item' + (role === 'client' ? ' active' : '');
+    var pBtn = document.getElementById('profileRoleBtn');
+    if (pBtn) pBtn.textContent = (role === 'creator' ? '🎬' : '📋') + ' 当前：' + (role === 'creator' ? '创作者' : '需求方') + ' · 点击切换';
+  }
+
+  function switchRoleM(role) {
+    currentRoleM = role;
+    updateRoleTagM(role);
+    updateRoleTabBar(role);
+    hideRoleSheetM();
+    navHistory = [];
+    goBack();
+  }
+
+  var isLoggedInM = false;
+
+  function handleAvatarClick() {
+    if (isLoggedInM) { switchTab('profile'); }
+    else { showModal('login-m'); }
+  }
+
+  function doLoginM() {
+    hideModal('login-m');
+    isLoggedInM = true;
+    var tag = document.getElementById('roleTagM');
+    if (tag) tag.style.display = 'inline-flex';
+    var avatar = document.getElementById('headerAvatar');
+    if (avatar) avatar.textContent = '👩‍🎨';
+    switchRoleM(currentRoleM);
+  }
+
+  function doRegisterM() {
+    hideModal('register-m');
+    isLoggedInM = true;
+    var tag = document.getElementById('roleTagM');
+    if (tag) tag.style.display = 'inline-flex';
+    var avatar = document.getElementById('headerAvatar');
+    if (avatar) avatar.textContent = '👩‍🎨';
+    switchRoleM(currentRoleM);
+  }
+
+  function doLogoutM() {
+    isLoggedInM = false;
+    var tag = document.getElementById('roleTagM');
+    if (tag) tag.style.display = 'none';
+    var avatar = document.getElementById('headerAvatar');
+    if (avatar) avatar.textContent = '👤';
+    currentRoleM = 'creator';
+    updateRoleTabBar('creator');
+    hideRoleSheetM();
+    navHistory = [];
+    goBack();
+  }
+
+  function showModal(id) {
+    document.getElementById('modal-' + id).classList.add('show');
+  }
+  function hideModal(id) {
+    document.getElementById('modal-' + id).classList.remove('show');
+  }
+  document.querySelectorAll('.m-modal-overlay').forEach(function(o) {
+    o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
   });
-  document.getElementById('screenContainer').scrollTop = 0;
-  // Show FAB only on community
-  var fab = document.querySelector('.fab');
-  if (fab) fab.style.display = (id === 'community') ? 'flex' : 'none';
-}
-
-function showSubPage(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
-  document.getElementById('screenContainer').scrollTop = 0;
-}
-
-function showModal(id) {
-  document.getElementById('modal-' + id).classList.add('show');
-}
-function hideModal(id) {
-  document.getElementById('modal-' + id).classList.remove('show');
-}
-
-// Close modal on overlay click
-document.querySelectorAll('.m-modal-overlay').forEach(o => {
-  o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
-});
-
 // ===== TALENT DATA (MOBILE) =====
 var TALENT_DATA_M = [
   {n:'陈导',r:'director',rl:'🎬 导演',city:'上海',exp:'4年',lv:'L4',lc:'l4',v:true,sk:['古风','科幻'],gd:'linear-gradient(135deg,#F87171,#FB923C)',ic:'🎬'},
