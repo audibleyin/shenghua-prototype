@@ -35,18 +35,22 @@
   --radius-lg: 24px;
 }
 
-/* ===== ICON SYSTEM (replaces emojis) ===== */
-.ico { display:inline-flex; align-items:center; justify-content:center; border-radius:12px; font-weight:700; flex-shrink:0; line-height:1; }
-.ico-lg { width:48px; height:48px; font-size:18px; }
-.ico-md { width:36px; height:36px; font-size:14px; }
-.ico-sm { width:28px; height:28px; font-size:12px; border-radius:8px; }
-.ico.blue { background:#EBF8FF; color:#2B6CB0; }
-.ico.green { background:#F0FFF4; color:#276749; }
-.ico.purple { background:#FAF5FF; color:#6B46C1; }
-.ico.orange { background:#FFFAF0; color:#C05621; }
-.ico.red { background:#FFF5F5; color:#E53E3E; }
-.ico.gray { background:#F9FAFB; color:#6B7280; }
-.ico.teal { background:#F0FDFA; color:#0D9488; }
+/* ===== ICON SYSTEM (SVG line icons, Lucide-style) ===== */
+.ico, .ic { display:inline-flex; align-items:center; justify-content:center; border-radius:12px; flex-shrink:0; }
+.ico svg, .ic svg { display:block; }
+.ico-lg, .ic-lg { width:48px; height:48px; }
+.ico-lg svg, .ic-lg svg { width:24px; height:24px; }
+.ico-md, .ic-md { width:36px; height:36px; }
+.ico-md svg, .ic-md svg { width:20px; height:20px; }
+.ico-sm, .ic-sm { width:28px; height:28px; border-radius:8px; }
+.ico-sm svg, .ic-sm svg { width:16px; height:16px; }
+.ico.blue, .ic.blue { background:#EBF8FF; color:#2B6CB0; }
+.ico.green, .ic.green { background:#F0FFF4; color:#276749; }
+.ico.purple, .ic.purple { background:#FAF5FF; color:#6B46C1; }
+.ico.orange, .ic.orange { background:#FFFAF0; color:#C05621; }
+.ico.red, .ic.red { background:#FFF5F5; color:#E53E3E; }
+.ico.gray, .ic.gray { background:#F9FAFB; color:#6B7280; }
+.ico.teal, .ic.teal { background:#F0FDFA; color:#0D9488; }
 
 /* ===== GRADIENT TEXT ===== */
 .grad-text { background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
@@ -120,9 +124,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .project-card { position: relative; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 1px solid var(--border); }
 .project-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-.project-card .project-thumb { height: 160px; background: linear-gradient(135deg, #818CF8 0%, #A78BFA 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; position: relative; }
+.project-card .project-thumb { height: 160px; background: linear-gradient(135deg, #818CF8 0%, #A78BFA 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; position: relative; overflow: hidden; }
+.project-card .project-thumb::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 20% 25%,rgba(255,255,255,0.18) 0%,transparent 45%),radial-gradient(circle at 80% 75%,rgba(255,255,255,0.12) 0%,transparent 40%); pointer-events:none; }
+.project-card .project-thumb::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(135deg,transparent,transparent 16px,rgba(255,255,255,0.04) 16px,rgba(255,255,255,0.04) 32px); pointer-events:none; }
 .project-card .project-thumb .budget { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 6px; font-size: 14px; font-weight: 600; }
 .project-card .project-thumb .level-req { position: absolute; bottom: 12px; left: 12px; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+/* Thumbnail texture overlays */
+.plaza-item .thumb, .asset-item .asset-thumb, .post-card .post-img, .talent-card .tc-cover { position: relative; overflow: hidden; }
+.plaza-item .thumb::before, .asset-item .asset-thumb::before, .post-card .post-img::before, .talent-card .tc-cover::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 25% 20%,rgba(255,255,255,0.2) 0%,transparent 50%),radial-gradient(circle at 75% 80%,rgba(255,255,255,0.12) 0%,transparent 45%); pointer-events:none; }
+.plaza-item .thumb::after, .asset-item .asset-thumb::after, .post-card .post-img::after, .talent-card .tc-cover::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(135deg,transparent,transparent 14px,rgba(255,255,255,0.05) 14px,rgba(255,255,255,0.05) 28px); pointer-events:none; }
 .project-card .project-body { padding: 16px; }
 .project-card .project-body h4 { font-size: 16px; margin-bottom: 6px; }
 .project-card .project-body .project-meta { display: flex; gap: 12px; font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
@@ -485,7 +495,48 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="shGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E53E3E"/><stop offset="100%" stop-color="#F87171"/></linearGradient><symbol id="shBloom" viewBox="0 0 40 40"><g transform="translate(20,20)"><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(60)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(120)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(180)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(240)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(300)"/></g><circle cx="20" cy="20" r="5" fill="white"/><path d="M20,14 L21.4,18.6 L26,20 L21.4,21.4 L20,26 L18.6,21.4 L14,20 L18.6,18.6 Z" fill="url(#shGrad)"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="shGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E53E3E"/><stop offset="100%" stop-color="#F87171"/></linearGradient><symbol id="shBloom" viewBox="0 0 40 40"><g transform="translate(20,20)"><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(60)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(120)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(180)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(240)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(300)"/></g><circle cx="20" cy="20" r="5" fill="white"/><path d="M20,14 L21.4,18.6 L26,20 L21.4,21.4 L20,26 L18.6,21.4 L14,20 L18.6,18.6 Z" fill="url(#shGrad)"/></symbol>
+<symbol id="ic-training" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.5 3 6 3s6-2 6-3v-5"/></symbol>
+<symbol id="ic-orders" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></symbol>
+<symbol id="ic-creation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5z"/><path d="M19 4v3M20.5 5.5h-3M5 17v2M6 18H4"/></symbol>
+<symbol id="ic-assets" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5"/></symbol>
+<symbol id="ic-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></symbol>
+<symbol id="ic-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="ic-community" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+<symbol id="ic-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="ic-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+<symbol id="ic-clapper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="16" rx="1"/><path d="M2 10h20M6 6l2-4M12 6l2-4M18 6l2-4"/></symbol>
+<symbol id="ic-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="18" rx="2"/><path d="M9 4h6v3H9z"/><path d="M9 14l2 2 4-4"/></symbol>
+<symbol id="ic-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l9-9-3-3-9 9v3z"/><path d="M16 4l4 4"/><path d="M2 22l3-3"/></symbol>
+<symbol id="ic-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 4v-2M15 4v-2M9 22v-2M15 22v-2M4 9h-2M4 15h-2M22 9h-2M22 15h-2"/></symbol>
+<symbol id="ic-film" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4"/></symbol>
+<symbol id="ic-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="1.2" fill="currentColor"/><circle cx="15" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="14" r="1.2" fill="currentColor"/><path d="M12 22c2-2 2-5 0-7s-2-5 0-7"/></symbol>
+<symbol id="ic-layout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></symbol>
+<symbol id="ic-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></symbol>
+<symbol id="ic-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></symbol>
+<symbol id="ic-trending" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></symbol>
+<symbol id="ic-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+<symbol id="ic-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9V3z"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="ic-smile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></symbol>
+<symbol id="ic-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/></symbol>
+<symbol id="ic-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+<symbol id="ic-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+<symbol id="ic-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></symbol>
+<symbol id="ic-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+<symbol id="ic-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/></symbol>
+<symbol id="ic-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0L5 7z"/><path d="M19 7l-3 6a3 3 0 0 0 6 0l-3-6z"/></symbol>
+<symbol id="ic-check-square" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+<symbol id="ic-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+<symbol id="ic-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+<symbol id="ic-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></symbol>
+<symbol id="lv1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="12" cy="12" r="2" fill="currentColor"/></symbol>
+<symbol id="lv2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/></symbol>
+<symbol id="lv3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="8" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="16" cy="12" r="1.2" fill="currentColor"/></symbol>
+<symbol id="lv4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="8.5" cy="10" r="1.2" fill="currentColor"/><circle cx="15.5" cy="10" r="1.2" fill="currentColor"/><circle cx="8.5" cy="14" r="1.2" fill="currentColor"/><circle cx="15.5" cy="14" r="1.2" fill="currentColor"/></symbol>
+<symbol id="lv5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z" fill="currentColor" fill-opacity="0.1"/><path d="M12 7l1.2 2.5L16 10l-2.8 2.2L14 15l-2-1.5L10 15l.8-2.8L8 10l2.8-.5z" fill="currentColor"/></symbol>
+</defs></svg>
 
 <!-- ===== TOP NAVIGATION ===== -->
 <nav class="topnav">
@@ -1533,7 +1584,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
             <div style="background:#F0FFF4;padding:12px;border-radius:8px;text-align:center;"><div style="display:flex;justify-content:center;"><div class="ico ico-md gray">管</div></div><div style="font-size:12px;margin-top:4px;">资金托管</div></div>
             <div style="background:#EBF8FF;padding:12px;border-radius:8px;text-align:center;"><div style="display:flex;justify-content:center;"><div class="ico ico-md blue">裁</div></div><div style="font-size:12px;margin-top:4px;">争议仲裁</div></div>
             <div style="background:#FAF5FF;padding:12px;border-radius:8px;text-align:center;"><div style="display:flex;justify-content:center;"><div class="ico ico-md purple">控</div></div><div style="font-size:12px;margin-top:4px;">质量管控</div></div>
-            <div style="background:#FFFAF0;padding:12px;border-radius:8px;text-align:center;"><div style="font-size:24px;">⭐</div><div style="font-size:12px;margin-top:4px;">信用评价</div></div>
+            <div style="background:#FFFAF0;padding:12px;border-radius:8px;text-align:center;"><div style="display:flex;justify-content:center;"><div class="ico ico-md orange">评</div></div><div style="font-size:12px;margin-top:4px;">信用评价</div></div>
           </div>
         </div>
         <div class="panel">
@@ -1751,7 +1802,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
           <div class="post-actions">
             <span class="post-action">328</span>
             <span class="post-action">87</span>
-            <span class="post-action">⭐ 156</span>
+            <span class="post-action"><svg width="14" height="14" style="vertical-align:-2px;margin-right:2px;"><use href="#ic-star"/></svg> 156</span>
             <span class="post-action">分享</span>
           </div>
         </div>
@@ -1774,7 +1825,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
           <div class="post-actions">
             <span class="post-action">256</span>
             <span class="post-action">63</span>
-            <span class="post-action">⭐ 98</span>
+            <span class="post-action"><svg width="14" height="14" style="vertical-align:-2px;margin-right:2px;"><use href="#ic-star"/></svg> 98</span>
             <span class="post-action">分享</span>
           </div>
         </div>
@@ -2435,6 +2486,16 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
     }
   });
 });
+
+// ===== ICON SYSTEM: Convert .ico text → SVG line icons =====
+function initIcons(){
+  var m={'培':'ic-training','学':'ic-book','单':'ic-orders','接':'ic-briefcase','创':'ic-creation','资':'ic-assets','级':'ic-award','考':'ic-clipboard','活':'ic-calendar','社':'ic-community','全':'ic-home','经':'ic-trending','评':'ic-star','技':'ic-cpu','问':'ic-help','队':'ic-users','人':'ic-user','导':'ic-clapper','制':'ic-clipboard','编':'ic-pen','生':'ic-cpu','剪':'ic-film','美':'ic-palette','镜':'ic-layout','角':'ic-user','脸':'ic-smile','景':'ic-image','道':'ic-box','动':'ic-activity','音':'ic-music','效':'ic-zap','风':'ic-palette','管':'ic-shield','裁':'ic-scale','控':'ic-check-square','返':'ic-refresh','成':'ic-check-circle','L1':'lv1','L2':'lv2','L3':'lv3','L4':'lv4','L5':'lv5','!':'ic-bell','优':'ic-play','腾':'ic-play','视':'ic-play','B':'ic-play','红':'ic-play'};
+  document.querySelectorAll('.ico').forEach(function(el){
+    var t=el.textContent.trim(),id=m[t];
+    if(id){el.className=el.className.replace(/\bico\b/g,'ic').replace(/\bico-(lg|md|sm)\b/g,'ic-$1');el.innerHTML='<svg><use href="#'+id+'"/></svg>';}
+  });
+}
+initIcons();
 </script>
 
 </body>
