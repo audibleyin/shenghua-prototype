@@ -10,6 +10,8 @@
   --primary-dark: #C53030;
   --primary-light: #FEB2B2;
   --primary-bg: #FFF5F5;
+  --primary-grad: linear-gradient(135deg, #E53E3E 0%, #F87171 100%);
+  --primary-grad-soft: linear-gradient(135deg, #FFF0F0 0%, #FFF5F5 100%);
   --secondary: #374151;
   --accent: #ED8936;
   --bg: #FFFFFF;
@@ -27,14 +29,27 @@
   --l5: #E53E3E;
   --shadow: 0 4px 12px rgba(229,62,62,0.03), 0 1px 4px rgba(0,0,0,0.02);
   --shadow-lg: 0 12px 32px rgba(229,62,62,0.05), 0 4px 8px rgba(0,0,0,0.02);
+  --shadow-glow: 0 4px 20px rgba(229,62,62,0.15);
   --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
 }
+
+/* ===== GLOBAL DECOR ===== */
+body { position: relative; }
+body::before { content:''; position:fixed; top:-200px; right:-200px; width:500px; height:500px; background:radial-gradient(circle, rgba(229,62,62,0.04) 0%, transparent 70%); border-radius:50%; pointer-events:none; z-index:0; }
+body::after { content:''; position:fixed; bottom:-300px; left:-200px; width:600px; height:600px; background:radial-gradient(circle, rgba(49,130,222,0.03) 0%, transparent 70%); border-radius:50%; pointer-events:none; z-index:0; }
+
+/* ===== GRADIENT TEXT ===== */
+.grad-text { background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.grad-text-cool { background: linear-gradient(135deg, #3182CE 0%, #818CF8 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
 
 /* ===== TOP NAV ===== */
-.topnav { position: fixed; top:0; left:0; right:0; z-index:1000; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-.topnav .logo { display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 700; color: var(--primary); cursor: pointer; }
+.topnav { position: fixed; top:0; left:0; right:0; z-index:1000; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.topnav::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1px; background: linear-gradient(90deg, transparent 0%, rgba(229,62,62,0.3) 50%, transparent 100%); }
+.topnav .logo { display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 700; cursor: pointer; background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .topnav .logo span.icon { font-size: 28px; }
 .topnav .nav-links { display: flex; gap: 4px; }
 .topnav .nav-links a { padding: 8px 16px; border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: all 0.2s; cursor: pointer; }
@@ -43,36 +58,43 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .topnav .nav-right { display: flex; align-items: center; gap: 12px; }
 .topnav .nav-right .btn-login { padding: 6px 16px; border: 1px solid var(--primary); border-radius: 6px; color: var(--primary); background: white; font-size: 13px; cursor: pointer; transition: all 0.2s; }
 .topnav .nav-right .btn-login:hover { background: var(--primary); color: white; }
-.topnav .nav-right .btn-register { padding: 6px 16px; border: none; border-radius: 6px; background: var(--primary); color: white; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-.topnav .nav-right .btn-register:hover { background: var(--primary-dark); }
+.topnav .nav-right .btn-register { padding: 6px 18px; border: none; border-radius: 8px; background: var(--primary-grad); color: white; font-size: 13px; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(229,62,62,0.2); }
+.topnav .nav-right .btn-register:hover { box-shadow: var(--shadow-glow); transform: translateY(-1px); }
 
 /* ===== PAGES ===== */
 .page { display: none; padding-top: 64px; min-height: 100vh; }
 .page.active { display: block; }
 
 /* ===== HERO ===== */
-.hero { background: linear-gradient(135deg, #FFF0F0 0%, #FFFFFF 40%, #EBF4FF 100%); color: var(--text); padding: 80px 24px 60px; text-align: center; }
-.hero h1 { font-size: 48px; font-weight: 800; margin-bottom: 16px; }
-.hero h1 .highlight { color: var(--primary); }
+.hero { position: relative; background: linear-gradient(135deg, #FFF0F0 0%, #FFFFFF 40%, #EBF4FF 100%); color: var(--text); padding: 80px 24px 60px; text-align: center; overflow: hidden; }
+.hero::before { content:''; position:absolute; top:-100px; left:10%; width:300px; height:300px; background:radial-gradient(circle, rgba(229,62,62,0.08) 0%, transparent 70%); border-radius:50%; pointer-events:none; animation: floatOrb 8s ease-in-out infinite; }
+.hero::after { content:''; position:absolute; bottom:-100px; right:10%; width:350px; height:350px; background:radial-gradient(circle, rgba(49,130,222,0.06) 0%, transparent 70%); border-radius:50%; pointer-events:none; animation: floatOrb 10s ease-in-out infinite reverse; }
+@keyframes floatOrb { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.05); } }
+.hero > * { position: relative; z-index: 1; }
+.hero h1 { font-size: 52px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.5px; }
+.hero h1 .highlight { background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .hero .slogan { font-size: 20px; color: var(--text-secondary); margin-bottom: 32px; }
 .hero .hero-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 32px; margin-bottom: 40px; }
-.hero .hero-stats .stat { text-align: center; }
+.hero .hero-stats .stat { text-align: center; background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); border-radius: var(--radius); padding: 12px 20px; border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
 .hero .hero-stats .stat .num { font-size: 36px; font-weight: 700; }
 .hero .hero-stats .stat .label { font-size: 13px; color: var(--text-secondary); }
 .hero .hero-btns { display: flex; justify-content: center; gap: 16px; }
-.hero .hero-btns .btn { padding: 14px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; border: none; transition: all 0.3s; }
-.hero .hero-btns .btn-primary { background: var(--primary); color: white; }
-.hero .hero-btns .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
-.hero .hero-btns .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
-.hero .hero-btns .btn-outline:hover { border-color: var(--primary-dark); background: var(--primary-bg, #FFF5F5); }
+.hero .hero-btns .btn { padding: 14px 36px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; border: none; transition: all 0.3s; }
+.hero .hero-btns .btn-primary { background: var(--primary-grad); color: white; box-shadow: 0 4px 16px rgba(229,62,62,0.25); }
+.hero .hero-btns .btn-primary:hover { box-shadow: var(--shadow-glow); transform: translateY(-3px); }
+.hero .hero-btns .btn-outline { background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); color: var(--primary); border: 2px solid var(--primary); }
+.hero .hero-btns .btn-outline:hover { border-color: var(--primary-dark); background: var(--primary-bg); transform: translateY(-3px); }
 
 /* ===== ENGINES ===== */
 .engines { padding: 60px 24px; max-width: 1200px; margin: 0 auto; }
-.engines h2 { text-align: center; font-size: 32px; margin-bottom: 12px; }
-.engines .subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 40px; }
+.engines h2 { text-align: center; font-size: 36px; margin-bottom: 12px; font-weight: 800; }
+.engines .subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 15px; }
+.engines h2::after { content:''; display:block; width:40px; height:4px; background: var(--primary-grad); border-radius:2px; margin:12px auto 0; }
 .engines-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.engine-card { background: var(--card); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 2px solid transparent; }
-.engine-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.engine-card { position: relative; background: var(--card); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 1px solid var(--border); overflow: hidden; }
+.engine-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background: var(--primary-grad); opacity:0; transition: opacity 0.3s; }
+.engine-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.engine-card:hover::before { opacity:1; }
 .engine-card .engine-icon { font-size: 40px; margin-bottom: 16px; }
 .engine-card h3 { font-size: 18px; margin-bottom: 8px; }
 .engine-card .engine-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-bottom: 12px; }
@@ -81,17 +103,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 
 /* ===== SECTION COMMON ===== */
 .section { padding: 60px 24px; max-width: 1200px; margin: 0 auto; }
-.section h2 { font-size: 28px; margin-bottom: 8px; }
+.section h2 { font-size: 30px; margin-bottom: 8px; font-weight: 800; position: relative; }
+.section h2::after { content:''; display:block; width:36px; height:4px; background: var(--primary-grad); border-radius:2px; margin-top:10px; }
 .section .section-desc { color: var(--text-secondary); margin-bottom: 32px; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
 /* ===== ORDER HALL ===== */
 .order-filters { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-.filter-chip { padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border); background: white; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-.filter-chip:hover, .filter-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+.filter-chip { padding: 6px 18px; border-radius: 20px; border: 1px solid var(--border); background: white; font-size: 13px; cursor: pointer; transition: all 0.25s; }
+.filter-chip:hover { background: var(--primary-bg); color: var(--primary); border-color: var(--primary-light); }
+.filter-chip.active { background: var(--primary-grad); color: white; border-color: transparent; box-shadow: 0 2px 8px rgba(229,62,62,0.2); }
 .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.project-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; }
-.project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.project-card { position: relative; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 1px solid var(--border); }
+.project-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 .project-card .project-thumb { height: 160px; background: linear-gradient(135deg, #818CF8 0%, #A78BFA 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; position: relative; }
 .project-card .project-thumb .budget { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 6px; font-size: 14px; font-weight: 600; }
 .project-card .project-thumb .level-req { position: absolute; bottom: 12px; left: 12px; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; }
@@ -109,8 +133,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .plaza-tab { padding: 10px 20px; border: none; background: none; font-size: 14px; cursor: pointer; color: var(--text-secondary); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
 .plaza-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
 .plaza-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.plaza-item { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: all 0.3s; }
-.plaza-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.plaza-item { position: relative; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: all 0.3s; border: 1px solid var(--border); }
+.plaza-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 .plaza-item .thumb { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 56px; }
 .plaza-item .info { padding: 12px; }
 .plaza-item .info h5 { font-size: 14px; margin-bottom: 4px; }
@@ -259,7 +283,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
 
 /* ===== FOOTER ===== */
-.footer { background: #F9FAFB; color: #6B7280; padding: 48px 24px 24px; margin-top: 60px; }
+.footer { position: relative; background: linear-gradient(180deg, #FAFBFC 0%, #F5F5F7 100%); color: #6B7280; padding: 48px 24px 24px; margin-top: 60px; }
+.footer::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:100px; height:3px; background: var(--primary-grad); border-radius:2px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; max-width: 1200px; margin: 0 auto; }
 .footer h5 { color: #374151; font-size: 15px; margin-bottom: 12px; }
 .footer a { color: #9CA3AF; text-decoration: none; font-size: 13px; display: block; padding: 3px 0; }

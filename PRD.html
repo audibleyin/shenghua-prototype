@@ -5,19 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>生花AI创意平台 · 产品设计文档 V1.0</title>
 <style>
-:root { --primary:#E53E3E; --secondary:#374151; --bg:#fff; --text:#1F2937; --text2:#6B7280; --border:#F0F0F0; --accent:#ED8936; --info:#3182CE; --success:#38A169; --l1:#A0AEC0; --l2:#4299E1; --l3:#9F7AEA; --l4:#ED8936; --l5:#E53E3E; }
+:root { --primary:#E53E3E; --secondary:#374151; --bg:#fff; --text:#1F2937; --text2:#6B7280; --border:#F0F0F0; --accent:#ED8936; --info:#3182CE; --success:#38A169; --l1:#A0AEC0; --l2:#4299E1; --l3:#9F7AEA; --l4:#ED8936; --l5:#E53E3E; --primary-grad:linear-gradient(135deg,#E53E3E 0%,#F87171 100%); }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; color:var(--text); line-height:1.8; background:#F9FAFB; }
 
 /* Layout */
-.doc { max-width:960px; margin:0 auto; background:white; box-shadow:0 0 40px rgba(0,0,0,0.04); }
+.doc { max-width:960px; margin:0 auto; background:white; box-shadow:0 0 60px rgba(229,62,62,0.06), 0 0 20px rgba(0,0,0,0.03); border-radius:0 0 20px 20px; overflow:hidden; }
 
 /* Cover */
-.cover { background:linear-gradient(135deg,#FFF0F0 0%,#FFFFFF 40%,#EBF4FF 100%); color:var(--text); padding:120px 60px 80px; text-align:center; border-bottom:3px solid var(--primary); }
-.cover h1 { font-size:42px; font-weight:800; margin-bottom:12px; letter-spacing:2px; }
+.cover { position:relative; background:linear-gradient(135deg,#FFF0F0 0%,#FFFFFF 40%,#EBF4FF 100%); color:var(--text); padding:120px 60px 80px; text-align:center; border-bottom:4px solid var(--primary); overflow:hidden; }
+.cover::before { content:''; position:absolute; top:-100px; left:5%; width:300px; height:300px; background:radial-gradient(circle,rgba(229,62,62,0.08) 0%,transparent 70%); border-radius:50%; pointer-events:none; }
+.cover::after { content:''; position:absolute; bottom:-100px; right:5%; width:350px; height:350px; background:radial-gradient(circle,rgba(49,130,222,0.06) 0%,transparent 70%); border-radius:50%; pointer-events:none; }
+.cover > * { position:relative; z-index:1; }
+.cover h1 { font-size:46px; font-weight:800; margin-bottom:12px; letter-spacing:2px; background:var(--primary-grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
 .cover .subtitle { font-size:20px; color:var(--text2); margin-bottom:40px; }
 .cover .meta { display:flex; justify-content:center; gap:40px; font-size:14px; color:var(--text2); }
-.cover .version-badge { display:inline-block; background:var(--primary); color:white; padding:6px 20px; border-radius:20px; font-size:14px; margin-top:20px; }
+.cover .version-badge { display:inline-block; background:var(--primary-grad); color:white; padding:8px 24px; border-radius:24px; font-size:14px; margin-top:20px; box-shadow:0 4px 16px rgba(229,62,62,0.2); }
 
 /* TOC */
 .toc { padding:40px 60px; border-bottom:2px solid var(--border); }
@@ -29,7 +32,8 @@ body { font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; color:
 
 /* Content */
 .content { padding:40px 60px; }
-h2.chapter { font-size:26px; color:var(--primary); margin:48px 0 20px; padding-bottom:10px; border-bottom:3px solid var(--primary); }
+h2.chapter { font-size:28px; color:var(--primary); margin:48px 0 20px; padding-bottom:10px; border-bottom:3px solid var(--primary); position:relative; }
+h2.chapter::after { content:''; position:absolute; bottom:-3px; left:0; width:60px; height:3px; background:var(--primary-grad); border-radius:2px; }
 h2.chapter:first-child { margin-top:0; }
 h3.section { font-size:20px; color:var(--secondary); margin:32px 0 14px; padding-left:12px; border-left:4px solid var(--primary); }
 h4.sub { font-size:16px; color:var(--text); margin:20px 0 10px; }
@@ -68,7 +72,7 @@ tr:nth-child(even) td { background:#FFF5F5; }
 .flow-branch { display:flex; flex-direction:column; gap:8px; align-items:center; }
 
 /* Info Box */
-.info-box { padding:16px 20px; border-radius:10px; margin:16px 0; font-size:14px; line-height:1.7; }
+.info-box { padding:16px 20px; border-radius:12px; margin:16px 0; font-size:14px; line-height:1.7; }
 .info-box.highlight { background:#FFF5F5; border-left:4px solid var(--primary); }
 .info-box.blue { background:#EBF8FF; border-left:4px solid var(--info); }
 .info-box.green { background:#F0FFF4; border-left:4px solid var(--success); }
@@ -77,7 +81,8 @@ tr:nth-child(even) td { background:#FFF5F5; }
 
 /* KPI Card */
 .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:16px 0; }
-.kpi-card { background:#FFF5F5; border-radius:14px; padding:16px; text-align:center; border:1px solid var(--border); }
+.kpi-card { background:#FFF5F5; border-radius:14px; padding:16px; text-align:center; border:1px solid var(--border); transition: all 0.3s; }
+.kpi-card:hover { box-shadow: 0 4px 16px rgba(229,62,62,0.06); transform: translateY(-2px); }
 .kpi-card .kpi-val { font-size:22px; font-weight:700; color:var(--primary); }
 .kpi-card .kpi-lbl { font-size:11px; color:var(--text2); margin-top:4px; }
 
