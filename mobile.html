@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -33,6 +33,19 @@
   --tab-height: 56px;
   --status-height: 47px;
 }
+
+/* ===== ICON SYSTEM ===== */
+.ico { display:inline-flex; align-items:center; justify-content:center; border-radius:10px; font-weight:700; flex-shrink:0; line-height:1; }
+.ico-lg { width:44px; height:44px; font-size:16px; }
+.ico-md { width:32px; height:32px; font-size:13px; }
+.ico-sm { width:24px; height:24px; font-size:11px; border-radius:7px; }
+.ico.blue { background:#EBF8FF; color:#2B6CB0; }
+.ico.green { background:#F0FFF4; color:#276749; }
+.ico.purple { background:#FAF5FF; color:#6B46C1; }
+.ico.orange { background:#FFFAF0; color:#C05621; }
+.ico.red { background:#FFF5F5; color:#E53E3E; }
+.ico.gray { background:#F9FAFB; color:#6B7280; }
+.ico.teal { background:#F0FDFA; color:#0D9488; }
 
 /* ===== GRADIENT TEXT ===== */
 .grad-text { background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
@@ -361,9 +374,9 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       <div class="nav-header">
         <h1>生花</h1>
         <div class="header-actions">
-          <div class="header-icon" style="position:relative;" onclick="showModal('notif')">🔔<div class="notif-dot" style="position:absolute;top:4px;right:4px;"></div></div>
-          <div class="role-tag-m" id="roleTagM" style="display:none;" onclick="showRoleSheetM()">🎬 创作者 ▾</div>
-          <div class="header-icon" id="headerAvatar" onclick="handleAvatarClick()">👤</div>
+          <div class="header-icon" style="position:relative;" onclick="showModal('notif')"><div class="ico ico-sm red" style="font-size:14px;">!</div><div class="notif-dot" style="position:absolute;top:4px;right:4px;"></div></div>
+          <div class="role-tag-m" id="roleTagM" style="display:none;" onclick="showRoleSheetM()">创作者 ▾</div>
+          <div class="header-icon" id="headerAvatar" onclick="handleAvatarClick()" style="font-size:14px;font-weight:700;color:var(--primary);">U</div>
         </div>
       </div>
 
@@ -383,91 +396,91 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       <!-- Quick Actions -->
       <div class="quick-actions">
         <div class="quick-action" onclick="switchTab('orders')">
-          <div class="qa-icon">📋</div><div class="qa-label">接单大厅</div>
+          <div class="qa-icon"><div class="ico ico-md blue">单</div></div><div class="qa-label">接单大厅</div>
         </div>
         <div class="quick-action" onclick="switchTab('plaza')">
-          <div class="qa-icon">🎬</div><div class="qa-label">创作广场</div>
+          <div class="qa-icon"><div class="ico ico-md purple">创</div></div><div class="qa-label">创作广场</div>
         </div>
         <div class="quick-action" onclick="showSubPage('assets')">
-          <div class="qa-icon">📦</div><div class="qa-label">资产库</div>
+          <div class="qa-icon"><div class="ico ico-md orange">资</div></div><div class="qa-label">资产库</div>
         </div>
         <div class="quick-action" onclick="showSubPage('training')">
-          <div class="qa-icon">🎓</div><div class="qa-label">培训学院</div>
+          <div class="qa-icon"><div class="ico ico-md blue">学</div></div><div class="qa-label">培训学院</div>
         </div>
         <div class="quick-action" onclick="showSubPage('levels')">
-          <div class="qa-icon">🏆</div><div class="qa-label">等级体系</div>
+          <div class="qa-icon"><div class="ico ico-md red">级</div></div><div class="qa-label">等级体系</div>
         </div>
         <div class="quick-action" onclick="showSubPage('activities')">
-          <div class="qa-icon">🔥</div><div class="qa-label">平台活动</div>
+          <div class="qa-icon"><div class="ico ico-md orange">活</div></div><div class="qa-label">平台活动</div>
         </div>
         <div class="quick-action" onclick="switchTab('community')">
-          <div class="qa-icon">💬</div><div class="qa-label">社区</div>
+          <div class="qa-icon"><div class="ico ico-md green">社</div></div><div class="qa-label">社区</div>
         </div>
         <div class="quick-action" onclick="showSubPage('talent')">
-          <div class="qa-icon">🧑‍💼</div><div class="qa-label">人才库</div>
+          <div class="qa-icon"><div class="ico ico-md teal">人</div></div><div class="qa-label">人才库</div>
         </div>
         <div class="quick-action" onclick="showSubPage('client')">
-          <div class="qa-icon">💼</div><div class="qa-label">需求方</div>
+          <div class="qa-icon"><div class="ico ico-md gray">需</div></div><div class="qa-label">需求方</div>
         </div>
       </div>
 
       <!-- Hot Projects -->
       <div class="section-title">
-        <h3>🔥 热门项目</h3>
+        <h3>热门项目</h3>
         <span class="more" onclick="switchTab('orders')">查看全部 →</span>
       </div>
 
       <div class="m-project" onclick="showModal('project-detail')">
         <div class="mp-thumb" style="background:linear-gradient(135deg,#F87171,#FB923C);">
-          🏯
+
           <div class="mp-budget">¥35,000</div>
           <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
         </div>
         <div class="mp-body">
           <h4>《大唐妖闻录》12集系列漫剧</h4>
-          <div class="mp-meta"><span>📅 7月15日截止</span><span>👥 8人投标</span></div>
+          <div class="mp-meta"><span>7月15日截止</span><span>8人投标</span></div>
           <div class="mp-tags"><span class="tag">古风</span><span class="tag">IP改编</span><span class="tag">系列剧</span></div>
         </div>
         <div class="mp-footer">
-          <span class="client-info">🏢 某头部视频平台</span>
+          <span class="client-info">某头部视频平台</span>
           <button class="btn-apply">投标</button>
         </div>
       </div>
 
       <div class="m-project" onclick="showModal('project-detail')">
         <div class="mp-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">
-          🌃
+
           <div class="mp-budget">¥12,000</div>
           <div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
         </div>
         <div class="mp-body">
           <h4>赛博都市 · 品牌宣传漫剧</h4>
-          <div class="mp-meta"><span>📅 7月20日截止</span><span>👥 15人投标</span></div>
+          <div class="mp-meta"><span>7月20日截止</span><span>15人投标</span></div>
           <div class="mp-tags"><span class="tag">品牌定制</span><span class="tag">科幻</span></div>
         </div>
         <div class="mp-footer">
-          <span class="client-info">🏢 XX科技</span>
+          <span class="client-info">XX科技</span>
           <button class="btn-apply">投标</button>
         </div>
       </div>
 
       <!-- Recommended -->
       <div class="section-title">
-        <h3>✨ 广场精选</h3>
+        <h3>广场精选</h3>
         <span class="more" onclick="switchTab('plaza')">更多 →</span>
       </div>
       <div style="display:flex;gap:10px;padding:0 16px 20px;overflow-x:auto;">
         <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
-          <div style="height:120px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);display:flex;align-items:center;justify-content:center;font-size:36px;">🐉</div>
-          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《龙吟九天》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">👁 12.5万 · ❤️ 8,342</div></div>
+          <div style="height:120px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);display:flex;align-items:center;justify-content:center;font-size:36px;"></div>
+          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《龙吟九天》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">12.5万 · 8,342</div></div>
         </div>
         <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
-          <div style="height:120px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);display:flex;align-items:center;justify-content:center;font-size:36px;">🌸</div>
-          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《花间令》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">👁 8.7万 · ❤️ 5,621</div></div>
+          <div style="height:120px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);display:flex;align-items:center;justify-content:center;font-size:36px;"></div>
+          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《花间令》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">8.7万 · 5,621</div></div>
         </div>
         <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
-          <div style="height:120px;background:linear-gradient(135deg,#2c3e50,#3498db);display:flex;align-items:center;justify-content:center;font-size:36px;">🕵️</div>
-          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《深夜档案》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">👁 9.4万 · ❤️ 6,789</div></div>
+          <div style="height:120px;background:linear-gradient(135deg,#2c3e50,#3498db);display:flex;align-items:center;justify-content:center;font-size:36px;"></div>
+          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《深夜档案》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">9.4万 · 6,789</div></div>
         </div>
       </div>
       <div style="height:20px;"></div>
@@ -479,7 +492,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-orders">
       <div class="nav-header">
         <h1>接单大厅</h1>
-        <div class="header-actions"><div class="header-icon">🔍</div></div>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div></div>
       </div>
       <div class="m-filters">
         <span class="m-filter-chip active">全部</span>
@@ -493,50 +506,50 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       <div style="padding-top:8px;">
         <div class="m-project" onclick="showModal('project-detail')">
           <div class="mp-thumb" style="background:linear-gradient(135deg,#F87171,#FB923C);">
-            🏯<div class="mp-budget">¥35,000</div><div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+            <div class="mp-budget">¥35,000</div><div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
           </div>
           <div class="mp-body">
             <h4>《大唐妖闻录》12集系列漫剧</h4>
-            <div class="mp-meta"><span>📅 7月15日</span><span>👥 8人</span></div>
+            <div class="mp-meta"><span>7月15日</span><span>8人</span></div>
             <div class="mp-tags"><span class="tag">古风</span><span class="tag">IP改编</span></div>
           </div>
-          <div class="mp-footer"><span class="client-info">🏢 某头部视频平台</span><button class="btn-apply">投标</button></div>
+          <div class="mp-footer"><span class="client-info">某头部视频平台</span><button class="btn-apply">投标</button></div>
         </div>
 
         <div class="m-project">
           <div class="mp-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">
-            🌃<div class="mp-budget">¥12,000</div><div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
+            <div class="mp-budget">¥12,000</div><div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
           </div>
           <div class="mp-body">
             <h4>赛博都市 · 品牌宣传漫剧</h4>
-            <div class="mp-meta"><span>📅 7月20日</span><span>👥 15人</span></div>
+            <div class="mp-meta"><span>7月20日</span><span>15人</span></div>
             <div class="mp-tags"><span class="tag">品牌</span><span class="tag">科幻</span></div>
           </div>
-          <div class="mp-footer"><span class="client-info">🏢 XX科技</span><button class="btn-apply">投标</button></div>
+          <div class="mp-footer"><span class="client-info">XX科技</span><button class="btn-apply">投标</button></div>
         </div>
 
         <div class="m-project">
           <div class="mp-thumb" style="background:linear-gradient(135deg,#f093fb,#f5576c);">
-            💕<div class="mp-budget">¥5,000</div><div class="mp-level" style="background:var(--l1);">L1+ 新星</div>
+            <div class="mp-budget">¥5,000</div><div class="mp-level" style="background:var(--l1);">L1+ 新星</div>
           </div>
           <div class="mp-body">
             <h4>甜宠短篇 · 《心动信号》</h4>
-            <div class="mp-meta"><span>📅 7月25日</span><span>👥 23人</span></div>
+            <div class="mp-meta"><span>7月25日</span><span>23人</span></div>
             <div class="mp-tags"><span class="tag">甜宠</span><span class="tag">短篇</span></div>
           </div>
-          <div class="mp-footer"><span class="client-info">👤 个人需求方</span><button class="btn-apply">投标</button></div>
+          <div class="mp-footer"><span class="client-info">个人需求方</span><button class="btn-apply">投标</button></div>
         </div>
 
         <div class="m-project">
           <div class="mp-thumb" style="background:linear-gradient(135deg,#11998e,#38ef7d);">
-            🧟<div class="mp-budget">¥80,000</div><div class="mp-level" style="background:var(--l4);">L4+ 资深</div>
+            <div class="mp-budget">¥80,000</div><div class="mp-level" style="background:var(--l4);">L4+ 资深</div>
           </div>
           <div class="mp-body">
             <h4>末日求生 · 24集长篇漫剧</h4>
-            <div class="mp-meta"><span>📅 8月1日</span><span>👥 3人</span></div>
+            <div class="mp-meta"><span>8月1日</span><span>3人</span></div>
             <div class="mp-tags"><span class="tag">末日</span><span class="tag">长篇</span><span class="tag">高预算</span></div>
           </div>
-          <div class="mp-footer"><span class="client-info">🏢 爱奇艺</span><button class="btn-apply">投标</button></div>
+          <div class="mp-footer"><span class="client-info">爱奇艺</span><button class="btn-apply">投标</button></div>
         </div>
       </div>
       <div style="height:20px;"></div>
@@ -549,8 +562,8 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       <div class="nav-header">
         <h1>创作广场</h1>
         <div class="header-actions">
-          <div class="header-icon">📤</div>
-          <div class="header-icon">🔍</div>
+          <div class="header-icon" style="font-size:14px;color:var(--text-secondary);">+</div>
+          <div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div>
         </div>
       </div>
       <div class="plaza-tabs">
@@ -561,33 +574,33 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       </div>
       <div class="plaza-masonry">
         <div class="plaza-item-m">
-          <div class="pi-thumb" style="height:150px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);">🐉</div>
-          <div class="pi-info"><h5>《龙吟九天》</h5><div class="pi-creator">墨染青山 · L3</div><div class="pi-stats"><span>👁 12.5万</span><span>❤️ 8,342</span></div></div>
+          <div class="pi-thumb" style="height:150px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);"></div>
+          <div class="pi-info"><h5>《龙吟九天》</h5><div class="pi-creator">墨染青山 · L3</div><div class="pi-stats"><span>12.5万</span><span>8,342</span></div></div>
           <div class="pi-price">¥50,000 版权</div>
         </div>
         <div class="plaza-item-m">
-          <div class="pi-thumb" style="height:120px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);">🌸</div>
-          <div class="pi-info"><h5>《花间令》</h5><div class="pi-creator">花间词 · L4</div><div class="pi-stats"><span>👁 8.7万</span><span>❤️ 5,621</span></div></div>
+          <div class="pi-thumb" style="height:120px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div>
+          <div class="pi-info"><h5>《花间令》</h5><div class="pi-creator">花间词 · L4</div><div class="pi-stats"><span>8.7万</span><span>5,621</span></div></div>
           <div class="pi-price">¥35,000 版权</div>
         </div>
         <div class="plaza-item-m">
-          <div class="pi-thumb" style="height:160px;background:linear-gradient(135deg,#0c3483,#a2b6df);">🚀</div>
-          <div class="pi-info"><h5>《星河彼岸》</h5><div class="pi-creator">剧本炼金师 · L3</div><div class="pi-stats"><span>👁 6.2万</span><span>❤️ 3,890</span></div></div>
+          <div class="pi-thumb" style="height:160px;background:linear-gradient(135deg,#0c3483,#a2b6df);"></div>
+          <div class="pi-info"><h5>《星河彼岸》</h5><div class="pi-creator">剧本炼金师 · L3</div><div class="pi-stats"><span>6.2万</span><span>3,890</span></div></div>
           <div class="pi-price">¥28,000 版权</div>
         </div>
         <div class="plaza-item-m">
-          <div class="pi-thumb" style="height:130px;background:linear-gradient(135deg,#fa709a,#fee140);">🎪</div>
-          <div class="pi-info"><h5>《马戏团奇遇》</h5><div class="pi-creator">梦境画家 · L1</div><div class="pi-stats"><span>👁 3.2万</span><span>❤️ 2,108</span></div></div>
+          <div class="pi-thumb" style="height:130px;background:linear-gradient(135deg,#fa709a,#fee140);"></div>
+          <div class="pi-info"><h5>《马戏团奇遇》</h5><div class="pi-creator">梦境画家 · L1</div><div class="pi-stats"><span>3.2万</span><span>2,108</span></div></div>
           <div class="pi-price">¥8,000 版权</div>
         </div>
         <div class="plaza-item-m">
-          <div class="pi-thumb" style="height:140px;background:linear-gradient(135deg,#2c3e50,#3498db);">🕵️</div>
-          <div class="pi-info"><h5>《深夜档案》</h5><div class="pi-creator">暗夜行者 · L3</div><div class="pi-stats"><span>👁 9.4万</span><span>❤️ 6,789</span></div></div>
+          <div class="pi-thumb" style="height:140px;background:linear-gradient(135deg,#2c3e50,#3498db);"></div>
+          <div class="pi-info"><h5>《深夜档案》</h5><div class="pi-creator">暗夜行者 · L3</div><div class="pi-stats"><span>9.4万</span><span>6,789</span></div></div>
           <div class="pi-price">¥40,000 版权</div>
         </div>
         <div class="plaza-item-m">
-          <div class="pi-thumb" style="height:110px;background:linear-gradient(135deg,#ee9ca7,#ffdde1);">🌸</div>
-          <div class="pi-info"><h5>《樱花树下》</h5><div class="pi-creator">春日物语 · L2</div><div class="pi-stats"><span>👁 5.6万</span><span>❤️ 3,892</span></div></div>
+          <div class="pi-thumb" style="height:110px;background:linear-gradient(135deg,#ee9ca7,#ffdde1);"></div>
+          <div class="pi-info"><h5>《樱花树下》</h5><div class="pi-creator">春日物语 · L2</div><div class="pi-stats"><span>5.6万</span><span>3,892</span></div></div>
           <div class="pi-price">¥12,000 版权</div>
         </div>
       </div>
@@ -599,7 +612,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-community">
       <div class="nav-header">
         <h1>社区</h1>
-        <div class="header-actions"><div class="header-icon">🔍</div></div>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div></div>
       </div>
       <div class="m-filters">
         <span class="m-filter-chip active">全部</span>
@@ -613,7 +626,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <!-- Hot topics -->
       <div style="margin:12px 16px;background:var(--card);border-radius:16px;padding:14px;">
-        <div style="font-size:15px;font-weight:700;margin-bottom:10px;">🔥 今日热榜</div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:10px;">今日热榜</div>
         <div style="display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;cursor:pointer;">
           <span style="width:18px;height:18px;border-radius:4px;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">1</span>
           <span style="flex:1;">AI漫剧角色一致性终极方案</span>
@@ -630,42 +643,42 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="comm-post">
         <div class="cp-header">
-          <div class="cp-avatar" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">🎨</div>
+          <div class="cp-avatar" style="background:linear-gradient(135deg,#818CF8,#A78BFA);" style="font-size:14px;font-weight:700;color:white;">创</div>
           <div class="cp-user"><div class="cp-name">墨染青山 <span class="cp-badge" style="background:var(--l3);">L3</span></div><div class="cp-time">2小时前 · 经验分享</div></div>
         </div>
         <div class="cp-title">角色一致性终极方案：从60%到98%</div>
         <div class="cp-content">经过3个月的反复测试，我总结了一套角色一致性的完整工作流。核心思路是建立「角色锚点库」...</div>
         <div class="cp-images">
-          <div class="cp-img" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">📊</div>
-          <div class="cp-img" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);">🎯</div>
-          <div class="cp-img" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">✨</div>
+          <div class="cp-img" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div>
+          <div class="cp-img" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);"></div>
+          <div class="cp-img" style="background:linear-gradient(135deg,#818CF8,#A78BFA);"></div>
         </div>
         <div class="cp-actions">
-          <span class="cp-action">👍 328</span><span class="cp-action">💬 87</span><span class="cp-action">⭐ 156</span><span class="cp-action">🔗</span>
+          <span class="cp-action">328</span><span class="cp-action">87</span><span class="cp-action">156</span><span class="cp-action"></span>
         </div>
       </div>
 
       <div class="comm-post">
         <div class="cp-header">
-          <div class="cp-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c);">🌸</div>
+          <div class="cp-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c);"></div>
           <div class="cp-user"><div class="cp-name">花间词 <span class="cp-badge" style="background:var(--l4);">L4</span></div><div class="cp-time">4小时前 · 接单心得</div></div>
         </div>
         <div class="cp-title">红果分账月入3万+全流程复盘</div>
         <div class="cp-content">上个月通过生花接了红果的分账项目，最终收益超出预期。先说结论：选对项目比埋头做更重要...</div>
         <div class="cp-actions">
-          <span class="cp-action">👍 256</span><span class="cp-action">💬 63</span><span class="cp-action">⭐ 98</span><span class="cp-action">🔗</span>
+          <span class="cp-action">256</span><span class="cp-action">63</span><span class="cp-action">98</span><span class="cp-action"></span>
         </div>
       </div>
 
       <div class="comm-post">
         <div class="cp-header">
-          <div class="cp-avatar" style="background:linear-gradient(135deg,#96fbc4,#f9f586);">🎵</div>
+          <div class="cp-avatar" style="background:linear-gradient(135deg,#96fbc4,#f9f586);" style="font-size:14px;font-weight:700;color:white;">音</div>
           <div class="cp-user"><div class="cp-name">配乐匠人 <span class="cp-badge" style="background:var(--l2);">L2</span></div><div class="cp-time">昨天 · 组队招募</div></div>
         </div>
         <div class="cp-title">冲击快手星芒计划，寻编剧+分镜师</div>
         <div class="cp-content">目前团队已有配乐和音效师各一名，需要古风编剧和有运镜经验的分镜师。预算5万起...</div>
         <div class="cp-actions">
-          <span class="cp-action">👍 67</span><span class="cp-action">💬 34</span><span class="cp-action">⭐ 21</span><span class="cp-action">🔗</span>
+          <span class="cp-action">67</span><span class="cp-action">34</span><span class="cp-action">21</span><span class="cp-action"></span>
         </div>
       </div>
       <div style="height:20px;"></div>
@@ -676,10 +689,10 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <!-- ======================== -->
     <div class="screen" id="screen-profile">
       <div class="profile-header">
-        <div class="pf-avatar">👩‍🎨</div>
+        <div class="pf-avatar" style="font-size:18px;font-weight:700;color:var(--primary);">U</div>
         <div class="pf-name">墨染青山</div>
         <span class="pf-level" style="background:var(--l3);">L3 精英创作者</span>
-        <button id="profileRoleBtn" onclick="showRoleSheetM()" style="margin-top:12px;padding:8px 20px;border-radius:18px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;">🎬 当前：创作者 · 点击切换</button>
+        <button id="profileRoleBtn" onclick="showRoleSheetM()" style="margin-top:12px;padding:8px 20px;border-radius:18px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;">当前：创作者 · 点击切换</button>
         <button onclick="doLogoutM()" style="margin-top:8px;padding:6px 18px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;">退出登录</button>
         <div class="pf-stats">
           <div class="pfs"><div class="pfs-val">47</div><div class="pfs-lbl">完成项目</div></div>
@@ -715,7 +728,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <!-- Tuition refund -->
       <div style="margin:0 16px 16px;background:var(--card);border-radius:16px;padding:16px;">
-        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">🎓 学费返还进度</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">学费返还进度</div>
         <div style="margin-bottom:10px;">
           <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
             <span>商业漫剧VIP实战班</span><span style="color:var(--success);font-weight:600;">75%</span>
@@ -726,7 +739,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         </div>
         <div>
           <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
-            <span>AI漫剧入门班</span><span style="color:var(--success);font-weight:600;">已返还 ✅</span>
+            <span>AI漫剧入门班</span><span style="color:var(--success);font-weight:600;">已返还</span>
           </div>
           <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden;">
             <div style="background:var(--success);height:100%;width:100%;border-radius:4px;"></div>
@@ -736,20 +749,20 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="profile-menu">
         <div class="pm-group">
-          <div class="pm-item" onclick="switchTab('orders')"><span class="pm-icon">💼</span><span class="pm-text">我的订单</span><span class="pm-value">3进行中</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item" onclick="switchTab('plaza')"><span class="pm-icon">🎨</span><span class="pm-text">作品集</span><span class="pm-value">12个</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item" onclick="showSubPage('assets')"><span class="pm-icon">📦</span><span class="pm-text">我的资产</span><span class="pm-value">¥2,340</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon">💰</span><span class="pm-text">收益明细</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="switchTab('orders')"><span class="pm-icon"><div class="ico ico-sm green">单</div></span><span class="pm-text">我的订单</span><span class="pm-value">3进行中</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="switchTab('plaza')"><span class="pm-icon"><div class="ico ico-sm purple">作</div></span><span class="pm-text">作品集</span><span class="pm-value">12个</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showSubPage('assets')"><span class="pm-icon"><div class="ico ico-sm orange">资</div></span><span class="pm-text">我的资产</span><span class="pm-value">¥2,340</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon"><div class="ico ico-sm red">收</div></span><span class="pm-text">收益明细</span><span class="pm-arrow">›</span></div>
         </div>
         <div class="pm-group">
-          <div class="pm-item" onclick="showSubPage('levels')"><span class="pm-icon">🏆</span><span class="pm-text">等级成长</span><span class="pm-value">L3精英</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item" onclick="showSubPage('training')"><span class="pm-icon">🎓</span><span class="pm-text">培训记录</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showSubPage('levels')"><span class="pm-icon"><div class="ico ico-sm red">级</div></span><span class="pm-text">等级成长</span><span class="pm-value">L3精英</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showSubPage('training')"><span class="pm-icon"><div class="ico ico-sm blue">学</div></span><span class="pm-text">培训记录</span><span class="pm-arrow">›</span></div>
           <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon">⭐</span><span class="pm-text">我的评价</span><span class="pm-value">4.8分</span><span class="pm-arrow">›</span></div>
         </div>
         <div class="pm-group">
-          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon">🔔</span><span class="pm-text">消息通知</span><span class="pm-value">5条未读</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item"><span class="pm-icon">⚙️</span><span class="pm-text">设置</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item"><span class="pm-icon">❓</span><span class="pm-text">帮助与反馈</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon"><div class="ico ico-sm red">通</div></span><span class="pm-text">消息通知</span><span class="pm-value">5条未读</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item"><span class="pm-icon"><div class="ico ico-sm gray">设</div></span><span class="pm-text">设置</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item"><span class="pm-icon"><div class="ico ico-sm gray">?</div></span><span class="pm-text">帮助与反馈</span><span class="pm-arrow">›</span></div>
         </div>
       </div>
       <div style="text-align:center;padding:16px;font-size:11px;color:var(--text-secondary);">© 2026 帧游计科技 · 生花 · V1.0<br>妙笔生花，人人皆可创作</div>
@@ -765,26 +778,26 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
           <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
           <h1 style="font-size:20px;">资产库</h1>
         </div>
-        <div class="header-actions"><div class="header-icon">📤</div></div>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">+</div></div>
       </div>
       <div style="padding:12px 16px 8px;font-size:12px;color:var(--text-secondary);">上传者60-80%分润 · 平台15-30% · 推荐5-10%</div>
       <div class="asset-scroll">
-        <div class="asset-chip-m active"><div class="ac-icon">👤</div><div class="ac-label">角色</div></div>
-        <div class="asset-chip-m"><div class="ac-icon">😊</div><div class="ac-label">人脸</div></div>
-        <div class="asset-chip-m"><div class="ac-icon">🏞️</div><div class="ac-label">场景</div></div>
-        <div class="asset-chip-m"><div class="ac-icon">⚔️</div><div class="ac-label">道具</div></div>
-        <div class="asset-chip-m"><div class="ac-icon">🏃</div><div class="ac-label">动作</div></div>
-        <div class="asset-chip-m"><div class="ac-icon">🎵</div><div class="ac-label">音效</div></div>
-        <div class="asset-chip-m"><div class="ac-icon">✨</div><div class="ac-label">特效</div></div>
-        <div class="asset-chip-m"><div class="ac-icon">🎨</div><div class="ac-label">风格</div></div>
+        <div class="asset-chip-m active"><div class="ac-icon" style="font-size:14px;font-weight:700;color:var(--primary);">U</div><div class="ac-label">角色</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"><div class="ico ico-sm orange">脸</div></div><div class="ac-label">人脸</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"><div class="ico ico-sm green">景</div></div><div class="ac-label">场景</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"><div class="ico ico-sm gray">道</div></div><div class="ac-label">道具</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"><div class="ico ico-sm blue">动</div></div><div class="ac-label">动作</div></div>
+        <div class="asset-chip-m"><div class="ac-icon" style="font-size:14px;font-weight:700;color:white;">音</div><div class="ac-label">音效</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"></div><div class="ac-label">特效</div></div>
+        <div class="asset-chip-m"><div class="ac-icon" style="font-size:14px;font-weight:700;color:white;">创</div><div class="ac-label">风格</div></div>
       </div>
       <div class="asset-grid-m">
-        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#FF9A9E,#FECFEF);">👩</div><div class="ai-info"><h5>古风美女 · 全身立绘</h5><div class="ai-meta"><span>1,234次</span><span class="ai-price">¥5/次</span></div></div></div>
-        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">🏯</div><div class="ai-info"><h5>唐风宫殿 · 场景包</h5><div class="ai-meta"><span>856次</span><span class="ai-price">¥15/次</span></div></div></div>
-        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);">🧔</div><div class="ai-info"><h5>硬汉角色 · 人脸</h5><div class="ai-meta"><span>2,345次</span><span class="ai-price">¥3/次</span></div></div></div>
-        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">⚡</div><div class="ai-info"><h5>仙侠特效 · 法术</h5><div class="ai-meta"><span>567次</span><span class="ai-price">¥10/次</span></div></div></div>
-        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#96fbc4,#f9f586);">🎵</div><div class="ai-info"><h5>古风BGM · 10首</h5><div class="ai-meta"><span>1,567次</span><span class="ai-price">¥2/次</span></div></div></div>
-        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#c471f5,#fa71cd);">💃</div><div class="ai-info"><h5>舞蹈动作 · 预设包</h5><div class="ai-meta"><span>345次</span><span class="ai-price">¥12/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#FF9A9E,#FECFEF);"></div><div class="ai-info"><h5>古风美女 · 全身立绘</h5><div class="ai-meta"><span>1,234次</span><span class="ai-price">¥5/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div><div class="ai-info"><h5>唐风宫殿 · 场景包</h5><div class="ai-meta"><span>856次</span><span class="ai-price">¥15/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);"></div><div class="ai-info"><h5>硬汉角色 · 人脸</h5><div class="ai-meta"><span>2,345次</span><span class="ai-price">¥3/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);"></div><div class="ai-info"><h5>仙侠特效 · 法术</h5><div class="ai-meta"><span>567次</span><span class="ai-price">¥10/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#96fbc4,#f9f586);" style="font-size:14px;font-weight:700;color:white;">音</div><div class="ai-info"><h5>古风BGM · 10首</h5><div class="ai-meta"><span>1,567次</span><span class="ai-price">¥2/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#c471f5,#fa71cd);"></div><div class="ai-info"><h5>舞蹈动作 · 预设包</h5><div class="ai-meta"><span>345次</span><span class="ai-price">¥12/次</span></div></div></div>
       </div>
     </div>
 
@@ -806,7 +819,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="train-card">
         <div class="tc-header">
-          <div class="tc-icon" style="background:linear-gradient(135deg,#4299E1,#3182CE);">📘</div>
+          <div class="tc-icon" style="background:linear-gradient(135deg,#4299E1,#3182CE);" style="font-size:16px;font-weight:700;color:white;">书</div>
           <div class="tc-info">
             <h4>线上 · 自学基础班</h4>
             <div class="tc-sub">L1新星 · 录播+社群</div>
@@ -825,7 +838,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="train-card" style="border:2px solid var(--primary);">
         <div class="tc-header">
-          <div class="tc-icon" style="background:linear-gradient(135deg,#9F7AEA,#6B46C1);">🎯</div>
+          <div class="tc-icon" style="background:linear-gradient(135deg,#9F7AEA,#6B46C1);"></div>
           <div class="tc-info">
             <h4>线下 · VIP实战班 <span style="font-size:10px;background:var(--accent);color:white;padding:2px 6px;border-radius:4px;">推荐</span></h4>
             <div class="tc-sub">L2-L3 · 线下集训+1对1</div>
@@ -834,8 +847,8 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         </div>
         <div class="tc-features">
           <span class="tc-feat">商业实战</span><span class="tc-feat">高级运镜</span><span class="tc-feat">1对1辅导</span><span class="tc-feat">60课时</span>
-          <span class="tc-feat highlight">🎯 就业接单指导</span>
-          <span class="tc-feat highlight">💰 学费可返还</span>
+          <span class="tc-feat highlight">就业接单指导</span>
+          <span class="tc-feat highlight">学费可返还</span>
         </div>
         <div class="tc-footer">
           <span style="font-size:12px;color:var(--text-secondary);">已有 890人 报名</span>
@@ -845,7 +858,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="train-card">
         <div class="tc-header">
-          <div class="tc-icon" style="background:linear-gradient(135deg,#E53E3E,#C53030);">👑</div>
+          <div class="tc-icon" style="background:linear-gradient(135deg,#E53E3E,#C53030);" style="font-size:16px;font-weight:700;color:white;">L5</div>
           <div class="tc-info">
             <h4>线下 · VIP大师班</h4>
             <div class="tc-sub">L4-L5 · 封闭集训+项目孵化</div>
@@ -854,9 +867,9 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         </div>
         <div class="tc-features">
           <span class="tc-feat">IP策划</span><span class="tc-feat">团队管理</span><span class="tc-feat">120课时</span>
-          <span class="tc-feat highlight">👑 VIP专属资源</span>
-          <span class="tc-feat highlight">📝 平台签约</span>
-          <span class="tc-feat highlight">🎯 高薪项目直推</span>
+          <span class="tc-feat highlight">VIP专属资源</span>
+          <span class="tc-feat highlight">平台签约</span>
+          <span class="tc-feat highlight">高薪项目直推</span>
         </div>
         <div class="tc-footer">
           <span style="font-size:12px;color:var(--text-secondary);">已有 126人 报名</span>
@@ -888,13 +901,13 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <div class="level-node"><div class="level-dot" style="background:var(--l1);">L1</div><div class="level-info"><h5>新星</h5><p>入门项目 · 佣金10% · 新手保护</p></div></div>
       </div>
       <div style="margin:16px;background:var(--card);border-radius:16px;padding:16px;">
-        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">📈 升级条件</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">升级条件</div>
         <div style="font-size:13px;color:var(--text-secondary);line-height:2;">
-          ✅ 完成指定数量项目<br>✅ 平均评分 ≥ 4.5星<br>✅ 通过对应等级考核<br>✅ 无重大违规记录
+          ✓ 完成指定数量项目<br>✓ 平均评分 ≥ 4.5星<br>✓ 通过对应等级考核<br>✓ 无重大违规记录
         </div>
       </div>
       <div style="margin:16px;background:var(--card);border-radius:16px;padding:16px;">
-        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">💎 会员订阅 — 先享后付 + 佣金减免</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">会员订阅 — 先享后付 + 佣金减免</div>
         <div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;line-height:1.5;">月收入达标才扣费，低收入月免费</div>
         <div style="display:flex;gap:10px;">
           <div style="flex:1;border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;">
@@ -915,7 +928,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
             <div style="font-size:10px;color:var(--text-secondary);">佣金-3%</div>
           </div>
         </div>
-        <div style="font-size:11px;color:var(--text-secondary);margin-top:10px;line-height:1.6;">📋 需求方（先享后付）：Business ¥128/月（月支≥¥5K才扣·版权佣金6%）/ Enterprise ¥398/月（月支≥¥20K才扣·专属经理）</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:10px;line-height:1.6;">需求方（先享后付）：Business ¥128/月（月支≥¥5K才扣·版权佣金6%）/ Enterprise ¥398/月（月支≥¥20K才扣·专属经理）</div>
       </div>
     </div>
 
@@ -932,7 +945,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="platform-card-m">
         <div class="pcm-header">
-          <div class="pcm-logo" style="background:linear-gradient(135deg,#000,#25F4EE);">🎵</div>
+          <div class="pcm-logo" style="background:linear-gradient(135deg,#000,#25F4EE);" style="font-size:14px;font-weight:700;color:white;">音</div>
           <div><div class="pcm-name">抖音</div><div class="pcm-desc">短视频/漫剧创作激励</div></div>
         </div>
         <div class="pcm-activities">
@@ -944,7 +957,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="platform-card-m">
         <div class="pcm-header">
-          <div class="pcm-logo" style="background:linear-gradient(135deg,#FF4D4F,#FF7A45);">🍎</div>
+          <div class="pcm-logo" style="background:linear-gradient(135deg,#FF4D4F,#FF7A45);">果</div>
           <div><div class="pcm-name">红果短剧</div><div class="pcm-desc">短剧/漫剧分账合作</div></div>
         </div>
         <div class="pcm-activities">
@@ -956,7 +969,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="platform-card-m">
         <div class="pcm-header">
-          <div class="pcm-logo" style="background:linear-gradient(135deg,#FF5000,#FF8C1A);">⚡</div>
+          <div class="pcm-logo" style="background:linear-gradient(135deg,#FF5000,#FF8C1A);"></div>
           <div><div class="pcm-name">快手</div><div class="pcm-desc">星芒短剧计划</div></div>
         </div>
         <div class="pcm-activities">
@@ -968,7 +981,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="platform-card-m">
         <div class="pcm-header">
-          <div class="pcm-logo" style="background:linear-gradient(135deg,#00BE06,#00D26A);">🎬</div>
+          <div class="pcm-logo" style="background:linear-gradient(135deg,#00BE06,#00D26A);">爱</div>
           <div><div class="pcm-name">爱奇艺</div><div class="pcm-desc">长短视频分账体系</div></div>
         </div>
         <div class="pcm-activities">
@@ -980,11 +993,11 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       <div style="padding:0 16px 20px;">
         <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text-secondary);">更多平台</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span>📺</span>优酷</div>
-          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span>🐧</span>腾讯视频</div>
-          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span>📱</span>微信视频号</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span class="ico ico-sm gray">优</span>优酷</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span class="ico ico-sm blue">腾</span>腾讯视频</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span class="ico ico-sm green">视</span>微信视频号</div>
           <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span>🅱️</span>B站</div>
-          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span>📕</span>小红书</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span class="ico ico-sm red">红</span>小红书</div>
         </div>
       </div>
       <div style="height:20px;"></div>
@@ -1039,28 +1052,28 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
           <div style="font-size:20px;cursor:pointer;" onclick="switchTab('home')">‹</div>
           <h1 style="font-size:20px;">人才库</h1>
         </div>
-        <div class="header-actions"><div class="header-icon">🔍</div></div>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div></div>
       </div>
 
       <div class="talent-header-m">
         <div>
-          <h2>🧑‍💼 AI剧人才信息库</h2>
+          <h2>AI剧人才信息库</h2>
           <p>专业人才分类库 · 行业人互相找</p>
         </div>
       </div>
 
       <div class="talent-chips-m" id="talent-chips-m">
-        <div class="talent-chip-m active" onclick="filterTalentM(this,'all')"><div class="tc-icon-m">👥</div><div class="tc-label-m">全部</div><div class="tc-count-m">42</div></div>
-        <div class="talent-chip-m" onclick="filterTalentM(this,'director')"><div class="tc-icon-m">🎬</div><div class="tc-label-m">导演</div><div class="tc-count-m">5</div></div>
-        <div class="talent-chip-m" onclick="filterTalentM(this,'producer')"><div class="tc-icon-m">📋</div><div class="tc-label-m">制作人</div><div class="tc-count-m">4</div></div>
-        <div class="talent-chip-m" onclick="filterTalentM(this,'writer')"><div class="tc-icon-m">✍️</div><div class="tc-label-m">编剧</div><div class="tc-count-m">5</div></div>
-        <div class="talent-chip-m" onclick="filterTalentM(this,'generator')"><div class="tc-icon-m">🤖</div><div class="tc-label-m">生成师</div><div class="tc-count-m">6</div></div>
-        <div class="talent-chip-m" onclick="filterTalentM(this,'editor')"><div class="tc-icon-m">✂️</div><div class="tc-label-m">后期</div><div class="tc-count-m">4</div></div>
-        <div class="talent-chip-m" onclick="filterTalentM(this,'art')"><div class="tc-icon-m">🎨</div><div class="tc-label-m">美术</div><div class="tc-count-m">9</div></div>
+        <div class="talent-chip-m active" onclick="filterTalentM(this,'all')"><div class="tc-icon-m"><div class="ico ico-sm gray">全</div></div><div class="tc-label-m">全部</div><div class="tc-count-m">42</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'director')"><div class="tc-icon-m">爱</div><div class="tc-label-m">导演</div><div class="tc-count-m">5</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'producer')"><div class="tc-icon-m"><div class="ico ico-sm blue">制</div></div><div class="tc-label-m">制作人</div><div class="tc-count-m">4</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'writer')"><div class="tc-icon-m"><div class="ico ico-sm teal">编</div></div><div class="tc-label-m">编剧</div><div class="tc-count-m">5</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'generator')"><div class="tc-icon-m"><div class="ico ico-sm purple">生</div></div><div class="tc-label-m">生成师</div><div class="tc-count-m">6</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'editor')"><div class="tc-icon-m"><div class="ico ico-sm green">剪</div></div><div class="tc-label-m">后期</div><div class="tc-count-m">4</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'art')"><div class="tc-icon-m" style="font-size:14px;font-weight:700;color:white;">创</div><div class="tc-label-m">美术</div><div class="tc-count-m">9</div></div>
         <div class="talent-chip-sub" onclick="filterTalentM(this,'art-char')"><div class="tcs-label">角色设计</div><div class="tcs-count">3</div></div>
         <div class="talent-chip-sub" onclick="filterTalentM(this,'art-scene')"><div class="tcs-label">场景设计</div><div class="tcs-count">3</div></div>
         <div class="talent-chip-sub" onclick="filterTalentM(this,'art-concept')"><div class="tcs-label">概念美术</div><div class="tcs-count">3</div></div>
-        <div class="talent-chip-m" onclick="filterTalentM(this,'storyboard')"><div class="tc-icon-m">📐</div><div class="tc-label-m">分镜师</div><div class="tc-count-m">9</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'storyboard')"><div class="tc-icon-m"><div class="ico ico-sm gray">镜</div></div><div class="tc-label-m">分镜师</div><div class="tc-count-m">9</div></div>
         <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-script')"><div class="tcs-label">分镜脚本</div><div class="tcs-count">3</div></div>
         <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-camera')"><div class="tcs-label">运镜设计</div><div class="tcs-count">3</div></div>
         <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-dynamic')"><div class="tcs-label">动态分镜</div><div class="tcs-count">3</div></div>
@@ -1082,24 +1095,24 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
   <!-- Tab Bar -->
   <div class="tab-bar">
     <div class="tab-item active" onclick="switchTab('home')">
-      <div class="tab-icon">🏠</div><div class="tab-label">首页</div>
+      <div class="tab-icon"><div class="ico ico-sm gray">家</div></div><div class="tab-label">首页</div>
     </div>
     <div class="tab-item" id="tabRole" onclick="switchTab('orders')">
-      <div class="tab-icon" id="tabRoleIcon">📋</div><div class="tab-label" id="tabRoleLabel">接单</div>
+      <div class="tab-icon" id="tabRoleIcon"><div class="ico ico-sm red">单</div></div><div class="tab-label" id="tabRoleLabel">接单</div>
     </div>
     <div class="tab-item" onclick="switchTab('plaza')">
-      <div class="tab-icon">🎬</div><div class="tab-label">广场</div>
+      <div class="tab-icon">爱</div><div class="tab-label">广场</div>
     </div>
     <div class="tab-item" onclick="switchTab('community')">
-      <div class="tab-icon">💬</div><div class="tab-label">社区</div>
+      <div class="tab-icon"><div class="ico ico-sm green">社</div></div><div class="tab-label">社区</div>
     </div>
     <div class="tab-item" onclick="switchTab('profile')">
-      <div class="tab-icon">👤</div><div class="tab-label">我的</div>
+      <div class="tab-icon" style="font-size:14px;font-weight:700;color:var(--primary);">U</div><div class="tab-label">我的</div>
     </div>
   </div>
 
   <!-- FAB -->
-  <button class="fab" onclick="showModal('new-post')">✏️</button>
+  <button class="fab" onclick="showModal('new-post')">+</button>
 
   <!-- ===== MODALS ===== -->
   <!-- Creator Choice -->
@@ -1110,12 +1123,12 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">选择你的身份，匹配最合适的入驻路径</p>
       <div class="choice-cards">
         <div class="choice-card" onclick="hideModal('creator-choice');showModal('portfolio')" style="border-color:var(--primary-light);">
-          <div class="cc-icon">🎬</div>
+          <div class="cc-icon">爱</div>
           <h4>我是老手</h4>
           <p>已有AI漫剧经验，提交作品审核入驻<br><span style="color:var(--primary);font-weight:500;">审核通过进入人才库可接单</span></p>
         </div>
         <div class="choice-card" onclick="hideModal('creator-choice');switchTab('home');showSubPage('training')" style="border-color:#BEE3F8;">
-          <div class="cc-icon">🌱</div>
+          <div class="cc-icon"><div class="ico ico-md green">新</div></div>
           <h4>我是新手</h4>
           <p>零基础或刚接触，系统学习后入驻<br><span style="color:var(--info);font-weight:500;">培训学费可通过接单返还</span></p>
         </div>
@@ -1169,7 +1182,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       <div class="form-group"><label>作品链接</label><input type="text" placeholder="抖音/B站/快手主页链接"></div>
       <div class="form-group"><label>个人简介</label><textarea rows="3" placeholder="创作经历、擅长风格..."></textarea></div>
       <div style="background:#FFFAF0;padding:12px;border-radius:12px;font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.7;">
-        📋 审核维度：作品质量40% · 技术能力25% · 项目经验20% · 持续能力15%
+        审核维度：作品质量40% · 技术能力25% · 项目经验20% · 持续能力15%
       </div>
       <button class="btn-primary">提交审核</button>
       <button class="btn-secondary" onclick="hideModal('portfolio')">取消</button>
@@ -1180,7 +1193,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
   <div class="m-modal-overlay" id="modal-project-detail">
     <div class="m-modal">
       <div class="modal-handle"></div>
-      <div style="background:linear-gradient(135deg,#F87171,#FB923C);border-radius:14px;height:140px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px;">🏯</div>
+      <div style="background:linear-gradient(135deg,#F87171,#FB923C);border-radius:14px;height:140px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px;"></div>
       <h3>《大唐妖闻录》12集系列漫剧</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
         <div style="background:var(--bg);padding:12px;border-radius:10px;"><div style="font-size:11px;color:var(--text-secondary);">预算</div><div style="font-size:20px;font-weight:700;color:var(--primary);">¥35,000</div></div>
@@ -1188,10 +1201,10 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       </div>
       <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">古风玄幻题材，改编自同名网络小说。每集3-5分钟，共12集。提供完整剧本和角色设定稿。</p>
       <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
-        <div style="padding:6px 0;">✅ 1080P/30fps</div>
-        <div style="padding:6px 0;">✅ 角色一致性 ≥ 95%</div>
-        <div style="padding:6px 0;">✅ 含配音、字幕、音效</div>
-        <div style="padding:6px 0;">✅ 分阶段验收</div>
+        <div style="padding:6px 0;">✓ 1080P/30fps</div>
+        <div style="padding:6px 0;">✓ 角色一致性 ≥ 95%</div>
+        <div style="padding:6px 0;">✓ 含配音、字幕、音效</div>
+        <div style="padding:6px 0;">✓ 分阶段验收</div>
       </div>
       <button class="btn-primary" onclick="hideModal('project-detail')">提交投标</button>
       <button class="btn-secondary" onclick="hideModal('project-detail')">关闭</button>
@@ -1309,10 +1322,10 @@ function updateRoleTagM(role) {
   if (!tag) return;
   if (role === 'creator') {
     tag.className = 'role-tag-m creator';
-    tag.textContent = '🎬 创作者 ▾';
+    tag.textContent = '创作者 ▾';
   } else {
     tag.className = 'role-tag-m client';
-    tag.textContent = '📋 需求方 ▾';
+    tag.textContent = '需求方 ▾';
   }
   var bc = document.getElementById('bsCheckCreator');
   var bl = document.getElementById('bsCheckClient');
@@ -1439,10 +1452,10 @@ var TALENT_DATA_M = [
   {n:'王导',r:'director',rl:'🎬 导演',city:'成都',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['甜宠','校园'],gd:'linear-gradient(135deg,#FC8181,#F56565)',ic:'🎬'},
   {n:'李导',r:'director',rl:'🎬 导演',city:'广州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['玄幻','动作'],gd:'linear-gradient(135deg,#D53F8C,#B83280)',ic:'🎬'},
   {n:'赵导',r:'director',rl:'🎬 导演·大学生',city:'杭州',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['现代','情感'],gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎬'},
-  {n:'林制片',r:'producer',rl:'📋 制作人',city:'杭州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['项目管理','预算'],gd:'linear-gradient(135deg,#4299E1,#3182CE)',ic:'📋'},
-  {n:'周制片',r:'producer',rl:'📋 制作人',city:'上海',exp:'5年',lv:'L4',lc:'l4',v:true,sk:['全流程','分账'],gd:'linear-gradient(135deg,#2B6CB0,#2C5282)',ic:'📋'},
-  {n:'吴制片',r:'producer',rl:'📋 制作人',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['品牌','短视频'],gd:'linear-gradient(135deg,#63B3ED,#4299E1)',ic:'📋'},
-  {n:'钱制片',r:'producer',rl:'📋 制作人·工作室',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['工作室','批量交付'],gd:'linear-gradient(135deg,#3182CE,#2C5282)',ic:'📋'},
+  {n:'林制片',r:'producer',rl:'制作人',city:'杭州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['项目管理','预算'],gd:'linear-gradient(135deg,#4299E1,#3182CE)',ic:'📋'},
+  {n:'周制片',r:'producer',rl:'制作人',city:'上海',exp:'5年',lv:'L4',lc:'l4',v:true,sk:['全流程','分账'],gd:'linear-gradient(135deg,#2B6CB0,#2C5282)',ic:'📋'},
+  {n:'吴制片',r:'producer',rl:'制作人',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['品牌','短视频'],gd:'linear-gradient(135deg,#63B3ED,#4299E1)',ic:'📋'},
+  {n:'钱制片',r:'producer',rl:'制作人·工作室',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['工作室','批量交付'],gd:'linear-gradient(135deg,#3182CE,#2C5282)',ic:'📋'},
   {n:'剧本炼金师',r:'writer',rl:'✍️ 编剧',city:'成都',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['玄幻','悬疑'],gd:'linear-gradient(135deg,#9F7AEA,#6B46C1)',ic:'✍️'},
   {n:'故事猎人',r:'writer',rl:'✍️ 编剧',city:'上海',exp:'5年',lv:'L4',lc:'l4',v:true,sk:['古风','权谋'],gd:'linear-gradient(135deg,#6B46C1,#553C9A)',ic:'✍️'},
   {n:'甜文妹妹',r:'writer',rl:'✍️ 编剧',city:'杭州',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['甜宠','霸总'],gd:'linear-gradient(135deg,#B794F4,#9F7AEA)',ic:'✍️'},
@@ -1505,7 +1518,7 @@ function showTalentDetailM(name) {
   if (!container) return;
   var skills = t.sk.map(function(s){ return '<span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">'+s+'</span>'; }).join('');
   var verify = t.v ? '<span style="padding:1px 8px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:10px;font-weight:600;">✓ 已认证</span>' : '<span style="padding:1px 8px;border-radius:4px;background:#FFF5F5;color:var(--text-secondary);font-size:10px;font-weight:600;">未认证</span>';
-  var expLabel = t.stu ? '🎓 '+t.exp : '📈 '+t.exp;
+  var expLabel = t.stu ? ''+t.exp : ''+t.exp;
   var bio = '专注'+t.rl+'，'+expLabel+'。擅长'+t.sk.join('、')+'。'+t.wk+'。';
   var rating = t.lv === 'L4' ? '4.9' : t.lv === 'L3' ? '4.8' : t.lv === 'L2' ? '4.6' : '4.5';
   var income = t.lv === 'L4' ? '¥32.5w' : t.lv === 'L3' ? '¥18.6w' : t.lv === 'L2' ? '¥6.2w' : '¥1.2w';
