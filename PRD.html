@@ -583,6 +583,19 @@ tr:nth-child(even) td { background:#FFF5F5; }
   · L5大师：可见全部项目，包括独家高价项目
 </div>
 
+<h4 class="sub">UI设计规格（V1.1 细化）</h4>
+<div class="info-box highlight">
+  <strong>卡片式项目列表：</strong><br>
+  · 卡片采用大圆角（24px）设计，hover时上移8px并增强阴影<br>
+  · 缩略图区域使用三色渐变+点阵纹理，底部有透明渐变遮罩<br>
+  · 预算标签使用毛玻璃效果（backdrop-filter: blur），位于右上角<br>
+  · 等级标签在左下角，截止日期在右下角，紧急项目显示⏰图标+黄色高亮<br>
+  · 卡片主体展示项目名、需求方、标签、统计栏（集数/工期/评分）<br>
+  · 底部显示需求方头像徽标+认证标识+渐变色投标按钮<br>
+  · PC端右侧增加热门竞标排行侧边栏和接单小贴士<br>
+  · 筛选器带数字计数，hover时上浮，active状态为渐变色填充
+</div>
+
 <h3 class="section">4.3 创作广场（内容生态引擎）</h3>
 <h4 class="sub">功能定位</h4>
 <p>UGC内容池，让创作者自由发布作品，吸引内容采购方（MCN/发行方）选品采购版权。</p>
@@ -596,6 +609,17 @@ tr:nth-child(even) td { background:#FFF5F5; }
   <tr><td>版权采购</td><td>采购方在线选购作品版权</td><td>支持议价，平台提供版权转让协议模板</td></tr>
   <tr><td>互动社交</td><td>浏览、点赞、评论、收藏、分享</td><td>增加作品曝光，提升创作者影响力</td></tr>
 </table>
+
+<h4 class="sub">UI设计规格（V1.1 细化）</h4>
+<div class="info-box highlight">
+  <strong>网格布局作品展示：</strong><br>
+  · 标签切换改为胶囊式按钮组，带背景色和阴影，四角圆润<br>
+  · 作品卡片hover时上移8px，阴影加深，大圆角设计<br>
+  · 缩略图底部有渐变遮罩，左上角显示状态标签（🔥热门/✓已售/🆕新作/⭐新人佳作）<br>
+  · 统计数据显示emoji图标（👁️❤️💬）+ 数字，创作者名前有等级颜色圆点<br>
+  · 价格标签在卡片底部，右侧显示标签属性（可议价/已售/独家）<br>
+  · PC端4列网格，移动端2列瀑布流
+</div>
 
 <h3 class="section">4.4 资产库（数字资产引擎）</h3>
 <h4 class="sub">功能定位</h4>
@@ -658,6 +682,19 @@ tr:nth-child(even) td { background:#FFF5F5; }
   <tr><td><span class="badge" style="background:var(--l4);">L4</span></td><td>资深</td><td>大型项目（≤¥50,000）</td><td>8%</td><td>高薪项目优先、专属顾问</td></tr>
   <tr><td><span class="badge" style="background:var(--l5);">L5</span></td><td>大师</td><td>全部项目（无上限）</td><td>5%</td><td>平台签约、独家项目、VIP资源</td></tr>
 </table>
+
+<h4 class="sub">UI设计规格（V1.1 细化）</h4>
+<div class="info-box highlight">
+  <strong>五级成长卡片展示：</strong><br>
+  · 五张卡片横向排列，每张卡片顶部有4px等级色条<br>
+  · 等级图标使用56px圆形色块，带光泽渐变高光（lv-shine）<br>
+  · 卡片内嵌半透明大号等级数字装饰（右下角，opacity: 0.04）<br>
+  · 预算范围使用圆角药丸标签显示，权限列表用✓符号前置<br>
+  · 佣金显示为左"佣金"右百分比的双栏布局，中间有分割线<br>
+  · hover时整卡上移8px，阴影加深，带弹性过渡（cubic-bezier）<br>
+  · 新增升级路径步骤条（L1→L2→L3→L4→L5→大师特权）<br>
+  · 新增会员订阅对比卡片（免费版/Pro/Elite），带先享后付条件说明
+</div>
 
 <h4 class="sub">升降级规则</h4>
 <table>

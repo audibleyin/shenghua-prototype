@@ -116,46 +116,89 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .section .section-desc { color: var(--text-secondary); margin-bottom: 32px; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-/* ===== ORDER HALL ===== */
-.order-filters { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
-.filter-chip { padding: 6px 18px; border-radius: 20px; border: 1px solid var(--border); background: white; font-size: 13px; cursor: pointer; transition: all 0.25s; }
-.filter-chip:hover { background: var(--primary-bg); color: var(--primary); border-color: var(--primary-light); }
-.filter-chip.active { background: var(--primary-grad); color: white; border-color: transparent; box-shadow: 0 2px 8px rgba(229,62,62,0.2); }
+/* ===== ORDER HALL (REFINED) ===== */
+.order-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+.order-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-chip { padding: 7px 20px; border-radius: 20px; border: 1px solid var(--border); background: white; font-size: 13px; cursor: pointer; transition: all 0.25s; font-weight:500; user-select:none; }
+.filter-chip:hover { background: var(--primary-bg); color: var(--primary); border-color: var(--primary-light); transform:translateY(-1px); box-shadow:0 2px 8px rgba(229,62,62,0.06); }
+.filter-chip.active { background: var(--primary-grad); color: white; border-color: transparent; box-shadow: 0 2px 10px rgba(229,62,62,0.25); }
+.filter-chip .chip-count { display:inline-block; font-size:10px; margin-left:4px; opacity:0.7; }
+.order-sort-group { display:flex; gap:8px; align-items:center; }
+.order-sort-group select { padding:7px 14px; border:1px solid var(--border); border-radius:10px; font-size:13px; background:white; cursor:pointer; transition:border 0.2s; }
+.order-sort-group select:focus { outline:none; border-color:var(--primary); }
 .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.project-card { position: relative; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 1px solid var(--border); }
-.project-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-.project-card .project-thumb { height: 160px; background: linear-gradient(135deg, #818CF8 0%, #A78BFA 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; position: relative; overflow: hidden; }
-.project-card .project-thumb::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 20% 25%,rgba(255,255,255,0.18) 0%,transparent 45%),radial-gradient(circle at 80% 75%,rgba(255,255,255,0.12) 0%,transparent 40%); pointer-events:none; }
-.project-card .project-thumb::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(135deg,transparent,transparent 16px,rgba(255,255,255,0.04) 16px,rgba(255,255,255,0.04) 32px); pointer-events:none; }
-.project-card .project-thumb .budget { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 6px; font-size: 14px; font-weight: 600; }
-.project-card .project-thumb .level-req { position: absolute; bottom: 12px; left: 12px; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; }
-/* Thumbnail texture overlays */
+.project-card { position: relative; background: var(--card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: all 0.35s cubic-bezier(0.4,0,0.2,1); cursor: pointer; border: 1px solid var(--border); }
+.project-card:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(229,62,62,0.08), 0 4px 12px rgba(0,0,0,0.03); }
+.project-card .project-thumb { height: 170px; display: flex; align-items: flex-end; justify-content: flex-start; color: white; position: relative; overflow: hidden; }
+.project-card .project-thumb::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.55) 100%); pointer-events:none; z-index:1; }
+.project-card .project-thumb .thumb-pattern { position:absolute; inset:0; opacity:0.08; background-image:radial-gradient(circle at 30% 40%,white 1px,transparent 1px); background-size:20px 20px; pointer-events:none; }
+.project-card .project-thumb .budget { position: absolute; top: 14px; right: 14px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); padding: 5px 12px; border-radius: 8px; font-size: 15px; font-weight: 700; z-index:2; letter-spacing:0.3px; border:1px solid rgba(255,255,255,0.1); }
+.project-card .project-thumb .level-req { position: absolute; bottom: 14px; left: 14px; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; z-index:2; box-shadow:0 2px 8px rgba(0,0,0,0.2); }
+.project-card .project-thumb .deadline-badge { position:absolute; bottom:14px; right:14px; font-size:11px; color:rgba(255,255,255,0.85); z-index:2; display:flex; align-items:center; gap:4px; }
+.project-card .project-thumb .deadline-badge.urgent { color:#FBBF24; font-weight:600; }
+.project-card .project-body { padding: 16px 18px 12px; }
+.project-card .project-body h4 { font-size: 16px; margin-bottom: 6px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.project-card .project-body .project-meta { display: flex; gap: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+.project-card .project-body .project-meta span { display:flex; align-items:center; gap:4px; }
+.project-card .project-body .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.project-card .project-body .tag { font-size: 11px; padding: 3px 10px; border-radius: 6px; background: var(--primary-bg); color: var(--text-secondary); font-weight:500; }
+.project-card .project-body .tag.hot { background:#FEF2F2; color:#DC2626; }
+.project-card .project-body .tag.new { background:#F0FFF4; color:#059669; }
+.project-card .project-footer { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+.project-card .project-footer .client { display: flex; align-items: center; gap: 8px; }
+.project-card .project-footer .client .client-avatar { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; flex-shrink:0; }
+.project-card .project-footer .client .client-name { font-size:13px; font-weight:500; }
+.project-card .project-footer .client .client-verified { font-size:10px; color:var(--info); }
+.project-card .project-footer .btn-apply { padding: 6px 18px; border-radius: 8px; border: none; background: var(--primary-grad); color: white; font-size: 13px; font-weight:600; cursor: pointer; transition: all 0.2s; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.project-card .project-footer .btn-apply:hover { box-shadow:var(--shadow-glow); transform:translateY(-1px); }
+.project-card .project-footer .btn-applied { padding:6px 18px; border-radius:8px; border:1px solid var(--border); background:white; color:var(--text-secondary); font-size:13px; cursor:pointer; }
+
+.project-stats-bar { display:flex; gap:6px; margin-top:8px; }
+.project-stats-bar .ps-item { display:flex; align-items:center; gap:3px; font-size:11px; color:var(--text-secondary); }
+.project-stats-bar .ps-item .ps-num { font-weight:600; }
+
+.order-ranking { background:var(--card); border-radius:var(--radius-lg); padding:24px; box-shadow:var(--shadow); border:1px solid var(--border); position:sticky; top:88px; }
+.order-ranking h4 { font-size:15px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:6px; }
+.order-ranking .rank-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
+.order-ranking .rank-item:last-child { border-bottom:none; }
+.order-ranking .rank-num { width:22px; height:22px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; flex-shrink:0; }
+.order-ranking .rank-info { flex:1; }
+.order-ranking .rank-info .rank-title { font-size:13px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.order-ranking .rank-info .rank-meta { font-size:11px; color:var(--text-secondary); }
+.order-ranking .rank-reward { font-size:13px; font-weight:700; color:var(--primary); }
+
+/* Thumbnail texture overlays (keep for other sections) */
 .plaza-item .thumb, .asset-item .asset-thumb, .post-card .post-img, .talent-card .tc-cover { position: relative; overflow: hidden; }
 .plaza-item .thumb::before, .asset-item .asset-thumb::before, .post-card .post-img::before, .talent-card .tc-cover::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 25% 20%,rgba(255,255,255,0.2) 0%,transparent 50%),radial-gradient(circle at 75% 80%,rgba(255,255,255,0.12) 0%,transparent 45%); pointer-events:none; }
 .plaza-item .thumb::after, .asset-item .asset-thumb::after, .post-card .post-img::after, .talent-card .tc-cover::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(135deg,transparent,transparent 14px,rgba(255,255,255,0.05) 14px,rgba(255,255,255,0.05) 28px); pointer-events:none; }
-.project-card .project-body { padding: 16px; }
-.project-card .project-body h4 { font-size: 16px; margin-bottom: 6px; }
-.project-card .project-body .project-meta { display: flex; gap: 12px; font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
-.project-card .project-body .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.project-card .project-body .tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--primary-bg); color: var(--text-secondary); }
-.project-card .project-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-.project-card .project-footer .client { display: flex; align-items: center; gap: 6px; }
-.project-card .project-footer .btn-apply { padding: 5px 14px; border-radius: 6px; border: none; background: var(--primary); color: white; font-size: 12px; cursor: pointer; }
 
-/* ===== CREATION PLAZA ===== */
-.plaza-tabs { display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 2px solid var(--border); padding-bottom: 0; }
-.plaza-tab { padding: 10px 20px; border: none; background: none; font-size: 14px; cursor: pointer; color: var(--text-secondary); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-.plaza-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
-.plaza-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.plaza-item { position: relative; background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: all 0.3s; border: 1px solid var(--border); }
-.plaza-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-.plaza-item .thumb { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 56px; }
-.plaza-item .info { padding: 12px; }
-.plaza-item .info h5 { font-size: 14px; margin-bottom: 4px; }
+/* ===== CREATION PLAZA (REFINED) ===== */
+.plaza-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+.plaza-tabs { display: flex; gap: 4px; margin-bottom: 24px; background:var(--bg); border-radius:12px; padding:4px; border:1px solid var(--border); width:fit-content; }
+.plaza-tab { padding: 8px 18px; border: none; background: none; font-size: 13px; cursor: pointer; color: var(--text-secondary); border-radius:8px; transition: all 0.2s; font-weight:500; }
+.plaza-tab:hover { color:var(--text); background:var(--primary-bg); }
+.plaza-tab.active { color: white; background: var(--primary-grad); font-weight: 600; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.plaza-action-bar { display:flex; gap:10px; margin-bottom:24px; }
+.plaza-action-bar .btn-outline-sm { padding:8px 20px; border-radius:10px; border:1px solid var(--border); background:white; font-size:13px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
+.plaza-action-bar .btn-outline-sm:hover { border-color:var(--primary); color:var(--primary); }
+.plaza-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.plaza-item { position: relative; background: var(--card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: all 0.35s cubic-bezier(0.4,0,0.2,1); border: 1px solid var(--border); }
+.plaza-item:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(229,62,62,0.06), 0 4px 12px rgba(0,0,0,0.02); }
+.plaza-item .thumb { height: 200px; display: flex; align-items: flex-end; justify-content: flex-start; font-size: 48px; position:relative; }
+.plaza-item .thumb::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.4) 100%); pointer-events:none; z-index:1; }
+.plaza-item .thumb .plaza-status { position:absolute; top:12px; left:12px; padding:3px 10px; border-radius:6px; font-size:11px; font-weight:600; z-index:2; }
+.plaza-item .thumb .plaza-status.hot { background:rgba(229,62,62,0.85); color:white; }
+.plaza-item .thumb .plaza-status.sold { background:rgba(56,161,105,0.85); color:white; }
+.plaza-item .thumb .plaza-status.new { background:rgba(49,130,206,0.85); color:white; }
+.plaza-item .info { padding: 14px 16px 8px; }
+.plaza-item .info h5 { font-size: 15px; margin-bottom: 4px; font-weight:600; }
 .plaza-item .info .creator { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
-.plaza-item .info .stats { display: flex; gap: 12px; margin-top: 8px; font-size: 11px; color: var(--text-secondary); }
-.plaza-item .price-tag { padding: 8px 12px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-.plaza-item .price-tag .price { color: var(--primary); font-weight: 700; }
+.plaza-item .info .creator .creator-level-dot { display:inline-block; width:6px; height:6px; border-radius:50%; margin-right:2px; }
+.plaza-item .info .stats { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: var(--text-secondary); }
+.plaza-item .info .stats span { display:flex; align-items:center; gap:3px; }
+.plaza-item .price-tag { padding: 10px 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+.plaza-item .price-tag .price { color: var(--primary); font-weight: 700; font-size:15px; }
+.plaza-item .price-tag .price-tag-label { font-size:11px; color:var(--text-secondary); background:var(--primary-bg); padding:2px 8px; border-radius:4px; }
 
 /* ===== ASSET LIBRARY ===== */
 .asset-categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
@@ -233,17 +276,63 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 .order-item .oi-info .oi-meta { font-size: 12px; color: var(--text-secondary); }
 .order-item .oi-status { padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
 
-/* ===== LEVEL SYSTEM ===== */
-.level-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
-.level-card { background: var(--card); border-radius: var(--radius); padding: 24px; text-align: center; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border-top: 4px solid; }
-.level-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-.level-card .level-icon { font-size: 48px; margin-bottom: 12px; }
-.level-card h4 { font-size: 16px; margin-bottom: 4px; }
-.level-card .level-subtitle { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; }
-.level-card .level-budget { font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 8px; }
-.level-card .level-perms { font-size: 12px; color: var(--text-secondary); text-align: left; }
-.level-card .level-perms li { padding: 3px 0; }
-.level-card .commission { margin-top: 12px; font-size: 13px; font-weight: 600; }
+/* ===== LEVEL SYSTEM (REFINED) ===== */
+.level-intro { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:32px; }
+.level-intro-card { background:var(--card); border-radius:var(--radius-lg); padding:28px; box-shadow:var(--shadow); border:1px solid var(--border); }
+.level-intro-card h3 { font-size:18px; margin-bottom:8px; }
+.level-intro-card p { font-size:14px; color:var(--text-secondary); line-height:1.7; }
+.level-intro-card .highlight-num { font-size:32px; font-weight:800; color:var(--primary); }
+.level-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom:40px; }
+.level-card { position:relative; background: var(--card); border-radius: var(--radius-lg); padding: 28px 20px 24px; text-align: center; box-shadow: var(--shadow); transition: all 0.35s cubic-bezier(0.4,0,0.2,1); cursor: pointer; border:1px solid var(--border); overflow:hidden; }
+.level-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
+.level-card:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(229,62,62,0.08), 0 4px 12px rgba(0,0,0,0.02); }
+.level-card .level-bg-icon { position:absolute; right:-10px; bottom:-10px; font-size:80px; opacity:0.04; pointer-events:none; font-weight:900; }
+.level-card .level-icon-wrap { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:800; color:white; position:relative; }
+.level-card .level-icon-wrap .lv-shine { position:absolute; inset:0; border-radius:50%; background:linear-gradient(135deg,rgba(255,255,255,0.3) 0%,transparent 50%); pointer-events:none; }
+.level-card h4 { font-size: 17px; margin-bottom: 2px; font-weight:700; }
+.level-card .level-subtitle { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
+.level-card .level-budget { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding:4px 12px; background:var(--primary-bg); border-radius:20px; display:inline-block; }
+.level-card .level-perms { font-size: 12px; color: var(--text-secondary); text-align: left; list-style:none; padding:0; }
+.level-card .level-perms li { padding: 5px 0; display:flex; align-items:center; gap:6px; }
+.level-card .level-perms li::before { content:"✓"; font-weight:700; color:var(--success); font-size:11px; }
+.level-card .commission { margin-top: 14px; padding-top:12px; border-top:1px solid var(--border); font-size: 13px; font-weight: 600; display:flex; justify-content:space-between; }
+.level-card .commission .comm-rate { color:var(--primary); font-size:18px; }
+
+/* Level upgrade path */
+.level-upgrade-path { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:24px 0; }
+.level-up-step { text-align:center; padding:16px 8px; border-radius:12px; background:var(--card); border:1px dashed var(--border); transition:all 0.2s; }
+.level-up-step.active { border-style:solid; border-color:var(--primary); background:var(--primary-bg); }
+.level-up-step .up-arrow { display:none; font-size:16px; color:var(--text-secondary); margin-bottom:8px; }
+.level-up-step:not(:last-child) .up-arrow { display:block; }
+.level-up-step .up-label { font-size:11px; color:var(--text-secondary); }
+.level-up-step .up-value { font-size:13px; font-weight:600; margin-top:2px; }
+
+/* Membership section */
+.membership-section { margin-top:40px; }
+.membership-section h3 { font-size:22px; margin-bottom:4px; }
+.membership-section .ms-desc { color:var(--text-secondary); font-size:14px; margin-bottom:24px; }
+.membership-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.membership-card { background:var(--card); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow); border:2px solid var(--border); transition:all 0.3s; position:relative; }
+.membership-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+.membership-card.featured { border-color:var(--accent); }
+.membership-card.featured .mc-badge { position:absolute; top:14px; right:14px; padding:3px 10px; border-radius:6px; background:var(--accent); color:white; font-size:10px; font-weight:600; }
+.membership-card .mc-header { padding:24px 24px 16px; text-align:center; }
+.membership-card .mc-header .mc-name { font-size:16px; font-weight:600; }
+.membership-card .mc-header .mc-price { font-size:32px; font-weight:800; color:var(--primary); margin:8px 0; }
+.membership-card .mc-header .mc-price .mc-price-unit { font-size:14px; font-weight:400; color:var(--text-secondary); }
+.membership-card .mc-header .mc-condition { font-size:11px; color:var(--text-secondary); background:var(--primary-bg); padding:4px 12px; border-radius:20px; display:inline-block; }
+.membership-card .mc-body { padding:0 24px 20px; }
+.membership-card .mc-body .mc-feature { display:flex; align-items:center; gap:8px; padding:7px 0; font-size:13px; border-bottom:1px solid var(--border); }
+.membership-card .mc-body .mc-feature:last-child { border-bottom:none; }
+.membership-card .mc-body .mc-feature .mc-f-icon { color:var(--success); font-weight:700; flex-shrink:0; }
+.membership-card .mc-body .mc-feature .mc-f-icon.disabled { color:var(--text-secondary); }
+.membership-card .mc-body .mc-feature .mc-f-text { color:var(--text); }
+.membership-card .mc-body .mc-feature .mc-f-text.light { color:var(--text-secondary); }
+.membership-card .mc-footer { padding:16px 24px; background:#F9FAFB; }
+.membership-card .mc-footer .btn-subscribe { width:100%; padding:10px; border-radius:10px; border:none; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.membership-card .mc-footer .btn-subscribe.primary { background:var(--primary-grad); color:white; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.membership-card .mc-footer .btn-subscribe.primary:hover { box-shadow:var(--shadow-glow); transform:translateY(-1px); }
+.membership-card .mc-footer .btn-subscribe.outline { background:white; color:var(--primary); border:1px solid var(--primary); }
 
 /* ===== CLIENT MODULE ===== */
 .client-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 32px; }
@@ -312,7 +401,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   .plaza-grid { grid-template-columns: repeat(3, 1fr); }
   .asset-grid { grid-template-columns: repeat(4, 1fr); }
   .level-cards { grid-template-columns: repeat(3, 1fr); }
+  .level-upgrade-path { grid-template-columns: repeat(3,1fr); }
+  .membership-grid { grid-template-columns: repeat(2,1fr); }
   .client-steps { grid-template-columns: repeat(3, 1fr); }
+  .level-intro { grid-template-columns:1fr; }
 }
 @media (max-width: 768px) {
   .topnav .nav-links { display: none; }
@@ -322,6 +414,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   .asset-grid { grid-template-columns: repeat(3, 1fr); }
   .asset-categories { grid-template-columns: repeat(2, 1fr); }
   .level-cards { grid-template-columns: repeat(2, 1fr); }
+  .level-upgrade-path { grid-template-columns:repeat(2,1fr); }
+  .membership-grid { grid-template-columns:1fr; }
   .training-modes { grid-template-columns: 1fr; }
   .course-cards { grid-template-columns: 1fr; }
   .creator-dashboard { grid-template-columns: 1fr; }
@@ -639,64 +733,89 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
   </div>
 
   <div class="section">
-    <h2>创作者等级体系</h2>
-    <p class="section-desc">五级成长路径，从新星到大师</p>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;">
+      <div>
+        <h2 style="margin-bottom:0;">创作者等级体系</h2>
+        <p class="section-desc" style="margin-bottom:0;margin-top:8px;">五级成长路径，从新星到大师，等级越高佣金越低</p>
+      </div>
+      <a href="#" onclick="showPage('levels')" style="font-size:14px;color:var(--primary);font-weight:500;text-decoration:none;">查看升级条件 →</a>
+    </div>
+
     <div class="level-cards">
-      <div class="level-card" style="border-top-color: var(--l1);">
-        <div class="level-icon"><div class="ico ico-md gray">L1</div></div>
-        <h4>L1 新星</h4>
+      <div class="level-card" style="border-color:var(--l1);">
+        <div class="level-bg-icon" style="color:var(--l1);">L1</div>
+        <div class="level-icon-wrap" style="background:var(--l1);"><div class="lv-shine"></div>L1</div>
+        <h4>新星</h4>
         <div class="level-subtitle">刚入行的新手创作者</div>
-        <div class="level-budget">¥500-2,000/集</div>
+        <div class="level-budget">¥500-2,000</div>
         <ul class="level-perms">
           <li>简单漫剧、单集短片</li>
           <li>基础接单权限</li>
-          <li>佣金 10%</li>
+          <li>新手保护期前5单免佣</li>
         </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">10%</span></div>
       </div>
-      <div class="level-card" style="border-top-color: var(--l2);">
-        <div class="level-icon"><div class="ico ico-md blue">L2</div></div>
-        <h4>L2 新锐</h4>
+      <div class="level-card" style="border-color:var(--l2);">
+        <div class="level-bg-icon" style="color:var(--l2);">L2</div>
+        <div class="level-icon-wrap" style="background:var(--l2);"><div class="lv-shine"></div>L2</div>
+        <h4>新锐</h4>
         <div class="level-subtitle">有一定经验的创作者</div>
-        <div class="level-budget">¥2,000-5,000/集</div>
+        <div class="level-budget">¥2,000-5,000</div>
         <ul class="level-perms">
           <li>3-5集短篇、中等难度</li>
           <li>推荐接单权限</li>
-          <li>佣金 8%</li>
+          <li>提现手续费全免</li>
         </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">8%</span></div>
       </div>
-      <div class="level-card" style="border-top-color: var(--l3);">
-        <div class="level-icon"><div class="ico ico-md purple">L3</div></div>
-        <h4>L3 精英</h4>
+      <div class="level-card" style="border-color:var(--l3);">
+        <div class="level-bg-icon" style="color:var(--l3);">L3</div>
+        <div class="level-icon-wrap" style="background:var(--l3);"><div class="lv-shine"></div>L3</div>
+        <h4>精英</h4>
         <div class="level-subtitle">品质稳定的创作者</div>
-        <div class="level-budget">¥5,000-15,000/集</div>
+        <div class="level-budget">¥5,000-15,000</div>
         <ul class="level-perms">
           <li>10-20集系列、品牌定制</li>
           <li>品牌定制权限</li>
-          <li>佣金 7%</li>
+          <li>团队管理功能开放</li>
         </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">7%</span></div>
       </div>
-      <div class="level-card" style="border-top-color: var(--l4);">
-        <div class="level-icon"><div class="ico ico-md orange">L4</div></div>
-        <h4>L4 资深</h4>
+      <div class="level-card" style="border-color:var(--l4);">
+        <div class="level-bg-icon" style="color:var(--l4);">L4</div>
+        <div class="level-icon-wrap" style="background:var(--l4);"><div class="lv-shine"></div>L4</div>
+        <h4>资深</h4>
         <div class="level-subtitle">业界头部创作者</div>
-        <div class="level-budget">¥15,000-50,000/集</div>
+        <div class="level-budget">¥15,000-50,000</div>
         <ul class="level-perms">
           <li>30集以上长篇、IP改编</li>
           <li>IP改编授权</li>
-          <li>佣金 5%</li>
+          <li>专属顾问服务</li>
         </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">5%</span></div>
       </div>
-      <div class="level-card" style="border-top-color: var(--l5);">
-        <div class="level-icon"><div class="ico ico-md red">L5</div></div>
-        <h4>L5 大师</h4>
+      <div class="level-card" style="border-color:var(--l5);">
+        <div class="level-bg-icon" style="color:var(--l5);">L5</div>
+        <div class="level-icon-wrap" style="background:var(--l5);"><div class="lv-shine"></div>L5</div>
+        <h4>大师</h4>
         <div class="level-subtitle">业界标杆/平台签约</div>
-        <div class="level-budget">¥50,000+/集</div>
+        <div class="level-budget">¥50,000+</div>
         <ul class="level-perms">
-          <li>平台重点项目</li>
+          <li>平台重点项目优先</li>
           <li>导师分成权益</li>
-          <li>佣金 3%</li>
+          <li>独家项目+VIP资源</li>
         </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">3%</span></div>
       </div>
+    </div>
+
+    <!-- Upgrade Path -->
+    <div class="level-upgrade-path">
+      <div class="level-up-step active"><div class="up-arrow">→</div><div class="up-label">L1 → L2</div><div class="up-value">完成5单+4.5⭐</div></div>
+      <div class="level-up-step"><div class="up-arrow">→</div><div class="up-label">L2 → L3</div><div class="up-value">完成15单+4.5⭐</div></div>
+      <div class="level-up-step"><div class="up-arrow">→</div><div class="up-label">L3 → L4</div><div class="up-value">完成30单+4.5⭐</div></div>
+      <div class="level-up-step"><div class="up-arrow">→</div><div class="up-label">L4 → L5</div><div class="up-value">完成50单+签约</div></div>
+      <div class="level-up-step"><div class="up-arrow">→</div><div class="up-label">大师特权</div><div class="up-value">平台签约+独家</div></div>
     </div>
   </div>
 
@@ -931,125 +1050,225 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
 <!-- ============================= -->
 <div class="page" id="page-orders">
   <div class="section">
-    <h2>接单大厅</h2>
-    <p class="section-desc">等级匹配，精准撮合 — 不同等级创作者看到不同项目池</p>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:32px;">
+      <div style="flex:1; min-width:0;">
+        <h2>接单大厅</h2>
+        <p class="section-desc" style="margin-bottom:20px;">等级匹配，精准撮合 — 不同等级创作者看到不同项目池</p>
 
-    <div class="order-filters">
-      <span class="filter-chip active">全部项目</span>
-      <span class="filter-chip" onclick="this.classList.toggle('active')">品牌定制</span>
-      <span class="filter-chip" onclick="this.classList.toggle('active')">IP改编</span>
-      <span class="filter-chip" onclick="this.classList.toggle('active')">个人项目</span>
-      <span class="filter-chip" onclick="this.classList.toggle('active')">系列漫剧</span>
-      <span class="filter-chip" onclick="this.classList.toggle('active')">单集短片</span>
-      <span class="filter-chip" onclick="this.classList.toggle('active')">紧急项目</span>
-    </div>
-
-    <div style="display:flex; gap:12px; margin-bottom:20px;">
-      <select style="padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px;">
-        <option>等级要求: 全部</option><option>L1+ 新星以上</option><option>L2+ 新锐以上</option><option>L3+ 精英以上</option><option>L4+ 资深以上</option>
-      </select>
-      <select style="padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px;">
-        <option>预算范围: 全部</option><option>¥500-2,000</option><option>¥2,000-5,000</option><option>¥5,000-15,000</option><option>¥15,000-50,000</option><option>¥50,000+</option>
-      </select>
-      <select style="padding:8px 12px; border:1px solid var(--border); border-radius:8px; font-size:13px;">
-        <option>排序: 最新发布</option><option>预算最高</option><option>即将截止</option><option>竞标最少</option>
-      </select>
-    </div>
-
-    <div class="project-grid">
-      <div class="project-card" onclick="showModal('project-detail')">
-        <div class="project-thumb" style="background:linear-gradient(135deg,#F87171,#FB923C);">
-          <div class="budget">¥35,000</div>
-          <div class="level-req" style="background:var(--l3);color:white;">L3+ 精英</div>
+        <div class="order-toolbar">
+          <div class="order-filters">
+            <span class="filter-chip active">全部 <span class="chip-count">42</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">品牌定制 <span class="chip-count">8</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">IP改编 <span class="chip-count">12</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">个人项目 <span class="chip-count">10</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">系列漫剧 <span class="chip-count">7</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">紧急 <span class="chip-count">3</span></span>
+          </div>
+          <div class="order-sort-group">
+            <select><option>最新发布</option><option>预算最高</option><option>即将截止</option><option>竞标最少</option></select>
+            <select><option>等级: 全部</option><option>L1+ 新星</option><option>L2+ 新锐</option><option>L3+ 精英</option><option>L4+ 资深</option><option>L5 大师</option></select>
+            <select><option>预算: 全部</option><option>¥500-2,000</option><option>¥2,000-5,000</option><option>¥5,000-15,000</option><option>¥15,000-50,000</option><option>¥50,000+</option></select>
+          </div>
         </div>
-        <div class="project-body">
-          <h4>《大唐妖闻录》12集系列漫剧</h4>
-          <div class="project-meta"><span>截止: 7月15日</span><span>已投标: 8人</span></div>
-          <div class="project-tags"><span class="tag">古风</span><span class="tag">系列剧</span><span class="tag">IP改编</span></div>
-        </div>
-        <div class="project-footer">
-          <div class="client">某视频平台 · 已认证</div>
-          <button class="btn-apply">投标</button>
+
+        <div class="project-grid">
+          <div class="project-card" onclick="showModal('project-detail')">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#F87171 0%,#DC2626 50%,#991B1B 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥35,000</div>
+              <div class="level-req" style="background:var(--l3);">L3+ 精英</div>
+              <div class="deadline-badge urgent">⏰ 8天后截止</div>
+            </div>
+            <div class="project-body">
+              <h4>《大唐妖闻录》12集系列漫剧</h4>
+              <div class="project-meta"><span>某头部视频平台</span><span>8人投标</span></div>
+              <div class="project-tags"><span class="tag hot">古风</span><span class="tag">系列剧</span><span class="tag">IP改编</span><span class="tag new">S级</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">12</span>集</span>
+                <span class="ps-item">📅 30天</span>
+                <span class="ps-item">⭐ 4.8需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#818CF8,#6366F1);">视</span>
+                <span><span class="client-name">爱奇艺合作方</span> <span class="client-verified">✓ 已认证</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#3B82F6 0%,#6366F1 50%,#4338CA 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥8,000</div>
+              <div class="level-req" style="background:var(--l2);">L2+ 新锐</div>
+              <div class="deadline-badge">📅 7月20日</div>
+            </div>
+            <div class="project-body">
+              <h4>都市悬疑短剧 · 5集</h4>
+              <div class="project-meta"><span>个人需求方</span><span>15人投标</span></div>
+              <div class="project-tags"><span class="tag">都市</span><span class="tag">悬疑</span><span class="tag">短篇</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">5</span>集</span>
+                <span class="ps-item">📅 15天</span>
+                <span class="ps-item">⭐ 4.5需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#34D399,#059669);">个</span>
+                <span><span class="client-name">个人需求方</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#10B981 0%,#059669 50%,#065F46 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥25,000</div>
+              <div class="level-req" style="background:var(--l3);">L3+ 精英</div>
+              <div class="deadline-badge urgent">⏰ 3天后截止</div>
+            </div>
+            <div class="project-body">
+              <h4>品牌定制 · 科技公司宣传片漫剧版</h4>
+              <div class="project-meta"><span>XX科技 · 已认证</span><span>5人投标</span></div>
+              <div class="project-tags"><span class="tag hot">品牌定制</span><span class="tag">科技</span><span class="tag">宣传</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">3</span>集</span>
+                <span class="ps-item">📅 14天</span>
+                <span class="ps-item">⭐ 4.9需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);">科</span>
+                <span><span class="client-name">XX科技</span> <span class="client-verified">✓ 已认证</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#EC4899 0%,#DB2777 50%,#BE185D 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥120,000</div>
+              <div class="level-req" style="background:var(--l4);">L4+ 资深</div>
+              <div class="deadline-badge">📅 8月1日</div>
+            </div>
+            <div class="project-body">
+              <h4>《九州封神纪》30集长篇IP改编</h4>
+              <div class="project-meta"><span>某头部视频平台 · VIP</span><span>3人投标</span></div>
+              <div class="project-tags"><span class="tag hot">玄幻</span><span class="tag">长篇</span><span class="tag">IP改编</span><span class="tag new">S级</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">30</span>集</span>
+                <span class="ps-item">📅 60天</span>
+                <span class="ps-item">⭐ 5.0需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED);">头</span>
+                <span><span class="client-name">头部视频平台</span> <span class="client-verified">✓ VIP</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#FBBF24 0%,#F59E0B 50%,#D97706 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥1,500</div>
+              <div class="level-req" style="background:var(--l1);">L1+ 新星</div>
+              <div class="deadline-badge">📅 7月25日</div>
+            </div>
+            <div class="project-body">
+              <h4>校园甜宠单集 · 练手项目</h4>
+              <div class="project-meta"><span>小说作者</span><span>32人投标</span></div>
+              <div class="project-tags"><span class="tag">校园</span><span class="tag">甜宠</span><span class="tag new">新手友好</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">1</span>集</span>
+                <span class="ps-item">📅 7天</span>
+                <span class="ps-item">⭐ 4.2需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#F472B6,#EC4899);">小</span>
+                <span><span class="client-name">小说作者</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#6B7280 0%,#4B5563 50%,#374151 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥18,000</div>
+              <div class="level-req" style="background:var(--l3);">L3+ 精英</div>
+              <div class="deadline-badge urgent">⏰ 11天后截止</div>
+            </div>
+            <div class="project-body">
+              <h4>民国谍战 · 8集精品短剧</h4>
+              <div class="project-meta"><span>MCN机构 · 已认证</span><span>6人投标</span></div>
+              <div class="project-tags"><span class="tag">民国</span><span class="tag hot">谍战</span><span class="tag">精品</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">8</span>集</span>
+                <span class="ps-item">📅 20天</span>
+                <span class="ps-item">⭐ 4.6需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#A78BFA,#8B5CF6);">M</span>
+                <span><span class="client-name">MCN机构</span> <span class="client-verified">✓ 已认证</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="project-card">
-        <div class="project-thumb" style="background:linear-gradient(135deg,#4299E1,#9F7AEA);">
-          <div class="budget">¥8,000</div>
-          <div class="level-req" style="background:var(--l2);color:white;">L2+ 新锐</div>
+      <!-- Sidebar: Hot Ranking -->
+      <div style="width:280px; flex-shrink:0;">
+        <div class="order-ranking">
+          <h4>🔥 热门竞标排行</h4>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#DC2626;">1</span>
+            <div class="rank-info"><div class="rank-title">甜宠练手项目</div><div class="rank-meta">32人竞标 · L1</div></div>
+            <span class="rank-reward">¥1,500</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#F59E0B;">2</span>
+            <div class="rank-info"><div class="rank-title">都市悬疑短剧</div><div class="rank-meta">15人竞标 · L2</div></div>
+            <span class="rank-reward">¥8,000</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#3B82F6;">3</span>
+            <div class="rank-info"><div class="rank-title">大唐妖闻录</div><div class="rank-meta">8人竞标 · L3</div></div>
+            <span class="rank-reward">¥35,000</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#6B7280;">4</span>
+            <div class="rank-info"><div class="rank-title">民国谍战精品</div><div class="rank-meta">6人竞标 · L3</div></div>
+            <span class="rank-reward">¥18,000</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#6B7280;">5</span>
+            <div class="rank-info"><div class="rank-title">品牌漫剧宣传</div><div class="rank-meta">5人竞标 · L3</div></div>
+            <span class="rank-reward">¥25,000</span>
+          </div>
         </div>
-        <div class="project-body">
-          <h4>都市悬疑短剧 · 5集</h4>
-          <div class="project-meta"><span>截止: 7月20日</span><span>已投标: 15人</span></div>
-          <div class="project-tags"><span class="tag">都市</span><span class="tag">悬疑</span><span class="tag">短篇</span></div>
-        </div>
-        <div class="project-footer">
-          <div class="client">个人需求方</div>
-          <button class="btn-apply">投标</button>
-        </div>
-      </div>
 
-      <div class="project-card">
-        <div class="project-thumb" style="background:linear-gradient(135deg,#38A169,#319795);">
-          <div class="budget">¥25,000</div>
-          <div class="level-req" style="background:var(--l3);color:white;">L3+ 精英</div>
-        </div>
-        <div class="project-body">
-          <h4>品牌定制 · 科技公司宣传片漫剧版</h4>
-          <div class="project-meta"><span>截止: 7月10日</span><span>已投标: 5人</span></div>
-          <div class="project-tags"><span class="tag">品牌定制</span><span class="tag">科技</span><span class="tag">宣传</span></div>
-        </div>
-        <div class="project-footer">
-          <div class="client">XX科技 · 已认证</div>
-          <button class="btn-apply">投标</button>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-thumb" style="background:linear-gradient(135deg,#ED8936,#E53E3E);">
-          <div class="budget">¥120,000</div>
-          <div class="level-req" style="background:var(--l4);color:white;">L4+ 资深</div>
-        </div>
-        <div class="project-body">
-          <h4>《九州封神纪》30集长篇IP改编</h4>
-          <div class="project-meta"><span>截止: 8月1日</span><span>已投标: 3人</span></div>
-          <div class="project-tags"><span class="tag">玄幻</span><span class="tag">长篇</span><span class="tag">IP改编</span><span class="tag">S级</span></div>
-        </div>
-        <div class="project-footer">
-          <div class="client">某头部视频平台 · VIP</div>
-          <button class="btn-apply">投标</button>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-thumb" style="background:linear-gradient(135deg,#FBBF24,#FB923C);">
-          <div class="budget">¥1,500</div>
-          <div class="level-req" style="background:var(--l1);color:white;">L1+ 新星</div>
-        </div>
-        <div class="project-body">
-          <h4>校园甜宠单集 · 练手项目</h4>
-          <div class="project-meta"><span>截止: 7月25日</span><span>已投标: 32人</span></div>
-          <div class="project-tags"><span class="tag">校园</span><span class="tag">甜宠</span><span class="tag">单集</span></div>
-        </div>
-        <div class="project-footer">
-          <div class="client">小说作者</div>
-          <button class="btn-apply">投标</button>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-thumb" style="background:linear-gradient(135deg,#9F7AEA,#E53E3E);">
-          <div class="budget">¥18,000</div>
-          <div class="level-req" style="background:var(--l3);color:white;">L3+ 精英</div>
-        </div>
-        <div class="project-body">
-          <h4>民国谍战 · 8集精品短剧</h4>
-          <div class="project-meta"><span>截止: 7月18日</span><span>已投标: 6人</span></div>
-          <div class="project-tags"><span class="tag">民国</span><span class="tag">谍战</span><span class="tag">精品</span></div>
-        </div>
-        <div class="project-footer">
-          <div class="client">MCN机构 · 已认证</div>
-          <button class="btn-apply">投标</button>
+        <div class="order-ranking" style="margin-top:16px;">
+          <h4>💡 接单小贴士</h4>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+            <p>• 完善作品集可提升中标率 <strong style="color:var(--primary);">67%</strong></p>
+            <p>• L1新手前5单免佣金</p>
+            <p>• 响应越快，需求方好感度越高</p>
+            <p>• 加入Pro会员享佣金减免</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1064,97 +1283,115 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
     <h2>创作广场 — 人人都是导演</h2>
     <p class="section-desc">UGC内容池，故事投稿、样片展示、版权交易一站式完成</p>
 
-    <div class="plaza-tabs">
-      <button class="plaza-tab active" onclick="switchPlazaTab(this)">热门推荐</button>
-      <button class="plaza-tab" onclick="switchPlazaTab(this)">故事投稿</button>
-      <button class="plaza-tab" onclick="switchPlazaTab(this)">漫剧样片</button>
-      <button class="plaza-tab" onclick="switchPlazaTab(this)">剧本市场</button>
-      <button class="plaza-tab" onclick="switchPlazaTab(this)">最新上传</button>
-    </div>
-
-    <div style="margin-bottom:20px;">
-      <button class="btn-register" style="padding:10px 24px; font-size:14px;" onclick="showModal('upload-story')">+ 投稿故事/作品</button>
+    <div class="plaza-header">
+      <div class="plaza-tabs">
+        <button class="plaza-tab active" onclick="switchPlazaTab(this)">🔥 热门推荐</button>
+        <button class="plaza-tab" onclick="switchPlazaTab(this)">📝 故事投稿</button>
+        <button class="plaza-tab" onclick="switchPlazaTab(this)">🎬 漫剧样片</button>
+        <button class="plaza-tab" onclick="switchPlazaTab(this)">📖 剧本市场</button>
+        <button class="plaza-tab" onclick="switchPlazaTab(this)">✨ 最新上传</button>
+      </div>
+      <div class="plaza-action-bar">
+        <button class="btn-register" style="padding:9px 22px; font-size:13px;" onclick="showModal('upload-story')">+ 投稿作品</button>
+        <button class="btn-outline-sm">🔍 高级筛选</button>
+      </div>
     </div>
 
     <div class="plaza-grid">
       <div class="plaza-item" onclick="showModal('plaza-detail')">
-        <div class="thumb" style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);"></div>
+        <div class="thumb" style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);">
+          <span class="plaza-status hot">🔥 热门</span>
+        </div>
         <div class="info">
           <h5>《龙吟九天》· 玄幻史诗</h5>
-          <div class="creator">墨染青山 · L3精英</div>
-          <div class="stats"><span>12.5万</span><span>8,342</span><span>256</span></div>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l3);"></span>墨染青山 · L3精英</div>
+          <div class="stats"><span>👁️ 12.5万</span><span>❤️ 8,342</span><span>💬 256</span></div>
         </div>
-        <div class="price-tag"><span class="price">¥50,000 版权</span><span style="font-size:12px;color:var(--text-secondary);">可议价</span></div>
+        <div class="price-tag"><span class="price">¥50,000</span><span class="price-tag-label">版权 · 可议价</span></div>
       </div>
 
       <div class="plaza-item">
-        <div class="thumb" style="background:linear-gradient(135deg,#a8e063,#56ab2f);"></div>
+        <div class="thumb" style="background:linear-gradient(135deg,#a8e063,#56ab2f);">
+          <span class="plaza-status sold">✓ 已售</span>
+        </div>
         <div class="info">
           <h5>《乡村爱情AI版》· 喜剧</h5>
-          <div class="creator">乡野小民 · L2新锐</div>
-          <div class="stats"><span>8.7万</span><span>5,123</span><span>189</span></div>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l2);"></span>乡野小民 · L2新锐</div>
+          <div class="stats"><span>👁️ 8.7万</span><span>❤️ 5,123</span><span>💬 189</span></div>
         </div>
-        <div class="price-tag"><span class="price">¥15,000 版权</span><span style="font-size:12px;color:var(--success);">已售出</span></div>
+        <div class="price-tag"><span class="price">¥15,000</span><span class="price-tag-label" style="background:#F0FFF4;color:#059669;">已售出</span></div>
       </div>
 
       <div class="plaza-item">
-        <div class="thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);"></div>
+        <div class="thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">
+          <span class="plaza-status hot">🔥 热门</span>
+        </div>
         <div class="info">
           <h5>《量子迷局》· 科幻悬疑</h5>
-          <div class="creator">星际旅人 · L4资深</div>
-          <div class="stats"><span>15.2万</span><span>11,890</span><span>432</span></div>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l4);"></span>星际旅人 · L4资深</div>
+          <div class="stats"><span>👁️ 15.2万</span><span>❤️ 11,890</span><span>💬 432</span></div>
         </div>
-        <div class="price-tag"><span class="price">¥80,000 版权</span><span style="font-size:12px;color:var(--text-secondary);">独家</span></div>
+        <div class="price-tag"><span class="price">¥80,000</span><span class="price-tag-label">独家版权</span></div>
       </div>
 
       <div class="plaza-item">
-        <div class="thumb" style="background:linear-gradient(135deg,#f093fb,#f5576c);"></div>
+        <div class="thumb" style="background:linear-gradient(135deg,#f093fb,#f5576c);">
+          <span class="plaza-status hot">🔥 热门</span>
+        </div>
         <div class="info">
           <h5>《总裁的替身新娘》· 甜宠</h5>
-          <div class="creator">甜蜜蜜工作室 · L3精英</div>
-          <div class="stats"><span>22.3万</span><span>18,456</span><span>678</span></div>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l3);"></span>甜蜜蜜工作室 · L3精英</div>
+          <div class="stats"><span>👁️ 22.3万</span><span>❤️ 18,456</span><span>💬 678</span></div>
         </div>
-        <div class="price-tag"><span class="price">¥35,000 版权</span><span style="font-size:12px;color:var(--primary);">热门</span></div>
+        <div class="price-tag"><span class="price">¥35,000</span><span class="price-tag-label">版权 · 热门题材</span></div>
       </div>
 
       <div class="plaza-item">
-        <div class="thumb" style="background:linear-gradient(135deg,#4facfe,#00f2fe);"></div>
+        <div class="thumb" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">
+          <span class="plaza-status new">🆕 新作</span>
+        </div>
         <div class="info">
           <h5>《仙侠录·第一章》· 仙侠</h5>
-          <div class="creator">云中仙 · L2新锐</div>
-          <div class="stats"><span>6.8万</span><span>4,231</span><span>98</span></div>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l2);"></span>云中仙 · L2新锐</div>
+          <div class="stats"><span>👁️ 6.8万</span><span>❤️ 4,231</span><span>💬 98</span></div>
         </div>
-        <div class="price-tag"><span class="price">¥20,000 版权</span><span style="font-size:12px;color:var(--text-secondary);">可议价</span></div>
+        <div class="price-tag"><span class="price">¥20,000</span><span class="price-tag-label">版权 · 可议价</span></div>
       </div>
 
       <div class="plaza-item">
-        <div class="thumb" style="background:linear-gradient(135deg,#fa709a,#fee140);"></div>
+        <div class="thumb" style="background:linear-gradient(135deg,#fa709a,#fee140);">
+          <span class="plaza-status new">⭐ 新人佳作</span>
+        </div>
         <div class="info">
           <h5>《马戏团奇遇记》· 奇幻</h5>
-          <div class="creator">梦境画家 · L1新星</div>
-          <div class="stats"><span>3.2万</span><span>2,108</span><span>67</span></div>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l1);"></span>梦境画家 · L1新星</div>
+          <div class="stats"><span>👁️ 3.2万</span><span>❤️ 2,108</span><span>💬 67</span></div>
         </div>
-        <div class="price-tag"><span class="price">¥8,000 版权</span><span style="font-size:12px;color:var(--success);">新人佳作</span></div>
+        <div class="price-tag"><span class="price">¥8,000</span><span class="price-tag-label">新人优惠价</span></div>
       </div>
 
       <div class="plaza-item">
-        <div class="thumb" style="background:linear-gradient(135deg,#2c3e50,#3498db);"></div>
+        <div class="thumb" style="background:linear-gradient(135deg,#2c3e50,#3498db);">
+          <span class="plaza-status">📺 精品系列</span>
+        </div>
         <div class="info">
           <h5>《深夜档案》· 刑侦悬疑</h5>
-          <div class="creator">暗夜行者 · L3精英</div>
-          <div class="stats"><span>9.4万</span><span>6,789</span><span>234</span></div>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l3);"></span>暗夜行者 · L3精英</div>
+          <div class="stats"><span>👁️ 9.4万</span><span>❤️ 6,789</span><span>💬 234</span></div>
         </div>
-        <div class="price-tag"><span class="price">¥40,000 版权</span><span style="font-size:12px;color:var(--text-secondary);">系列</span></div>
+        <div class="price-tag"><span class="price">¥40,000</span><span class="price-tag-label">系列版权</span></div>
       </div>
 
       <div class="plaza-item">
-        <div class="thumb" style="background:linear-gradient(135deg,#ee9ca7,#ffdde1);"></div>
+        <div class="thumb" style="background:linear-gradient(135deg,#ee9ca7,#ffdde1);">
+          <span class="plaza-status new">🆕 新作</span>
+        </div>
         <div class="info">
           <h5>《樱花树下的约定》· 青春</h5>
-          <div class="creator">春日物语 · L2新锐</div>
-          <div class="stats"><span>5.6万</span><span>3,892</span><span>145</span></div>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l2);"></span>春日物语 · L2新锐</div>
+          <div class="stats"><span>👁️ 5.6万</span><span>❤️ 3,892</span><span>💬 145</span></div>
         </div>
-        <div class="price-tag"><span class="price">¥12,000 版权</span><span style="font-size:12px;color:var(--text-secondary);">可议价</span></div>
+        <div class="price-tag"><span class="price">¥12,000</span><span class="price-tag-label">版权 · 可议价</span></div>
       </div>
     </div>
   </div>

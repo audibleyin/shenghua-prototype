@@ -236,11 +236,38 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 .train-card .tc-footer { padding:12px 16px; border-top:0.5px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
 .train-card .tc-footer .btn-enroll { padding:8px 24px; border-radius:20px; border:none; background:var(--primary); color:white; font-size:13px; font-weight:600; cursor:pointer; }
 
-/* Orders - mobile filter */
+/* Orders - mobile filter (refined) */
 .m-filters { padding:12px 16px; display:flex; gap:8px; overflow-x:auto; background:var(--card); position:sticky; top:0; z-index:10; }
 .m-filters::-webkit-scrollbar { display:none; }
-.m-filter-chip { padding:6px 14px; border-radius:16px; border:1px solid var(--border); background:white; font-size:12px; white-space:nowrap; cursor:pointer; transition:all 0.2s; }
-.m-filter-chip.active { background:var(--primary); color:white; border-color:var(--primary); }
+.m-filter-chip { padding:6px 16px; border-radius:16px; border:1px solid var(--border); background:white; font-size:12px; white-space:nowrap; cursor:pointer; transition:all 0.2s; font-weight:500; }
+.m-filter-chip:hover { background:var(--primary-bg); color:var(--primary); }
+.m-filter-chip.active { background:var(--primary-grad); color:white; border-color:transparent; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.m-filter-chip .chip-count-m { font-size:10px; opacity:0.7; margin-left:2px; }
+
+/* Mobile project card (refined) */
+.m-project { position:relative; margin:0 16px 12px; background:var(--card); border-radius:18px; overflow:hidden; cursor:pointer; transition:all 0.25s; border: 1px solid var(--border); }
+.m-project:active { transform:scale(0.97); }
+.m-project .mp-thumb { height:130px; display:flex; align-items:flex-end; justify-content:space-between; padding:12px 14px; position:relative; overflow:hidden; }
+.m-project .mp-thumb::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 25% 20%,rgba(255,255,255,0.2) 0%,transparent 50%),radial-gradient(circle at 75% 80%,rgba(255,255,255,0.12) 0%,transparent 45%); pointer-events:none; z-index:1; }
+.m-project .mp-thumb::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.5) 100%); pointer-events:none; z-index:1; }
+.m-project .mp-thumb .thumb-pattern-m { position:absolute; inset:0; opacity:0.06; background-image:radial-gradient(circle at 40% 30%,white 1px,transparent 1px); background-size:16px 16px; pointer-events:none; }
+.m-project .mp-thumb .mp-budget { z-index:2; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); padding:5px 12px; border-radius:8px; font-size:14px; font-weight:700; color:white; border:1px solid rgba(255,255,255,0.1); }
+.m-project .mp-thumb .mp-level { z-index:2; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:600; color:white; }
+.m-project .mp-thumb .mp-deadline { position:absolute; bottom:12px; left:12px; z-index:2; font-size:11px; color:rgba(255,255,255,0.85); display:flex; align-items:center; gap:4px; }
+.m-project .mp-thumb .mp-deadline.urgent { color:#FBBF24; font-weight:600; }
+.m-project .mp-body { padding:12px 14px 8px; }
+.m-project .mp-body h4 { font-size:15px; font-weight:600; margin-bottom:4px; line-height:1.4; }
+.m-project .mp-meta { display:flex; gap:12px; font-size:11px; color:var(--text-secondary); margin-bottom:8px; }
+.m-project .mp-tags { display:flex; gap:4px; flex-wrap:wrap; }
+.m-project .mp-tags .tag { font-size:10px; padding:2px 8px; border-radius:6px; background:var(--bg); color:var(--text-secondary); font-weight:500; }
+.m-project .mp-tags .tag.hot { background:#FEF2F2; color:#DC2626; }
+.m-project .mp-tags .tag.new { background:#F0FFF4; color:#059669; }
+.m-project .mp-stats { display:flex; gap:12px; padding:0 14px 8px; font-size:10px; color:var(--text-secondary); }
+.m-project .mp-stats span { display:flex; align-items:center; gap:3px; }
+.m-project .mp-footer { padding:10px 14px; border-top:0.5px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.m-project .mp-footer .client-info { font-size:11px; color:var(--text-secondary); display:flex; align-items:center; gap:4px; }
+.m-project .mp-footer .client-info .ci-avatar { width:20px; height:20px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:white; }
+.m-project .mp-footer .btn-apply { padding:5px 18px; border-radius:14px; border:none; background:var(--primary-grad); color:white; font-size:12px; font-weight:600; cursor:pointer; box-shadow:0 2px 6px rgba(229,62,62,0.2); }
 
 /* Platform activities - mobile */
 .platform-card-m { margin:0 16px 12px; background:var(--card); border-radius:16px; overflow:hidden; }
@@ -553,67 +580,132 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     <div class="screen" id="screen-orders">
       <div class="nav-header">
         <h1>接单大厅</h1>
-        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div></div>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">🔍</div></div>
       </div>
       <div class="m-filters">
-        <span class="m-filter-chip active">全部</span>
-        <span class="m-filter-chip" onclick="this.classList.toggle('active')">品牌定制</span>
-        <span class="m-filter-chip" onclick="this.classList.toggle('active')">IP改编</span>
-        <span class="m-filter-chip" onclick="this.classList.toggle('active')">个人项目</span>
-        <span class="m-filter-chip" onclick="this.classList.toggle('active')">系列剧</span>
-        <span class="m-filter-chip" onclick="this.classList.toggle('active')">紧急</span>
+        <span class="m-filter-chip active">全部 <span class="chip-count-m">42</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">品牌定制 <span class="chip-count-m">8</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">IP改编 <span class="chip-count-m">12</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">个人 <span class="chip-count-m">10</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">系列 <span class="chip-count-m">7</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">紧急 <span class="chip-count-m">3</span></span>
       </div>
 
       <div style="padding-top:8px;">
         <div class="m-project" onclick="showModal('project-detail')">
-          <div class="mp-thumb" style="background:linear-gradient(135deg,#F87171,#FB923C);">
-            <div class="mp-budget">¥35,000</div><div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#F87171 0%,#DC2626 50%,#991B1B 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥35,000</div>
+            <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+            <div class="mp-deadline urgent">⏰ 8天后截止</div>
           </div>
           <div class="mp-body">
             <h4>《大唐妖闻录》12集系列漫剧</h4>
-            <div class="mp-meta"><span>7月15日</span><span>8人</span></div>
-            <div class="mp-tags"><span class="tag">古风</span><span class="tag">IP改编</span></div>
+            <div class="mp-meta"><span>某头部视频平台</span><span>8人投标</span></div>
+            <div class="mp-tags"><span class="tag hot">古风</span><span class="tag">IP改编</span><span class="tag new">S级</span></div>
           </div>
-          <div class="mp-footer"><span class="client-info">某头部视频平台</span><button class="btn-apply">投标</button></div>
+          <div class="mp-stats"><span>📊 12集</span><span>📅 30天</span><span>⭐ 4.8</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#818CF8,#6366F1);">视</span>爱奇艺合作方</span>
+            <button class="btn-apply">投标</button>
+          </div>
         </div>
 
         <div class="m-project">
-          <div class="mp-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">
-            <div class="mp-budget">¥12,000</div><div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#3B82F6 0%,#6366F1 50%,#4338CA 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥8,000</div>
+            <div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
+            <div class="mp-deadline">📅 7月20日截止</div>
           </div>
           <div class="mp-body">
-            <h4>赛博都市 · 品牌宣传漫剧</h4>
-            <div class="mp-meta"><span>7月20日</span><span>15人</span></div>
-            <div class="mp-tags"><span class="tag">品牌</span><span class="tag">科幻</span></div>
+            <h4>都市悬疑短剧 · 5集</h4>
+            <div class="mp-meta"><span>个人需求方</span><span>15人投标</span></div>
+            <div class="mp-tags"><span class="tag">都市</span><span class="tag">悬疑</span></div>
           </div>
-          <div class="mp-footer"><span class="client-info">XX科技</span><button class="btn-apply">投标</button></div>
+          <div class="mp-stats"><span>📊 5集</span><span>📅 15天</span><span>⭐ 4.5</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#34D399,#059669);">个</span>个人需求方</span>
+            <button class="btn-apply">投标</button>
+          </div>
         </div>
 
         <div class="m-project">
-          <div class="mp-thumb" style="background:linear-gradient(135deg,#f093fb,#f5576c);">
-            <div class="mp-budget">¥5,000</div><div class="mp-level" style="background:var(--l1);">L1+ 新星</div>
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#10B981 0%,#059669 50%,#065F46 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥25,000</div>
+            <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+            <div class="mp-deadline urgent">⏰ 3天后截止</div>
           </div>
           <div class="mp-body">
-            <h4>甜宠短篇 · 《心动信号》</h4>
-            <div class="mp-meta"><span>7月25日</span><span>23人</span></div>
-            <div class="mp-tags"><span class="tag">甜宠</span><span class="tag">短篇</span></div>
+            <h4>品牌定制 · 科技宣传片漫剧</h4>
+            <div class="mp-meta"><span>XX科技 · 已认证</span><span>5人投标</span></div>
+            <div class="mp-tags"><span class="tag hot">品牌</span><span class="tag">科技</span></div>
           </div>
-          <div class="mp-footer"><span class="client-info">个人需求方</span><button class="btn-apply">投标</button></div>
+          <div class="mp-stats"><span>📊 3集</span><span>📅 14天</span><span>⭐ 4.9</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);">科</span>XX科技</span>
+            <button class="btn-apply">投标</button>
+          </div>
         </div>
 
         <div class="m-project">
-          <div class="mp-thumb" style="background:linear-gradient(135deg,#11998e,#38ef7d);">
-            <div class="mp-budget">¥80,000</div><div class="mp-level" style="background:var(--l4);">L4+ 资深</div>
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#EC4899 0%,#DB2777 50%,#BE185D 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥120,000</div>
+            <div class="mp-level" style="background:var(--l4);">L4+ 资深</div>
+            <div class="mp-deadline">📅 8月1日截止</div>
           </div>
           <div class="mp-body">
-            <h4>末日求生 · 24集长篇漫剧</h4>
-            <div class="mp-meta"><span>8月1日</span><span>3人</span></div>
-            <div class="mp-tags"><span class="tag">末日</span><span class="tag">长篇</span><span class="tag">高预算</span></div>
+            <h4>《九州封神纪》30集长篇IP改编</h4>
+            <div class="mp-meta"><span>头部视频平台 · VIP</span><span>3人投标</span></div>
+            <div class="mp-tags"><span class="tag hot">玄幻</span><span class="tag">长篇</span><span class="tag new">S级</span></div>
           </div>
-          <div class="mp-footer"><span class="client-info">爱奇艺</span><button class="btn-apply">投标</button></div>
+          <div class="mp-stats"><span>📊 30集</span><span>📅 60天</span><span>⭐ 5.0</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED);">头</span>头部视频平台</span>
+            <button class="btn-apply">投标</button>
+          </div>
+        </div>
+
+        <div class="m-project">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#FBBF24 0%,#F59E0B 50%,#D97706 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥1,500</div>
+            <div class="mp-level" style="background:var(--l1);">L1+ 新星</div>
+            <div class="mp-deadline">📅 7月25日</div>
+          </div>
+          <div class="mp-body">
+            <h4>校园甜宠单集 · 练手项目</h4>
+            <div class="mp-meta"><span>小说作者</span><span>32人投标</span></div>
+            <div class="mp-tags"><span class="tag">校园</span><span class="tag">甜宠</span><span class="tag new">新手友好</span></div>
+          </div>
+          <div class="mp-stats"><span>📊 1集</span><span>📅 7天</span><span>⭐ 4.2</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#F472B6,#EC4899);">小</span>小说作者</span>
+            <button class="btn-apply">投标</button>
+          </div>
+        </div>
+
+        <div class="m-project">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#6B7280 0%,#4B5563 50%,#374151 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥18,000</div>
+            <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+            <div class="mp-deadline urgent">⏰ 11天后截止</div>
+          </div>
+          <div class="mp-body">
+            <h4>民国谍战 · 8集精品短剧</h4>
+            <div class="mp-meta"><span>MCN机构</span><span>6人投标</span></div>
+            <div class="mp-tags"><span class="tag">民国</span><span class="tag hot">谍战</span></div>
+          </div>
+          <div class="mp-stats"><span>📊 8集</span><span>📅 20天</span><span>⭐ 4.6</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#A78BFA,#8B5CF6);">M</span>MCN机构</span>
+            <button class="btn-apply">投标</button>
+          </div>
         </div>
       </div>
-      <div style="height:20px;"></div>
     </div>
 
     <!-- ======================== -->
