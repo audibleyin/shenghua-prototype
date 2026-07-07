@@ -1157,40 +1157,83 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
     </div>
 
     <!-- ======================== -->
-    <!-- SUB-PAGE: CLIENT         -->
+    <!-- SCREEN: CLIENT (需求方)   -->
     <!-- ======================== -->
     <div class="screen" id="screen-client">
       <div class="nav-header">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
-          <h1 style="font-size:20px;">需求方服务</h1>
+        <h1 style="font-size:22px;">需求方服务</h1>
+        <div class="header-actions">
+          <div class="header-icon" style="font-size:14px;color:var(--text-secondary);" onclick="showSubPage('talent')">🔍</div>
         </div>
       </div>
-      <div style="padding:16px;">
-        <div style="background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;">
-          <div style="font-size:15px;font-weight:600;margin-bottom:12px;">合作流程</div>
-          <div style="display:flex;justify-content:space-between;">
-            <div style="text-align:center;flex:1;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:14px;font-weight:700;">1</div><div style="font-size:10px;color:var(--text-secondary);">发布</div></div>
-            <div style="text-align:center;flex:1;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:14px;font-weight:700;">2</div><div style="font-size:10px;color:var(--text-secondary);">筛选</div></div>
-            <div style="text-align:center;flex:1;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:14px;font-weight:700;">3</div><div style="font-size:10px;color:var(--text-secondary);">托管</div></div>
-            <div style="text-align:center;flex:1;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:14px;font-weight:700;">4</div><div style="font-size:10px;color:var(--text-secondary);">管理</div></div>
-            <div style="text-align:center;flex:1;"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;font-size:14px;font-weight:700;">5</div><div style="font-size:10px;color:var(--text-secondary);">验收</div></div>
+      <div style="padding:16px 16px 80px;">
+        <!-- Stats Row -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+          <div style="background:var(--card);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);">
+            <div style="font-size:22px;font-weight:700;color:var(--primary);">3</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">进行中项目</div>
+          </div>
+          <div style="background:var(--card);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);">
+            <div style="font-size:22px;font-weight:700;color:var(--success);">12</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">已完成项目</div>
+          </div>
+          <div style="background:var(--card);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);">
+            <div style="font-size:22px;font-weight:700;color:var(--accent);">¥86万</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">累计支出</div>
           </div>
         </div>
-        <button class="btn-primary" style="width:100%;padding:14px;border:none;border-radius:14px;background:var(--primary);color:white;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;" onclick="showModal('publish-project')">+ 发布新项目</button>
-        <div style="background:var(--card);border-radius:16px;padding:16px;">
-          <div style="font-size:15px;font-weight:600;margin-bottom:12px;">我的项目</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="showModal('project-detail')">
-            <div><div style="font-size:14px;font-weight:500;">品牌宣传漫剧</div><div style="font-size:11px;color:var(--text-secondary);">L3精英 · ¥25,000</div></div>
-            <span style="font-size:11px;padding:3px 10px;border-radius:8px;background:#F0FFF4;color:var(--success);">制作中</span>
+
+        <!-- Publish Button -->
+        <button class="btn-primary" style="width:100%;padding:14px;border:none;border-radius:14px;background:var(--primary-grad);color:white;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;box-shadow:0 4px 12px rgba(229,62,62,0.2);" onclick="showModal('publish-project')">+ 发布新项目</button>
+
+        <!-- Project List -->
+        <div style="background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);">
+          <div style="padding:16px 16px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5px solid var(--border);">
+            <span style="font-size:15px;font-weight:600;">我的项目</span>
+            <span style="font-size:12px;color:var(--primary);cursor:pointer;">查看全部 →</span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="showModal('project-detail')">
-            <div><div style="font-size:14px;font-weight:500;">产品演示动画</div><div style="font-size:11px;color:var(--text-secondary);">L2新锐 · ¥8,000</div></div>
-            <span style="font-size:11px;padding:3px 10px;border-radius:8px;background:#EBF8FF;color:var(--info);">待验收</span>
+          <div style="padding:0 16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="showModal('project-detail')">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;margin-bottom:2px;">品牌宣传漫剧</div>
+                <div style="display:flex;gap:8px;font-size:11px;color:var(--text-secondary);">
+                  <span>L3精英</span><span>·</span><span>¥25,000</span>
+                </div>
+              </div>
+              <span style="font-size:11px;padding:4px 12px;border-radius:10px;background:#F0FFF4;color:var(--success);font-weight:500;">制作中</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="showModal('project-detail')">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;margin-bottom:2px;">产品演示动画</div>
+                <div style="display:flex;gap:8px;font-size:11px;color:var(--text-secondary);">
+                  <span>L2新锐</span><span>·</span><span>¥8,000</span>
+                </div>
+              </div>
+              <span style="font-size:11px;padding:4px 12px;border-radius:10px;background:#EBF8FF;color:var(--info);font-weight:500;">待验收</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;cursor:pointer;" onclick="showModal('project-detail')">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;margin-bottom:2px;">系列IP开发</div>
+                <div style="display:flex;gap:8px;font-size:11px;color:var(--text-secondary);">
+                  <span>L4资深</span><span>·</span><span>¥120,000</span>
+                </div>
+              </div>
+              <span style="font-size:11px;padding:4px 12px;border-radius:10px;background:#FFFAF0;color:var(--warning);font-weight:500;">招标中</span>
+            </div>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;cursor:pointer;" onclick="showModal('project-detail')">
-            <div><div style="font-size:14px;font-weight:500;">系列IP开发</div><div style="font-size:11px;color:var(--text-secondary);">L4资深 · ¥120,000</div></div>
-            <span style="font-size:11px;padding:3px 10px;border-radius:8px;background:#FFFAF0;color:var(--warning);">招标中</span>
+        </div>
+
+        <!-- Quick Links -->
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px;">
+          <div style="background:var(--card);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow);cursor:pointer;" onclick="showSubPage('talent')">
+            <div style="font-size:24px;margin-bottom:6px;">👥</div>
+            <div style="font-size:13px;font-weight:500;">浏览人才库</div>
+            <div style="font-size:11px;color:var(--text-secondary);">筛选创作者</div>
+          </div>
+          <div style="background:var(--card);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow);cursor:pointer;" onclick="showSubPage('plaza')">
+            <div style="font-size:24px;margin-bottom:6px;">🎨</div>
+            <div style="font-size:13px;font-weight:500;">创作广场选品</div>
+            <div style="font-size:11px;color:var(--text-secondary);">采购版权作品</div>
           </div>
         </div>
       </div>
@@ -1247,7 +1290,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
   <!-- Tab Bar -->
   <div class="tab-bar">
-    <div class="tab-item active" onclick="goBack()">
+    <div class="tab-item active" onclick="switchTab('home')">
       <div class="tab-icon"><div class="ico ico-sm gray">家</div></div><div class="tab-label">首页</div>
     </div>
     <div class="tab-item" id="tabRole" onclick="switchTab('orders')">
@@ -1280,7 +1323,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
           <h4>我是老手</h4>
           <p>已有AI漫剧经验，提交作品审核入驻<br><span style="color:var(--primary);font-weight:500;">审核通过进入人才库可接单</span></p>
         </div>
-        <div class="choice-card" onclick="hideModal('creator-choice');goBack();showSubPage('training')" style="border-color:#BEE3F8;">
+        <div class="choice-card" onclick="hideModal('creator-choice');switchTab('home');showSubPage('training')" style="border-color:#BEE3F8;">
           <div class="cc-icon"><div class="ico ico-md green">新</div></div>
           <h4>我是新手</h4>
           <p>零基础或刚接触，系统学习后入驻<br><span style="color:var(--info);font-weight:500;">培训学费可通过接单返还</span></p>
@@ -1503,7 +1546,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
   function goBack() {
     var prev = navHistory.pop();
     if (prev) { navigateTo(prev); }
-    else { goBack(); }
+    else { switchTab('home'); }
   }
 
   function updateRoleTabBar(role) {
