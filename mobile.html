@@ -12,7 +12,7 @@
   --primary-bg: #FFF5F5;
   --secondary: #374151;
   --accent: #ED8936;
-  --bg: #FAFBFC;
+  --bg: #FFFFFF;
   --card: #FFFFFF;
   --text: #1F2937;
   --text-secondary: #9CA3AF;
@@ -97,7 +97,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 /* ===== HOME PAGE ===== */
 .home-banner {
   margin:12px 16px; border-radius:16px; overflow:hidden;
-  background: linear-gradient(135deg, #FFF5F5 0%, #F0F7FF 100%);
+  background: linear-gradient(135deg, #FFF0F0 0%, #EBF4FF 100%);
   padding:24px 20px; color:var(--text); position:relative; border:1px solid var(--border);
 }
 .home-banner h2 { font-size:22px; font-weight:700; margin-bottom:4px; color:var(--text); }
@@ -1493,7 +1493,7 @@ function showTalentDetailM(name) {
   var container = document.getElementById('talent-detail-content-m');
   if (!container) return;
   var skills = t.sk.map(function(s){ return '<span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">'+s+'</span>'; }).join('');
-  var verify = t.v ? '<span style="padding:1px 8px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:10px;font-weight:600;">✓ 已认证</span>' : '<span style="padding:1px 8px;border-radius:4px;background:#EDF2F7;color:var(--text-secondary);font-size:10px;font-weight:600;">未认证</span>';
+  var verify = t.v ? '<span style="padding:1px 8px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:10px;font-weight:600;">✓ 已认证</span>' : '<span style="padding:1px 8px;border-radius:4px;background:#FFF5F5;color:var(--text-secondary);font-size:10px;font-weight:600;">未认证</span>';
   var expLabel = t.stu ? '🎓 '+t.exp : '📈 '+t.exp;
   var bio = '专注'+t.rl+'，'+expLabel+'。擅长'+t.sk.join('、')+'。'+t.wk+'。';
   var rating = t.lv === 'L4' ? '4.9' : t.lv === 'L3' ? '4.8' : t.lv === 'L2' ? '4.6' : '4.5';
