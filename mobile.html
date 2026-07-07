@@ -10,13 +10,13 @@
   --primary-dark: #C53030;
   --primary-light: #FEB2B2;
   --primary-bg: #FFF5F5;
-  --secondary: #2D3748;
+  --secondary: #374151;
   --accent: #ED8936;
-  --bg: #F5F5F7;
+  --bg: #FAFBFC;
   --card: #FFFFFF;
-  --text: #1A202C;
-  --text-secondary: #8E8E93;
-  --border: #E5E5EA;
+  --text: #1F2937;
+  --text-secondary: #9CA3AF;
+  --border: #F0F0F0;
   --success: #34C759;
   --warning: #FF9500;
   --info: #007AFF;
@@ -32,7 +32,7 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
-body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif; background: #E8E8ED; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif; background: #F0F0F2; display:flex; justify-content:center; align-items:center; min-height:100vh; }
 
 /* ===== PHONE FRAME ===== */
 .phone-frame {
@@ -41,7 +41,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
   border-radius: 50px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 0 0 4px #1a1a2e, 0 0 0 6px #333, 0 0 0 8px #1a1a2e, 0 25px 60px rgba(0,0,0,0.5);
+  box-shadow: 0 0 0 4px #D1D5DB, 0 0 0 6px #F3F4F6, 0 0 0 8px #D1D5DB, 0 25px 60px rgba(0,0,0,0.12);
 }
 .phone-frame::before {
   content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
@@ -105,7 +105,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 .home-banner .banner-btns { display:flex; gap:10px; }
 .home-banner .banner-btn { padding:8px 20px; border-radius:20px; font-size:13px; font-weight:600; border:none; cursor:pointer; }
 .home-banner .banner-btn-primary { background:white; color:var(--primary); }
-.home-banner .banner-btn-outline { background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.4); }
+.home-banner .banner-btn-outline { background:transparent; color:var(--primary); border:1px solid var(--primary); }
 .home-banner .banner-stats { display:flex; gap:20px; margin-top:16px; }
 .home-banner .bstat .bnum { font-size:20px; font-weight:700; }
 .home-banner .bstat .blbl { font-size:10px; color:var(--text-secondary); }
@@ -310,7 +310,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 .m-bs-content { width:100%; background:white; border-radius:20px 20px 0 0; padding:8px 20px 32px; animation:slideUp 0.25s ease; }
 @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
-.m-bs-handle { width:36px; height:4px; background:#E2E8F0; border-radius:2px; margin:0 auto 16px; }
+.m-bs-handle { width:36px; height:4px; background:#F0F0F0; border-radius:2px; margin:0 auto 16px; }
 .m-bs-item { display:flex; align-items:center; gap:12px; padding:14px 12px; border-radius:12px; cursor:pointer; transition:background 0.15s; }
 .m-bs-item:hover, .m-bs-item:active { background:var(--bg); }
 .m-bs-item.active { background:var(--bg); }
@@ -407,7 +407,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       </div>
 
       <div class="m-project" onclick="showModal('project-detail')">
-        <div class="mp-thumb" style="background:linear-gradient(135deg,#E53E3E,#DD6B20);">
+        <div class="mp-thumb" style="background:linear-gradient(135deg,#F87171,#FB923C);">
           🏯
           <div class="mp-budget">¥35,000</div>
           <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
@@ -424,7 +424,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       </div>
 
       <div class="m-project" onclick="showModal('project-detail')">
-        <div class="mp-thumb" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+        <div class="mp-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">
           🌃
           <div class="mp-budget">¥12,000</div>
           <div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
@@ -481,7 +481,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div style="padding-top:8px;">
         <div class="m-project" onclick="showModal('project-detail')">
-          <div class="mp-thumb" style="background:linear-gradient(135deg,#E53E3E,#DD6B20);">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#F87171,#FB923C);">
             🏯<div class="mp-budget">¥35,000</div><div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
           </div>
           <div class="mp-body">
@@ -493,7 +493,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         </div>
 
         <div class="m-project">
-          <div class="mp-thumb" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">
             🌃<div class="mp-budget">¥12,000</div><div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
           </div>
           <div class="mp-body">
@@ -619,7 +619,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
 
       <div class="comm-post">
         <div class="cp-header">
-          <div class="cp-avatar" style="background:linear-gradient(135deg,#667eea,#764ba2);">🎨</div>
+          <div class="cp-avatar" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">🎨</div>
           <div class="cp-user"><div class="cp-name">墨染青山 <span class="cp-badge" style="background:var(--l3);">L3</span></div><div class="cp-time">2小时前 · 经验分享</div></div>
         </div>
         <div class="cp-title">角色一致性终极方案：从60%到98%</div>
@@ -627,7 +627,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <div class="cp-images">
           <div class="cp-img" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">📊</div>
           <div class="cp-img" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);">🎯</div>
-          <div class="cp-img" style="background:linear-gradient(135deg,#667eea,#764ba2);">✨</div>
+          <div class="cp-img" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">✨</div>
         </div>
         <div class="cp-actions">
           <span class="cp-action">👍 328</span><span class="cp-action">💬 87</span><span class="cp-action">⭐ 156</span><span class="cp-action">🔗</span>
@@ -771,7 +771,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
         <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#FF9A9E,#FECFEF);">👩</div><div class="ai-info"><h5>古风美女 · 全身立绘</h5><div class="ai-meta"><span>1,234次</span><span class="ai-price">¥5/次</span></div></div></div>
         <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);">🏯</div><div class="ai-info"><h5>唐风宫殿 · 场景包</h5><div class="ai-meta"><span>856次</span><span class="ai-price">¥15/次</span></div></div></div>
         <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);">🧔</div><div class="ai-info"><h5>硬汉角色 · 人脸</h5><div class="ai-meta"><span>2,345次</span><span class="ai-price">¥3/次</span></div></div></div>
-        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#667eea,#764ba2);">⚡</div><div class="ai-info"><h5>仙侠特效 · 法术</h5><div class="ai-meta"><span>567次</span><span class="ai-price">¥10/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">⚡</div><div class="ai-info"><h5>仙侠特效 · 法术</h5><div class="ai-meta"><span>567次</span><span class="ai-price">¥10/次</span></div></div></div>
         <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#96fbc4,#f9f586);">🎵</div><div class="ai-info"><h5>古风BGM · 10首</h5><div class="ai-meta"><span>1,567次</span><span class="ai-price">¥2/次</span></div></div></div>
         <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#c471f5,#fa71cd);">💃</div><div class="ai-info"><h5>舞蹈动作 · 预设包</h5><div class="ai-meta"><span>345次</span><span class="ai-price">¥12/次</span></div></div></div>
       </div>
@@ -1169,7 +1169,7 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
   <div class="m-modal-overlay" id="modal-project-detail">
     <div class="m-modal">
       <div class="modal-handle"></div>
-      <div style="background:linear-gradient(135deg,#E53E3E,#DD6B20);border-radius:14px;height:140px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px;">🏯</div>
+      <div style="background:linear-gradient(135deg,#F87171,#FB923C);border-radius:14px;height:140px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px;">🏯</div>
       <h3>《大唐妖闻录》12集系列漫剧</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
         <div style="background:var(--bg);padding:12px;border-radius:10px;"><div style="font-size:11px;color:var(--text-secondary);">预算</div><div style="font-size:20px;font-weight:700;color:var(--primary);">¥35,000</div></div>
@@ -1423,7 +1423,7 @@ document.querySelectorAll('.m-modal-overlay').forEach(o => {
 
 // ===== TALENT DATA (MOBILE) =====
 var TALENT_DATA_M = [
-  {n:'陈导',r:'director',rl:'🎬 导演',city:'上海',exp:'4年',lv:'L4',lc:'l4',v:true,sk:['古风','科幻'],gd:'linear-gradient(135deg,#E53E3E,#DD6B20)',ic:'🎬'},
+  {n:'陈导',r:'director',rl:'🎬 导演',city:'上海',exp:'4年',lv:'L4',lc:'l4',v:true,sk:['古风','科幻'],gd:'linear-gradient(135deg,#F87171,#FB923C)',ic:'🎬'},
   {n:'张导',r:'director',rl:'🎬 导演',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['悬疑','都市'],gd:'linear-gradient(135deg,#E53E3E,#C53030)',ic:'🎬'},
   {n:'王导',r:'director',rl:'🎬 导演',city:'成都',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['甜宠','校园'],gd:'linear-gradient(135deg,#FC8181,#F56565)',ic:'🎬'},
   {n:'李导',r:'director',rl:'🎬 导演',city:'广州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['玄幻','动作'],gd:'linear-gradient(135deg,#D53F8C,#B83280)',ic:'🎬'},
@@ -1441,7 +1441,7 @@ var TALENT_DATA_M = [
   {n:'小林同学',r:'generator',rl:'🤖 生成师·大学生',city:'广州',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['ComfyUI','SD'],gd:'linear-gradient(135deg,#48BB78,#38A169)',ic:'🤖'},
   {n:'AI画手阿杰',r:'generator',rl:'🤖 生成师',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['ComfyUI','Flux'],gd:'linear-gradient(135deg,#0BC5EA,#00A3C4)',ic:'🤖'},
   {n:'风灵制片',r:'generator',rl:'🤖 生成师',city:'上海',exp:'2年',lv:'L3',lc:'l3',v:true,sk:['Runway','Pika'],gd:'linear-gradient(135deg,#2C7A7B,#234E52)',ic:'🤖'},
-  {n:'灵境工坊',r:'generator',rl:'🤖 生成师·工作室',city:'成都',exp:'3年',lv:'L4',lc:'l4',v:true,sk:['全流程','批量'],gd:'linear-gradient(135deg,#1A202C,#2D3748)',ic:'🤖'},
+  {n:'灵境工坊',r:'generator',rl:'🤖 生成师·工作室',city:'成都',exp:'3年',lv:'L4',lc:'l4',v:true,sk:['全流程','批量'],gd:'linear-gradient(135deg,#475569,#64748B)',ic:'🤖'},
   {n:'星河视觉',r:'generator',rl:'🤖 生成师·大学生',city:'杭州',exp:'研一',stu:true,lv:'L2',lc:'l2',v:false,sk:['ComfyUI','AnimateDiff'],gd:'linear-gradient(135deg,#68D391,#48BB78)',ic:'🤖'},
   {n:'剪辑老王',r:'editor',rl:'✂️ 后期·调色',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:true,sk:['PR','DaVinci'],gd:'linear-gradient(135deg,#ED8936,#DD6B20)',ic:'✂️'},
   {n:'调色师阿伟',r:'editor',rl:'✂️ 后期·调色',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['DaVinci','Baselight'],gd:'linear-gradient(135deg,#DD6B20,#C05621)',ic:'✂️'},
@@ -1453,7 +1453,7 @@ var TALENT_DATA_M = [
   {n:'梦境画家',r:'art-scene',rl:'🎨 美术·场景设计',city:'西安',exp:'1年',lv:'L2',lc:'l2',v:false,sk:['场景','氛围'],gd:'linear-gradient(135deg,#a18cd1,#fbc2eb)',ic:'🎨'},
   {n:'场景王',r:'art-scene',rl:'🎨 美术·场景设计',city:'成都',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['场景','光影'],gd:'linear-gradient(135deg,#9F7AEA,#B794F4)',ic:'🎨'},
   {n:'小景',r:'art-scene',rl:'🎨 美术·场景设计·大学生',city:'广州',exp:'大二',stu:true,lv:'L1',lc:'l1',v:false,sk:['场景'],gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'🎨'},
-  {n:'概念猫',r:'art-concept',rl:'🎨 美术·概念美术',city:'上海',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['概念设计','世界观'],gd:'linear-gradient(135deg,#667eea,#764ba2)',ic:'🎨'},
+  {n:'概念猫',r:'art-concept',rl:'🎨 美术·概念美术',city:'上海',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['概念设计','世界观'],gd:'linear-gradient(135deg,#818CF8,#A78BFA)',ic:'🎨'},
   {n:'设绘师',r:'art-concept',rl:'🎨 美术·概念美术',city:'杭州',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['概念','分镜插画'],gd:'linear-gradient(135deg,#a18cd1,#8E70C8)',ic:'🎨'},
   {n:'灵感集',r:'art-concept',rl:'🎨 美术·概念美术·大学生',city:'北京',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['概念','风格'],gd:'linear-gradient(135deg,#E9D8FD,#D6BCFA)',ic:'🎨'},
   {n:'分镜侠',r:'sb-script',rl:'📐 分镜师·脚本',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['分镜脚本','叙事'],gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},

@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>生花AI创意平台 · 产品设计文档 V1.0</title>
 <style>
-:root { --primary:#E53E3E; --secondary:#2D3748; --bg:#fff; --text:#1A202C; --text2:#4A5568; --border:#E2E8F0; --accent:#ED8936; --info:#3182CE; --success:#38A169; --l1:#A0AEC0; --l2:#4299E1; --l3:#9F7AEA; --l4:#ED8936; --l5:#E53E3E; }
+:root { --primary:#E53E3E; --secondary:#374151; --bg:#fff; --text:#1F2937; --text2:#6B7280; --border:#F0F0F0; --accent:#ED8936; --info:#3182CE; --success:#38A169; --l1:#A0AEC0; --l2:#4299E1; --l3:#9F7AEA; --l4:#ED8936; --l5:#E53E3E; }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; color:var(--text); line-height:1.8; background:#F7FAFC; }
+body { font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; color:var(--text); line-height:1.8; background:#FAFBFC; }
 
 /* Layout */
-.doc { max-width:960px; margin:0 auto; background:white; box-shadow:0 0 40px rgba(0,0,0,0.08); }
+.doc { max-width:960px; margin:0 auto; background:white; box-shadow:0 0 40px rgba(0,0,0,0.04); }
 
 /* Cover */
-.cover { background:linear-gradient(135deg,#FFF5F5 0%,#F7FAFC 40%,#EBF8FF 100%); color:var(--text); padding:120px 60px 80px; text-align:center; border-bottom:3px solid var(--primary); }
+.cover { background:linear-gradient(135deg,#FFF5F5 0%,#FAFBFC 40%,#EBF8FF 100%); color:var(--text); padding:120px 60px 80px; text-align:center; border-bottom:3px solid var(--primary); }
 .cover h1 { font-size:42px; font-weight:800; margin-bottom:12px; letter-spacing:2px; }
 .cover .subtitle { font-size:20px; color:var(--text2); margin-bottom:40px; }
 .cover .meta { display:flex; justify-content:center; gap:40px; font-size:14px; color:var(--text2); }
@@ -39,25 +39,25 @@ li { margin:4px 0; }
 
 /* Tables */
 table { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
-th { background:#F7FAFC; color:var(--text); padding:12px 14px; text-align:left; font-weight:600; border-bottom:2px solid var(--primary); }
+th { background:#FAFBFC; color:var(--text); padding:12px 14px; text-align:left; font-weight:600; border-bottom:2px solid var(--primary); }
 td { padding:10px 14px; border-bottom:1px solid var(--border); }
-tr:nth-child(even) td { background:#F7FAFC; }
+tr:nth-child(even) td { background:#FAFBFC; }
 
 /* Architecture Diagram */
-.arch-diagram { margin:24px 0; padding:32px; background:#F7FAFC; border-radius:12px; border:1px solid var(--border); }
+.arch-diagram { margin:24px 0; padding:32px; background:#FAFBFC; border-radius:12px; border:1px solid var(--border); }
 .arch-title { text-align:center; font-size:16px; font-weight:700; margin-bottom:24px; color:var(--secondary); }
 .arch-layer { margin-bottom:16px; }
 .arch-layer-label { font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
 .arch-row { display:flex; gap:10px; flex-wrap:wrap; }
-.arch-box { flex:1; min-width:120px; padding:14px 12px; border-radius:10px; text-align:center; font-size:13px; font-weight:600; color:white; position:relative; }
-.arch-box small { display:block; font-size:10px; font-weight:400; opacity:0.8; margin-top:2px; }
-.arch-box.red { background:linear-gradient(135deg,#E53E3E,#C53030); }
-.arch-box.blue { background:linear-gradient(135deg,#4299E1,#2B6CB0); }
-.arch-box.purple { background:linear-gradient(135deg,#9F7AEA,#6B46C1); }
-.arch-box.orange { background:linear-gradient(135deg,#ED8936,#DD6B20); }
-.arch-box.green { background:linear-gradient(135deg,#38A169,#276749); }
-.arch-box.gray { background:linear-gradient(135deg,#A0AEC0,#718096); }
-.arch-box.teal { background:linear-gradient(135deg,#38B2AC,#2C7A7B); }
+.arch-box { flex:1; min-width:120px; padding:14px 12px; border-radius:10px; text-align:center; font-size:13px; font-weight:600; position:relative; border:1px solid; }
+.arch-box small { display:block; font-size:10px; font-weight:400; opacity:0.7; margin-top:2px; }
+.arch-box.red { background:#FEF2F2; color:#E53E3E; border-color:#FECACA; }
+.arch-box.blue { background:#EFF6FF; color:#2563EB; border-color:#BFDBFE; }
+.arch-box.purple { background:#F5F3FF; color:#7C3AED; border-color:#DDD6FE; }
+.arch-box.orange { background:#FFF7ED; color:#EA580C; border-color:#FED7AA; }
+.arch-box.green { background:#F0FDF4; color:#16A34A; border-color:#BBF7D0; }
+.arch-box.gray { background:#F9FAFB; color:#6B7280; border-color:#E5E7EB; }
+.arch-box.teal { background:#F0FDFA; color:#0D9488; border-color:#99F6E4; }
 .arch-arrow { text-align:center; font-size:20px; color:var(--text2); margin:4px 0; }
 
 /* Flow Diagram */
@@ -77,7 +77,7 @@ tr:nth-child(even) td { background:#F7FAFC; }
 
 /* KPI Card */
 .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:16px 0; }
-.kpi-card { background:#F7FAFC; border-radius:10px; padding:16px; text-align:center; border:1px solid var(--border); }
+.kpi-card { background:#FAFBFC; border-radius:10px; padding:16px; text-align:center; border:1px solid var(--border); }
 .kpi-card .kpi-val { font-size:22px; font-weight:700; color:var(--primary); }
 .kpi-card .kpi-lbl { font-size:11px; color:var(--text2); margin-top:4px; }
 
