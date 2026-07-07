@@ -905,12 +905,12 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
           <div class="pm-item" onclick="switchTab('orders')"><span class="pm-icon"><div class="ico ico-sm green">单</div></span><span class="pm-text">我的订单</span><span class="pm-value">3进行中</span><span class="pm-arrow">›</span></div>
           <div class="pm-item" onclick="switchTab('plaza')"><span class="pm-icon"><div class="ico ico-sm purple">作</div></span><span class="pm-text">作品集</span><span class="pm-value">12个</span><span class="pm-arrow">›</span></div>
           <div class="pm-item" onclick="showSubPage('assets')"><span class="pm-icon"><div class="ico ico-sm orange">资</div></span><span class="pm-text">我的资产</span><span class="pm-value">¥2,340</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon"><div class="ico ico-sm red">收</div></span><span class="pm-text">收益明细</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('income')"><span class="pm-icon"><div class="ico ico-sm red">收</div></span><span class="pm-text">收益明细</span><span class="pm-arrow">›</span></div>
         </div>
         <div class="pm-group">
           <div class="pm-item" onclick="showSubPage('levels')"><span class="pm-icon"><div class="ico ico-sm red">级</div></span><span class="pm-text">等级成长</span><span class="pm-value">L3精英</span><span class="pm-arrow">›</span></div>
           <div class="pm-item" onclick="showSubPage('training')"><span class="pm-icon"><div class="ico ico-sm blue">学</div></span><span class="pm-text">培训记录</span><span class="pm-arrow">›</span></div>
-          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon">⭐</span><span class="pm-text">我的评价</span><span class="pm-value">4.8分</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('reviews')"><span class="pm-icon">⭐</span><span class="pm-text">我的评价</span><span class="pm-value">4.8分</span><span class="pm-arrow">›</span></div>
         </div>
         <div class="pm-group">
           <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon"><div class="ico ico-sm red">通</div></span><span class="pm-text">消息通知</span><span class="pm-value">5条未读</span><span class="pm-arrow">›</span></div>
@@ -1430,7 +1430,76 @@ body { font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica N
       </div>
       <button class="btn-secondary" onclick="hideModal('notif')">关闭</button>
     </div>
+  
+  <!-- Income Details -->
+  <div class="m-modal-overlay" id="modal-income">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>收益明细</h3>
+      <div style="background:linear-gradient(135deg,#FFF5F5,#FFE4E4);border-radius:14px;padding:20px;text-align:center;margin-bottom:16px;border:1px solid var(--border);">
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">本月收入</div>
+        <div style="font-size:36px;font-weight:800;color:var(--primary);">¥32,500</div>
+        <div style="font-size:12px;color:var(--success);margin-top:4px;">↑ 18.5% 较上月</div>
+      </div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">收入明细</div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;font-weight:500;">品牌宣传漫剧</div><div style="font-size:11px;color:var(--text-secondary);">项目佣金 · 7月5日</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--primary);">¥23,250</div>
+      </div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;font-weight:500;">资产使用费</div><div style="font-size:11px;color:var(--text-secondary);">古风美女 · 6月结算</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--primary);">¥5,340</div>
+      </div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;font-weight:500;">版权交易分成</div><div style="font-size:11px;color:var(--text-secondary);">《龙吟九天》· 7月3日</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--primary);">¥3,910</div>
+      </div>
+      <div style="padding:12px 0;display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;font-weight:500;">学费返还抵扣</div><div style="font-size:11px;color:var(--text-secondary);">VIP实战班 · 进度75%</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--success);">-¥2,800</div>
+      </div>
+      <button class="btn-secondary" onclick="hideModal('income')">关闭</button>
+    </div>
   </div>
+
+  <!-- My Reviews -->
+  <div class="m-modal-overlay" id="modal-reviews">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>我的评价</h3>
+      <div style="display:flex;gap:16px;margin-bottom:16px;padding:16px;background:var(--bg);border-radius:14px;">
+        <div style="text-align:center;">
+          <div style="font-size:36px;font-weight:800;color:var(--primary);">4.8</div>
+          <div style="font-size:11px;color:var(--text-secondary);">综合评分</div>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:12px;color:var(--text-secondary);width:40px;">5星</span><div style="flex:1;background:var(--border);border-radius:4px;height:6px;"><div style="background:var(--primary);width:85%;height:100%;border-radius:4px;"></div></div><span style="font-size:11px;color:var(--text-secondary);">85%</span></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:12px;color:var(--text-secondary);width:40px;">4星</span><div style="flex:1;background:var(--border);border-radius:4px;height:6px;"><div style="background:var(--accent);width:10%;height:100%;border-radius:4px;"></div></div><span style="font-size:11px;color:var(--text-secondary);">10%</span></div>
+          <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:12px;color:var(--text-secondary);width:40px;">3星</span><div style="flex:1;background:var(--border);border-radius:4px;height:6px;"><div style="background:var(--text-secondary);width:5%;height:100%;border-radius:4px;"></div></div><span style="font-size:11px;color:var(--text-secondary);">5%</span></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">最近评价</div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:500;">XX科技 · 品牌宣传漫剧</span><span style="font-size:12px;">⭐⭐⭐⭐⭐</span></div>
+        <div style="font-size:12px;color:var(--text-secondary);">交付质量超出预期，角色一致性非常好，合作愉快！</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">7月5日</div>
+      </div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:500;">个人需求方 · 悬疑短剧</span><span style="font-size:12px;">⭐⭐⭐⭐</span></div>
+        <div style="font-size:12px;color:var(--text-secondary);">整体不错，节奏可以再紧凑一些。</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">6月28日</div>
+      </div>
+      <div style="padding:12px 0;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:500;">MCN机构 · 民国谍战</span><span style="font-size:12px;">⭐⭐⭐⭐⭐</span></div>
+        <div style="font-size:12px;color:var(--text-secondary);">非常专业的合作，分镜水准一流，下次继续合作。</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">6月15日</div>
+      </div>
+      <button class="btn-secondary" onclick="hideModal('reviews')">关闭</button>
+    </div>
+  </div>
+
+  <!-- Project Detail -->
+</div>
 
   <!-- New Post -->
   <div class="m-modal-overlay" id="modal-new-post">
