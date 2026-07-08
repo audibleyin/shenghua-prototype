@@ -169,12 +169,6 @@ tr:nth-child(even) td { background:#FFF5F5; }
     <li class="indent">6.5 交易保障规则</li>
     <li class="indent">6.6 平台收费体系（混合模式）</li>
     <li><span class="num">七</span>关键产品指标</li>
-    <li><span class="num">八</span>移动端设计规格（V1.1 更新）</li>
-    <li class="indent">8.1 设计原则：PC/移动端视觉统一</li>
-    <li class="indent">8.2 色彩体系（统一 Design Token）</li>
-    <li class="indent">8.3 布局与响应式</li>
-    <li class="indent">8.4 组件样式一致性</li>
-    <li class="indent">8.5 移动端交互缺陷修复（V1.2 更新）</li>
   </ul>
 </div>
 
@@ -1258,107 +1252,6 @@ tr:nth-child(even) td { background:#FFF5F5; }
   <tr><td rowspan="2">质量</td><td>项目好评率</td><td>≥ 95%</td><td>需求方对交付项目的满意度</td></tr>
   <tr><td>争议率</td><td>≤ 3%</td><td>需要仲裁的项目占比</td></tr>
 </table>
-
-<h2 class="chapter">八、移动端设计规格（V1.1 / V1.2 更新）</h2>
-
-<h3 class="section">8.1 设计原则：PC/移动端视觉统一</h3>
-<p>V1.1 版本对移动端（mobile.html）进行设计统一，核心原则：<strong>移动端与 PC 端共享同一套 Design Token，消除此前的 iOS 风格独立色彩体系</strong>，确保双端视觉一致性。</p>
-<div class="info-box highlight">
-  <strong>变更背景：</strong>V1.0 移动端原型采用 iOS 原生色板（#34C759 / #FF9500 / #007AFF 等），与 PC 端 Web 色板（#38A169 / #DD6B20 / #3182CE 等）不一致。V1.1 统一为 PC 端色板，降低维护成本，确保品牌一致性。
-</div>
-
-<h3 class="section">8.2 色彩体系（统一 Design Token）</h3>
-<table>
-  <tr><th>CSS 变量</th><th>V1.0 移动端（iOS 风格）</th><th>V1.1 统一值（与 PC 端一致）</th><th>用途</th></tr>
-  <tr><td>--success</td><td>#34C759</td><td>#38A169</td><td>成功状态、已完成</td></tr>
-  <tr><td>--warning</td><td>#FF9500</td><td>#DD6B20</td><td>警告、限时标记</td></tr>
-  <tr><td>--info</td><td>#007AFF</td><td>#3182CE</td><td>信息、需求方角色</td></tr>
-  <tr><td>--l1</td><td>#8E8E93</td><td>#A0AEC0</td><td>L1 新星等级色</td></tr>
-  <tr><td>--l2</td><td>#007AFF</td><td>#4299E1</td><td>L2 新锐等级色</td></tr>
-  <tr><td>--l3</td><td>#AF52DE</td><td>#9F7AEA</td><td>L3 精英等级色</td></tr>
-  <tr><td>--l4</td><td>#FF9500</td><td>#ED8936</td><td>L4 资深等级色</td></tr>
-  <tr><td>--l5</td><td>#FF3B30</td><td>#E53E3E</td><td>L5 大师等级色</td></tr>
-  <tr><td>--shadow</td><td>0 2px 12px rgba(229,62,62,0.04)</td><td>0 2px 10px rgba(229,62,62,0.03), 0 1px 3px rgba(0,0,0,0.02)</td><td>卡片阴影（双图层）</td></tr>
-</table>
-
-<h3 class="section">8.3 布局与响应式</h3>
-<h4 class="sub">手机壳框架（Phone Frame）</h4>
-<table>
-  <tr><th>属性</th><th>V1.0</th><th>V1.1</th></tr>
-  <tr><td>宽度</td><td>393px（固定）</td><td>100%（max-width: 480px）</td></tr>
-  <tr><td>高度</td><td>852px（固定）</td><td>100vh（自适应）</td></tr>
-  <tr><td>圆角</td><td>50px</td><td>0（全屏）</td></tr>
-  <tr><td>刘海凹槽</td><td>有（::before 伪元素）</td><td>移除</td></tr>
-  <tr><td>装饰边框</td><td>5 层 box-shadow 模拟边框</td><td>移除</td></tr>
-  <tr><td>桌面端预览</td><td>居中显示固定尺寸手机壳</td><td>居中显示，max-width 480px，带轻微阴影</td></tr>
-</table>
-<h4 class="sub">字体系统</h4>
-<table>
-  <tr><th>端</th><th>字体栈</th></tr>
-  <tr><td>V1.0 移动端</td><td>-apple-system, "SF Pro Display", "PingFang SC", "Helvetica Neue"</td></tr>
-  <tr><td>V1.1 统一</td><td>-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei"</td></tr>
-</table>
-<h4 class="sub">图标尺寸</h4>
-<table>
-  <tr><th>规格</th><th>V1.0 移动端</th><th>V1.1 统一（与 PC 一致）</th></tr>
-  <tr><td>ico-lg</td><td>44×44px（SVG 22px）</td><td>48×48px（SVG 24px）</td></tr>
-  <tr><td>ico-md</td><td>32×32px（SVG 18px）</td><td>36×36px（SVG 20px）</td></tr>
-  <tr><td>ico-sm</td><td>24×24px（SVG 14px）</td><td>28×28px（SVG 16px）</td></tr>
-</table>
-
-<h3 class="section">8.4 组件样式一致性</h3>
-<table>
-  <tr><th>组件</th><th>V1.0 移动端</th><th>V1.1 统一</th></tr>
-  <tr><td>按钮背景</td><td>纯色 background:var(--primary)</td><td>渐变 background:var(--primary-grad)</td></tr>
-  <tr><td>卡片样式</td><td>部分无 border / shadow</td><td>统一 border:1px solid var(--border) + box-shadow:var(--shadow)</td></tr>
-  <tr><td>标签背景</td><td>background:var(--bg)（白色）</td><td>background:var(--primary-bg)（浅红）</td></tr>
-  <tr><td>Banner 渐变</td><td>linear-gradient(#FFF0F0, #EBF4FF) 两色</td><td>linear-gradient(#FFF0F0, #FFFFFF 40%, #EBF4FF) 三色（与 PC 一致）</td></tr>
-  <tr><td>页面标题</td><td>"生花 App · 手机端原型"</td><td>"生花 - AI创作生态平台"（与 PC 一致）</td></tr>
-</table>
-
-<h3 class="section">8.5 移动端交互缺陷修复（V1.2 更新）</h3>
-<p>V1.2 修复了 V1.1 遗留的三组移动端交互缺陷，涉及弹窗结构、点击事件和 CSS 定位。</p>
-
-<h4 class="sub">8.5.1 弹窗嵌套结构错误（严重）</h4>
-<div class="info-box highlight">
-  <strong>缺陷描述：</strong><code>modal-notif</code>（消息通知弹窗）的 <code>.m-modal-overlay</code> 容器缺少闭合 <code>&lt;/div&gt;</code> 标签，导致其后所有弹窗（收益明细 <code>modal-income</code>、我的评价 <code>modal-reviews</code>、项目详情 <code>modal-project-detail</code>、发帖 <code>modal-new-post</code>、发布项目 <code>modal-publish-project</code>、人才详情 <code>modal-talent-detail-m</code>）均嵌套在 <code>modal-notif</code> 的 <code>display:none</code> 容器内，无法显示。
-</div>
-<table>
-  <tr><th>影响范围</th><th>具体表现</th></tr>
-  <tr><td>接单大厅项目卡片</td><td>点击后 <code>showModal('project-detail')</code> 触发，但弹窗被嵌套隐藏，用户无反应</td></tr>
-  <tr><td>用户中心 → 收益明细</td><td>点击后 <code>showModal('income')</code> 触发，但弹窗被嵌套隐藏，用户无反应</td></tr>
-  <tr><td>用户中心 → 我的评价</td><td>同上，<code>showModal('reviews')</code> 无响应</td></tr>
-</table>
-<p><strong>修复方案：</strong>在 <code>modal-notif</code> 的 <code>.m-modal</code> 闭合后补入缺失的 <code>&lt;/div&gt;</code> 以闭合 <code>.m-modal-overlay</code>，使后续所有弹窗回归为同级兄弟节点，独立显隐。</p>
-
-<h4 class="sub">8.5.2 创作广场项目卡片无点击事件</h4>
-<div class="info-box highlight">
-  <strong>缺陷描述：</strong>创作广场（Plaza）的 6 个 <code>.plaza-item-m</code> 版权作品卡片仅有 <code>cursor:pointer</code> 样式，但<strong>未绑定任何 <code>onclick</code> 事件</strong>，点击无任何响应。且页面中不存在版权作品详情弹窗。
-</div>
-<p><strong>修复方案：</strong></p>
-<ul>
-  <li>为全部 6 个 <code>.plaza-item-m</code> 添加 <code>onclick="showModal('plaza-detail')"</code></li>
-  <li>新增 <code>modal-plaza-detail</code> 弹窗，展示作品封面、创作者信息、版权价格、播放量、作品描述、功能特性清单及「联系创作者」操作按钮</li>
-</ul>
-
-<h4 class="sub">8.5.3 接单大厅卡片等级与截止日期重叠</h4>
-<div class="info-box highlight">
-  <strong>缺陷描述：</strong>项目卡片缩略图（<code>.mp-thumb</code>）中，创作者等级标签 <code>.mp-level</code> 与截止日期 <code>.mp-deadline</code> 定位于同一坐标，视觉重叠。
-</div>
-<table>
-  <tr><th>元素</th><th>V1.1 定位（重叠）</th><th>V1.2 定位（修复后）</th></tr>
-  <tr><td>.mp-budget（预算）</td><td>position:absolute; top:10px; right:10px</td><td>不变（右上角）</td></tr>
-  <tr><td>.mp-level（等级）</td><td>position:absolute; bottom:10px; left:10px <strong>← 与下方重叠</strong></td><td>position:absolute; top:10px; left:10px; bottom:auto <strong>（左上角）</strong></td></tr>
-  <tr><td>.mp-deadline（截止日期）</td><td>position:absolute; bottom:12px; left:12px</td><td>不变（左下角）</td></tr>
-</table>
-<div class="info-box blue">
-  <strong>技术细节：</strong>第一段 CSS（V1.0 原始定义）为 <code>.mp-level</code> 设定了 <code>bottom:10px</code>。第二段 CSS（V1.1 重构）未显式清除该属性，导致新增 <code>top:10px</code> 时 <code>top</code> 与 <code>bottom</code> 同时生效，元素被垂直拉伸为满高。V1.2 通过 <code>bottom:auto</code> 显式清除继承值，确保标签以自然高度渲染。
-</div>
-<p><strong>修复后缩略图布局：</strong>预算 → 右上角，等级 → 左上角，截止日期 → 左下角，三者互不重叠。</p>
-
-<div class="info-box blue">
-  <strong>未变更项：</strong>移动端全部 JS 逻辑（Tab 切换、页面导航、弹窗、角色切换、人才筛选）、HTML 结构（screen-container 滚动容器、tab-bar 底部导航、11 个页面/子页面）、交互模式（底部弹层 modal、FAB 悬浮按钮）均保持不变。V1.2 修复仅涉及弹窗结构补全、事件绑定补加和 CSS 定位修正，未改变整体架构。
-</div>
 
 <div style="text-align:center;padding:60px 0 20px;color:var(--text2);font-size:13px;">
   <p>— 文档结束 —</p>
