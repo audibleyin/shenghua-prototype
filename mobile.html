@@ -728,32 +728,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
         <div class="plaza-tab" onclick="switchPlazaTab(this)">潜力</div>
       </div>
       <div class="plaza-masonry">
-        <div class="plaza-item-m">
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
           <div class="pi-thumb" style="height:150px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);"></div>
           <div class="pi-info"><h5>《龙吟九天》</h5><div class="pi-creator">墨染青山 · L3</div><div class="pi-stats"><span>12.5万</span><span>8,342</span></div></div>
           <div class="pi-price">¥50,000 版权</div>
         </div>
-        <div class="plaza-item-m">
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
           <div class="pi-thumb" style="height:120px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div>
           <div class="pi-info"><h5>《花间令》</h5><div class="pi-creator">花间词 · L4</div><div class="pi-stats"><span>8.7万</span><span>5,621</span></div></div>
           <div class="pi-price">¥35,000 版权</div>
         </div>
-        <div class="plaza-item-m">
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
           <div class="pi-thumb" style="height:160px;background:linear-gradient(135deg,#0c3483,#a2b6df);"></div>
           <div class="pi-info"><h5>《星河彼岸》</h5><div class="pi-creator">剧本炼金师 · L3</div><div class="pi-stats"><span>6.2万</span><span>3,890</span></div></div>
           <div class="pi-price">¥28,000 版权</div>
         </div>
-        <div class="plaza-item-m">
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
           <div class="pi-thumb" style="height:130px;background:linear-gradient(135deg,#fa709a,#fee140);"></div>
           <div class="pi-info"><h5>《马戏团奇遇》</h5><div class="pi-creator">梦境画家 · L1</div><div class="pi-stats"><span>3.2万</span><span>2,108</span></div></div>
           <div class="pi-price">¥8,000 版权</div>
         </div>
-        <div class="plaza-item-m">
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
           <div class="pi-thumb" style="height:140px;background:linear-gradient(135deg,#2c3e50,#3498db);"></div>
           <div class="pi-info"><h5>《深夜档案》</h5><div class="pi-creator">暗夜行者 · L3</div><div class="pi-stats"><span>9.4万</span><span>6,789</span></div></div>
           <div class="pi-price">¥40,000 版权</div>
         </div>
-        <div class="plaza-item-m">
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
           <div class="pi-thumb" style="height:110px;background:linear-gradient(135deg,#ee9ca7,#ffdde1);"></div>
           <div class="pi-info"><h5>《樱花树下》</h5><div class="pi-creator">春日物语 · L2</div><div class="pi-stats"><span>5.6万</span><span>3,892</span></div></div>
           <div class="pi-price">¥12,000 版权</div>
@@ -1410,7 +1410,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
       </div>
       <button class="btn-secondary" onclick="hideModal('notif')">关闭</button>
     </div>
-  
+  </div>
+
   <!-- Income Details -->
   <div class="m-modal-overlay" id="modal-income">
     <div class="m-modal">
@@ -1531,6 +1532,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC"
       <div class="form-group"><label>项目描述</label><textarea rows="4" placeholder="详细描述你的项目需求..."></textarea></div>
       <button class="btn-primary" onclick="hideModal('publish-project')">发布项目</button>
       <button class="btn-secondary" onclick="hideModal('publish-project')">取消</button>
+    </div>
+  </div>
+
+  <!-- Plaza Detail -->
+  <div class="m-modal-overlay" id="modal-plaza-detail">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <div style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);border-radius:14px;height:160px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px;"></div>
+      <h3>《龙吟九天》</h3>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#9F7AEA,#6B46C1);display:flex;align-items:center;justify-content:center;font-size:18px;color:white;flex-shrink:0;">墨</div>
+        <div><div style="font-size:14px;font-weight:600;">墨染青山</div><div style="font-size:12px;color:var(--text-secondary);">L3 精英创作者 · 古风</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
+        <div style="background:var(--primary-bg);padding:12px;border-radius:10px;"><div style="font-size:11px;color:var(--text-secondary);">版权价格</div><div style="font-size:20px;font-weight:700;color:var(--primary);">¥50,000</div></div>
+        <div style="background:var(--primary-bg);padding:12px;border-radius:10px;"><div style="font-size:11px;color:var(--text-secondary);">播放量</div><div style="font-size:20px;font-weight:700;color:var(--text);">12.5万</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">古风玄幻题材漫剧，讲述龙族后裔的复仇与成长故事。共15集，每集3-5分钟。角色一致性95%+，含完整配音、字幕、音效。</p>
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+        <div style="padding:6px 0;">✓ 1080P/30fps 高清画质</div>
+        <div style="padding:6px 0;">✓ 区块链版权确权</div>
+        <div style="padding:6px 0;">✓ 可商用授权</div>
+        <div style="padding:6px 0;">✓ 含分镜脚本、角色设定稿</div>
+      </div>
+      <button class="btn-primary" onclick="hideModal('plaza-detail')">联系创作者</button>
+      <button class="btn-secondary" onclick="hideModal('plaza-detail')">关闭</button>
     </div>
   </div>
 
