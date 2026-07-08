@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>生花AI创意平台 · 产品设计文档 V1.0</title>
+<title>生花AI创意平台 · 产品设计文档 V1.2</title>
 <style>
 :root { --primary:#E53E3E; --secondary:#374151; --bg:#fff; --text:#1F2937; --text2:#6B7280; --border:#F0F0F0; --accent:#ED8936; --info:#3182CE; --success:#38A169; --l1:#A0AEC0; --l2:#4299E1; --l3:#9F7AEA; --l4:#ED8936; --l5:#E53E3E; --primary-grad:linear-gradient(135deg,#E53E3E 0%,#F87171 100%); }
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -120,7 +120,7 @@ tr:nth-child(even) td { background:#FFF5F5; }
   <h1>生花 AI 创意平台</h1>
   <div class="subtitle">产品设计文档 · Product Design Document</div>
   <div class="meta">
-    <span>版本：V1.1</span>
+    <span>版本：V1.2</span>
     <span>日期：2026年7月8日</span>
     <span>密级：内部</span>
   </div>
@@ -174,6 +174,7 @@ tr:nth-child(even) td { background:#FFF5F5; }
     <li class="indent">8.2 色彩体系（统一 Design Token）</li>
     <li class="indent">8.3 布局与响应式</li>
     <li class="indent">8.4 组件样式一致性</li>
+    <li class="indent">8.5 移动端交互缺陷修复（V1.2 更新）</li>
   </ul>
 </div>
 
@@ -1258,7 +1259,7 @@ tr:nth-child(even) td { background:#FFF5F5; }
   <tr><td>争议率</td><td>≤ 3%</td><td>需要仲裁的项目占比</td></tr>
 </table>
 
-<h2 class="chapter">八、移动端设计规格（V1.1 更新）</h2>
+<h2 class="chapter">八、移动端设计规格（V1.1 / V1.2 更新）</h2>
 
 <h3 class="section">8.1 设计原则：PC/移动端视觉统一</h3>
 <p>V1.1 版本对移动端（mobile.html）进行设计统一，核心原则：<strong>移动端与 PC 端共享同一套 Design Token，消除此前的 iOS 风格独立色彩体系</strong>，确保双端视觉一致性。</p>
@@ -1315,13 +1316,53 @@ tr:nth-child(even) td { background:#FFF5F5; }
   <tr><td>页面标题</td><td>"生花 App · 手机端原型"</td><td>"生花 - AI创作生态平台"（与 PC 一致）</td></tr>
 </table>
 
+<h3 class="section">8.5 移动端交互缺陷修复（V1.2 更新）</h3>
+<p>V1.2 修复了 V1.1 遗留的三组移动端交互缺陷，涉及弹窗结构、点击事件和 CSS 定位。</p>
+
+<h4 class="sub">8.5.1 弹窗嵌套结构错误（严重）</h4>
+<div class="info-box highlight">
+  <strong>缺陷描述：</strong><code>modal-notif</code>（消息通知弹窗）的 <code>.m-modal-overlay</code> 容器缺少闭合 <code>&lt;/div&gt;</code> 标签，导致其后所有弹窗（收益明细 <code>modal-income</code>、我的评价 <code>modal-reviews</code>、项目详情 <code>modal-project-detail</code>、发帖 <code>modal-new-post</code>、发布项目 <code>modal-publish-project</code>、人才详情 <code>modal-talent-detail-m</code>）均嵌套在 <code>modal-notif</code> 的 <code>display:none</code> 容器内，无法显示。
+</div>
+<table>
+  <tr><th>影响范围</th><th>具体表现</th></tr>
+  <tr><td>接单大厅项目卡片</td><td>点击后 <code>showModal('project-detail')</code> 触发，但弹窗被嵌套隐藏，用户无反应</td></tr>
+  <tr><td>用户中心 → 收益明细</td><td>点击后 <code>showModal('income')</code> 触发，但弹窗被嵌套隐藏，用户无反应</td></tr>
+  <tr><td>用户中心 → 我的评价</td><td>同上，<code>showModal('reviews')</code> 无响应</td></tr>
+</table>
+<p><strong>修复方案：</strong>在 <code>modal-notif</code> 的 <code>.m-modal</code> 闭合后补入缺失的 <code>&lt;/div&gt;</code> 以闭合 <code>.m-modal-overlay</code>，使后续所有弹窗回归为同级兄弟节点，独立显隐。</p>
+
+<h4 class="sub">8.5.2 创作广场项目卡片无点击事件</h4>
+<div class="info-box highlight">
+  <strong>缺陷描述：</strong>创作广场（Plaza）的 6 个 <code>.plaza-item-m</code> 版权作品卡片仅有 <code>cursor:pointer</code> 样式，但<strong>未绑定任何 <code>onclick</code> 事件</strong>，点击无任何响应。且页面中不存在版权作品详情弹窗。
+</div>
+<p><strong>修复方案：</strong></p>
+<ul>
+  <li>为全部 6 个 <code>.plaza-item-m</code> 添加 <code>onclick="showModal('plaza-detail')"</code></li>
+  <li>新增 <code>modal-plaza-detail</code> 弹窗，展示作品封面、创作者信息、版权价格、播放量、作品描述、功能特性清单及「联系创作者」操作按钮</li>
+</ul>
+
+<h4 class="sub">8.5.3 接单大厅卡片等级与截止日期重叠</h4>
+<div class="info-box highlight">
+  <strong>缺陷描述：</strong>项目卡片缩略图（<code>.mp-thumb</code>）中，创作者等级标签 <code>.mp-level</code> 与截止日期 <code>.mp-deadline</code> 定位于同一坐标，视觉重叠。
+</div>
+<table>
+  <tr><th>元素</th><th>V1.1 定位（重叠）</th><th>V1.2 定位（修复后）</th></tr>
+  <tr><td>.mp-budget（预算）</td><td>position:absolute; top:10px; right:10px</td><td>不变（右上角）</td></tr>
+  <tr><td>.mp-level（等级）</td><td>position:absolute; bottom:10px; left:10px <strong>← 与下方重叠</strong></td><td>position:absolute; top:10px; left:10px; bottom:auto <strong>（左上角）</strong></td></tr>
+  <tr><td>.mp-deadline（截止日期）</td><td>position:absolute; bottom:12px; left:12px</td><td>不变（左下角）</td></tr>
+</table>
 <div class="info-box blue">
-  <strong>未变更项：</strong>移动端全部 JS 逻辑（Tab 切换、页面导航、弹窗、角色切换、人才筛选）、HTML 结构（screen-container 滚动容器、tab-bar 底部导航、11 个页面/子页面）、交互模式（底部弹层 modal、FAB 悬浮按钮）均保持不变，仅做 CSS 视觉层统一。
+  <strong>技术细节：</strong>第一段 CSS（V1.0 原始定义）为 <code>.mp-level</code> 设定了 <code>bottom:10px</code>。第二段 CSS（V1.1 重构）未显式清除该属性，导致新增 <code>top:10px</code> 时 <code>top</code> 与 <code>bottom</code> 同时生效，元素被垂直拉伸为满高。V1.2 通过 <code>bottom:auto</code> 显式清除继承值，确保标签以自然高度渲染。
+</div>
+<p><strong>修复后缩略图布局：</strong>预算 → 右上角，等级 → 左上角，截止日期 → 左下角，三者互不重叠。</p>
+
+<div class="info-box blue">
+  <strong>未变更项：</strong>移动端全部 JS 逻辑（Tab 切换、页面导航、弹窗、角色切换、人才筛选）、HTML 结构（screen-container 滚动容器、tab-bar 底部导航、11 个页面/子页面）、交互模式（底部弹层 modal、FAB 悬浮按钮）均保持不变。V1.2 修复仅涉及弹窗结构补全、事件绑定补加和 CSS 定位修正，未改变整体架构。
 </div>
 
 <div style="text-align:center;padding:60px 0 20px;color:var(--text2);font-size:13px;">
   <p>— 文档结束 —</p>
-  <p>生花AI创意平台 · 产品设计文档 V1.1</p>
+  <p>生花AI创意平台 · 产品设计文档 V1.2</p>
   <p>© 2026 帧游计科技 · 机密文件 · 仅供内部使用</p>
 </div>
 
