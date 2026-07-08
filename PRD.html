@@ -120,8 +120,8 @@ tr:nth-child(even) td { background:#FFF5F5; }
   <h1>生花 AI 创意平台</h1>
   <div class="subtitle">产品设计文档 · Product Design Document</div>
   <div class="meta">
-    <span>版本：V1.0</span>
-    <span>日期：2026年7月1日</span>
+    <span>版本：V1.1</span>
+    <span>日期：2026年7月8日</span>
     <span>密级：内部</span>
   </div>
   <div class="version-badge">AI创作生态平台</div>
@@ -169,6 +169,11 @@ tr:nth-child(even) td { background:#FFF5F5; }
     <li class="indent">6.5 交易保障规则</li>
     <li class="indent">6.6 平台收费体系（混合模式）</li>
     <li><span class="num">七</span>关键产品指标</li>
+    <li><span class="num">八</span>移动端设计规格（V1.1 更新）</li>
+    <li class="indent">8.1 设计原则：PC/移动端视觉统一</li>
+    <li class="indent">8.2 色彩体系（统一 Design Token）</li>
+    <li class="indent">8.3 布局与响应式</li>
+    <li class="indent">8.4 组件样式一致性</li>
   </ul>
 </div>
 
@@ -1253,9 +1258,70 @@ tr:nth-child(even) td { background:#FFF5F5; }
   <tr><td>争议率</td><td>≤ 3%</td><td>需要仲裁的项目占比</td></tr>
 </table>
 
+<h2 class="chapter">八、移动端设计规格（V1.1 更新）</h2>
+
+<h3 class="section">8.1 设计原则：PC/移动端视觉统一</h3>
+<p>V1.1 版本对移动端（mobile.html）进行设计统一，核心原则：<strong>移动端与 PC 端共享同一套 Design Token，消除此前的 iOS 风格独立色彩体系</strong>，确保双端视觉一致性。</p>
+<div class="info-box highlight">
+  <strong>变更背景：</strong>V1.0 移动端原型采用 iOS 原生色板（#34C759 / #FF9500 / #007AFF 等），与 PC 端 Web 色板（#38A169 / #DD6B20 / #3182CE 等）不一致。V1.1 统一为 PC 端色板，降低维护成本，确保品牌一致性。
+</div>
+
+<h3 class="section">8.2 色彩体系（统一 Design Token）</h3>
+<table>
+  <tr><th>CSS 变量</th><th>V1.0 移动端（iOS 风格）</th><th>V1.1 统一值（与 PC 端一致）</th><th>用途</th></tr>
+  <tr><td>--success</td><td>#34C759</td><td>#38A169</td><td>成功状态、已完成</td></tr>
+  <tr><td>--warning</td><td>#FF9500</td><td>#DD6B20</td><td>警告、限时标记</td></tr>
+  <tr><td>--info</td><td>#007AFF</td><td>#3182CE</td><td>信息、需求方角色</td></tr>
+  <tr><td>--l1</td><td>#8E8E93</td><td>#A0AEC0</td><td>L1 新星等级色</td></tr>
+  <tr><td>--l2</td><td>#007AFF</td><td>#4299E1</td><td>L2 新锐等级色</td></tr>
+  <tr><td>--l3</td><td>#AF52DE</td><td>#9F7AEA</td><td>L3 精英等级色</td></tr>
+  <tr><td>--l4</td><td>#FF9500</td><td>#ED8936</td><td>L4 资深等级色</td></tr>
+  <tr><td>--l5</td><td>#FF3B30</td><td>#E53E3E</td><td>L5 大师等级色</td></tr>
+  <tr><td>--shadow</td><td>0 2px 12px rgba(229,62,62,0.04)</td><td>0 2px 10px rgba(229,62,62,0.03), 0 1px 3px rgba(0,0,0,0.02)</td><td>卡片阴影（双图层）</td></tr>
+</table>
+
+<h3 class="section">8.3 布局与响应式</h3>
+<h4 class="sub">手机壳框架（Phone Frame）</h4>
+<table>
+  <tr><th>属性</th><th>V1.0</th><th>V1.1</th></tr>
+  <tr><td>宽度</td><td>393px（固定）</td><td>100%（max-width: 480px）</td></tr>
+  <tr><td>高度</td><td>852px（固定）</td><td>100vh（自适应）</td></tr>
+  <tr><td>圆角</td><td>50px</td><td>0（全屏）</td></tr>
+  <tr><td>刘海凹槽</td><td>有（::before 伪元素）</td><td>移除</td></tr>
+  <tr><td>装饰边框</td><td>5 层 box-shadow 模拟边框</td><td>移除</td></tr>
+  <tr><td>桌面端预览</td><td>居中显示固定尺寸手机壳</td><td>居中显示，max-width 480px，带轻微阴影</td></tr>
+</table>
+<h4 class="sub">字体系统</h4>
+<table>
+  <tr><th>端</th><th>字体栈</th></tr>
+  <tr><td>V1.0 移动端</td><td>-apple-system, "SF Pro Display", "PingFang SC", "Helvetica Neue"</td></tr>
+  <tr><td>V1.1 统一</td><td>-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei"</td></tr>
+</table>
+<h4 class="sub">图标尺寸</h4>
+<table>
+  <tr><th>规格</th><th>V1.0 移动端</th><th>V1.1 统一（与 PC 一致）</th></tr>
+  <tr><td>ico-lg</td><td>44×44px（SVG 22px）</td><td>48×48px（SVG 24px）</td></tr>
+  <tr><td>ico-md</td><td>32×32px（SVG 18px）</td><td>36×36px（SVG 20px）</td></tr>
+  <tr><td>ico-sm</td><td>24×24px（SVG 14px）</td><td>28×28px（SVG 16px）</td></tr>
+</table>
+
+<h3 class="section">8.4 组件样式一致性</h3>
+<table>
+  <tr><th>组件</th><th>V1.0 移动端</th><th>V1.1 统一</th></tr>
+  <tr><td>按钮背景</td><td>纯色 background:var(--primary)</td><td>渐变 background:var(--primary-grad)</td></tr>
+  <tr><td>卡片样式</td><td>部分无 border / shadow</td><td>统一 border:1px solid var(--border) + box-shadow:var(--shadow)</td></tr>
+  <tr><td>标签背景</td><td>background:var(--bg)（白色）</td><td>background:var(--primary-bg)（浅红）</td></tr>
+  <tr><td>Banner 渐变</td><td>linear-gradient(#FFF0F0, #EBF4FF) 两色</td><td>linear-gradient(#FFF0F0, #FFFFFF 40%, #EBF4FF) 三色（与 PC 一致）</td></tr>
+  <tr><td>页面标题</td><td>"生花 App · 手机端原型"</td><td>"生花 - AI创作生态平台"（与 PC 一致）</td></tr>
+</table>
+
+<div class="info-box blue">
+  <strong>未变更项：</strong>移动端全部 JS 逻辑（Tab 切换、页面导航、弹窗、角色切换、人才筛选）、HTML 结构（screen-container 滚动容器、tab-bar 底部导航、11 个页面/子页面）、交互模式（底部弹层 modal、FAB 悬浮按钮）均保持不变，仅做 CSS 视觉层统一。
+</div>
+
 <div style="text-align:center;padding:60px 0 20px;color:var(--text2);font-size:13px;">
   <p>— 文档结束 —</p>
-  <p>生花AI创意平台 · 产品设计文档 V1.0</p>
+  <p>生花AI创意平台 · 产品设计文档 V1.1</p>
   <p>© 2026 帧游计科技 · 机密文件 · 仅供内部使用</p>
 </div>
 
