@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生花AI创意平台 · 数据库设计说明书 V1.0</title>
+<style>
+:root { --primary:#E53E3E; --secondary:#374151; --bg:#fff; --text:#1F2937; --text2:#6B7280; --border:#E5E7EB; --accent:#ED8936; --info:#3182CE; --success:#38A169; --primary-grad:linear-gradient(135deg,#E53E3E 0%,#F87171 100%); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; color:var(--text); line-height:1.8; background:#F9FAFB; }
+.doc { max-width:1000px; margin:0 auto; background:white; box-shadow:0 0 60px rgba(229,62,62,0.06); border-radius:0 0 20px 20px; overflow:hidden; }
+.cover { background:linear-gradient(135deg,#FFF0F0 0%,#FFFFFF 40%,#EBF4FF 100%); padding:100px 60px 60px; text-align:center; border-bottom:4px solid var(--primary); }
+.cover h1 { font-size:42px; font-weight:800; margin-bottom:10px; background:var(--primary-grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.cover .subtitle { font-size:18px; color:var(--text2); margin-bottom:30px; }
+.cover .meta { display:flex; justify-content:center; gap:40px; font-size:14px; color:var(--text2); }
+.cover .version-badge { display:inline-block; background:var(--primary-grad); color:white; padding:8px 24px; border-radius:24px; font-size:14px; margin-top:20px; }
+.toc { padding:36px 60px; border-bottom:2px solid var(--border); }
+.toc h2 { font-size:22px; margin-bottom:20px; color:var(--primary); }
+.toc-list { list-style:none; }
+.toc-list li { padding:5px 0; font-size:14px; border-bottom:1px dotted var(--border); }
+.toc-list li span.num { color:var(--primary); font-weight:700; margin-right:6px; }
+.toc-list li.indent { padding-left:28px; font-size:13px; color:var(--text2); }
+.content { padding:36px 60px; }
+h2.chapter { font-size:26px; color:var(--primary); margin:44px 0 18px; padding-bottom:10px; border-bottom:3px solid var(--primary); }
+h2.chapter:first-child { margin-top:0; }
+h3.section { font-size:18px; color:var(--secondary); margin:28px 0 12px; padding-left:12px; border-left:4px solid var(--primary); }
+h4.sub { font-size:15px; color:var(--text); margin:18px 0 8px; }
+p { margin:6px 0; font-size:14px; color:var(--text2); }
+ul, ol { margin:6px 0 6px 20px; font-size:14px; color:var(--text2); }
+table { width:100%; border-collapse:collapse; margin:12px 0; font-size:12px; }
+th { background:#FFF5F5; color:var(--text); padding:10px 12px; text-align:left; font-weight:600; border-bottom:2px solid var(--primary); }
+td { padding:8px 12px; border-bottom:1px solid var(--border); }
+tr:nth-child(even) td { background:#FAFAFA; }
+.info-box { padding:14px 18px; border-radius:10px; margin:12px 0; font-size:13px; line-height:1.6; }
+.info-box.highlight { background:#FFF5F5; border-left:4px solid var(--primary); }
+.info-box.blue { background:#EBF8FF; border-left:4px solid var(--info); }
+.info-box.green { background:#F0FFF4; border-left:4px solid var(--success); }
+.info-box.orange { background:#FFFAF0; border-left:4px solid var(--accent); }
+code { background:#F3F4F6; padding:1px 6px; border-radius:4px; font-size:12px; }
+.pkey { color:var(--primary); font-weight:700; }
+.fkey { color:var(--info); font-weight:600; }
+.footer { text-align:center; padding:40px 0 20px; color:var(--text2); font-size:12px; }
+@media print {
+  body { background:white; }
+  .doc { box-shadow:none; }
+  .cover { page-break-after:always; }
+  h2.chapter { page-break-before:always; }
+}
+@media (max-width:768px) {
+  .content { padding:20px; }
+  .cover { padding:50px 20px 30px; }
+  .cover h1 { font-size:28px; }
+}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <h1>生花 AI 创意平台</h1>
+  <div class="subtitle">数据库设计说明书 · Database Design Document</div>
+  <div class="meta">
+    <span>版本：V1.0</span>
+    <span>日期：2026年7月9日</span>
+    <span>密级：内部</span>
+  </div>
+  <div class="version-badge">AI创作生态平台</div>
+</div>
+
+<!-- ===== DOCUMENT REVISION HISTORY ===== -->
+<div class="toc">
+  <h2>文档修改记录</h2>
+  <table>
+    <tr><th>版本号</th><th>修订日期</th><th>修订人</th><th>修订内容</th></tr>
+    <tr><td>V1.0</td><td>2026-07-09</td><td>—</td><td>初始版本，基于PRD V1.2创建</td></tr>
+  </table>
+</div>
+
+<!-- ===== TOC ===== -->
+<div class="toc">
+  <h2>目 录</h2>
+  <ul class="toc-list">
+    <li><span class="num">1</span>引言</li>
+    <li class="indent">1.1 编写目的</li>
+    <li class="indent">1.2 范围</li>
+    <li class="indent">1.3 术语</li>
+    <li class="indent">1.4 参考文档</li>
+    <li><span class="num">2</span>项目概述</li>
+    <li><span class="num">3</span>数据库外部环境及资源规划</li>
+    <li class="indent">3.1 数据库环境要求</li>
+    <li class="indent">3.2 存储资源规划</li>
+    <li><span class="num">4</span>表结构设计</li>
+    <li class="indent">4.1 关系数据库表结构</li>
+    <li class="indent">4.2 非关系数据库结构</li>
+    <li class="indent">4.3 关系说明</li>
+    <li><span class="num">5</span>数据库对象设计</li>
+    <li class="indent">5.1 视图设计</li>
+    <li class="indent">5.2 存储过程设计</li>
+    <li class="indent">5.3 触发器设计</li>
+    <li><span class="num">6</span>数据库运维设计</li>
+    <li class="indent">6.1 数据恢复策略</li>
+    <li class="indent">6.2 性能优化策略</li>
+  </ul>
+</div>
+
+<div class="content">
+
+<!-- ===== 1. 引言 ===== -->
+<h2 class="chapter">1 引言</h2>
+
+<h3 class="section">1.1 编写目的</h3>
+<p>本文档为生花AI创意平台数据库设计说明书，旨在为系统数据库实现提供详细指导。本文档面向数据库管理员、系统架构师、后端开发工程师及测试人员，详细阐述数据库的逻辑结构、物理设计、对象设计及运维策略，作为数据库开发与维护的技术规范依据。</p>
+
+<h3 class="section">1.2 范围</h3>
+<p>本文档涵盖生花AI创意平台所有业务模块的数据库设计，包括：用户中心、创作者体系、人才信息库、项目交易、内容创作（创作广场）、数字资产库、培训学院、社区互动、交易财务、平台运营及评价体系等。涉及MySQL关系数据库和Redis非关系数据库的设计。</p>
+
+<h3 class="section">1.3 术语</h3>
+<table>
+  <tr><th>术语</th><th>全称/说明</th></tr>
+  <tr><td>生花</td><td>AI创作生态平台，连接创作人才与项目需求的交易撮合平台</td></tr>
+  <tr><td>需求方</td><td>有AI漫剧制作需求的用户，可发布项目、筛选创作者、托管资金</td></tr>
+  <tr><td>创作者</td><td>提供AI漫剧制作服务的用户，可接单、上传作品和资产</td></tr>
+  <tr><td>L1-L5</td><td>创作者五级等级体系，从新星到大师，决定可接项目范围和佣金比例</td></tr>
+  <tr><td>GMV</td><td>平台总交易额</td></tr>
+  <tr><td>先享后付</td><td>会员费月收入达标才扣费的计费模式</td></tr>
+  <tr><td>ER图</td><td>实体-关系图，描述数据库实体及其相互关系</td></tr>
+</table>
+
+<h3 class="section">1.4 参考文档</h3>
+<table>
+  <tr><th>文档名称</th><th>版本</th><th>日期</th><th>说明</th></tr>
+  <tr><td>生花AI创意平台产品设计文档</td><td>V1.2</td><td>2026-07-08</td><td>产品需求规格说明书</td></tr>
+  <tr><td>MySQL 8.0参考手册</td><td>8.0</td><td>—</td><td>数据库技术选型参考</td></tr>
+  <tr><td>系统架构设计文档</td><td>V1.0</td><td>—</td><td>系统技术架构与模块划分</td></tr>
+</table>
+
+<!-- ===== 2. 项目概述 ===== -->
+<h2 class="chapter">2 项目概述</h2>
+<p><strong>生花AI创意平台</strong>是一个连接AI漫剧创作人才与项目需求的交易撮合平台，核心功能包括：双端身份体系、接单大厅、人才信息库、创作广场、数字资产库、培训学院、L1-L5等级体系、社区互动及平台活动对接。</p>
+<p><strong>数据库关键性能指标：</strong>月活跃用户20,000+，月度GMV 500万，月度订单数2,000+，创作者规模15,000+，广场作品数10,000+，资产库规模20,000+，系统并发500 QPS。</p>
+
+<!-- ===== 3. 数据库外部环境及资源规划 ===== -->
+<h2 class="chapter">3 数据库外部环境及资源规划</h2>
+<h3 class="section">3.1 数据库环境要求</h3>
+<p><strong>硬件要求：</strong>CPU 8核，内存32GB，存储1TB NVMe SSD，网络千兆以太网。</p>
+<p><strong>软件要求：</strong>MySQL 8.0+（InnoDB引擎，utf8mb4字符集），Redis 7.0+，CentOS/Ubuntu LTS。</p>
+<p><strong>性能指标：</strong>简单查询≤50ms，复杂查询≤500ms，最大并发500连接，可用性99.9%。</p>
+
+<h3 class="section">3.2 存储资源规划</h3>
+<p><strong>存储需求：</strong>初始500GB SSD，年增长预留50%。用户相关10GB，项目订单50GB，内容创作100GB，资产库30GB，培训社区20GB，日志100GB。</p>
+<p><strong>架构设计：</strong>MySQL主库(8C/32G) + 从库(8C/32G) + Redis缓存(4C/16G)。对象存储存放文件，ELK存放日志。</p>
+<p><strong>归档策略：</strong>交易明细保留3年，日志保留6个月归档。</p>
+
+<!-- ===== 4. 表结构设计 ===== -->
+<h2 class="chapter">4 表结构设计</h2>
+<h3 class="section">4.1 关系数据库表结构</h3>
+<p>数据库采用MySQL 8.0 InnoDB引擎，默认字符集utf8mb4，排序规则utf8mb4_unicode_ci。</p>
+<div class="info-box highlight">
+  <strong>命名规范：</strong><br>
+  · 表名：小写字母+下划线，如 <code>user</code>、<code>creator_profile</code><br>
+  · 字段名：小写字母+下划线，如 <code>user_id</code>、<code>created_at</code><br>
+  · 主键：统一使用 <code>id</code>（BIGINT自增）<br>
+  · 外键：字段名以 <code>_id</code> 结尾<br>
+  · 索引：<code>idx_</code> 前缀，唯一索引 <code>uk_</code> 前缀<br>
+  · 时间字段：统一使用 <code>datetime</code><br>
+  · 软删除：统一使用 <code>is_deleted</code>（tinyint, 0=正常, 1=删除）
+</div>
+
+<h4 class="sub">4.1.1 用户中心域</h4>
+<p><strong>1. 用户表（user）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>用户唯一标识，自增主键</td></tr>
+  <tr><td>phone</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>—</td><td>手机号，登录账号，唯一</td></tr>
+  <tr><td>email</td><td>VARCHAR</td><td>100</td><td></td><td>N</td><td>NULL</td><td>邮箱地址</td></tr>
+  <tr><td>password_hash</td><td>VARCHAR</td><td>255</td><td></td><td>Y</td><td>—</td><td>密码哈希值（bcrypt）</td></tr>
+  <tr><td>nickname</td><td>VARCHAR</td><td>50</td><td></td><td>N</td><td>NULL</td><td>用户昵称</td></tr>
+  <tr><td>avatar_url</td><td>VARCHAR</td><td>500</td><td></td><td>N</td><td>NULL</td><td>头像URL</td></tr>
+  <tr><td>status</td><td>TINYINT</td><td>4</td><td></td><td>Y</td><td>1</td><td>状态：0=禁用 1=正常 2=冻结</td></tr>
+  <tr><td>register_source</td><td>VARCHAR</td><td>20</td><td></td><td>N</td><td>NULL</td><td>注册来源：mobile/web/wx</td></tr>
+  <tr><td>last_login_at</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>最后登录时间</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_phone</code>（唯一），<code>idx_status</code>，<code>idx_nickname</code></p>
+
+<p><strong>2. 用户身份表（user_identity）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>用户ID，关联user.id</td></tr>
+  <tr><td>identity_type</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>—</td><td>身份类型：creator/client</td></tr>
+  <tr><td>is_active</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>1</td><td>当前选中身份</td></tr>
+  <tr><td>profile_completed</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>资料是否完善</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_user_identity</code>（唯一，user_id + identity_type），<code>idx_user_active</code>（user_id, is_active）</p>
+
+<p><strong>3. 用户认证表（user_auth）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>用户ID，关联user.id</td></tr>
+  <tr><td>real_name</td><td>VARCHAR</td><td>50</td><td></td><td>N</td><td>NULL</td><td>真实姓名</td></tr>
+  <tr><td>id_card</td><td>VARCHAR</td><td>18</td><td></td><td>N</td><td>NULL</td><td>身份证号</td></tr>
+  <tr><td>auth_status</td><td>TINYINT</td><td>4</td><td></td><td>Y</td><td>0</td><td>状态：0=未认证 1=审核中 2=已认证 3=失败</td></tr>
+  <tr><td>auth_type</td><td>VARCHAR</td><td>20</td><td></td><td>N</td><td>NULL</td><td>认证类型：real_name/company</td></tr>
+  <tr><td>auth_time</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>认证通过时间</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_user_auth</code>（唯一，user_id），<code>idx_auth_status</code></p>
+
+<h4 class="sub">4.1.2 创作者体系域</h4>
+<p><strong>4. 创作者档案表（creator_profile）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>用户ID，关联user.id</td></tr>
+  <tr><td>professional_role_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>N</td><td>NULL</td><td>专业角色ID</td></tr>
+  <tr><td>level_code</td><td>VARCHAR</td><td>10</td><td></td><td>N</td><td>NULL</td><td>当前等级：L1/L2/L3/L4/L5</td></tr>
+  <tr><td>gender</td><td>VARCHAR</td><td>4</td><td></td><td>N</td><td>NULL</td><td>性别</td></tr>
+  <tr><td>city</td><td>VARCHAR</td><td>50</td><td></td><td>N</td><td>NULL</td><td>所在城市</td></tr>
+  <tr><td>experience_years</td><td>INT</td><td>11</td><td></td><td>N</td><td>0</td><td>从业年限</td></tr>
+  <tr><td>is_student</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否大学生</td></tr>
+  <tr><td>is_studio</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否工作室</td></tr>
+  <tr><td>bio</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>个人简介</td></tr>
+  <tr><td>skills</td><td>JSON</td><td>—</td><td></td><td>N</td><td>NULL</td><td>技能数组</td></tr>
+  <tr><td>representative_works</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>代表作品描述</td></tr>
+  <tr><td>total_projects</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>累计项目数</td></tr>
+  <tr><td>total_income</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>0.00</td><td>累计收入</td></tr>
+  <tr><td>avg_rating</td><td>DECIMAL</td><td>2,1</td><td></td><td>Y</td><td>0.0</td><td>平均评分</td></tr>
+  <tr><td>is_verified</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否已认证</td></tr>
+  <tr><td>entry_path</td><td>VARCHAR</td><td>20</td><td></td><td>N</td><td>NULL</td><td>入驻路径：training/portfolio</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_creator_user</code>（唯一，user_id），<code>idx_level</code>（level_code），<code>idx_role</code>（professional_role_id），<code>idx_city</code>（city），<code>idx_verified</code>（is_verified）</p>
+
+<p><strong>5. 创作者等级表（creator_level）</strong> — 预置L1-L5五级数据，定义等级规则。</p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>level_code</td><td>VARCHAR</td><td>10</td><td></td><td>Y</td><td>—</td><td>等级编码：L1/L2/L3/L4/L5，唯一</td></tr>
+  <tr><td>level_name</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>—</td><td>等级名称：新星/新锐/精英/资深/大师</td></tr>
+  <tr><td>min_projects</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>升级最低项目数</td></tr>
+  <tr><td>min_rating</td><td>DECIMAL</td><td>2,1</td><td></td><td>Y</td><td>4.0</td><td>升级最低评分</td></tr>
+  <tr><td>budget_limit</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>0.00</td><td>可接项目预算上限</td></tr>
+  <tr><td>commission_rate</td><td>DECIMAL</td><td>4,2</td><td></td><td>Y</td><td>0.00</td><td>标准佣金（如10.00=10%）</td></tr>
+  <tr><td>commission_rate_pro</td><td>DECIMAL</td><td>4,2</td><td></td><td>Y</td><td>0.00</td><td>Pro会员佣金</td></tr>
+  <tr><td>commission_rate_elite</td><td>DECIMAL</td><td>4,2</td><td></td><td>Y</td><td>0.00</td><td>Elite会员佣金</td></tr>
+  <tr><td>min_commission</td><td>DECIMAL</td><td>4,2</td><td></td><td>Y</td><td>1.00</td><td>佣金下限</td></tr>
+  <tr><td>monthly_order_limit</td><td>INT</td><td>11</td><td></td><td>N</td><td>NULL</td><td>月接单上限</td></tr>
+  <tr><td>settlement_cycle</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>—</td><td>结算周期：T+1/T+3/T+5/T+7</td></tr>
+  <tr><td>free_commission_orders</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>新手免佣单数</td></tr>
+  <tr><td>permissions</td><td>JSON</td><td>—</td><td></td><td>N</td><td>NULL</td><td>权限列表</td></tr>
+  <tr><td>sort_order</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>排序序号</td></tr>
+  <tr><td>is_active</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>1</td><td>是否启用</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+</table>
+
+<p><strong>6. 创作者等级变更记录表（creator_level_log）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>用户ID</td></tr>
+  <tr><td>old_level</td><td>VARCHAR</td><td>10</td><td></td><td>N</td><td>NULL</td><td>原等级</td></tr>
+  <tr><td>new_level</td><td>VARCHAR</td><td>10</td><td></td><td>Y</td><td>—</td><td>新等级</td></tr>
+  <tr><td>change_type</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>—</td><td>upgrade/downgrade/initial</td></tr>
+  <tr><td>reason</td><td>VARCHAR</td><td>500</td><td></td><td>N</td><td>NULL</td><td>变更原因</td></tr>
+  <tr><td>operator_id</td><td>BIGINT</td><td>20</td><td></td><td>N</td><td>NULL</td><td>操作人ID</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_user_level</code>（user_id），<code>idx_change_type</code></p>
+
+<p><strong>7. 专业角色表（professional_role）</strong> — 7大角色+细分方向</p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>role_code</td><td>VARCHAR</td><td>30</td><td></td><td>Y</td><td>—</td><td>角色编码，唯一</td></tr>
+  <tr><td>role_name</td><td>VARCHAR</td><td>50</td><td></td><td>Y</td><td>—</td><td>角色名称</td></tr>
+  <tr><td>parent_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>N</td><td>NULL</td><td>父角色ID（细分方向用）</td></tr>
+  <tr><td>sort_order</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>排序序号</td></tr>
+  <tr><td>is_active</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>1</td><td>是否启用</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_role_code</code>（唯一），<code>idx_parent</code></p>
+
+<p><strong>8. 创作者审核记录表（creator_review）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>用户ID</td></tr>
+  <tr><td>review_type</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>—</td><td>entry/level_up/appeal</td></tr>
+  <tr><td>status</td><td>TINYINT</td><td>4</td><td></td><td>Y</td><td>0</td><td>0=待审核 1=通过 2=不通过</td></tr>
+  <tr><td>quality_score</td><td>DECIMAL</td><td>4,2</td><td></td><td>N</td><td>NULL</td><td>作品质量评分</td></tr>
+  <tr><td>tech_score</td><td>DECIMAL</td><td>4,2</td><td></td><td>N</td><td>NULL</td><td>技术能力评分</td></tr>
+  <tr><td>experience_score</td><td>DECIMAL</td><td>4,2</td><td></td><td>N</td><td>NULL</td><td>项目经验评分</td></tr>
+  <tr><td>sustainability_score</td><td>DECIMAL</td><td>4,2</td><td></td><td>N</td><td>NULL</td><td>持续能力评分</td></tr>
+  <tr><td>total_score</td><td>DECIMAL</td><td>4,2</td><td></td><td>N</td><td>NULL</td><td>综合评分</td></tr>
+  <tr><td>assigned_level</td><td>VARCHAR</td><td>10</td><td></td><td>N</td><td>NULL</td><td>分配等级</td></tr>
+  <tr><td>review_comment</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>审核意见</td></tr>
+  <tr><td>reviewer_id</td><td>BIGINT</td><td>20</td><td></td><td>N</td><td>NULL</td><td>审核人ID</td></tr>
+  <tr><td>reviewed_at</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>审核时间</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>提交时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_review_user</code>（user_id），<code>idx_review_status</code>，<code>idx_review_type</code></p>
+
+<h4 class="sub">4.1.3 人才信息库域</h4>
+<p><strong>9. 人才信息表（talent_info）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>用户ID，关联user.id</td></tr>
+  <tr><td>professional_role_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>专业角色ID</td></tr>
+  <tr><td>display_name</td><td>VARCHAR</td><td>50</td><td></td><td>Y</td><td>—</td><td>展示名称</td></tr>
+  <tr><td>gender</td><td>VARCHAR</td><td>4</td><td></td><td>N</td><td>NULL</td><td>性别</td></tr>
+  <tr><td>city</td><td>VARCHAR</td><td>50</td><td></td><td>N</td><td>NULL</td><td>所在城市</td></tr>
+  <tr><td>experience</td><td>VARCHAR</td><td>100</td><td></td><td>N</td><td>NULL</td><td>从业经验</td></tr>
+  <tr><td>is_student</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否大学生</td></tr>
+  <tr><td>is_studio</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否工作室</td></tr>
+  <tr><td>level_code</td><td>VARCHAR</td><td>10</td><td></td><td>Y</td><td>—</td><td>当前等级</td></tr>
+  <tr><td>is_verified</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否已认证</td></tr>
+  <tr><td>is_available</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>1</td><td>是否可接单</td></tr>
+  <tr><td>skills</td><td>JSON</td><td>—</td><td></td><td>N</td><td>NULL</td><td>技能标签</td></tr>
+  <tr><td>representative_works</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>代表作品描述</td></tr>
+  <tr><td>stats_summary</td><td>VARCHAR</td><td>200</td><td></td><td>N</td><td>NULL</td><td>数据概览</td></tr>
+  <tr><td>is_in_talent_pool</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否已入库</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_talent_user</code>（唯一，user_id），<code>idx_talent_role</code>，<code>idx_talent_level</code>，<code>idx_talent_city</code>，<code>idx_talent_verified</code>，<code>idx_talent_available</code>，<code>idx_talent_pool</code></p>
+
+<p><strong>10. 人才作品集表（talent_portfolio）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>talent_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>人才ID</td></tr>
+  <tr><td>title</td><td>VARCHAR</td><td>200</td><td></td><td>Y</td><td>—</td><td>作品标题</td></tr>
+  <tr><td>description</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>作品描述</td></tr>
+  <tr><td>file_url</td><td>VARCHAR</td><td>500</td><td></td><td>N</td><td>NULL</td><td>文件URL</td></tr>
+  <tr><td>file_type</td><td>VARCHAR</td><td>20</td><td></td><td>N</td><td>NULL</td><td>文件类型：video/image/pdf</td></tr>
+  <tr><td>sort_order</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>排序序号</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_portfolio_talent</code>（talent_id）</p>
+
+<h4 class="sub">4.1.4 项目交易域</h4>
+<p><strong>11. 项目表（project）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>client_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>需求方用户ID</td></tr>
+  <tr><td>title</td><td>VARCHAR</td><td>200</td><td></td><td>Y</td><td>—</td><td>项目名称</td></tr>
+  <tr><td>project_type</td><td>VARCHAR</td><td>30</td><td></td><td>Y</td><td>—</td><td>类型：series/brand/single/ip</td></tr>
+  <tr><td>budget_min</td><td>DECIMAL</td><td>12,2</td><td></td><td>N</td><td>NULL</td><td>预算下限</td></tr>
+  <tr><td>budget_max</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>—</td><td>预算上限</td></tr>
+  <tr><td>level_required</td><td>VARCHAR</td><td>10</td><td></td><td>Y</td><td>—</td><td>最低等级要求</td></tr>
+  <tr><td>description</td><td>TEXT</td><td>—</td><td></td><td>Y</td><td>—</td><td>项目描述</td></tr>
+  <tr><td>episode_count</td><td>INT</td><td>11</td><td></td><td>N</td><td>NULL</td><td>集数</td></tr>
+  <tr><td>duration_days</td><td>INT</td><td>11</td><td></td><td>N</td><td>NULL</td><td>工期（天）</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>pending</td><td>pending/open/in_progress/completed/cancelled/disputed</td></tr>
+  <tr><td>is_urgent</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否紧急</td></tr>
+  <tr><td>is_featured</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否精选推荐</td></tr>
+  <tr><td>is_sticky</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否置顶</td></tr>
+  <tr><td>deadline</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>投标截止日期</td></tr>
+  <tr><td>bid_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>投标数量</td></tr>
+  <tr><td>view_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>浏览数量</td></tr>
+  <tr><td>tags</td><td>JSON</td><td>—</td><td></td><td>N</td><td>NULL</td><td>标签数组</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_project_client</code>，<code>idx_status</code>，<code>idx_level_required</code>，<code>idx_project_type</code></p>
+
+<p><strong>12. 投标表（project_bid）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>project_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>项目ID</td></tr>
+  <tr><td>creator_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>创作者用户ID</td></tr>
+  <tr><td>bid_amount</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>—</td><td>投标金额</td></tr>
+  <tr><td>bid_message</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>投标说明</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>pending</td><td>pending/accepted/rejected/withdrawn</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>投标时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_bid_unique</code>（唯一，project_id + creator_id），<code>idx_bid_project</code>，<code>idx_bid_creator</code>，<code>idx_bid_status</code></p>
+
+<p><strong>13. 订单表（order）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>order_no</td><td>VARCHAR</td><td>32</td><td></td><td>Y</td><td>—</td><td>订单编号，唯一</td></tr>
+  <tr><td>project_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>项目ID</td></tr>
+  <tr><td>client_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>需求方用户ID</td></tr>
+  <tr><td>creator_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>创作者用户ID</td></tr>
+  <tr><td>bid_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>N</td><td>NULL</td><td>投标ID</td></tr>
+  <tr><td>total_amount</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>—</td><td>订单总金额</td></tr>
+  <tr><td>commission_rate</td><td>DECIMAL</td><td>4,2</td><td></td><td>Y</td><td>—</td><td>实际佣金比例</td></tr>
+  <tr><td>commission_amount</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>0.00</td><td>佣金金额</td></tr>
+  <tr><td>creator_amount</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>0.00</td><td>创作者实收</td></tr>
+  <tr><td>escrow_amount</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>0.00</td><td>托管金额</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>pending</td><td>pending/escrowed/in_progress/delivered/reviewing/completed/cancelled/disputed</td></tr>
+  <tr><td>milestone_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>里程碑总数</td></tr>
+  <tr><td>completed_milestones</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>已完成里程碑</td></tr>
+  <tr><td>is_free_commission</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否免佣</td></tr>
+  <tr><td>completed_at</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>完成时间</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_order_no</code>（唯一），<code>idx_order_project</code>，<code>idx_order_client</code>，<code>idx_order_creator</code>，<code>idx_order_status</code></p>
+
+<p><strong>14. 订单里程碑表（order_milestone）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>order_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>订单ID</td></tr>
+  <tr><td>milestone_name</td><td>VARCHAR</td><td>200</td><td></td><td>Y</td><td>—</td><td>里程碑名称</td></tr>
+  <tr><td>sort_order</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>排序序号</td></tr>
+  <tr><td>amount</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>0.00</td><td>里程碑金额</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>pending</td><td>pending/submitted/approved/rejected</td></tr>
+  <tr><td>delivery_note</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>交付说明</td></tr>
+  <tr><td>delivery_url</td><td>VARCHAR</td><td>500</td><td></td><td>N</td><td>NULL</td><td>交付文件URL</td></tr>
+  <tr><td>approved_at</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>验收通过时间</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_milestone_order</code>（order_id），<code>idx_milestone_status</code></p>
+
+<h4 class="sub">4.1.5 内容创作域（创作广场）</h4>
+<p><strong>15. 作品表（work）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>creator_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>创作者用户ID</td></tr>
+  <tr><td>title</td><td>VARCHAR</td><td>200</td><td></td><td>Y</td><td>—</td><td>作品标题</td></tr>
+  <tr><td>work_type</td><td>VARCHAR</td><td>30</td><td></td><td>Y</td><td>—</td><td>story/sample/script/comic</td></tr>
+  <tr><td>description</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>作品描述</td></tr>
+  <tr><td>cover_url</td><td>VARCHAR</td><td>500</td><td></td><td>N</td><td>NULL</td><td>封面图URL</td></tr>
+  <tr><td>file_url</td><td>VARCHAR</td><td>500</td><td></td><td>N</td><td>NULL</td><td>作品文件URL</td></tr>
+  <tr><td>price</td><td>DECIMAL</td><td>12,2</td><td></td><td>N</td><td>NULL</td><td>版权价格</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>published</td><td>draft/published/sold</td></tr>
+  <tr><td>copyright_id</td><td>VARCHAR</td><td>100</td><td></td><td>N</td><td>NULL</td><td>区块链版权登记ID</td></tr>
+  <tr><td>is_hot</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否热门</td></tr>
+  <tr><td>is_new</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否新作</td></tr>
+  <tr><td>view_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>浏览数</td></tr>
+  <tr><td>like_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>点赞数</td></tr>
+  <tr><td>comment_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>评论数</td></tr>
+  <tr><td>tags</td><td>JSON</td><td>—</td><td></td><td>N</td><td>NULL</td><td>标签数组</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_work_creator</code>，<code>idx_work_type</code>，<code>idx_work_status</code>，<code>idx_work_hot</code></p>
+
+<p><strong>16. 版权交易表（copyright_transaction）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>work_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>作品ID</td></tr>
+  <tr><td>buyer_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>采购方用户ID</td></tr>
+  INT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>uploader_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>上传者用户ID</td></tr>
+  <tr><td>category_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>品类ID</td></tr>
+  <tr><td>title</td><td>VARCHAR</td><td>200</td><td></td><td>Y</td><td>—</td><td>资产标题</td></tr>
+  <tr><td>description</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>资产描述</td></tr>
+  <tr><td>thumbnail_url</td><td>VARCHAR</td><td>500</td><td></td><td>N</td><td>NULL</td><td>缩略图URL</td></tr>
+  <tr><td>file_url</td><td>VARCHAR</td><td>500</td><td></td><td>Y</td><td>—</td><td>资产文件URL</td></tr>
+  <tr><td>price</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>0.00</td><td>使用单价</td></tr>
+  <tr><td>is_exclusive</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否独家</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>pending</td><td>pending/approved/rejected/offline</td></tr>
+  <tr><td>review_comment</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>审核意见</td></tr>
+  <tr><td>usage_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>使用次数</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_asset_uploader</code>，<code>idx_asset_category</code>，<code>idx_asset_status</code></p>
+
+<p><strong>20. 资产使用记录表（asset_usage）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>asset_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>资产ID</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>使用者用户ID</td></tr>
+  <tr><td>project_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>N</td><td>NULL</td><td>关联项目ID</td></tr>
+  <tr><td>fee</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>0.00</td><td>使用费用</td></tr>
+  <tr><td>uploader_share</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>0.00</td><td>上传者分润</td></tr>
+  <tr><td>platform_share</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>0.00</td><td>平台分润</td></tr>
+  <tr><td>referrer_share</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>0.00</td><td>推荐人分润</td></tr>
+  <tr><td>referrer_id</td><td>BIGINT</td><td>20</td><td></td><td>N</td><td>NULL</td><td>推荐人用户ID</td></tr>
+  <tr><td>settlement_status</td><td>TINYINT</td><td>4</td><td></td><td>Y</td><td>0</td><td>0=未结算 1=已结算</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>使用时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_usage_asset</code>，<code>idx_usage_user</code>，<code>idx_usage_settlement</code></p>
+
+<h4 class="sub">4.1.7 培训学院域</h4>
+<p><strong>21. 课程表（course）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>title</td><td>VARCHAR</td><td>200</td><td></td><td>Y</td><td>—</td><td>课程名称</td></tr>
+  <tr><td>course_type</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>—</td><td>online/offline_vip/offline_master</td></tr>
+  <tr><td>price</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>—</td><td>课程价格</td></tr>
+  <tr><td>price_max</td><td>DECIMAL</td><td>10,2</td><td></td><td>N</td><td>NULL</td><td>价格上限</td></tr>
+  <tr><td>hours</td><td>INT</td><td>11</td><td></td><td>N</td><td>NULL</td><td>课时数</td></tr>
+  <tr><td>format</td><td>VARCHAR</td><td>100</td><td></td><td>N</td><td>NULL</td><td>教学形式</td></tr>
+  <tr><td>content</td><td>VARCHAR</td><td>500</td><td></td><td>N</td><td>NULL</td><td>课程内容描述</td></tr>
+  <tr><td>certification</td><td>VARCHAR</td><td>50</td><td></td><td>N</td><td>NULL</td><td>认证等级</td></tr>
+  <tr><td>has_refund</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否学费返还</td></tr>
+  <tr><td>sort_order</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>排序序号</td></tr>
+  <tr><td>is_active</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>1</td><td>是否上架</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+
+<p><strong>22. 课程报名表（course_enrollment）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>学员用户ID</td></tr>
+  <tr><td>course_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>课程ID</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>pending</td><td>pending/learning/graduated/dropped</td></tr>
+  <tr><td>progress</td><td>DECIMAL</td><td>4,2</td><td></td><td>Y</td><td>0.00</td><td>学习进度</td></tr>
+  <tr><td>assigned_level</td><td>VARCHAR</td><td>10</td><td></td><td>N</td><td>NULL</td><td>结业等级</td></tr>
+  <tr><td>total_refund</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>0.00</td><td>已返还学费</td></tr>
+  <tr><td>refund_rate</td><td>DECIMAL</td><td>4,2</td><td></td><td>Y</td><td>0.00</td><td>每单返还比例</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>报名时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_enroll</code>（唯一，user_id + course_id），<code>idx_enroll_status</code></p>
+
+<h4 class="sub">4.1.8 社区域</h4>
+<p><strong>23. 社区帖子表（community_post）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>发帖用户ID</td></tr>
+  <tr><td>board</td><td>VARCHAR</td><td>30</td><td></td><td>Y</td><td>—</td><td>板块</td></tr>
+  <tr><td>title</td><td>VARCHAR</td><td>200</td><td></td><td>Y</td><td>—</td><td>帖子标题</td></tr>
+  <tr><td>content</td><td>TEXT</td><td>—</td><td></td><td>Y</td><td>—</td><td>帖子正文</td></tr>
+  <tr><td>images</td><td>JSON</td><td>—</td><td></td><td>N</td><td>NULL</td><td>图片URL数组</td></tr>
+  <tr><td>tags</td><td>JSON</td><td>—</td><td></td><td>N</td><td>NULL</td><td>标签数组</td></tr>
+  <tr><td>view_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>浏览数</td></tr>
+  <tr><td>like_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>点赞数</td></tr>
+  <tr><td>comment_count</td><td>INT</td><td>11</td><td></td><td>Y</td><td>0</td><td>评论数</td></tr>
+  <tr><td>is_essence</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>是否精华</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>发帖时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>idx_post_board</code>，<code>idx_post_user</code>，<code>idx_post_created</code>，<code>idx_post_hot</code></p>
+
+<h4 class="sub">4.1.9 交易财务域</h4>
+<p><strong>24. 交易流水表（transaction）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>tx_no</td><td>VARCHAR</td><td>32</td><td></td><td>Y</td><td>—</td><td>交易流水号，唯一</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>用户ID</td></tr>
+  <tr><td>tx_type</td><td>VARCHAR</td><td>30</td><td></td><td>Y</td><td>—</td><td>交易类型</td></tr>
+  <tr><td>amount</td><td>DECIMAL</td><td>12,2</td><td></td><td>Y</td><td>—</td><td>交易金额</td></tr>
+  <tr><td>balance_before</td><td>DECIMAL</td><td>12,2</td><td></td><td>N</td><td>NULL</td><td>交易前余额</td></tr>
+  <tr><td>balance_after</td><td>DECIMAL</td><td>12,2</td><td></td><td>N</td><td>NULL</td><td>交易后余额</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>pending</td><td>pending/success/failed</td></tr>
+  <tr><td>reference_id</td><td>BIGINT</td><td>20</td><td></td><td>N</td><td>NULL</td><td>关联业务ID</td></tr>
+  <tr><td>reference_type</td><td>VARCHAR</td><td>30</td><td></td><td>N</td><td>NULL</td><td>关联业务类型</td></tr>
+  <tr><td>remark</td><td>VARCHAR</td><td>200</td><td></td><td>N</td><td>NULL</td><td>备注</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_tx_no</code>（唯一），<code>idx_tx_user</code>，<code>idx_tx_type</code>，<code>idx_tx_status</code></p>
+
+<p><strong>25. 会员订阅表（membership）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>user_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>用户ID</td></tr>
+  <tr><td>plan_code</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>—</td><td>方案编码</td></tr>
+  <tr><td>user_type</td><td>VARCHAR</td><td>10</td><td></td><td>Y</td><td>—</td><td>用户类型</td></tr>
+  <tr><td>status</td><td>VARCHAR</td><td>20</td><td></td><td>Y</td><td>active</td><td>active/inactive/cancelled</td></tr>
+  <tr><td>price</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>—</td><td>月费金额</td></tr>
+  <tr><td>monthly_threshold</td><td>DECIMAL</td><td>10,2</td><td></td><td>Y</td><td>—</td><td>先享后付阈值</td></tr>
+  <tr><td>charged_month</td><td>VARCHAR</td><td>7</td><td></td><td>N</td><td>NULL</td><td>最后扣费月</td></tr>
+  <tr><td>expire_at</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>到期时间</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>开通时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_user_membership</code>（唯一，user_id + plan_code），<code>idx_member_status</code></p>
+
+<h4 class="sub">4.1.10 评价体系域</h4>
+<p><strong>26. 评价表（review）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>order_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>订单ID</td></tr>
+  <tr><td>from_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>评价方</td></tr>
+  <tr><td>to_id</td><td>BIGINT</td><td>20</td><td class="fkey">FK</td><td>Y</td><td>—</td><td>被评价方</td></tr>
+  <tr><td>rating</td><td>TINYINT</td><td>4</td><td></td><td>Y</td><td>5</td><td>评分(1-5)</td></tr>
+  <tr><td>content</td><td>TEXT</td><td>—</td><td></td><td>N</td><td>NULL</td><td>评价内容</td></tr>
+  <tr><td>review_type</td><td>VARCHAR</td><td>10</td><td></td><td>Y</td><td>—</td><td>client_to_creator/creator_to_client</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_review</code>（唯一，order_id + from_id），<code>idx_review_to</code>（to_id）</p>
+
+<h4 class="sub">4.1.11 平台运营域</h4>
+<p><strong>27. 平台活动表（platform_activity）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>platform</td><td>VARCHAR</td><td>30</td><td></td><td>Y</td><td>—</td><td>外部平台</td></tr>
+  <tr><td>activity_name</td><td>VARCHAR</td><td>200</td><td></td><td>Y</td><td>—</td><td>活动名称</td></tr>
+  <tr><td>reward</td><td>VARCHAR</td><td>200</td><td></td><td>N</td><td>NULL</td><td>活动奖励</td></tr>
+  <tr><td>cooperation_type</td><td>VARCHAR</td><td>50</td><td></td><td>N</td><td>NULL</td><td>合作类型</td></tr>
+  <tr><td>start_time</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>开始时间</td></tr>
+  <tr><td>end_time</td><td>DATETIME</td><td>—</td><td></td><td>N</td><td>NULL</td><td>结束时间</td></tr>
+  <tr><td>status</td><td>TINYINT</td><td>4</td><td></td><td>Y</td><td>0</td><td>0=未开始 1=进行中 2=已结束</td></tr>
+  <tr><td>is_deleted</td><td>TINYINT</td><td>1</td><td></td><td>Y</td><td>0</td><td>软删除标记</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+
+<p><strong>28. 系统配置表（system_config）</strong></p>
+<table>
+  <tr><th>字段名</th><th>类型</th><th>长度</th><th>主键</th><th>非空</th><th>默认值</th><th>说明</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>20</td><td class="pkey">PK</td><td>Y</td><td>—</td><td>自增主键</td></tr>
+  <tr><td>config_key</td><td>VARCHAR</td><td>100</td><td></td><td>Y</td><td>—</td><td>配置键，唯一</td></tr>
+  <tr><td>config_value</td><td>TEXT</td><td>—</td><td></td><td>Y</td><td>—</td><td>配置值</td></tr>
+  <tr><td>description</td><td>VARCHAR</td><td>200</td><td></td><td>N</td><td>NULL</td><td>配置说明</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP</td><td>创建时间</td></tr>
+  <tr><td>updated_at</td><td>DATETIME</td><td>—</td><td></td><td>Y</td><td>CURRENT_TIMESTAMP ON UPDATE</td><td>更新时间</td></tr>
+</table>
+<p><strong>索引：</strong> <code>uk_config_key</code>（唯一）</p>
+
+<!-- ===== 4.2 非关系数据库结构 ===== -->
+<h3 class="section">4.2 非关系数据库结构（Redis）</h3>
+<table>
+  <tr><th>Key模式</th><th>Value类型</th><th>说明</th><th>过期时间</th></tr>
+  <tr><td>session:{token}</td><td>JSON</td><td>用户登录会话</td><td>7天</td></tr>
+  <tr><td>user:{id}:profile</td><td>JSON</td><td>用户基本信息缓存</td><td>1小时</td></tr>
+  <tr><td>project:hot</td><td>SortedSet</td><td>热门项目排行</td><td>10分钟</td></tr>
+  <tr><td>talent:role:{role}</td><td>JSON</td><td>人才库按角色缓存</td><td>30分钟</td></tr>
+  <tr><td>counter:project:{id}:view</td><td>Int</td><td>项目浏览计数</td><td>持久</td></tr>
+  <tr><td>counter:work:{id}:like</td><td>Int</td><td>作品点赞计数</td><td>持久</td></tr>
+  <tr><td>rate:commission</td><td>JSON</td><td>佣金比例配置缓存</td><td>1天</td></tr>
+  <tr><td>sms:code:{phone}</td><td>String</td><td>短信验证码</td><td>5分钟</td></tr>
+</table>
+
+<!-- ===== 4.3 关系说明 ===== -->
+<h3 class="section">4.3 关系说明</h3>
+<p><strong>核心数据流：</strong>用户注册后创建user + user_identity。创作者入驻：creator_profile -> creator_review审核 -> talent_info入库 -> 获得等级。项目交易：client发布project -> creator投标project_bid -> 中标生成order -> 里程碑交付 -> review评价 -> transaction流水。内容创作：work发布 -> 版权交易copyright_transaction。资产使用：asset上架 -> asset_usage记录 -> 分润。</p>
+
+<p><strong>外键关系汇总：</strong>user_identity.user_id -> user.id；user_auth.user_id -> user.id；creator_profile.user_id -> user.id；creator_profile.professional_role_id -> professional_role.id；talent_info.user_id -> user.id；project.client_id -> user.id；project_bid.project_id -> project.id；project_bid.creator_id -> user.id；order.project_id -> project.id；order.client_id/creator_id -> user.id；order_milestone.order_id -> order.id；work.creator_id -> user.id；asset.uploader_id -> user.id；asset.category_id -> asset_category.id；asset_usage.asset_id -> asset.id；course_enrollment.user_id -> user.id；course_enrollment.course_id -> course.id；review.order_id -> order.id；review.from_id/to_id -> user.id；membership.user_id -> user.id。</p>
+
+<!-- ===== 5. 数据库对象设计 ===== -->
+<h2 class="chapter">5 数据库对象设计</h2>
+
+<h3 class="section">5.1 视图设计</h3>
+<p><strong>v_creator_dashboard</strong>：创作者工作台视图，关联creator_profile + order + review。<br>
+<strong>v_talent_search</strong>：人才搜索视图，关联talent_info + professional_role + creator_level。<br>
+<strong>v_project_detail</strong>：项目详情视图，关联project + user + project_bid。<br>
+<strong>v_monthly_settlement</strong>：月度结算视图，关联order + transaction + membership。</p>
+
+<h3 class="section">5.2 存储过程设计</h3>
+<p><strong>sp_calculate_commission</strong>：根据订单金额、创作者等级、会员身份计算实际佣金和各方分润。<br>
+<strong>sp_monthly_membership_charge</strong>：月度会员费核算，按"先享后付"规则判断是否扣费。<br>
+<strong>sp_auto_level_upgrade</strong>：每月1日自动扫描创作者等级变更，满足条件的自动升级/降级。<br>
+<strong>sp_tuition_refund</strong>：订单完成后自动触发学费返还计算。</p>
+
+<h3 class="section">5.3 触发器设计</h3>
+<p><strong>trg_order_completed</strong>：订单完成后自动创建transaction流水、更新creator_profile统计数据。<br>
+<strong>trg_bid_accepted</strong>：投标中标后自动更新project状态为in_progress，拒绝其他投标。<br>
+<strong>trg_asset_used</strong>：资产使用后自动递增asset.usage_count，计算uploader_share。</p>
+
+<!-- ===== 6. 数据库运维设计 ===== -->
+<h2 class="chapter">6 数据库运维设计</h2>
+
+<h3 class="section">6.1 数据恢复策略</h3>
+<p><strong>备份策略：</strong>每日全量备份（凌晨2:00），每小时增量备份。全量备份保留30天，增量保留7天。<br>
+<strong>恢复策略：</strong>任意时间点恢复(PITR)，基于全量+binlog实现。RTO<=2小时，RPO<=15分钟。<br>
+<strong>灾备方案：</strong>主从架构，从库异地备份。主库故障时自动切换。</p>
+
+<h3 class="section">6.2 性能优化策略</h3>
+<p><strong>SQL优化：</strong>所有查询使用索引避免全表扫描；复杂查询限制行数使用分页；定期分析慢查询日志；避免WHERE字段函数运算。</p>
+<p><strong>数据库参数：</strong>innodb_buffer_pool_size=物理内存70%；innodb_log_file_size=2GB；max_connections=500；long_query_time=1s。</p>
+<p><strong>索引维护：</strong>定期检查索引碎片，OPTIMIZE TABLE重建。每月分析索引使用频率，清理无效索引。</p>
+
+<div class="footer">
+  <p>— 文档结束 —</p>
+  <p>生花AI创意平台 · 数据库设计说明书 V1.0</p>
+  <p>&copy; 2026 帧游计科技 · 机密文件 · 仅供内部使用</p>
+</div>
+
+</div><!-- /content -->
+</div><!-- /doc -->
+</body>
+</html>
