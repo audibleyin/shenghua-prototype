@@ -1,0 +1,2740 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生花 - AI创作生态平台</title>
+<style>
+:root {
+  --primary: #E53E3E;
+  --primary-dark: #C53030;
+  --primary-light: #FEB2B2;
+  --primary-bg: #FFF5F5;
+  --primary-grad: linear-gradient(135deg, #E53E3E 0%, #F87171 100%);
+  --primary-grad-soft: linear-gradient(135deg, #FFF0F0 0%, #FFF5F5 100%);
+  --secondary: #374151;
+  --accent: #ED8936;
+  --bg: #FFFFFF;
+  --card: #FFFFFF;
+  --text: #1F2937;
+  --text-secondary: #9CA3AF;
+  --border: #F0F0F0;
+  --success: #38A169;
+  --warning: #DD6B20;
+  --info: #3182CE;
+  --l1: #A0AEC0;
+  --l2: #4299E1;
+  --l3: #9F7AEA;
+  --l4: #ED8936;
+  --l5: #E53E3E;
+  --shadow: 0 4px 12px rgba(229,62,62,0.03), 0 1px 4px rgba(0,0,0,0.02);
+  --shadow-lg: 0 12px 32px rgba(229,62,62,0.05), 0 4px 8px rgba(0,0,0,0.02);
+  --shadow-glow: 0 4px 20px rgba(229,62,62,0.15);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+}
+
+/* ===== ICON SYSTEM (SVG filled/duotone icons) ===== */
+.ico, .ic { display:inline-flex; align-items:center; justify-content:center; border-radius:12px; flex-shrink:0; }
+.ico svg, .ic svg { display:block; }
+.ico-lg, .ic-lg { width:48px; height:48px; }
+.ico-lg svg, .ic-lg svg { width:24px; height:24px; }
+.ico-md, .ic-md { width:36px; height:36px; }
+.ico-md svg, .ic-md svg { width:20px; height:20px; }
+.ico-sm, .ic-sm { width:28px; height:28px; border-radius:8px; }
+.ico-sm svg, .ic-sm svg { width:16px; height:16px; }
+.ico.blue, .ic.blue { background:linear-gradient(135deg,#DBEAFE,#EFF6FF); color:#2563EB; }
+.ico.green, .ic.green { background:linear-gradient(135deg,#D1FAE5,#ECFDF5); color:#059669; }
+.ico.purple, .ic.purple { background:linear-gradient(135deg,#E9D5FF,#FAF5FF); color:#7C3AED; }
+.ico.orange, .ic.orange { background:linear-gradient(135deg,#FED7AA,#FFF7ED); color:#EA580C; }
+.ico.red, .ic.red { background:linear-gradient(135deg,#FECACA,#FFF5F5); color:#DC2626; }
+.ico.gray, .ic.gray { background:linear-gradient(135deg,#E5E7EB,#F9FAFB); color:#4B5563; }
+.ico.teal, .ic.teal { background:linear-gradient(135deg,#99F6E4,#F0FDFA); color:#0D9488; }
+
+/* ===== GRADIENT TEXT ===== */
+.grad-text { background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* ===== TOP NAV ===== */
+.topnav { position: fixed; top:0; left:0; right:0; z-index:1000; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.topnav::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1px; background: linear-gradient(90deg, transparent 0%, rgba(229,62,62,0.3) 50%, transparent 100%); }
+.topnav .logo { display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 700; cursor: pointer; background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.brand-mark { display:inline-block; vertical-align:middle; flex-shrink:0; }
+.topnav .nav-links { display: flex; gap: 4px; }
+.topnav .nav-links a { padding: 8px 16px; border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: all 0.2s; cursor: pointer; }
+.topnav .nav-links a:hover { background: var(--primary-bg); color: var(--text); }
+.topnav .nav-links a.active { background: var(--primary); color: white; }
+.topnav .nav-right { display: flex; align-items: center; gap: 12px; }
+.topnav .nav-right .btn-login { padding: 6px 16px; border: 1px solid var(--primary); border-radius: 6px; color: var(--primary); background: white; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+.topnav .nav-right .btn-login:hover { background: var(--primary); color: white; }
+.topnav .nav-right .btn-register { padding: 6px 18px; border: none; border-radius: 8px; background: var(--primary-grad); color: white; font-size: 13px; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(229,62,62,0.2); }
+.topnav .nav-right .btn-register:hover { box-shadow: var(--shadow-glow); transform: translateY(-1px); }
+
+/* ===== PAGES ===== */
+.page { display: none; padding-top: 64px; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ===== HERO ===== */
+.hero { position: relative; background: linear-gradient(135deg, #FFF0F0 0%, #FFFFFF 40%, #EBF4FF 100%); color: var(--text); padding: 80px 24px 60px; text-align: center; overflow: hidden; }
+.hero > * { position: relative; z-index: 1; }
+.hero h1 { font-size: 52px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.5px; }
+.hero h1 .highlight { background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.hero .slogan { font-size: 20px; color: var(--text-secondary); margin-bottom: 32px; }
+.hero .hero-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 32px; margin-bottom: 40px; }
+.hero .hero-stats .stat { text-align: center; background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); border-radius: var(--radius); padding: 12px 20px; border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+.hero .hero-stats .stat .num { font-size: 36px; font-weight: 700; }
+.hero .hero-stats .stat .label { font-size: 13px; color: var(--text-secondary); }
+.hero .hero-btns { display: flex; justify-content: center; gap: 16px; }
+.hero .hero-btns .btn { padding: 14px 36px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; border: none; transition: all 0.3s; }
+.hero .hero-btns .btn-primary { background: var(--primary-grad); color: white; box-shadow: 0 4px 16px rgba(229,62,62,0.25); }
+.hero .hero-btns .btn-primary:hover { box-shadow: var(--shadow-glow); transform: translateY(-3px); }
+.hero .hero-btns .btn-outline { background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); color: var(--primary); border: 2px solid var(--primary); }
+.hero .hero-btns .btn-outline:hover { border-color: var(--primary-dark); background: var(--primary-bg); transform: translateY(-3px); }
+
+/* ===== ENGINES ===== */
+.engines { padding: 60px 24px; max-width: 1200px; margin: 0 auto; }
+.engines h2 { text-align: center; font-size: 36px; margin-bottom: 12px; font-weight: 800; }
+.engines .subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 40px; font-size: 15px; }
+.engines h2::after { content:''; display:block; width:40px; height:4px; background: var(--primary-grad); border-radius:2px; margin:12px auto 0; }
+.engines-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.engine-card { position: relative; background: var(--card); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 1px solid var(--border); overflow: hidden; }
+.engine-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background: var(--primary-grad); opacity:0; transition: opacity 0.3s; }
+.engine-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.engine-card:hover::before { opacity:1; }
+.engine-card .engine-icon { font-size: 40px; margin-bottom: 16px; }
+.engine-card h3 { font-size: 18px; margin-bottom: 8px; }
+.engine-card .engine-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-bottom: 12px; }
+.engine-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+.engine-card .flow { margin-top: 12px; font-size: 12px; color: var(--primary); font-weight: 500; }
+
+/* ===== SECTION COMMON ===== */
+.section { padding: 60px 24px; max-width: 1200px; margin: 0 auto; }
+.section h2 { font-size: 30px; margin-bottom: 8px; font-weight: 800; position: relative; }
+.section h2::after { content:''; display:block; width:36px; height:4px; background: var(--primary-grad); border-radius:2px; margin-top:10px; }
+.section .section-desc { color: var(--text-secondary); margin-bottom: 32px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== ORDER HALL (REFINED) ===== */
+.order-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+.order-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.filter-chip { padding: 7px 20px; border-radius: 20px; border: 1px solid var(--border); background: white; font-size: 13px; cursor: pointer; transition: all 0.25s; font-weight:500; user-select:none; }
+.filter-chip:hover { background: var(--primary-bg); color: var(--primary); border-color: var(--primary-light); transform:translateY(-1px); box-shadow:0 2px 8px rgba(229,62,62,0.06); }
+.filter-chip.active { background: var(--primary-grad); color: white; border-color: transparent; box-shadow: 0 2px 10px rgba(229,62,62,0.25); }
+.filter-chip .chip-count { display:inline-block; font-size:10px; margin-left:4px; opacity:0.7; }
+.order-sort-group { display:flex; gap:8px; align-items:center; }
+.order-sort-group select { padding:7px 14px; border:1px solid var(--border); border-radius:10px; font-size:13px; background:white; cursor:pointer; transition:border 0.2s; }
+.order-sort-group select:focus { outline:none; border-color:var(--primary); }
+.project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.project-card { position: relative; background: var(--card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: all 0.35s cubic-bezier(0.4,0,0.2,1); cursor: pointer; border: 1px solid var(--border); }
+.project-card:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(229,62,62,0.08), 0 4px 12px rgba(0,0,0,0.03); }
+.project-card .project-thumb { height: 170px; display: flex; align-items: flex-end; justify-content: flex-start; color: white; position: relative; overflow: hidden; }
+.project-card .project-thumb::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.55) 100%); pointer-events:none; z-index:1; }
+.project-card .project-thumb .thumb-pattern { position:absolute; inset:0; opacity:0.08; background-image:radial-gradient(circle at 30% 40%,white 1px,transparent 1px); background-size:20px 20px; pointer-events:none; }
+.project-card .project-thumb .budget { position: absolute; top: 14px; right: 14px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); padding: 5px 12px; border-radius: 8px; font-size: 15px; font-weight: 700; z-index:2; letter-spacing:0.3px; border:1px solid rgba(255,255,255,0.1); }
+.project-card .project-thumb .level-req { position: absolute; bottom: 14px; left: 14px; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; z-index:2; box-shadow:0 2px 8px rgba(0,0,0,0.2); }
+.project-card .project-thumb .deadline-badge { position:absolute; bottom:14px; right:14px; font-size:11px; color:rgba(255,255,255,0.85); z-index:2; display:flex; align-items:center; gap:4px; }
+.project-card .project-thumb .deadline-badge.urgent { color:#FBBF24; font-weight:600; }
+.project-card .project-body { padding: 16px 18px 12px; }
+.project-card .project-body h4 { font-size: 16px; margin-bottom: 6px; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.project-card .project-body .project-meta { display: flex; gap: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+.project-card .project-body .project-meta span { display:flex; align-items:center; gap:4px; }
+.project-card .project-body .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.project-card .project-body .tag { font-size: 11px; padding: 3px 10px; border-radius: 6px; background: var(--primary-bg); color: var(--text-secondary); font-weight:500; }
+.project-card .project-body .tag.hot { background:#FEF2F2; color:#DC2626; }
+.project-card .project-body .tag.new { background:#F0FFF4; color:#059669; }
+.project-card .project-footer { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+.project-card .project-footer .client { display: flex; align-items: center; gap: 8px; }
+.project-card .project-footer .client .client-avatar { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; flex-shrink:0; }
+.project-card .project-footer .client .client-name { font-size:13px; font-weight:500; }
+.project-card .project-footer .client .client-verified { font-size:10px; color:var(--info); }
+.project-card .project-footer .btn-apply { padding: 6px 18px; border-radius: 8px; border: none; background: var(--primary-grad); color: white; font-size: 13px; font-weight:600; cursor: pointer; transition: all 0.2s; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.project-card .project-footer .btn-apply:hover { box-shadow:var(--shadow-glow); transform:translateY(-1px); }
+.project-card .project-footer .btn-applied { padding:6px 18px; border-radius:8px; border:1px solid var(--border); background:white; color:var(--text-secondary); font-size:13px; cursor:pointer; }
+
+.project-stats-bar { display:flex; gap:6px; margin-top:8px; }
+.project-stats-bar .ps-item { display:flex; align-items:center; gap:3px; font-size:11px; color:var(--text-secondary); }
+.project-stats-bar .ps-item .ps-num { font-weight:600; }
+
+.order-ranking { background:var(--card); border-radius:var(--radius-lg); padding:24px; box-shadow:var(--shadow); border:1px solid var(--border); position:sticky; top:88px; }
+.order-ranking h4 { font-size:15px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:6px; }
+.order-ranking .rank-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
+.order-ranking .rank-item:last-child { border-bottom:none; }
+.order-ranking .rank-num { width:22px; height:22px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:white; flex-shrink:0; }
+.order-ranking .rank-info { flex:1; }
+.order-ranking .rank-info .rank-title { font-size:13px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.order-ranking .rank-info .rank-meta { font-size:11px; color:var(--text-secondary); }
+.order-ranking .rank-reward { font-size:13px; font-weight:700; color:var(--primary); }
+
+/* Thumbnail texture overlays (keep for other sections) */
+.plaza-item .thumb, .asset-item .asset-thumb, .post-card .post-img, .talent-card .tc-cover { position: relative; overflow: hidden; }
+.plaza-item .thumb::before, .asset-item .asset-thumb::before, .post-card .post-img::before, .talent-card .tc-cover::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 25% 20%,rgba(255,255,255,0.2) 0%,transparent 50%),radial-gradient(circle at 75% 80%,rgba(255,255,255,0.12) 0%,transparent 45%); pointer-events:none; }
+.plaza-item .thumb::after, .asset-item .asset-thumb::after, .post-card .post-img::after, .talent-card .tc-cover::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(135deg,transparent,transparent 14px,rgba(255,255,255,0.05) 14px,rgba(255,255,255,0.05) 28px); pointer-events:none; }
+
+/* ===== CREATION PLAZA (REFINED) ===== */
+.plaza-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+.plaza-tabs { display: flex; gap: 4px; margin-bottom: 24px; background:var(--bg); border-radius:12px; padding:4px; border:1px solid var(--border); width:fit-content; }
+.plaza-tab { padding: 8px 18px; border: none; background: none; font-size: 13px; cursor: pointer; color: var(--text-secondary); border-radius:8px; transition: all 0.2s; font-weight:500; }
+.plaza-tab:hover { color:var(--text); background:var(--primary-bg); }
+.plaza-tab.active { color: white; background: var(--primary-grad); font-weight: 600; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.plaza-action-bar { display:flex; gap:10px; margin-bottom:24px; }
+.plaza-action-bar .btn-outline-sm { padding:8px 20px; border-radius:10px; border:1px solid var(--border); background:white; font-size:13px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
+.plaza-action-bar .btn-outline-sm:hover { border-color:var(--primary); color:var(--primary); }
+.plaza-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.plaza-item { position: relative; background: var(--card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: all 0.35s cubic-bezier(0.4,0,0.2,1); border: 1px solid var(--border); }
+.plaza-item:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(229,62,62,0.06), 0 4px 12px rgba(0,0,0,0.02); }
+.plaza-item .thumb { height: 200px; display: flex; align-items: flex-end; justify-content: flex-start; font-size: 48px; position:relative; }
+.plaza-item .thumb::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.4) 100%); pointer-events:none; z-index:1; }
+.plaza-item .thumb .plaza-status { position:absolute; top:12px; left:12px; padding:3px 10px; border-radius:6px; font-size:11px; font-weight:600; z-index:2; }
+.plaza-item .thumb .plaza-status.hot { background:rgba(229,62,62,0.85); color:white; }
+.plaza-item .thumb .plaza-status.sold { background:rgba(56,161,105,0.85); color:white; }
+.plaza-item .thumb .plaza-status.new { background:rgba(49,130,206,0.85); color:white; }
+.plaza-item .info { padding: 14px 16px 8px; }
+.plaza-item .info h5 { font-size: 15px; margin-bottom: 4px; font-weight:600; }
+.plaza-item .info .creator { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
+.plaza-item .info .creator .creator-level-dot { display:inline-block; width:6px; height:6px; border-radius:50%; margin-right:2px; }
+.plaza-item .info .stats { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: var(--text-secondary); }
+.plaza-item .info .stats span { display:flex; align-items:center; gap:3px; }
+.plaza-item .price-tag { padding: 10px 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+.plaza-item .price-tag .price { color: var(--primary); font-weight: 700; font-size:15px; }
+.plaza-item .price-tag .price-tag-label { font-size:11px; color:var(--text-secondary); background:var(--primary-bg); padding:2px 8px; border-radius:4px; }
+
+/* ===== ASSET LIBRARY ===== */
+.asset-categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+.asset-cat { background: var(--card); border-radius: var(--radius); padding: 24px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: all 0.3s; border: 2px solid transparent; }
+.asset-cat:hover { border-color: var(--primary); transform: translateY(-2px); }
+.asset-cat .cat-icon { font-size: 40px; margin-bottom: 10px; }
+.asset-cat h4 { font-size: 15px; margin-bottom: 4px; }
+.asset-cat .count { font-size: 12px; color: var(--text-secondary); }
+.asset-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.asset-item { background: var(--card); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: all 0.3s; }
+.asset-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.asset-item .asset-thumb { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 48px; }
+.asset-item .asset-info { padding: 10px; }
+.asset-item .asset-info h5 { font-size: 13px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.asset-item .asset-info .asset-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); }
+.asset-item .asset-info .asset-price { color: var(--primary); font-weight: 600; font-size: 13px; }
+
+/* ===== TRAINING ===== */
+.training-hero { background: linear-gradient(135deg, #EBF8FF 0%, #F0FFF4 100%); color: var(--text); padding: 48px 24px; text-align: center; border-radius: var(--radius); margin-bottom: 32px; border: 1px solid var(--border); }
+.training-hero h2 { font-size: 32px; margin-bottom: 8px; }
+.training-hero p { color: var(--text-secondary); }
+.training-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+.training-mode { background: var(--card); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); }
+.training-mode h3 { font-size: 22px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.training-mode .mode-badge { font-size: 12px; padding: 3px 10px; border-radius: 4px; color: white; }
+.training-mode .price-range { font-size: 28px; font-weight: 700; color: var(--primary); margin: 12px 0; }
+.training-mode .price-range .unit { font-size: 14px; color: var(--text-secondary); font-weight: 400; }
+.training-mode ul { list-style: none; }
+.training-mode ul li { padding: 6px 0; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.training-mode ul li::before { content: "✓"; color: var(--success); font-weight: 700; }
+.course-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.course-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; }
+.course-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.course-card .course-header { padding: 20px; color: white; }
+.course-card .course-header h4 { font-size: 18px; margin-bottom: 4px; }
+.course-card .course-header .level-badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.3); }
+.course-card .course-body { padding: 16px; }
+.course-card .course-body .course-price { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.course-card .course-body .course-detail { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+.course-card .course-footer { padding: 12px 16px; border-top: 1px solid var(--border); }
+.course-card .course-footer .btn-enroll { width: 100%; padding: 8px; border: none; border-radius: 6px; background: var(--primary); color: white; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+.course-card .course-footer .btn-enroll:hover { background: var(--primary-dark); }
+
+/* ===== CREATOR CENTER ===== */
+.creator-dashboard { display: grid; grid-template-columns: 280px 1fr; gap: 24px; padding-top: 24px; }
+.creator-sidebar { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); text-align: center; }
+.creator-sidebar .avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; }
+.creator-sidebar h3 { font-size: 18px; margin-bottom: 4px; }
+.creator-sidebar .level-badge { display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: white; margin-bottom: 16px; }
+.creator-sidebar .stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.creator-sidebar .stats-mini .stat-mini { background: #F9FAFB; border-radius: 8px; padding: 8px; }
+.creator-sidebar .stats-mini .stat-mini .val { font-size: 18px; font-weight: 700; }
+.creator-sidebar .stats-mini .stat-mini .lbl { font-size: 11px; color: var(--text-secondary); }
+.creator-sidebar .menu-list { text-align: left; }
+.creator-sidebar .menu-list .menu-item { padding: 10px 12px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+.creator-sidebar .menu-list .menu-item:hover { background: #FFF5F5; }
+.creator-sidebar .menu-list .menu-item.active { background: #FFF5F5; color: var(--primary); }
+.creator-main { display: flex; flex-direction: column; gap: 20px; }
+.dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.dash-stat { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.dash-stat .ds-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+.dash-stat .ds-value { font-size: 28px; font-weight: 700; }
+.dash-stat .ds-change { font-size: 12px; color: var(--success); margin-top: 4px; }
+.dash-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.dash-panel-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+.dash-panel-3 { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.dash-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.dash-pan { display: grid; gap: 20px; }
+.panel { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.panel h4 { font-size: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.panel h4 .more { font-size: 12px; color: var(--text-secondary); cursor: pointer; }
+.order-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.order-item:last-child { border-bottom: none; }
+.order-item .oi-info h5 { font-size: 14px; margin-bottom: 2px; }
+.order-item .oi-info .oi-meta { font-size: 12px; color: var(--text-secondary); }
+.order-item .oi-status { padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+
+/* ===== LEVEL SYSTEM (REFINED) ===== */
+.level-intro { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:32px; }
+.level-intro-card { background:var(--card); border-radius:var(--radius-lg); padding:28px; box-shadow:var(--shadow); border:1px solid var(--border); }
+.level-intro-card h3 { font-size:18px; margin-bottom:8px; }
+.level-intro-card p { font-size:14px; color:var(--text-secondary); line-height:1.7; }
+.level-intro-card .highlight-num { font-size:32px; font-weight:800; color:var(--primary); }
+.level-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom:40px; }
+.level-card { position:relative; background: var(--card); border-radius: var(--radius-lg); padding: 28px 20px 24px; text-align: center; box-shadow: var(--shadow); transition: all 0.35s cubic-bezier(0.4,0,0.2,1); cursor: pointer; border:1px solid var(--border); overflow:hidden; }
+.level-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; }
+.level-card:hover { transform: translateY(-8px); box-shadow: 0 16px 40px rgba(229,62,62,0.08), 0 4px 12px rgba(0,0,0,0.02); }
+.level-card .level-bg-icon { position:absolute; right:-10px; bottom:-10px; font-size:80px; opacity:0.04; pointer-events:none; font-weight:900; }
+.level-card .level-icon-wrap { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:20px; font-weight:800; color:white; position:relative; }
+.level-card .level-icon-wrap .lv-shine { position:absolute; inset:0; border-radius:50%; background:linear-gradient(135deg,rgba(255,255,255,0.3) 0%,transparent 50%); pointer-events:none; }
+.level-card h4 { font-size: 17px; margin-bottom: 2px; font-weight:700; }
+.level-card .level-subtitle { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
+.level-card .level-budget { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding:4px 12px; background:var(--primary-bg); border-radius:20px; display:inline-block; }
+.level-card .level-perms { font-size: 12px; color: var(--text-secondary); text-align: left; list-style:none; padding:0; }
+.level-card .level-perms li { padding: 5px 0; display:flex; align-items:center; gap:6px; }
+.level-card .level-perms li::before { content:"✓"; font-weight:700; color:var(--success); font-size:11px; }
+.level-card .commission { margin-top: 14px; padding-top:12px; border-top:1px solid var(--border); font-size: 13px; font-weight: 600; display:flex; justify-content:space-between; }
+.level-card .commission .comm-rate { color:var(--primary); font-size:18px; }
+
+/* Level upgrade path */
+.level-upgrade-path { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:24px 0; }
+.level-up-step { text-align:center; padding:16px 8px; border-radius:12px; background:var(--card); border:1px dashed var(--border); transition:all 0.2s; }
+.level-up-step.active { border-style:solid; border-color:var(--primary); background:var(--primary-bg); }
+.level-up-step .up-arrow { display:none; font-size:16px; color:var(--text-secondary); margin-bottom:8px; }
+.level-up-step:not(:last-child) .up-arrow { display:block; }
+.level-up-step .up-label { font-size:11px; color:var(--text-secondary); }
+.level-up-step .up-value { font-size:13px; font-weight:600; margin-top:2px; }
+
+/* Membership section */
+.membership-section { margin-top:40px; }
+.membership-section h3 { font-size:22px; margin-bottom:4px; }
+.membership-section .ms-desc { color:var(--text-secondary); font-size:14px; margin-bottom:24px; }
+.membership-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.membership-card { background:var(--card); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow); border:2px solid var(--border); transition:all 0.3s; position:relative; }
+.membership-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+.membership-card.featured { border-color:var(--accent); }
+.membership-card.featured .mc-badge { position:absolute; top:14px; right:14px; padding:3px 10px; border-radius:6px; background:var(--accent); color:white; font-size:10px; font-weight:600; }
+.membership-card .mc-header { padding:24px 24px 16px; text-align:center; }
+.membership-card .mc-header .mc-name { font-size:16px; font-weight:600; }
+.membership-card .mc-header .mc-price { font-size:32px; font-weight:800; color:var(--primary); margin:8px 0; }
+.membership-card .mc-header .mc-price .mc-price-unit { font-size:14px; font-weight:400; color:var(--text-secondary); }
+.membership-card .mc-header .mc-condition { font-size:11px; color:var(--text-secondary); background:var(--primary-bg); padding:4px 12px; border-radius:20px; display:inline-block; }
+.membership-card .mc-body { padding:0 24px 20px; }
+.membership-card .mc-body .mc-feature { display:flex; align-items:center; gap:8px; padding:7px 0; font-size:13px; border-bottom:1px solid var(--border); }
+.membership-card .mc-body .mc-feature:last-child { border-bottom:none; }
+.membership-card .mc-body .mc-feature .mc-f-icon { color:var(--success); font-weight:700; flex-shrink:0; }
+.membership-card .mc-body .mc-feature .mc-f-icon.disabled { color:var(--text-secondary); }
+.membership-card .mc-body .mc-feature .mc-f-text { color:var(--text); }
+.membership-card .mc-body .mc-feature .mc-f-text.light { color:var(--text-secondary); }
+.membership-card .mc-footer { padding:16px 24px; background:#F9FAFB; }
+.membership-card .mc-footer .btn-subscribe { width:100%; padding:10px; border-radius:10px; border:none; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.membership-card .mc-footer .btn-subscribe.primary { background:var(--primary-grad); color:white; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.membership-card .mc-footer .btn-subscribe.primary:hover { box-shadow:var(--shadow-glow); transform:translateY(-1px); }
+.membership-card .mc-footer .btn-subscribe.outline { background:white; color:var(--primary); border:1px solid var(--primary); }
+
+/* ===== CLIENT MODULE ===== */
+.client-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 32px; }
+.client-step { background: var(--card); border-radius: var(--radius); padding: 20px; text-align: center; box-shadow: var(--shadow); position: relative; }
+.client-step .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 10px; }
+.client-step h5 { font-size: 14px; margin-bottom: 4px; }
+.client-step p { font-size: 12px; color: var(--text-secondary); }
+.client-step::after { content: "→"; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-secondary); }
+.client-step:last-child::after { display: none; }
+
+/* ===== TRANSACTION GUARANTEE ===== */
+.guarantee-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.guarantee-card { background: var(--card); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+.guarantee-card .g-icon { font-size: 36px; margin-bottom: 12px; }
+.guarantee-card h4 { font-size: 17px; margin-bottom: 8px; }
+.guarantee-card p { font-size: 14px; color: var(--text-secondary); }
+
+/* ===== COMMUNITY ===== */
+.community-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+.ranking-list { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.rank-item:last-child { border-bottom: none; }
+.rank-item .rank-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+.rank-item .rank-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.rank-item .rank-info { flex: 1; }
+.rank-item .rank-info h5 { font-size: 14px; }
+.rank-item .rank-info .rank-meta { font-size: 11px; color: var(--text-secondary); }
+.rank-item .rank-score { font-size: 14px; font-weight: 700; color: var(--primary); }
+
+/* ===== METRICS ===== */
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.metric-card { background: var(--card); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); text-align: center; }
+.metric-card .m-icon { font-size: 32px; margin-bottom: 8px; }
+.metric-card h4 { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; }
+.metric-card .m-value { font-size: 28px; font-weight: 700; color: var(--primary); }
+.metric-card .m-target { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* ===== COMPETITOR TABLE ===== */
+
+/* ===== MODAL ===== */
+.modal-overlay { display: none; position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal { background: white; border-radius: var(--radius); padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.modal h3 { font-size: 22px; margin-bottom: 16px; }
+.modal .close-btn { float: right; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); }
+
+/* ===== FORM ===== */
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: border 0.2s; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+
+/* ===== FOOTER ===== */
+.footer { position: relative; background: linear-gradient(180deg, #FAFBFC 0%, #F5F5F7 100%); color: #6B7280; padding: 48px 24px 24px; margin-top: 60px; }
+.footer::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:100px; height:3px; background: var(--primary-grad); border-radius:2px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; max-width: 1200px; margin: 0 auto; }
+.footer h5 { color: #374151; font-size: 15px; margin-bottom: 12px; }
+.footer a { color: #9CA3AF; text-decoration: none; font-size: 13px; display: block; padding: 3px 0; }
+.footer a:hover { color: var(--primary); }
+.footer .copyright { text-align: center; padding-top: 24px; margin-top: 32px; border-top: 1px solid var(--border); font-size: 12px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .engines-grid { grid-template-columns: repeat(2, 1fr); }
+  .project-grid { grid-template-columns: repeat(2, 1fr); }
+  .plaza-grid { grid-template-columns: repeat(3, 1fr); }
+  .asset-grid { grid-template-columns: repeat(4, 1fr); }
+  .level-cards { grid-template-columns: repeat(3, 1fr); }
+  .level-upgrade-path { grid-template-columns: repeat(3,1fr); }
+  .membership-grid { grid-template-columns: repeat(2,1fr); }
+  .client-steps { grid-template-columns: repeat(3, 1fr); }
+  .level-intro { grid-template-columns:1fr; }
+}
+@media (max-width: 768px) {
+  .topnav .nav-links { display: none; }
+  .engines-grid { grid-template-columns: 1fr; }
+  .project-grid { grid-template-columns: 1fr; }
+  .plaza-grid { grid-template-columns: repeat(2, 1fr); }
+  .asset-grid { grid-template-columns: repeat(3, 1fr); }
+  .asset-categories { grid-template-columns: repeat(2, 1fr); }
+  .level-cards { grid-template-columns: repeat(2, 1fr); }
+  .level-upgrade-path { grid-template-columns:repeat(2,1fr); }
+  .membership-grid { grid-template-columns:1fr; }
+  .training-modes { grid-template-columns: 1fr; }
+  .course-cards { grid-template-columns: 1fr; }
+  .creator-dashboard { grid-template-columns: 1fr; }
+  .dash-stats { grid-template-columns: repeat(2, 1fr); }
+  .community-layout { grid-template-columns: 1fr; }
+  .community-sidebar { position: static; }
+  .platform-activities { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 28px; }
+  .hero .slogan { font-size: 16px; }
+  .hero .hero-stats { gap: 20px; }
+  .hero .hero-stats .stat .num { font-size: 28px; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.fade-in { animation: fadeIn 0.5s ease-out; }
+.badge-pulse { animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+
+/* ===== PLATFORM ACTIVITIES ===== */
+.platform-activities { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.platform-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 2px solid transparent; }
+.platform-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.platform-card .platform-header { padding: 20px 24px; display: flex; align-items: center; gap: 16px; }
+.platform-card .platform-header .platform-logo { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+.platform-card .platform-header .platform-info h3 { font-size: 18px; margin-bottom: 2px; }
+.platform-card .platform-header .platform-info .platform-desc { font-size: 13px; color: var(--text-secondary); }
+.platform-card .activity-list { padding: 0 24px 20px; }
+.platform-card .activity-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.platform-card .activity-item:last-child { border-bottom: none; }
+.platform-card .activity-item .activity-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+.platform-card .activity-item .activity-name { font-size: 14px; font-weight: 500; flex: 1; }
+.platform-card .activity-item .activity-reward { font-size: 13px; color: var(--primary); font-weight: 600; white-space: nowrap; }
+.platform-card .platform-footer { padding: 12px 24px; background: #F9FAFB; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-secondary); }
+.platform-card .platform-footer .btn-more { padding: 4px 12px; border-radius: 4px; border: 1px solid var(--border); background: white; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+.platform-card .platform-footer .btn-more:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* ===== COMMUNITY ===== */
+.community-layout { display: grid; grid-template-columns: 240px 1fr; gap: 24px; }
+.community-sidebar { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); height: fit-content; position: sticky; top: 88px; }
+.community-sidebar h4 { font-size: 15px; margin-bottom: 12px; }
+.community-sidebar .board-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; color: var(--text-secondary); }
+.community-sidebar .board-item:hover, .community-sidebar .board-item.active { background: #FFF5F5; color: var(--primary); font-weight: 500; }
+.community-sidebar .board-item .board-icon { font-size: 18px; }
+.community-sidebar .board-item .board-count { margin-left: auto; font-size: 11px; background: #FFF5F5; padding: 1px 8px; border-radius: 10px; }
+.community-main { min-width: 0; }
+.community-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.community-tabs { display: flex; gap: 8px; }
+.community-tab { padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border); background: white; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+.community-tab.active, .community-tab:hover { background: var(--primary); color: white; border-color: var(--primary); }
+.btn-new-post { padding: 10px 24px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+.btn-new-post:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.post-card { background: var(--card); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); transition: all 0.2s; cursor: pointer; border: 2px solid transparent; }
+.post-card:hover { border-color: var(--primary-light); box-shadow: var(--shadow-lg); }
+.post-card .post-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.post-card .post-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.post-card .post-user-info .post-username { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.post-card .post-user-info .post-time { font-size: 12px; color: var(--text-secondary); }
+.post-card .post-badge { font-size: 10px; padding: 1px 6px; border-radius: 3px; color: white; font-weight: 500; }
+.post-card .post-title { font-size: 17px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+.post-card .post-content { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.post-card .post-images { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; }
+.post-card .post-images .post-img { width: 120px; height: 80px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.post-card .post-tags { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.post-card .post-tags .post-tag { font-size: 11px; padding: 2px 10px; border-radius: 12px; background: #FFF5F5; color: var(--text-secondary); }
+.post-card .post-actions { display: flex; gap: 24px; padding-top: 12px; border-top: 1px solid var(--border); }
+.post-card .post-actions .post-action { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: color 0.2s; }
+.post-card .post-actions .post-action:hover { color: var(--primary); }
+.hot-topics { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
+.hot-topics h4 { font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.hot-topics .hot-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 13px; border-bottom: 1px solid var(--border); cursor: pointer; }
+.hot-topics .hot-item:last-child { border-bottom: none; }
+.hot-topics .hot-item:hover .hot-title { color: var(--primary); }
+.hot-topics .hot-rank { width: 20px; height: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; }
+.hot-topics .hot-title { flex: 1; color: var(--text); transition: color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hot-topics .hot-heat { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+
+@media (max-width: 1024px) {
+  .platform-activities { grid-template-columns: 1fr; }
+  .community-layout { grid-template-columns: 1fr; }
+  .community-sidebar { position: static; }
+}
+
+/* ===== TALENT DATABASE ===== */
+.talent-banner { background: linear-gradient(135deg, #FFF5F5 0%, #EBF8FF 100%); color: var(--text); padding: 40px 32px; border-radius: var(--radius); margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); }
+.talent-banner h2 { font-size: 28px; margin-bottom: 6px; }
+.talent-banner p { font-size: 14px; color: var(--text-secondary); }
+.talent-banner .btn-talent-register { padding: 12px 28px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.talent-banner .btn-talent-register:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+.talent-layout { display: grid; grid-template-columns: 240px 1fr; gap: 24px; }
+.talent-sidebar { background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); height: fit-content; position: sticky; top: 88px; }
+.talent-sidebar h4 { font-size: 15px; margin-bottom: 12px; }
+.talent-sidebar .role-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px; color: var(--text-secondary); }
+.talent-sidebar .role-item:hover, .talent-sidebar .role-item.active { background: #FFF5F5; color: var(--primary); font-weight: 500; }
+.talent-sidebar .role-item .role-icon { font-size: 18px; }
+.talent-sidebar .role-item .role-count { margin-left: auto; font-size: 11px; background: #FFF5F5; padding: 1px 8px; border-radius: 10px; }
+.talent-sidebar .role-sub { padding: 6px 12px 6px 38px; font-size: 12px; color: var(--text-secondary); cursor: pointer; transition: color 0.2s; }
+.talent-sidebar .role-sub:hover { color: var(--primary); }
+.talent-sidebar .role-sub.active { color: var(--primary); font-weight: 600; background: #FFF5F5; border-radius: 6px; }
+.talent-empty { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+.talent-empty .empty-icon { font-size: 48px; margin-bottom: 16px; }
+.talent-main { min-width: 0; }
+.talent-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+.talent-filters select { padding: 6px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; }
+.talent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.talent-card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s; cursor: pointer; border: 2px solid transparent; }
+.talent-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.talent-card .tc-cover { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 44px; position: relative; }
+.talent-card .tc-cover .tc-level { position: absolute; top: 10px; right: 10px; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; color: white; }
+.talent-card .tc-cover .tc-verify { position: absolute; top: 10px; left: 10px; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; background: rgba(255,255,255,0.9); color: var(--success); }
+.talent-card .tc-body { padding: 14px 16px; }
+.talent-card .tc-body h4 { font-size: 16px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.talent-card .tc-body .tc-role { font-size: 13px; color: var(--primary); font-weight: 500; margin-bottom: 6px; }
+.talent-card .tc-body .tc-meta { display: flex; gap: 12px; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+.talent-card .tc-body .tc-skills { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+.talent-card .tc-body .tc-skill { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: #FFF5F5; color: var(--text-secondary); }
+.talent-card .tc-body .tc-works { font-size: 12px; color: var(--text-secondary); }
+.talent-card .tc-footer { padding: 10px 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.talent-card .tc-footer .tc-loc { font-size: 12px; color: var(--text-secondary); }
+.talent-card .tc-footer .btn-contact { padding: 5px 14px; border-radius: 6px; border: none; background: var(--primary); color: white; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+.talent-card .tc-footer .btn-contact:hover { background: var(--primary-dark); }
+
+@media (max-width: 1024px) {
+  .talent-layout { grid-template-columns: 1fr; }
+  .talent-sidebar { position: static; }
+  .talent-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .talent-grid { grid-template-columns: 1fr; }
+  .talent-banner { flex-direction: column; gap: 16px; text-align: center; }
+}
+/* ===== IDENTITY SWITCHER ===== */
+.role-badge-wrap { position:relative; }
+.role-badge { display:flex; align-items:center; gap:4px; padding:4px 12px; border-radius:16px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s; background:#FFF5F5; color:var(--text-secondary); user-select:none; }
+.role-badge:hover { background:#F0F0F0; }
+.role-badge.creator { background:#FFF5F5; color:var(--primary); }
+.role-badge.client { background:#EBF8FF; color:var(--info); }
+.role-badge-arrow { font-size:10px; opacity:0.5; transition:transform 0.2s; }
+.role-badge.open .role-badge-arrow { transform:rotate(180deg); }
+.role-dropdown { position:absolute; top:calc(100% + 6px); right:0; min-width:220px; background:white; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.08); border:1px solid var(--border); padding:4px; display:none; z-index:1000; }
+.role-dropdown.show { display:block; animation:dropIn 0.18s ease; }
+@keyframes dropIn { from{opacity:0;transform:translateY(-6px);} to{opacity:1;transform:translateY(0);} }
+.role-dropdown-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer; transition:background 0.15s; }
+.role-dropdown-item:hover { background:var(--bg); }
+.role-dropdown-item .rdi-icon { font-size:20px; }
+.role-dropdown-item .rdi-title { font-size:14px; font-weight:600; }
+.role-dropdown-item .rdi-desc { font-size:11px; color:var(--text-secondary); }
+.role-dropdown-item .rdi-check { margin-left:auto; color:var(--primary); font-weight:700; font-size:14px; }
+.nav-links a[data-role="client"], .nav-links a[data-role="creator"] { display:none; }
+.nav-links a[data-role="common"] { display:block; }
+.nav-links.show-client a[data-role="client"] { display:block; }
+.nav-links.show-client a[data-role="creator"] { display:none; }
+.nav-links.show-creator a[data-role="creator"] { display:block; }
+.nav-links.show-creator a[data-role="client"] { display:none; }
+.identity-badge { padding:3px 10px; border-radius:4px; font-size:11px; font-weight:600; }
+.identity-badge.client { background:#EBF8FF; color:var(--info); }
+.identity-badge.creator { background:#FFF5F5; color:var(--primary); }
+.user-avatar { width:32px; height:32px; border-radius:50%; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; cursor:pointer; }
+.id-role-select { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+.id-role-card { border:2px solid var(--border); border-radius:12px; padding:24px 16px; text-align:center; cursor:pointer; transition:all 0.2s; }
+.id-role-card:hover { border-color:var(--primary); box-shadow:var(--shadow-lg); }
+.id-role-card.selected { border-color:var(--primary); background:#FFF5F5; }
+.id-role-card .idrc-icon { font-size:40px; margin-bottom:8px; }
+.id-role-card .idrc-title { font-size:16px; font-weight:700; margin-bottom:4px; }
+.id-role-card .idrc-desc { font-size:12px; color:var(--text-secondary); }
+.id-tabs { display:flex; gap:0; margin-bottom:20px; border-bottom:2px solid var(--border); }
+.id-tab { flex:1; padding:12px; text-align:center; cursor:pointer; font-size:15px; font-weight:600; color:var(--text-secondary); border-bottom:3px solid transparent; transition:all 0.2s; }
+.id-tab.active.client { color:var(--info); border-color:var(--info); }
+.id-tab.active.creator { color:var(--primary); border-color:var(--primary); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="shGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E53E3E"/><stop offset="100%" stop-color="#F87171"/></linearGradient><symbol id="shBloom" viewBox="0 0 40 40"><g transform="translate(20,20)"><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(60)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(120)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(180)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(240)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(300)"/></g><circle cx="20" cy="20" r="5" fill="white"/><path d="M20,14 L21.4,18.6 L26,20 L21.4,21.4 L20,26 L18.6,21.4 L14,20 L18.6,18.6 Z" fill="url(#shGrad)"/></symbol>
+<symbol id="ic-training" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 8l11 5 9-4.09V14h2V8L12 3z"/><path d="M5 12.82v4.36c0 1.66 3.13 3 7 3s7-1.34 7-3v-4.36l-7 3.18-7-3.18z"/></symbol>
+<symbol id="ic-orders" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6" fill="#fff"/><path d="M8 13h8M8 16.5h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-creation" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/><circle cx="18.5" cy="5.5" r="1.8"/><circle cx="5" cy="18" r="1.2"/></symbol>
+<symbol id="ic-assets" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-award" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5z"/><circle cx="12" cy="8" r="2.5" fill="#fff"/></symbol>
+<symbol id="ic-calendar" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/><rect x="7" y="2" width="2.5" height="5" rx="1"/><rect x="14.5" y="2" width="2.5" height="5" rx="1"/><path d="M3 10h18" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="8" cy="15" r="1.2" fill="#fff"/><circle cx="12" cy="15" r="1.2" fill="#fff"/><circle cx="16" cy="15" r="1.2" fill="#fff"/></symbol>
+<symbol id="ic-community" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></symbol>
+<symbol id="ic-users" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="7" r="4"/><path d="M4 21v-2a4 4 0 014-4h8a4 4 0 014 4v2H4z"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/></symbol>
+<symbol id="ic-briefcase" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="10" y="12" width="4" height="3" rx="0.5" fill="#fff"/></symbol>
+<symbol id="ic-clapper" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M2 11h20" stroke="#fff" stroke-width="1.5" fill="none"/><path d="M4.5 7l1.2-4M10 7l1.2-4M15.5 7l1.2-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-clipboard" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z"/><rect x="9" y="3" width="6" height="4" rx="1" fill="#fff"/><path d="M9 14l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-pen" viewBox="0 0 24 24" fill="currentColor"><path d="M12 19l9-9-3-3-9 9v3h3z"/><path d="M16 4l4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M2 22l3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-cpu" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1" fill="#fff"/><path d="M9 4v-2M15 4v-2M9 22v-2M15 22v-2M4 9h-2M4 15h-2M22 9h-2M22 15h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-film" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v4M17 3v4M7 17v4M17 17v4M3 8h4M3 14h4M17 8h4M17 14h4" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-palette" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="1.5" fill="#fff"/><circle cx="15" cy="8" r="1.5" fill="#fff"/><circle cx="16" cy="14" r="1.5" fill="#fff"/><path d="M12 22c2-2 2-5 0-7s-2-5 0-7" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-layout" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-home" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l9-9 9 9v10a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1V12z"/></symbol>
+<symbol id="ic-image" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="9" r="2" fill="#fff"/><path d="M21 15l-5-5L5 21" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-trending" viewBox="0 0 24 24" fill="currentColor"><path d="M1 17l5-5 4 4 8-8h-3V6h7v7h-2v-3l-8 8-4-4-5 5z"/></symbol>
+<symbol id="ic-bell" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9z"/><path d="M13.73 21a2 2 0 01-3.46 0" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 014-4h8a4 4 0 014 4v2H4z"/></symbol>
+<symbol id="ic-smile" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="9" cy="9" r="1.2" fill="#fff"/><circle cx="15" cy="9" r="1.2" fill="#fff"/></symbol>
+<symbol id="ic-box" viewBox="0 0 24 24" fill="currentColor"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+<symbol id="ic-music" viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-zap" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></symbol>
+<symbol id="ic-book" viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-check-circle" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-shield" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/></symbol>
+<symbol id="ic-scale" viewBox="0 0 24 24" fill="currentColor"><rect x="11" y="3" width="2" height="18" rx="1"/><path d="M7 21h10M5 7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M5 7l-3 6a3 3 0 006 0L5 7z"/><path d="M19 7l-3 6a3 3 0 006 0l-3-6z"/></symbol>
+<symbol id="ic-check-square" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/><path d="M8 11l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+<symbol id="ic-help" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="17" r="0.8" fill="#fff"/></symbol>
+<symbol id="ic-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-9 9 9.75 9.75 0 01-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></symbol>
+<symbol id="ic-upload" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l-5 5h3v6h4v-6h3z"/><rect x="3" y="16" width="18" height="4" rx="2" opacity="0.4"/></symbol>
+<symbol id="lv1" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="12" cy="12" r="2" fill="#fff"/></symbol>
+<symbol id="lv2" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="9" cy="12" r="1.5" fill="#fff"/><circle cx="15" cy="12" r="1.5" fill="#fff"/></symbol>
+<symbol id="lv3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="8" cy="12" r="1.2" fill="#fff"/><circle cx="12" cy="12" r="1.2" fill="#fff"/><circle cx="16" cy="12" r="1.2" fill="#fff"/></symbol>
+<symbol id="lv4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="8.5" cy="10" r="1.2" fill="#fff"/><circle cx="15.5" cy="10" r="1.2" fill="#fff"/><circle cx="8.5" cy="14" r="1.2" fill="#fff"/><circle cx="15.5" cy="14" r="1.2" fill="#fff"/></symbol>
+<symbol id="lv5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><path d="M12 7l1.2 2.5L16 10l-2.8 2.2L14 15l-2-1.5L10 15l.8-2.8L8 10l2.8-.5z" fill="#fff"/></symbol>
+</defs></svg>
+
+<!-- ===== TOP NAVIGATION ===== -->
+<nav class="topnav">
+  <div class="logo" onclick="showPage('home')">
+    <svg class="brand-mark" width="28" height="28" role="img" aria-label="生花"><use href="#shBloom"/></svg>
+    <span>生花</span>
+  </div>
+  <div class="nav-links show-creator" id="navLinks">
+    <a onclick="showPage('home')" class="active" id="nav-home" data-role="common">首页</a>
+    <a onclick="showPage('orders')" id="nav-orders" data-role="creator">接单大厅</a>
+    <a onclick="showPage('plaza')" id="nav-plaza" data-role="common">创作广场</a>
+    <a onclick="showPage('talent')" id="nav-talent" data-role="common">人才库</a>
+    <a onclick="showPage('assets')" id="nav-assets" data-role="common">资产库</a>
+    <a onclick="showPage('training')" id="nav-training" data-role="creator">培训学院</a>
+    <a onclick="showPage('levels')" id="nav-levels" data-role="common">等级体系</a>
+    <a onclick="showPage('client')" id="nav-client" data-role="client">发项目</a>
+    <a onclick="showPage('creator')" id="nav-creator" data-role="creator">创作者中心</a>
+    <a onclick="showPage('community')" id="nav-community" data-role="common">社区</a>
+  </div>
+  <div class="nav-right">
+    <div style="display:none;align-items:center;gap:8px;" id="identitySwitch">
+      <div class="role-badge-wrap">
+        <div class="role-badge creator" id="roleBadge" onclick="toggleRoleDropdown()">
+          <span id="roleBadgeText">创作者</span>
+          <span class="role-badge-arrow">▾</span>
+        </div>
+        <div class="role-dropdown" id="roleDropdown">
+          <div class="role-dropdown-item" onclick="switchRole('creator');closeRoleDropdown()">
+            <span class="rdi-icon"><div class="ico ico-sm red">创</div></span>
+            <div><div class="rdi-title">创作者</div><div class="rdi-desc">接单赚钱 · 管理作品</div></div>
+            <span class="rdi-check" id="check-creator">✓</span>
+          </div>
+          <div class="role-dropdown-item" onclick="switchRole('client');closeRoleDropdown()">
+            <span class="rdi-icon"><div class="ico ico-sm blue">需</div></span>
+            <div><div class="rdi-title">需求方</div><div class="rdi-desc">发布项目 · 筛选人才</div></div>
+            <span class="rdi-check" id="check-client"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-login" onclick="showModal('login')" id="navLogin">登录</button>
+    <button class="btn-register" onclick="showModal('register')" id="navRegister">免费注册</button>
+    <div style="display:none;align-items:center;gap:8px;" id="navUserWrap">
+      <div class="user-avatar" id="navUser" onclick="showPage('creator')">U</div>
+      <button class="btn-login" onclick="doLogout()" style="font-size:12px;padding:4px 12px;">退出</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================= -->
+<!-- PAGE: HOME                    -->
+<!-- ============================= -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>妙笔<span class="highlight">生花</span>，人人皆可创作</h1>
+    <p class="slogan">连接创作人才与项目需求，让创意落地生花</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="num">12,680+</div><div class="label">注册创作者</div></div>
+      <div class="stat"><div class="num">3,450+</div><div class="label">完成项目</div></div>
+      <div class="stat"><div class="num">¥2,800万</div><div class="label">累计交易额</div></div>
+      <div class="stat"><div class="num">98.5%</div><div class="label">好评率</div></div>
+    </div>
+
+  </div>
+
+  <div class="engines">
+    <h2>四大核心引擎</h2>
+    <p class="subtitle">构建AI漫剧产业闭环生态</p>
+    <div class="engines-grid">
+      <div class="engine-card" onclick="showPage('training')">
+        <div class="engine-icon"><div class="ico ico-lg blue">培</div></div>
+        <div class="engine-tag" style="background:#EBF8FF;color:#2B6CB0;">供给侧</div>
+        <h3>培训体系</h3>
+        <p>线上自学打基础，线下VIP实战+就业接单指导，学费可通过接单逐步返还</p>
+        <div class="flow">培训 → 考核 → 认证 → 接单 → 返还</div>
+      </div>
+      <div class="engine-card" onclick="showPage('orders')">
+        <div class="engine-icon"><div class="ico ico-lg green">单</div></div>
+        <div class="engine-tag" style="background:#F0FFF4;color:#276749;">变现侧</div>
+        <h3>接单大厅</h3>
+        <p>等级匹配撮合交易，创作者赚到钱，吸引更多创作者加入平台</p>
+        <div class="flow">发单 → 匹配 → 交付 → 结算 → 评价</div>
+      </div>
+      <div class="engine-card" onclick="showPage('plaza')">
+        <div class="engine-icon"><div class="ico ico-lg purple">创</div></div>
+        <div class="engine-tag" style="background:#FAF5FF;color:#6B46C1;">内容侧</div>
+        <h3>创作广场</h3>
+        <p>人人都是导演，UGC内容池，商家可直接选品采购，版权区块链确权</p>
+        <div class="flow">创作 → 展示 → 选品 → 采购 → 分润</div>
+      </div>
+      <div class="engine-card" onclick="showPage('assets')">
+        <div class="engine-icon"><div class="ico ico-lg orange">资</div></div>
+        <div class="engine-tag" style="background:#FFFAF0;color:#C05621;">资源侧</div>
+        <h3>资产库</h3>
+        <p>人脸/素材资产化，授权使用分润，降低创作者制作成本</p>
+        <div class="flow">上传 → 审核 → 入库 → 授权 → 分润</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;">
+      <div>
+        <h2 style="margin-bottom:0;">创作者等级体系</h2>
+        <p class="section-desc" style="margin-bottom:0;margin-top:8px;">五级成长路径，从新星到大师，等级越高佣金越低</p>
+      </div>
+      <a href="#" onclick="showPage('levels')" style="font-size:14px;color:var(--primary);font-weight:500;text-decoration:none;">查看升级条件 →</a>
+    </div>
+
+    <div class="level-cards">
+      <div class="level-card" style="border-color:var(--l1);">
+        <div class="level-bg-icon" style="color:var(--l1);">L1</div>
+        <div class="level-icon-wrap" style="background:var(--l1);"><div class="lv-shine"></div>L1</div>
+        <h4>新星</h4>
+        <div class="level-subtitle">刚入行的新手创作者</div>
+        <div class="level-budget">¥500-2,000</div>
+        <ul class="level-perms">
+          <li>简单漫剧、单集短片</li>
+          <li>基础接单权限</li>
+          <li>新手保护期前5单免佣</li>
+        </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">10%</span></div>
+      </div>
+      <div class="level-card" style="border-color:var(--l2);">
+        <div class="level-bg-icon" style="color:var(--l2);">L2</div>
+        <div class="level-icon-wrap" style="background:var(--l2);"><div class="lv-shine"></div>L2</div>
+        <h4>新锐</h4>
+        <div class="level-subtitle">有一定经验的创作者</div>
+        <div class="level-budget">¥2,000-5,000</div>
+        <ul class="level-perms">
+          <li>3-5集短篇、中等难度</li>
+          <li>推荐接单权限</li>
+          <li>提现手续费全免</li>
+        </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">8%</span></div>
+      </div>
+      <div class="level-card" style="border-color:var(--l3);">
+        <div class="level-bg-icon" style="color:var(--l3);">L3</div>
+        <div class="level-icon-wrap" style="background:var(--l3);"><div class="lv-shine"></div>L3</div>
+        <h4>精英</h4>
+        <div class="level-subtitle">品质稳定的创作者</div>
+        <div class="level-budget">¥5,000-15,000</div>
+        <ul class="level-perms">
+          <li>10-20集系列、品牌定制</li>
+          <li>品牌定制权限</li>
+          <li>团队管理功能开放</li>
+        </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">7%</span></div>
+      </div>
+      <div class="level-card" style="border-color:var(--l4);">
+        <div class="level-bg-icon" style="color:var(--l4);">L4</div>
+        <div class="level-icon-wrap" style="background:var(--l4);"><div class="lv-shine"></div>L4</div>
+        <h4>资深</h4>
+        <div class="level-subtitle">业界头部创作者</div>
+        <div class="level-budget">¥15,000-50,000</div>
+        <ul class="level-perms">
+          <li>30集以上长篇、IP改编</li>
+          <li>IP改编授权</li>
+          <li>专属顾问服务</li>
+        </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">5%</span></div>
+      </div>
+      <div class="level-card" style="border-color:var(--l5);">
+        <div class="level-bg-icon" style="color:var(--l5);">L5</div>
+        <div class="level-icon-wrap" style="background:var(--l5);"><div class="lv-shine"></div>L5</div>
+        <h4>大师</h4>
+        <div class="level-subtitle">业界标杆/平台签约</div>
+        <div class="level-budget">¥50,000+</div>
+        <ul class="level-perms">
+          <li>平台重点项目优先</li>
+          <li>导师分成权益</li>
+          <li>独家项目+VIP资源</li>
+        </ul>
+        <div class="commission"><span>佣金</span><span class="comm-rate">3%</span></div>
+      </div>
+    </div>
+
+    <!-- Upgrade Path -->
+    <div class="level-upgrade-path">
+      <div class="level-up-step active"><div class="up-arrow">→</div><div class="up-label">L1 → L2</div><div class="up-value">完成5单+4.5⭐</div></div>
+      <div class="level-up-step"><div class="up-arrow">→</div><div class="up-label">L2 → L3</div><div class="up-value">完成15单+4.5⭐</div></div>
+      <div class="level-up-step"><div class="up-arrow">→</div><div class="up-label">L3 → L4</div><div class="up-value">完成30单+4.5⭐</div></div>
+      <div class="level-up-step"><div class="up-arrow">→</div><div class="up-label">L4 → L5</div><div class="up-value">完成50单+签约</div></div>
+      <div class="level-up-step"><div class="up-arrow">→</div><div class="up-label">大师特权</div><div class="up-value">平台签约+独家</div></div>
+    </div>
+  </div>
+
+  <div class="section" style="background: linear-gradient(135deg, #EBF8FF 0%, #F0FFF4 100%); margin: 0; padding: 60px 24px;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+        <div>
+          <h2 style="font-size:32px;">AI剧人才信息库</h2>
+          <p style="color:var(--text-secondary);font-size:15px;margin-top:4px;">专业人才分类库 — 行业从业者互相找、作品展示、项目撮合</p>
+        </div>
+        <button class="btn-register" style="padding:12px 32px;font-size:15px;" onclick="showModal('creator-choice')">+ 加入人才库</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;">
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="margin-bottom:6px;display:flex;justify-content:center;"><div class="ico ico-lg red">导</div></div><div style="font-size:14px;font-weight:600;">导演</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">328人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="margin-bottom:6px;display:flex;justify-content:center;"><div class="ico ico-lg blue">制</div></div><div style="font-size:14px;font-weight:600;">制作人</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">215人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="margin-bottom:6px;display:flex;justify-content:center;"><div class="ico ico-lg teal">编</div></div><div style="font-size:14px;font-weight:600;">编剧</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">567人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;border:2px solid var(--primary);" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="margin-bottom:6px;display:flex;justify-content:center;"><div class="ico ico-lg purple">生</div></div><div style="font-size:14px;font-weight:600;">生成师</div><div style="font-size:11px;color:var(--primary);margin-top:2px;">1,892人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="margin-bottom:6px;display:flex;justify-content:center;"><div class="ico ico-lg green">剪</div></div><div style="font-size:14px;font-weight:600;">后期剪辑</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">445人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="margin-bottom:6px;display:flex;justify-content:center;"><div class="ico ico-lg orange">美</div></div><div style="font-size:14px;font-weight:600;">美术</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">678人</div>
+        </div>
+        <div style="background:var(--card);border-radius:12px;padding:20px 12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:all 0.3s;" onclick="showPage('talent')" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow)'">
+          <div style="margin-bottom:6px;display:flex;justify-content:center;"><div class="ico ico-lg gray">镜</div></div><div style="font-size:14px;font-weight:600;">分镜师</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">389人</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:24px;">
+        <button style="padding:12px 40px;border-radius:8px;border:2px solid var(--primary);background:white;color:var(--primary);font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;" onclick="showPage('talent')" onmouseover="this.style.background='var(--primary)';this.style.color='white'" onmouseout="this.style.background='white';this.style.color='var(--primary)'">浏览全部人才 →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>平台活动专区</h2>
+    <p class="section-desc">对接抖音、红果、快手、爱奇艺等主流平台创作活动，优质作品直推流量扶持</p>
+
+    <div class="platform-activities">
+      <!-- 抖音 -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-logo" style="background:linear-gradient(135deg,#000000,#25F4EE);">抖</div>
+          <div class="platform-info">
+            <h3>抖音</h3>
+            <div class="platform-desc">短视频/漫剧创作激励计划</div>
+          </div>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#FFF5F5;color:var(--primary);">热门</span>
+            <span class="activity-name">「AI漫剧新力量」创作大赛</span>
+            <span class="activity-reward">奖金池50万</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#EBF8FF;color:var(--info);">长期</span>
+            <span class="activity-name">抖音漫剧创作者扶持计划</span>
+            <span class="activity-reward">流量扶持</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#F0FFF4;color:var(--success);">新</span>
+            <span class="activity-name">「百部精品」AI漫剧征集令</span>
+            <span class="activity-reward">单部最高10万</span>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span>3个活动进行中</span>
+          <button class="btn-more">查看详情 →</button>
+        </div>
+      </div>
+
+      <!-- 红果 -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-logo" style="background:linear-gradient(135deg,#FF4D4F,#FF7A45);">果</div>
+          <div class="platform-info">
+            <h3>红果短剧</h3>
+            <div class="platform-desc">短剧/漫剧分账合作平台</div>
+          </div>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#FFF5F5;color:var(--primary);">热门</span>
+            <span class="activity-name">红果AI漫剧分账激励季</span>
+            <span class="activity-reward">分账加成30%</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#FFFAF0;color:var(--warning);">限时</span>
+            <span class="activity-name">「新星导演」扶持专项</span>
+            <span class="activity-reward">保底+分账</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#EBF8FF;color:var(--info);">长期</span>
+            <span class="activity-name">精品漫剧采购通道</span>
+            <span class="activity-reward">S级单集5万+</span>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span>3个活动进行中</span>
+          <button class="btn-more">查看详情 →</button>
+        </div>
+      </div>
+
+      <!-- 快手 -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-logo" style="background:linear-gradient(135deg,#FF5000,#FF8C1A);">快</div>
+          <div class="platform-info">
+            <h3>快手</h3>
+            <div class="platform-desc">短视频创作生态 · 星芒短剧计划</div>
+          </div>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#FFF5F5;color:var(--primary);">热门</span>
+            <span class="activity-name">快手星芒AI漫剧专项</span>
+            <span class="activity-reward">亿级流量扶持</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#F0FFF4;color:var(--success);">新</span>
+            <span class="activity-name">「新锐创作者」成长计划</span>
+            <span class="activity-reward">保底3000/集</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#FAF5FF;color:#805AD5;">赛事</span>
+            <span class="activity-name">快手AI创意马拉松</span>
+            <span class="activity-reward">奖金池20万</span>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span>3个活动进行中</span>
+          <button class="btn-more">查看详情 →</button>
+        </div>
+      </div>
+
+      <!-- 爱奇艺 -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <div class="platform-logo" style="background:linear-gradient(135deg,#00BE06,#00D26A);">爱</div>
+          <div class="platform-info">
+            <h3>爱奇艺</h3>
+            <div class="platform-desc">长短视频内容合作 · 分账体系</div>
+          </div>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#FFF5F5;color:var(--primary);">热门</span>
+            <span class="activity-name">爱奇艺「云腾计划」AI漫剧赛道</span>
+            <span class="activity-reward">S级保底50万</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#EBF8FF;color:var(--info);">长期</span>
+            <span class="activity-name">分账漫剧合作通道</span>
+            <span class="activity-reward">会员分账</span>
+          </div>
+          <div class="activity-item">
+            <span class="activity-tag" style="background:#FAF5FF;color:#805AD5;">赛事</span>
+            <span class="activity-name">「华语AI动画大赏」征集</span>
+            <span class="activity-reward">荣誉+奖金</span>
+          </div>
+        </div>
+        <div class="platform-footer">
+          <span>3个活动进行中</span>
+          <button class="btn-more">查看详情 →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 更多平台入口 -->
+    <div style="display:flex; gap:16px; margin-top:24px; flex-wrap:wrap; justify-content:center;">
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--card);border-radius:10px;box-shadow:var(--shadow);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.borderWidth='2px'" onmouseout="this.style.borderColor='transparent'">
+        <span class="ico ico-sm gray">优</span><span style="font-size:14px;font-weight:500;">优酷</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--card);border-radius:10px;box-shadow:var(--shadow);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.borderWidth='2px'" onmouseout="this.style.borderColor='transparent'">
+        <span class="ico ico-sm blue">腾</span><span style="font-size:14px;font-weight:500;">腾讯视频</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--card);border-radius:10px;box-shadow:var(--shadow);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.borderWidth='2px'" onmouseout="this.style.borderColor='transparent'">
+        <span class="ico ico-sm green">视</span><span style="font-size:14px;font-weight:500;">微信视频号</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--card);border-radius:10px;box-shadow:var(--shadow);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.borderWidth='2px'" onmouseout="this.style.borderColor='transparent'">
+        <span class="ico ico-sm red">B</span><span style="font-size:14px;font-weight:500;">B站</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 20px;background:var(--card);border-radius:10px;box-shadow:var(--shadow);cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)';this.style.borderWidth='2px'" onmouseout="this.style.borderColor='transparent'">
+        <span class="ico ico-sm red">红</span><span style="font-size:14px;font-weight:500;">小红书</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-grid">
+      <div>
+        <h5>生花 · AI创作生态平台</h5>
+        <p style="font-size:13px; margin-top:8px;">妙笔生花，人人皆可创作。连接创作人才与项目需求，构建AI创作产业生态。</p>
+      </div>
+      <div>
+        <h5>创作者</h5>
+        <a href="#" onclick="showPage('training')">培训学院</a>
+        <a href="#" onclick="showPage('orders')">接单大厅</a>
+        <a href="#" onclick="showPage('talent')">人才库</a>
+        <a href="#" onclick="showPage('levels')">等级体系</a>
+        <a href="#" onclick="showPage('assets')">资产库</a>
+        <a href="#" onclick="showPage('community')">生花社区</a>
+      </div>
+      <div>
+        <h5>需求方</h5>
+        <a href="#" onclick="showPage('client')">发布项目</a>
+        <a href="#" onclick="showPage('plaza')">创作广场选品</a>
+        <a href="#">交易保障</a>
+        <a href="#">API对接</a>
+      </div>
+      <div>
+        <h5>关于</h5>
+        <a href="#">关于我们</a>
+        <a href="#">用户协议</a>
+        <a href="#">隐私政策</a>
+        <a href="#">联系客服</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 帧游计科技 · 生花 · V1.0</div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: ORDER HALL              -->
+<!-- ============================= -->
+<div class="page" id="page-orders">
+  <div class="section">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:32px;">
+      <div style="flex:1; min-width:0;">
+        <h2>接单大厅</h2>
+        <p class="section-desc" style="margin-bottom:20px;">等级匹配，精准撮合 — 不同等级创作者看到不同项目池</p>
+
+        <div class="order-toolbar">
+          <div class="order-filters">
+            <span class="filter-chip active">全部 <span class="chip-count">42</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">品牌定制 <span class="chip-count">8</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">IP改编 <span class="chip-count">12</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">个人项目 <span class="chip-count">10</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">系列漫剧 <span class="chip-count">7</span></span>
+            <span class="filter-chip" onclick="this.classList.toggle('active')">紧急 <span class="chip-count">3</span></span>
+          </div>
+          <div class="order-sort-group">
+            <select><option>最新发布</option><option>预算最高</option><option>即将截止</option><option>竞标最少</option></select>
+            <select><option>等级: 全部</option><option>L1+ 新星</option><option>L2+ 新锐</option><option>L3+ 精英</option><option>L4+ 资深</option><option>L5 大师</option></select>
+            <select><option>预算: 全部</option><option>¥500-2,000</option><option>¥2,000-5,000</option><option>¥5,000-15,000</option><option>¥15,000-50,000</option><option>¥50,000+</option></select>
+          </div>
+        </div>
+
+        <div class="project-grid">
+          <div class="project-card" onclick="showModal('project-detail')">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#F87171 0%,#DC2626 50%,#991B1B 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥35,000</div>
+              <div class="level-req" style="background:var(--l3);">L3+ 精英</div>
+              <div class="deadline-badge urgent">⏰ 8天后截止</div>
+            </div>
+            <div class="project-body">
+              <h4>《大唐妖闻录》12集系列漫剧</h4>
+              <div class="project-meta"><span>某头部视频平台</span><span>8人投标</span></div>
+              <div class="project-tags"><span class="tag hot">古风</span><span class="tag">系列剧</span><span class="tag">IP改编</span><span class="tag new">S级</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">12</span>集</span>
+                <span class="ps-item">📅 30天</span>
+                <span class="ps-item">⭐ 4.8需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#818CF8,#6366F1);">视</span>
+                <span><span class="client-name">爱奇艺合作方</span> <span class="client-verified">✓ 已认证</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#3B82F6 0%,#6366F1 50%,#4338CA 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥8,000</div>
+              <div class="level-req" style="background:var(--l2);">L2+ 新锐</div>
+              <div class="deadline-badge">📅 7月20日</div>
+            </div>
+            <div class="project-body">
+              <h4>都市悬疑短剧 · 5集</h4>
+              <div class="project-meta"><span>个人需求方</span><span>15人投标</span></div>
+              <div class="project-tags"><span class="tag">都市</span><span class="tag">悬疑</span><span class="tag">短篇</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">5</span>集</span>
+                <span class="ps-item">📅 15天</span>
+                <span class="ps-item">⭐ 4.5需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#34D399,#059669);">个</span>
+                <span><span class="client-name">个人需求方</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#10B981 0%,#059669 50%,#065F46 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥25,000</div>
+              <div class="level-req" style="background:var(--l3);">L3+ 精英</div>
+              <div class="deadline-badge urgent">⏰ 3天后截止</div>
+            </div>
+            <div class="project-body">
+              <h4>品牌定制 · 科技公司宣传片漫剧版</h4>
+              <div class="project-meta"><span>XX科技 · 已认证</span><span>5人投标</span></div>
+              <div class="project-tags"><span class="tag hot">品牌定制</span><span class="tag">科技</span><span class="tag">宣传</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">3</span>集</span>
+                <span class="ps-item">📅 14天</span>
+                <span class="ps-item">⭐ 4.9需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);">科</span>
+                <span><span class="client-name">XX科技</span> <span class="client-verified">✓ 已认证</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#EC4899 0%,#DB2777 50%,#BE185D 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥120,000</div>
+              <div class="level-req" style="background:var(--l4);">L4+ 资深</div>
+              <div class="deadline-badge">📅 8月1日</div>
+            </div>
+            <div class="project-body">
+              <h4>《九州封神纪》30集长篇IP改编</h4>
+              <div class="project-meta"><span>某头部视频平台 · VIP</span><span>3人投标</span></div>
+              <div class="project-tags"><span class="tag hot">玄幻</span><span class="tag">长篇</span><span class="tag">IP改编</span><span class="tag new">S级</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">30</span>集</span>
+                <span class="ps-item">📅 60天</span>
+                <span class="ps-item">⭐ 5.0需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED);">头</span>
+                <span><span class="client-name">头部视频平台</span> <span class="client-verified">✓ VIP</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#FBBF24 0%,#F59E0B 50%,#D97706 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥1,500</div>
+              <div class="level-req" style="background:var(--l1);">L1+ 新星</div>
+              <div class="deadline-badge">📅 7月25日</div>
+            </div>
+            <div class="project-body">
+              <h4>校园甜宠单集 · 练手项目</h4>
+              <div class="project-meta"><span>小说作者</span><span>32人投标</span></div>
+              <div class="project-tags"><span class="tag">校园</span><span class="tag">甜宠</span><span class="tag new">新手友好</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">1</span>集</span>
+                <span class="ps-item">📅 7天</span>
+                <span class="ps-item">⭐ 4.2需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#F472B6,#EC4899);">小</span>
+                <span><span class="client-name">小说作者</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-thumb" style="background:linear-gradient(135deg,#6B7280 0%,#4B5563 50%,#374151 100%);">
+              <div class="thumb-pattern"></div>
+              <div class="budget">¥18,000</div>
+              <div class="level-req" style="background:var(--l3);">L3+ 精英</div>
+              <div class="deadline-badge urgent">⏰ 11天后截止</div>
+            </div>
+            <div class="project-body">
+              <h4>民国谍战 · 8集精品短剧</h4>
+              <div class="project-meta"><span>MCN机构 · 已认证</span><span>6人投标</span></div>
+              <div class="project-tags"><span class="tag">民国</span><span class="tag hot">谍战</span><span class="tag">精品</span></div>
+              <div class="project-stats-bar">
+                <span class="ps-item">📊 <span class="ps-num">8</span>集</span>
+                <span class="ps-item">📅 20天</span>
+                <span class="ps-item">⭐ 4.6需求方评分</span>
+              </div>
+            </div>
+            <div class="project-footer">
+              <div class="client">
+                <span class="client-avatar" style="background:linear-gradient(135deg,#A78BFA,#8B5CF6);">M</span>
+                <span><span class="client-name">MCN机构</span> <span class="client-verified">✓ 已认证</span></span>
+              </div>
+              <button class="btn-apply">投标</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar: Hot Ranking -->
+      <div style="width:280px; flex-shrink:0;">
+        <div class="order-ranking">
+          <h4>🔥 热门竞标排行</h4>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#DC2626;">1</span>
+            <div class="rank-info"><div class="rank-title">甜宠练手项目</div><div class="rank-meta">32人竞标 · L1</div></div>
+            <span class="rank-reward">¥1,500</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#F59E0B;">2</span>
+            <div class="rank-info"><div class="rank-title">都市悬疑短剧</div><div class="rank-meta">15人竞标 · L2</div></div>
+            <span class="rank-reward">¥8,000</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#3B82F6;">3</span>
+            <div class="rank-info"><div class="rank-title">大唐妖闻录</div><div class="rank-meta">8人竞标 · L3</div></div>
+            <span class="rank-reward">¥35,000</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#6B7280;">4</span>
+            <div class="rank-info"><div class="rank-title">民国谍战精品</div><div class="rank-meta">6人竞标 · L3</div></div>
+            <span class="rank-reward">¥18,000</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num" style="background:#6B7280;">5</span>
+            <div class="rank-info"><div class="rank-title">品牌漫剧宣传</div><div class="rank-meta">5人竞标 · L3</div></div>
+            <span class="rank-reward">¥25,000</span>
+          </div>
+        </div>
+
+        <div class="order-ranking" style="margin-top:16px;">
+          <h4>💡 接单小贴士</h4>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+            <p>• 完善作品集可提升中标率 <strong style="color:var(--primary);">67%</strong></p>
+            <p>• L1新手前5单免佣金</p>
+            <p>• 响应越快，需求方好感度越高</p>
+            <p>• 加入Pro会员享佣金减免</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: CREATION PLAZA          -->
+<!-- ============================= -->
+<div class="page" id="page-plaza">
+  <div class="section">
+    <h2>创作广场 — 人人都是导演</h2>
+    <p class="section-desc">UGC内容池，故事投稿、样片展示、版权交易一站式完成</p>
+
+    <div class="plaza-header">
+      <div class="plaza-tabs">
+        <button class="plaza-tab active" onclick="switchPlazaTab(this)">🔥 热门推荐</button>
+        <button class="plaza-tab" onclick="switchPlazaTab(this)">📝 故事投稿</button>
+        <button class="plaza-tab" onclick="switchPlazaTab(this)">🎬 漫剧样片</button>
+        <button class="plaza-tab" onclick="switchPlazaTab(this)">📖 剧本市场</button>
+        <button class="plaza-tab" onclick="switchPlazaTab(this)">✨ 最新上传</button>
+      </div>
+      <div class="plaza-action-bar">
+        <button class="btn-register" style="padding:9px 22px; font-size:13px;" onclick="showModal('upload-story')">+ 投稿作品</button>
+        <button class="btn-outline-sm">🔍 高级筛选</button>
+      </div>
+    </div>
+
+    <div class="plaza-grid">
+      <div class="plaza-item" onclick="showModal('plaza-detail')">
+        <div class="thumb" style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);">
+          <span class="plaza-status hot">🔥 热门</span>
+        </div>
+        <div class="info">
+          <h5>《龙吟九天》· 玄幻史诗</h5>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l3);"></span>墨染青山 · L3精英</div>
+          <div class="stats"><span>👁️ 12.5万</span><span>❤️ 8,342</span><span>💬 256</span></div>
+        </div>
+        <div class="price-tag"><span class="price">¥50,000</span><span class="price-tag-label">版权 · 可议价</span></div>
+      </div>
+
+      <div class="plaza-item">
+        <div class="thumb" style="background:linear-gradient(135deg,#a8e063,#56ab2f);">
+          <span class="plaza-status sold">✓ 已售</span>
+        </div>
+        <div class="info">
+          <h5>《乡村爱情AI版》· 喜剧</h5>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l2);"></span>乡野小民 · L2新锐</div>
+          <div class="stats"><span>👁️ 8.7万</span><span>❤️ 5,123</span><span>💬 189</span></div>
+        </div>
+        <div class="price-tag"><span class="price">¥15,000</span><span class="price-tag-label" style="background:#F0FFF4;color:#059669;">已售出</span></div>
+      </div>
+
+      <div class="plaza-item">
+        <div class="thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">
+          <span class="plaza-status hot">🔥 热门</span>
+        </div>
+        <div class="info">
+          <h5>《量子迷局》· 科幻悬疑</h5>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l4);"></span>星际旅人 · L4资深</div>
+          <div class="stats"><span>👁️ 15.2万</span><span>❤️ 11,890</span><span>💬 432</span></div>
+        </div>
+        <div class="price-tag"><span class="price">¥80,000</span><span class="price-tag-label">独家版权</span></div>
+      </div>
+
+      <div class="plaza-item">
+        <div class="thumb" style="background:linear-gradient(135deg,#f093fb,#f5576c);">
+          <span class="plaza-status hot">🔥 热门</span>
+        </div>
+        <div class="info">
+          <h5>《总裁的替身新娘》· 甜宠</h5>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l3);"></span>甜蜜蜜工作室 · L3精英</div>
+          <div class="stats"><span>👁️ 22.3万</span><span>❤️ 18,456</span><span>💬 678</span></div>
+        </div>
+        <div class="price-tag"><span class="price">¥35,000</span><span class="price-tag-label">版权 · 热门题材</span></div>
+      </div>
+
+      <div class="plaza-item">
+        <div class="thumb" style="background:linear-gradient(135deg,#4facfe,#00f2fe);">
+          <span class="plaza-status new">🆕 新作</span>
+        </div>
+        <div class="info">
+          <h5>《仙侠录·第一章》· 仙侠</h5>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l2);"></span>云中仙 · L2新锐</div>
+          <div class="stats"><span>👁️ 6.8万</span><span>❤️ 4,231</span><span>💬 98</span></div>
+        </div>
+        <div class="price-tag"><span class="price">¥20,000</span><span class="price-tag-label">版权 · 可议价</span></div>
+      </div>
+
+      <div class="plaza-item">
+        <div class="thumb" style="background:linear-gradient(135deg,#fa709a,#fee140);">
+          <span class="plaza-status new">⭐ 新人佳作</span>
+        </div>
+        <div class="info">
+          <h5>《马戏团奇遇记》· 奇幻</h5>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l1);"></span>梦境画家 · L1新星</div>
+          <div class="stats"><span>👁️ 3.2万</span><span>❤️ 2,108</span><span>💬 67</span></div>
+        </div>
+        <div class="price-tag"><span class="price">¥8,000</span><span class="price-tag-label">新人优惠价</span></div>
+      </div>
+
+      <div class="plaza-item">
+        <div class="thumb" style="background:linear-gradient(135deg,#2c3e50,#3498db);">
+          <span class="plaza-status">📺 精品系列</span>
+        </div>
+        <div class="info">
+          <h5>《深夜档案》· 刑侦悬疑</h5>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l3);"></span>暗夜行者 · L3精英</div>
+          <div class="stats"><span>👁️ 9.4万</span><span>❤️ 6,789</span><span>💬 234</span></div>
+        </div>
+        <div class="price-tag"><span class="price">¥40,000</span><span class="price-tag-label">系列版权</span></div>
+      </div>
+
+      <div class="plaza-item">
+        <div class="thumb" style="background:linear-gradient(135deg,#ee9ca7,#ffdde1);">
+          <span class="plaza-status new">🆕 新作</span>
+        </div>
+        <div class="info">
+          <h5>《樱花树下的约定》· 青春</h5>
+          <div class="creator"><span class="creator-level-dot" style="background:var(--l2);"></span>春日物语 · L2新锐</div>
+          <div class="stats"><span>👁️ 5.6万</span><span>❤️ 3,892</span><span>💬 145</span></div>
+        </div>
+        <div class="price-tag"><span class="price">¥12,000</span><span class="price-tag-label">版权 · 可议价</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: ASSET LIBRARY           -->
+<!-- ============================= -->
+<div class="page" id="page-assets">
+  <div class="section">
+    <h2>资产库 — 数字资产交易平台</h2>
+    <p class="section-desc">人脸/场景/道具/动作等8大品类，上传即资产化，授权使用持续分润</p>
+
+    <div style="display:flex;gap:12px;margin-bottom:24px;">
+      <button class="btn-register" style="padding:10px 24px;font-size:14px;" onclick="showModal('upload-asset')">+ 上传资产</button>
+      <span style="font-size:13px;color:var(--text-secondary);display:flex;align-items:center;">分润比例: 上传者60-80% | 平台15-30% | 推荐5-10%</span>
+    </div>
+
+    <div class="asset-categories">
+      <div class="asset-cat" onclick="filterAssets(this)">
+        <div class="cat-icon"><div class="ico ico-md red">角</div></div><h4>角色形象</h4><div class="count">2,340 个资产</div>
+      </div>
+      <div class="asset-cat" onclick="filterAssets(this)">
+        <div class="cat-icon"><div class="ico ico-md orange">脸</div></div><h4>人脸模型</h4><div class="count">5,670 个资产</div>
+      </div>
+      <div class="asset-cat" onclick="filterAssets(this)">
+        <div class="cat-icon"><div class="ico ico-md green">景</div></div><h4>场景环境</h4><div class="count">3,890 个资产</div>
+      </div>
+      <div class="asset-cat" onclick="filterAssets(this)">
+        <div class="cat-icon"><div class="ico ico-md gray">道</div></div><h4>道具武器</h4><div class="count">1,560 个资产</div>
+      </div>
+      <div class="asset-cat" onclick="filterAssets(this)">
+        <div class="cat-icon"><div class="ico ico-md blue">动</div></div><h4>动作预设</h4><div class="count">890 个资产</div>
+      </div>
+      <div class="asset-cat" onclick="filterAssets(this)">
+        <div class="cat-icon"><div class="ico ico-md purple">音</div></div><h4>音效配乐</h4><div class="count">2,100 个资产</div>
+      </div>
+      <div class="asset-cat" onclick="filterAssets(this)">
+        <div class="cat-icon"><div class="ico ico-md teal">效</div></div><h4>特效预设</h4><div class="count">1,230 个资产</div>
+      </div>
+      <div class="asset-cat" onclick="filterAssets(this)">
+        <div class="cat-icon"><div class="ico ico-md orange">风</div></div><h4>风格预设</h4><div class="count">780 个资产</div>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:16px;">热门资产</h3>
+    <div class="asset-grid">
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#FF9A9E,#FECFEF);"></div>
+        <div class="asset-info">
+          <h5>古风美女 · 全身立绘</h5>
+          <div class="asset-meta"><span>使用 1,234次</span><span class="asset-price">¥5/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div>
+        <div class="asset-info">
+          <h5>唐风宫殿 · 场景包</h5>
+          <div class="asset-meta"><span>使用 856次</span><span class="asset-price">¥15/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);"></div>
+        <div class="asset-info">
+          <h5>硬汉角色 · 人脸模型</h5>
+          <div class="asset-meta"><span>使用 2,345次</span><span class="asset-price">¥3/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);"></div>
+        <div class="asset-info">
+          <h5>仙侠特效 · 法术合集</h5>
+          <div class="asset-meta"><span>使用 567次</span><span class="asset-price">¥10/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#89f7fe,#66a6ff);"></div>
+        <div class="asset-info">
+          <h5>海景环境 · 日夜切换</h5>
+          <div class="asset-meta"><span>使用 432次</span><span class="asset-price">¥8/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#f6d365,#fda085);"></div>
+        <div class="asset-info">
+          <h5>冷兵器 · 3D模型包</h5>
+          <div class="asset-meta"><span>使用 789次</span><span class="asset-price">¥6/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#96fbc4,#f9f586);"></div>
+        <div class="asset-info">
+          <h5>古风BGM · 10首套装</h5>
+          <div class="asset-meta"><span>使用 1,567次</span><span class="asset-price">¥2/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#c471f5,#fa71cd);"></div>
+        <div class="asset-info">
+          <h5>舞蹈动作 · 预设包</h5>
+          <div class="asset-meta"><span>使用 345次</span><span class="asset-price">¥12/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#0c3483,#a2b6df);"></div>
+        <div class="asset-info">
+          <h5>赛博朋克 · 城市夜景</h5>
+          <div class="asset-meta"><span>使用 678次</span><span class="asset-price">¥10/次</span></div>
+        </div>
+      </div>
+      <div class="asset-item">
+        <div class="asset-thumb" style="background:linear-gradient(135deg,#e0c3fc,#8ec5fc);"></div>
+        <div class="asset-info">
+          <h5>水彩风格 · 预设滤镜</h5>
+          <div class="asset-meta"><span>使用 890次</span><span class="asset-price">¥4/次</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: TRAINING                -->
+<!-- ============================= -->
+<div class="page" id="page-training">
+  <div class="section">
+    <div class="training-hero">
+      <h2>生花培训学院</h2>
+      <p>线上自学打基础 · 线下VIP实战+就业接单指导 · 从零到专业AI漫剧创作者</p>
+    </div>
+
+    <h3 style="margin-bottom:16px;">培训模式</h3>
+    <div class="training-modes">
+      <div class="training-mode">
+        <h3><span class="mode-badge" style="background:var(--info);">线上</span> 自学基础班</h3>
+        <div class="price-range">¥1,980 - ¥39,800 <span class="unit">/ 课程</span></div>
+        <ul>
+          <li>AI漫剧基础理论与工具认知</li>
+          <li>Seedance / 可灵等工具教学</li>
+          <li>分镜脚本编写基础</li>
+          <li>AI绘画提示词技巧</li>
+          <li>录播视频课程 + 社群答疑</li>
+          <li>结业考核 + L1-L2等级认证</li>
+        </ul>
+        <div style="background:#EBF8FF;border-radius:8px;padding:10px;margin-top:12px;font-size:12px;color:var(--info);text-align:center;">适合自学能力强、时间灵活的学员</div>
+      </div>
+      <div class="training-mode" style="border: 2px solid var(--primary);">
+        <h3><span class="mode-badge" style="background:var(--primary);">线下</span> VIP实战班 <span class="badge-pulse" style="font-size:11px;background:var(--accent);color:white;padding:2px 8px;border-radius:4px;">推荐</span></h3>
+        <div class="price-range">¥3,980 - ¥12,800 <span class="unit">/ 课程</span></div>
+        <ul>
+          <li>商业级漫剧制作全流程实战</li>
+          <li>导师1对1辅导，手把手教学</li>
+          <li>真实商业项目实操练习</li>
+          <li>高级运镜与叙事技巧</li>
+          <li>线下集训 + 工作室实习</li>
+          <li>结业考核 + L2-L4等级认证</li>
+          <li>产出可直接商用的作品集</li>
+        </ul>
+        <div style="background:#FFF5F5;border-radius:8px;padding:12px;margin-top:12px;">
+          <div style="font-size:13px;font-weight:600;color:var(--primary);margin-bottom:6px;">就业接单指导</div>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.7;">
+            · 专属接单顾问1对1辅导<br>
+            · 简历/作品集优化 + 模拟面试<br>
+            · 优先推荐高薪商业项目<br>
+            · 学费可通过接单逐步返还
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:16px;">热门课程</h3>
+    <div class="course-cards">
+      <div class="course-card">
+        <div class="course-header" style="background:linear-gradient(135deg,#4299E1,#3182CE);">
+          <span class="level-badge">L1 新星 · 线上</span>
+          <h4>AI漫剧入门班</h4>
+        </div>
+        <div class="course-body">
+          <div class="course-price">¥1,980</div>
+          <div class="course-detail">20课时 · 线上录播+社群</div>
+          <div class="course-detail">目标: 掌握基础工具，完成首部作品</div>
+          <div class="course-detail">内容: AI绘画基础 + Seedance入门 + 分镜基础</div>
+          <div class="course-detail">认证: L1新星等级</div>
+          <div class="course-detail" style="color:var(--text-secondary);">纯学习内容，不含就业接单指导</div>
+        </div>
+        <div class="course-footer"><button class="btn-enroll">立即报名</button></div>
+      </div>
+
+      <div class="course-card" style="border:2px solid var(--primary);">
+        <div class="course-header" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA);">
+          <span class="level-badge">L2-L3 · 线下VIP</span>
+          <h4>商业漫剧VIP实战班</h4>
+        </div>
+        <div class="course-body">
+          <div class="course-price">¥12,800</div>
+          <div class="course-detail">60课时 · 线下集训+导师1对1</div>
+          <div class="course-detail">目标: 产出商业级作品 + 就业接单</div>
+          <div class="course-detail">内容: 高级运镜 + 叙事设计 + 商业项目实战</div>
+          <div class="course-detail">认证: L2-L3等级 + 商业作品集</div>
+          <div class="course-detail" style="color:var(--primary);font-weight:500;">含就业接单指导 + 学费返还</div>
+        </div>
+        <div class="course-footer"><button class="btn-enroll">立即报名</button></div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-header" style="background:linear-gradient(135deg,#E53E3E,#C53030);">
+          <span class="level-badge">L4-L5 · 线下VIP</span>
+          <h4>IP导演VIP大师班</h4>
+        </div>
+        <div class="course-body">
+          <div class="course-price">¥79,800</div>
+          <div class="course-detail">120课时 · 线下封闭+项目孵化</div>
+          <div class="course-detail">目标: 独立执导长篇IP项目</div>
+          <div class="course-detail">内容: IP策划 + 团队管理 + 全流程品控</div>
+          <div class="course-detail">认证: L4-L5等级 + 签约导演</div>
+          <div class="course-detail" style="color:var(--primary);font-weight:500;">VIP专属资源 + 平台签约 + 高薪项目直推</div>
+        </div>
+        <div class="course-footer"><button class="btn-enroll">立即报名</button></div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px; background:var(--card); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow);">
+      <h3 style="margin-bottom:12px;">学费返还机制</h3>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">通过平台接单，每笔订单自动返还一定比例学费，直到全部返还完毕</p>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div style="flex:1;background:#F9FAFB;border-radius:8px;padding:16px;text-align:center;">
+          <div style="display:flex;justify-content:center;"><div class="ico ico-md blue">学</div></div>
+          <div style="font-size:13px;margin-top:4px;">报名学习</div>
+        </div>
+        <div style="font-size:24px;color:var(--text-secondary);">→</div>
+        <div style="flex:1;background:#F9FAFB;border-radius:8px;padding:16px;text-align:center;">
+          <div style="display:flex;justify-content:center;"><div class="ico ico-md orange">考</div></div>
+          <div style="font-size:13px;margin-top:4px;">通过考核</div>
+        </div>
+        <div style="font-size:24px;color:var(--text-secondary);">→</div>
+        <div style="flex:1;background:#F9FAFB;border-radius:8px;padding:16px;text-align:center;">
+          <div style="display:flex;justify-content:center;"><div class="ico ico-md green">接</div></div>
+          <div style="font-size:13px;margin-top:4px;">接单创作</div>
+        </div>
+        <div style="font-size:24px;color:var(--text-secondary);">→</div>
+        <div style="flex:1;background:#F9FAFB;border-radius:8px;padding:16px;text-align:center;">
+          <div style="display:flex;justify-content:center;"><div class="ico ico-md red">返</div></div>
+          <div style="font-size:13px;margin-top:4px;">自动返还</div>
+        </div>
+        <div style="font-size:24px;color:var(--text-secondary);">→</div>
+        <div style="flex:1;background:#F0FFF4;border-radius:8px;padding:16px;text-align:center;">
+          <div style="display:flex;justify-content:center;"><div class="ico ico-md teal">成</div></div>
+          <div style="font-size:13px;margin-top:4px;">全额返还</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: LEVELS                  -->
+<!-- ============================= -->
+<div class="page" id="page-levels">
+  <div class="section">
+    <h2>创作者等级体系</h2>
+    <p class="section-desc">五级成长路径，能力认证驱动，等级越高权益越多</p>
+
+    <div class="level-cards" style="margin-bottom:32px;">
+      <div class="level-card" style="border-top-color: var(--l1);">
+        <div class="level-icon"><div class="ico ico-md gray">L1</div></div>
+        <h4>L1 新星</h4>
+        <div class="level-subtitle">刚入行的新手创作者</div>
+        <div class="level-budget">¥500-2,000/集</div>
+        <div class="commission" style="color:var(--l1);">平台佣金 10%</div>
+        <ul class="level-perms">
+          <li>简单漫剧、单集短片</li>
+          <li>基础接单权限</li>
+          <li>7天结算周期</li>
+          <li>5单/月上限</li>
+        </ul>
+      </div>
+      <div class="level-card" style="border-top-color: var(--l2);">
+        <div class="level-icon"><div class="ico ico-md blue">L2</div></div>
+        <h4>L2 新锐</h4>
+        <div class="level-subtitle">有一定经验的创作者</div>
+        <div class="level-budget">¥2,000-5,000/集</div>
+        <div class="commission" style="color:var(--l2);">平台佣金 8%</div>
+        <ul class="level-perms">
+          <li>3-5集短篇、中等难度</li>
+          <li>推荐接单权限</li>
+          <li>5天结算周期</li>
+          <li>10单/月上限</li>
+        </ul>
+      </div>
+      <div class="level-card" style="border-top-color: var(--l3);">
+        <div class="level-icon"><div class="ico ico-md purple">L3</div></div>
+        <h4>L3 精英</h4>
+        <div class="level-subtitle">品质稳定的创作者</div>
+        <div class="level-budget">¥5,000-15,000/集</div>
+        <div class="commission" style="color:var(--l3);">平台佣金 7%</div>
+        <ul class="level-perms">
+          <li>10-20集系列、品牌定制</li>
+          <li>品牌定制权限</li>
+          <li>3天结算周期</li>
+          <li>不限单数</li>
+        </ul>
+      </div>
+      <div class="level-card" style="border-top-color: var(--l4);">
+        <div class="level-icon"><div class="ico ico-md orange">L4</div></div>
+        <h4>L4 资深</h4>
+        <div class="level-subtitle">业界头部创作者</div>
+        <div class="level-budget">¥15,000-50,000/集</div>
+        <div class="commission" style="color:var(--l4);">平台佣金 5%</div>
+        <ul class="level-perms">
+          <li>30集以上长篇、IP改编</li>
+          <li>IP改编授权</li>
+          <li>1天即时结算</li>
+          <li>专属客服</li>
+        </ul>
+      </div>
+      <div class="level-card" style="border-top-color: var(--l5);">
+        <div class="level-icon"><div class="ico ico-md red">L5</div></div>
+        <h4>L5 大师</h4>
+        <div class="level-subtitle">业界标杆/平台签约</div>
+        <div class="level-budget">¥50,000+/集</div>
+        <div class="commission" style="color:var(--l5);">平台佣金 3%</div>
+        <ul class="level-perms">
+          <li>平台重点项目优先</li>
+          <li>导师分成权益</li>
+          <li>即时结算 + 预付</li>
+          <li>品牌合作推荐</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:24px;">
+      <h4>会员订阅 — 先享后付 + 佣金减免</h4>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">月收入达标才扣会员费，低收入月自动免费。会员可在等级佣金基础上叠加减免（下限1%），并享受优先匹配、作品置顶等增值权益</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+        <div style="border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;">
+          <div style="font-size:14px;color:var(--text-secondary);">免费版</div>
+          <div style="font-size:20px;font-weight:700;margin:8px 0;">¥0</div>
+          <div style="font-size:12px;color:var(--text-secondary);">标准佣金 · 基础功能</div>
+        </div>
+        <div style="border:2px solid var(--accent);border-radius:12px;padding:16px;text-align:center;background:#FFFAF0;">
+          <div style="font-size:14px;color:var(--accent);font-weight:600;">Pro创作者</div>
+          <div style="font-size:20px;font-weight:700;margin:8px 0;">¥98/月</div>
+          <div style="font-size:11px;color:var(--accent);margin-bottom:4px;">月收入≥¥3,000才扣</div>
+          <div style="font-size:12px;color:var(--text-secondary);">佣金-2% · 优先匹配 · 作品置顶</div>
+        </div>
+        <div style="border:2px solid var(--primary);border-radius:12px;padding:16px;text-align:center;background:#FFF5F5;">
+          <div style="font-size:14px;color:var(--primary);font-weight:600;">Elite创作者</div>
+          <div style="font-size:20px;font-weight:700;margin:8px 0;">¥298/月</div>
+          <div style="font-size:11px;color:var(--primary);margin-bottom:4px;">月收入≥¥8,000才扣</div>
+          <div style="font-size:12px;color:var(--text-secondary);">佣金-3% · 独家项目 · 专属顾问</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);margin-top:16px;">需求方会员（先享后付）：Business ¥128/月（月支出≥¥5,000才扣 · 版权佣金6% · 无限发布） / Enterprise ¥398/月（月支出≥¥20,000才扣 · 专属客户经理 · 批量管理）</p>
+    </div>
+
+    <h3 style="margin-bottom:16px;">等级升降规则</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+      <div class="panel">
+        <h4>升级条件</h4>
+        <ul style="list-style:none; font-size:14px;">
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">完成指定数量的项目（如L1→L2需完成5个项目）</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">平均评分 ≥ 4.5星</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">通过对应等级的能力考核</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">无重大违规记录</li>
+          <li style="padding:8px 0;">培训学员通过课程结业考核可自动升级</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h4>降级规则</h4>
+        <ul style="list-style:none; font-size:14px;">
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">连续3个月无活跃接单记录</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">平均评分降至 3.5星以下</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">收到3次以上需求方投诉</li>
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">交付质量严重不达标</li>
+          <li style="padding:8px 0;">违反平台规则（如抄袭、作弊）</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="margin:32px 0 16px;">外部创作者准入标准</h3>
+    <div class="panel">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#FFF5F5;"><th style="padding:10px;text-align:left;font-size:13px;">评审维度</th><th style="padding:10px;text-align:left;font-size:13px;">权重</th><th style="padding:10px;text-align:left;font-size:13px;">说明</th></tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;font-size:13px;">作品质量</td><td style="padding:10px;font-size:13px;">40%</td><td style="padding:10px;font-size:13px;">一致性、叙事水平、画面完成度</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:#F9FAFB;"><td style="padding:10px;font-size:13px;">技术能力</td><td style="padding:10px;font-size:13px;">25%</td><td style="padding:10px;font-size:13px;">AI工具运用、角色一致性、场景控制</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px;font-size:13px;">项目经验</td><td style="padding:10px;font-size:13px;">20%</td><td style="padding:10px;font-size:13px;">过往项目数量、规模、需求方评价</td></tr>
+          <tr><td style="padding:10px;font-size:13px;">持续能力</td><td style="padding:10px;font-size:13px;">15%</td><td style="padding:10px;font-size:13px;">新作产出频率、稳定性</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: CLIENT                  -->
+<!-- ============================= -->
+<div class="page" id="page-client">
+  <div class="section">
+    <h2>需求方（需求方）服务</h2>
+    <p class="section-desc">从发单到交付，全流程线上化管理</p>
+
+    <h3 style="margin-bottom:16px;">合作流程</h3>
+    <div class="client-steps">
+      <div class="client-step"><div class="step-num">1</div><h5>发布项目</h5><p>填写需求、预算、等级要求</p></div>
+      <div class="client-step"><div class="step-num">2</div><h5>筛选创作者</h5><p>按等级/作品/评分筛选</p></div>
+      <div class="client-step"><div class="step-num">3</div><h5>托管资金</h5><p>项目资金进入平台托管</p></div>
+      <div class="client-step"><div class="step-num">4</div><h5>过程管理</h5><p>分阶段验收、在线沟通</p></div>
+      <div class="client-step"><div class="step-num">5</div><h5>验收结算</h5><p>确认交付、释放资金</p></div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div class="panel">
+        <h4>发布新项目</h4>
+        <div class="form-group"><label>项目名称</label><input type="text" placeholder="如：《大唐妖闻录》12集系列漫剧"></div>
+        <div class="form-group"><label>项目类型</label><select><option>系列漫剧</option><option>品牌定制</option><option>单集短片</option><option>IP改编</option></select></div>
+        <div class="form-group"><label>预算范围</label><select><option>¥500-2,000</option><option>¥2,000-5,000</option><option>¥5,000-15,000</option><option>¥15,000-50,000</option><option>¥50,000+</option></select></div>
+        <div class="form-group"><label>创作者等级要求</label><select><option>L1+ 新星以上</option><option>L2+ 新锐以上</option><option>L3+ 精英以上</option><option>L4+ 资深以上</option></select></div>
+        <div class="form-group"><label>项目描述</label><textarea rows="4" placeholder="详细描述项目需求、风格要求、交付标准..."></textarea></div>
+        <button class="btn-register" style="width:100%;padding:12px;font-size:15px;">发布项目</button>
+      </div>
+      <div>
+        <div class="panel" style="margin-bottom:20px;">
+          <h4>交易保障</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="background:#F0FFF4;padding:12px;border-radius:8px;text-align:center;"><div style="display:flex;justify-content:center;"><div class="ico ico-md gray">管</div></div><div style="font-size:12px;margin-top:4px;">资金托管</div></div>
+            <div style="background:#EBF8FF;padding:12px;border-radius:8px;text-align:center;"><div style="display:flex;justify-content:center;"><div class="ico ico-md blue">裁</div></div><div style="font-size:12px;margin-top:4px;">争议仲裁</div></div>
+            <div style="background:#FAF5FF;padding:12px;border-radius:8px;text-align:center;"><div style="display:flex;justify-content:center;"><div class="ico ico-md purple">控</div></div><div style="font-size:12px;margin-top:4px;">质量管控</div></div>
+            <div style="background:#FFFAF0;padding:12px;border-radius:8px;text-align:center;"><div style="display:flex;justify-content:center;"><div class="ico ico-md orange">评</div></div><div style="font-size:12px;margin-top:4px;">信用评价</div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h4>我的项目</h4>
+          <div class="order-item"><div class="oi-info"><h5>品牌宣传漫剧</h5><div class="oi-meta">L3精英 · ¥25,000</div></div><span class="oi-status" style="background:#F0FFF4;color:var(--success);">制作中</span></div>
+          <div class="order-item"><div class="oi-info"><h5>产品演示动画</h5><div class="oi-meta">L2新锐 · ¥8,000</div></div><span class="oi-status" style="background:#EBF8FF;color:var(--info);">待验收</span></div>
+          <div class="order-item"><div class="oi-info"><h5>系列IP开发</h5><div class="oi-meta">L4资深 · ¥120,000</div></div><span class="oi-status" style="background:#FFFAF0;color:var(--warning);">招标中</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: CREATOR CENTER          -->
+<!-- ============================= -->
+<div class="page" id="page-creator">
+  <div class="container" style="padding-top:24px;">
+    <div class="creator-dashboard">
+      <div class="creator-sidebar">
+        <div class="avatar" style="font-size:18px;font-weight:700;color:var(--primary);">U</div>
+        <h3>墨染青山</h3>
+        <span class="level-badge" style="background:var(--l3);">L3 精英</span>
+        <div class="stats-mini">
+          <div class="stat-mini"><div class="val">47</div><div class="lbl">完成项目</div></div>
+          <div class="stat-mini"><div class="val">4.8</div><div class="lbl">平均评分</div></div>
+          <div class="stat-mini"><div class="val">¥18.6万</div><div class="lbl">累计收入</div></div>
+          <div class="stat-mini"><div class="val">92%</div><div class="lbl">好评率</div></div>
+        </div>
+        <div class="menu-list">
+          <div class="menu-item active">数据总览</div>
+          <div class="menu-item">我的订单</div>
+          <div class="menu-item">作品集</div>
+          <div class="menu-item">等级成长</div>
+          <div class="menu-item">收益明细</div>
+          <div class="menu-item">我的资产</div>
+          <div class="menu-item">培训记录</div>
+          <div class="menu-item">账号设置</div>
+        </div>
+      </div>
+
+      <div class="creator-main">
+        <div class="dash-stats">
+          <div class="dash-stat"><div class="ds-label">本月收入</div><div class="ds-value">¥32,500</div><div class="ds-change">↑ 18.5% vs 上月</div></div>
+          <div class="dash-stat"><div class="ds-label">进行中项目</div><div class="ds-value">3</div><div class="ds-change">预计本月完成1个</div></div>
+          <div class="dash-stat"><div class="ds-label">待投标项目</div><div class="ds-value">12</div><div class="ds-change">5个匹配你的等级</div></div>
+          <div class="dash-stat"><div class="ds-label">资产收益</div><div class="ds-value">¥2,340</div><div class="ds-change">↑ 23.1% vs 上月</div></div>
+        </div>
+
+        <div class="dash-panel">
+          <div class="panel">
+            <h4>进行中的项目 <span class="more">查看全部 →</span></h4>
+            <div class="order-item"><div class="oi-info"><h5>《大唐妖闻录》第5-8集</h5><div class="oi-meta">截止: 7月15日 · 进度 60%</div></div><span class="oi-status" style="background:#F0FFF4;color:var(--success);">制作中</span></div>
+            <div class="order-item"><div class="oi-info"><h5>品牌定制 · XX科技</h5><div class="oi-meta">截止: 7月10日 · 进度 85%</div></div><span class="oi-status" style="background:#EBF8FF;color:var(--info);">待验收</span></div>
+            <div class="order-item"><div class="oi-info"><h5>《深夜档案》样片制作</h5><div class="oi-meta">截止: 7月20日 · 进度 30%</div></div><span class="oi-status" style="background:#FFFAF0;color:var(--warning);">初稿中</span></div>
+          </div>
+          <div class="panel">
+            <h4>收益趋势</h4>
+            <div style="height:180px;display:flex;align-items:flex-end;gap:8px;padding-top:20px;">
+              <div style="flex:1;text-align:center;"><div style="background:var(--primary-light);height:60%;border-radius:4px 4px 0 0;margin:0 4px;"></div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">1月</div></div>
+              <div style="flex:1;text-align:center;"><div style="background:var(--primary-light);height:45%;border-radius:4px 4px 0 0;margin:0 4px;"></div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">2月</div></div>
+              <div style="flex:1;text-align:center;"><div style="background:var(--primary-light);height:70%;border-radius:4px 4px 0 0;margin:0 4px;"></div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">3月</div></div>
+              <div style="flex:1;text-align:center;"><div style="background:var(--primary-light);height:55%;border-radius:4px 4px 0 0;margin:0 4px;"></div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">4月</div></div>
+              <div style="flex:1;text-align:center;"><div style="background:var(--primary-light);height:80%;border-radius:4px 4px 0 0;margin:0 4px;"></div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">5月</div></div>
+              <div style="flex:1;text-align:center;"><div style="background:var(--primary);height:90%;border-radius:4px 4px 0 0;margin:0 4px;"></div><div style="font-size:11px;color:var(--primary);font-weight:600;margin-top:4px;">6月</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>学费返还进度</h4>
+          <div style="background:#F9FAFB;border-radius:8px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;">
+              <span>商业漫剧实战班 (¥12,800)</span>
+              <span style="color:var(--success);font-weight:600;">已返还 ¥9,600 (75%)</span>
+            </div>
+            <div style="background:#F0F0F0;border-radius:4px;height:8px;overflow:hidden;">
+              <div style="background:var(--success);height:100%;width:75%;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div style="background:#F9FAFB;border-radius:8px;padding:16px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;">
+              <span>AI漫剧入门班 (¥1,980)</span>
+              <span style="color:var(--success);font-weight:600;">已全额返还</span>
+            </div>
+            <div style="background:#F0F0F0;border-radius:4px;height:8px;overflow:hidden;">
+              <div style="background:var(--success);height:100%;width:100%;border-radius:4px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: COMMUNITY               -->
+<!-- ============================= -->
+<div class="page" id="page-community">
+  <div class="container" style="padding-top:24px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <div>
+        <h2>生花社区</h2>
+        <p style="color:var(--text-secondary);font-size:14px;">创作者交流 · 经验分享 · 行业洞察 · 互助成长</p>
+      </div>
+      <button class="btn-new-post" onclick="showModal('new-post')">发布新帖</button>
+    </div>
+
+    <div class="community-layout">
+      <!-- Sidebar: 板块分类 -->
+      <div class="community-sidebar">
+        <h4>板块导航</h4>
+        <div class="board-item active"><span class="board-icon"><div class="ico ico-sm gray">全</div></span>全部帖子<span class="board-count">2.4k</span></div>
+        <div class="board-item"><span class="board-icon"><div class="ico ico-sm orange">经</div></span>经验分享<span class="board-count">856</span></div>
+        <div class="board-item"><span class="board-icon"><div class="ico ico-sm purple">评</div></span>作品互评<span class="board-count">634</span></div>
+        <div class="board-item"><span class="board-icon"><div class="ico ico-sm teal">技</div></span>技术讨论<span class="board-count">423</span></div>
+        <div class="board-item"><span class="board-icon"><div class="ico ico-sm blue">资</div></span>行业资讯<span class="board-count">289</span></div>
+        <div class="board-item"><span class="board-icon"><div class="ico ico-sm green">单</div></span>接单心得<span class="board-count">312</span></div>
+        <div class="board-item"><span class="board-icon"><div class="ico ico-sm blue">学</div></span>学习打卡<span class="board-count">178</span></div>
+        <div class="board-item"><span class="board-icon"><div class="ico ico-sm red">问</div></span>问答求助<span class="board-count">245</span></div>
+        <div class="board-item"><span class="board-icon"><div class="ico ico-sm green">队</div></span>组队招募<span class="board-count">97</span></div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+          <h4 style="margin-bottom:12px;">活跃达人</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;">
+              <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#818CF8,#A78BFA);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;">创</span>
+              <span style="font-weight:500;">墨染青山</span>
+              <span style="margin-left:auto;color:var(--text-secondary);font-size:11px;">L3精英</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;">
+              <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;">花</span>
+              <span style="font-weight:500;">花间词</span>
+              <span style="margin-left:auto;color:var(--text-secondary);font-size:11px;">L4资深</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;">
+              <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;">快</span>
+              <span style="font-weight:500;">闪电侠</span>
+              <span style="margin-left:auto;color:var(--text-secondary);font-size:11px;">L2新锐</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main: 帖子列表 -->
+      <div class="community-main">
+        <!-- 热榜 -->
+        <div class="hot-topics">
+          <h4>今日热榜</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 24px;">
+            <div class="hot-item">
+              <span class="hot-rank" style="background:var(--primary);">1</span>
+              <span class="hot-title">AI漫剧角色一致性终极解决方案</span>
+              <span class="hot-heat">4.2万热度</span>
+            </div>
+            <div class="hot-item">
+              <span class="hot-rank" style="background:var(--accent);">2</span>
+              <span class="hot-title">红果分账月入过万，分享我的经验</span>
+              <span class="hot-heat">3.8万热度</span>
+            </div>
+            <div class="hot-item">
+              <span class="hot-rank" style="background:var(--warning);">3</span>
+              <span class="hot-title">Seedance 2.0 运镜技巧大汇总</span>
+              <span class="hot-heat">2.9万热度</span>
+            </div>
+            <div class="hot-item">
+              <span class="hot-rank" style="background:var(--info);">4</span>
+              <span class="hot-title">从L1到L3，我的3个月升级之路</span>
+              <span class="hot-heat">2.1万热度</span>
+            </div>
+            <div class="hot-item">
+              <span class="hot-rank" style="background:#A0AEC0;">5</span>
+              <span class="hot-title">抖音AI漫剧新力量大赛参赛攻略</span>
+              <span class="hot-heat">1.7万热度</span>
+            </div>
+            <div class="hot-item">
+              <span class="hot-rank" style="background:#A0AEC0;">6</span>
+              <span class="hot-title">组队招募：寻编剧+音效，冲击快手星芒</span>
+              <span class="hot-heat">1.3万热度</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs: 排序方式 -->
+        <div class="community-header">
+          <div class="community-tabs">
+            <span class="community-tab active">最新</span>
+            <span class="community-tab" onclick="this.classList.toggle('active')">最热</span>
+            <span class="community-tab" onclick="this.classList.toggle('active')">精华</span>
+            <span class="community-tab" onclick="this.classList.toggle('active')">待回答</span>
+          </div>
+        </div>
+
+        <!-- 帖子列表 -->
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#818CF8,#A78BFA);"></div>
+            <div class="post-user-info">
+              <div class="post-username">墨染青山 <span class="post-badge" style="background:var(--l3);">L3精英</span></div>
+              <div class="post-time">2小时前 · 经验分享</div>
+            </div>
+          </div>
+          <div class="post-title">角色一致性终极方案：从60%到98%的实战方法论</div>
+          <div class="post-content">经过3个月的反复测试，我总结了一套角色一致性的完整工作流。核心思路是建立「角色锚点库」，在每次生成时保持关键特征参数不变，只调整姿态和表情。以下是具体的操作步骤和参数设置...</div>
+          <div class="post-images">
+            <div class="post-img" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div>
+            <div class="post-img" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);"></div>
+            <div class="post-img" style="background:linear-gradient(135deg,#818CF8,#A78BFA);"></div>
+          </div>
+          <div class="post-tags">
+            <span class="post-tag">#角色一致性</span>
+            <span class="post-tag">#教程</span>
+            <span class="post-tag">#实战经验</span>
+          </div>
+          <div class="post-actions">
+            <span class="post-action">328</span>
+            <span class="post-action">87</span>
+            <span class="post-action"><svg width="14" height="14" style="vertical-align:-2px;margin-right:2px;"><use href="#ic-star"/></svg> 156</span>
+            <span class="post-action">分享</span>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c);"></div>
+            <div class="post-user-info">
+              <div class="post-username">花间词 <span class="post-badge" style="background:var(--l4);">L4资深</span></div>
+              <div class="post-time">4小时前 · 接单心得</div>
+            </div>
+          </div>
+          <div class="post-title">红果分账月入3万+，从选品到交付全流程复盘</div>
+          <div class="post-content">上个月通过生花接了红果的分账项目，最终收益超出预期。今天把整个流程拆解一下：如何筛选高分账潜力项目、怎样与需求方沟通交付标准、制作过程中的关键节点控制。先说结论：选对项目比埋头做更重要...</div>
+          <div class="post-tags">
+            <span class="post-tag">#红果短剧</span>
+            <span class="post-tag">#分账经验</span>
+            <span class="post-tag">#变现</span>
+          </div>
+          <div class="post-actions">
+            <span class="post-action">256</span>
+            <span class="post-action">63</span>
+            <span class="post-action"><svg width="14" height="14" style="vertical-align:-2px;margin-right:2px;"><use href="#ic-star"/></svg> 98</span>
+            <span class="post-action">分享</span>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#4facfe,#00f2fe);"></div>
+            <div class="post-user-info">
+              <div class="post-username">闪电侠 <span class="post-badge" style="background:var(--l2);">L2新锐</span></div>
+              <div class="post-time">5小时前 · 问答求助</div>
+            </div>
+          </div>
+          <div class="post-title">求助：Seedance 2.0 多镜头切换时画面闪烁怎么解决？</div>
+          <div class="post-content">在做第3集的分镜时发现，连续两个镜头之间切换时会出现短暂闪烁/色差，特别是从远景切到特写的时候。已经尝试过调整过渡帧数和色彩锚点，但效果不明显。有前辈遇到过类似问题吗？附上我的参数设置截图...</div>
+          <div class="post-images">
+            <div class="post-img" style="background:linear-gradient(135deg,#89f7fe,#66a6ff);"></div>
+            <div class="post-img" style="background:linear-gradient(135deg,#e0c3fc,#8ec5fc);"></div>
+          </div>
+          <div class="post-tags">
+            <span class="post-tag">#Seedance</span>
+            <span class="post-tag">#技术问题</span>
+            <span class="post-tag">#求助</span>
+          </div>
+          <div class="post-actions">
+            <span class="post-action">42</span>
+            <span class="post-action">28</span>
+            <span class="post-action">⭐ 15</span>
+            <span class="post-action">分享</span>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#fa709a,#fee140);font-weight:700;color:white;">导</div>
+            <div class="post-user-info">
+              <div class="post-username">剧本炼金师 <span class="post-badge" style="background:var(--l3);">L3精英</span></div>
+              <div class="post-time">昨天 · 作品互评</div>
+            </div>
+          </div>
+          <div class="post-title">新作《星河彼岸》3集样片发布，欢迎各位点评！</div>
+          <div class="post-content">花了两周时间完成了科幻题材漫剧《星河彼岸》的前3集样片。风格偏赛博朋克+日系机甲，参考了《攻壳机动队》和《银河英雄传说》。目前计划在创作广场上架，想先听听社区朋友们的意见，特别是运镜节奏和配色方面...</div>
+          <div class="post-images">
+            <div class="post-img" style="background:linear-gradient(135deg,#0c3483,#a2b6df);"></div>
+            <div class="post-img" style="background:linear-gradient(135deg,#c471f5,#fa71cd);"></div>
+            <div class="post-img" style="background:linear-gradient(135deg,#2c3e50,#3498db);"></div>
+            <div class="post-img" style="background:linear-gradient(135deg,#f6d365,#fda085);"></div>
+          </div>
+          <div class="post-tags">
+            <span class="post-tag">#新作发布</span>
+            <span class="post-tag">#科幻</span>
+            <span class="post-tag">#求点评</span>
+          </div>
+          <div class="post-actions">
+            <span class="post-action">189</span>
+            <span class="post-action">52</span>
+            <span class="post-action">⭐ 73</span>
+            <span class="post-action">分享</span>
+          </div>
+        </div>
+
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-avatar" style="background:linear-gradient(135deg,#96fbc4,#f9f586);"></div>
+            <div class="post-user-info">
+              <div class="post-username">配乐匠人 <span class="post-badge" style="background:var(--l2);">L2新锐</span></div>
+              <div class="post-time">昨天 · 组队招募</div>
+            </div>
+          </div>
+          <div class="post-title">【组队】冲击快手星芒计划，寻编剧+分镜师，已有配乐和音效</div>
+          <div class="post-content">计划参加快手星芒AI漫剧专项，目前团队已有配乐（我本人）和音效师各一名。需要一位擅长古风/仙侠题材的编剧，以及一位有运镜经验的分镜师。项目预算5万起，分账模式。有兴趣的朋友评论区留言或私信我~</div>
+          <div class="post-tags">
+            <span class="post-tag">#组队</span>
+            <span class="post-tag">#快手星芒</span>
+            <span class="post-tag">#古风</span>
+          </div>
+          <div class="post-actions">
+            <span class="post-action">67</span>
+            <span class="post-action">34</span>
+            <span class="post-action">⭐ 21</span>
+            <span class="post-action">分享</span>
+          </div>
+        </div>
+
+        <!-- 加载更多 -->
+        <div style="text-align:center;padding:24px 0;">
+          <button style="padding:12px 48px;border-radius:8px;border:1px solid var(--border);background:white;font-size:14px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='var(--primary)';this.style.color='white';this.style.borderColor='var(--primary)'" onmouseout="this.style.background='white';this.style.color='var(--text)';this.style.borderColor='var(--border)'">加载更多帖子</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= -->
+<!-- PAGE: TALENT DATABASE        -->
+<!-- ============================= -->
+<div class="page" id="page-talent">
+  <div class="container" style="padding-top:24px;">
+    <div class="talent-banner">
+      <div>
+        <h2>AI剧人才信息库</h2>
+        <p>专业人才分类库 — 行业从业者互相找、作品展示、项目撮合</p>
+      </div>
+
+    </div>
+
+    <div class="talent-layout">
+      <!-- Sidebar: 角色分类 -->
+      <div class="talent-sidebar">
+        <h4>专业角色分类</h4>
+        <div class="role-item active" onclick="filterTalent(this,'all')"><span class="role-icon"><div class="ico ico-sm gray">全</div></span>全部人才<span class="role-count">42</span></div>
+        <div class="role-item" onclick="filterTalent(this,'director')"><span class="role-icon"><div class="ico ico-sm red">导</div></span>导演<span class="role-count">5</span></div>
+        <div class="role-item" onclick="filterTalent(this,'producer')"><span class="role-icon"><div class="ico ico-sm blue">制</div></span>制作人<span class="role-count">4</span></div>
+        <div class="role-item" onclick="filterTalent(this,'writer')"><span class="role-icon"><div class="ico ico-sm teal">编</div></span>编剧<span class="role-count">5</span></div>
+        <div class="role-item" onclick="filterTalent(this,'generator')"><span class="role-icon"><div class="ico ico-sm purple">生</div></span>生成师<span class="role-count">6</span></div>
+        <div class="role-item" onclick="filterTalent(this,'editor')"><span class="role-icon"><div class="ico ico-sm green">剪</div></span>后期剪辑<span class="role-count">4</span></div>
+        <div class="role-item" onclick="filterTalent(this,'art')"><span class="role-icon"><div class="ico ico-sm orange">美</div></span>美术<span class="role-count">9</span></div>
+        <div class="role-sub" onclick="filterTalent(this,'art-char')">└ 角色设计</div>
+        <div class="role-sub" onclick="filterTalent(this,'art-scene')">└ 场景设计</div>
+        <div class="role-sub" onclick="filterTalent(this,'art-concept')">└ 概念美术</div>
+        <div class="role-item" onclick="filterTalent(this,'storyboard')"><span class="role-icon"><div class="ico ico-sm gray">镜</div></span>分镜师<span class="role-count">9</span></div>
+        <div class="role-sub" onclick="filterTalent(this,'sb-script')">└ 分镜脚本</div>
+        <div class="role-sub" onclick="filterTalent(this,'sb-camera')">└ 运镜设计</div>
+        <div class="role-sub" onclick="filterTalent(this,'sb-dynamic')">└ 动态分镜</div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+          <h4 style="margin-bottom:12px;">为什么登记?</h4>
+          <div style="font-size:12px;color:var(--text-secondary);line-height:1.8;">
+            <div style="padding:4px 0;">✓ 行业内互相发现</div>
+            <div style="padding:4px 0;">✓ 作品集永久展示</div>
+            <div style="padding:4px 0;">✓ 平台项目优先撮合</div>
+            <div style="padding:4px 0;">✓ 接单赚钱机会</div>
+            <div style="padding:4px 0;">✓ 个人品牌建设</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main: 人才列表 -->
+      <div class="talent-main">
+        <div class="talent-filters">
+          <span class="filter-chip active">全部</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">已认证</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">有作品</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">可接单</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">大学生</span>
+          <span class="filter-chip" onclick="this.classList.toggle('active')">工作室</span>
+          <select style="margin-left:auto;">
+            <option>排序: 综合推荐</option><option>作品最多</option><option>等级最高</option><option>最近活跃</option>
+          </select>
+        </div>
+
+        <div class="talent-grid" id="talent-grid"></div>
+
+        <!-- 加载更多 -->
+        <div style="text-align:center;padding:32px 0;">
+          <button style="padding:12px 48px;border-radius:8px;border:1px solid var(--border);background:white;font-size:14px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='var(--primary)';this.style.color='white';this.style.borderColor='var(--primary)'" onmouseout="this.style.background='white';this.style.color='var(--text)';this.style.borderColor='var(--border)'">加载更多人才</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <button class="close-btn" onclick="hideModal('login')">✕</button>
+    <h3 style="text-align:center;margin-bottom:20px;">登录生花</h3>
+    <div class="form-group"><label>手机号/邮箱</label><input type="text" placeholder="请输入手机号或邮箱"></div>
+    <div class="form-group"><label>密码</label><input type="password" placeholder="请输入密码"></div>
+    <button class="btn-register" style="width:100%;padding:12px;font-size:15px;margin-top:8px;" onclick="doLogin()">登录</button>
+    <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--text-secondary);">还没有账号？<a href="#" onclick="hideModal('login');showModal('register');" style="color:var(--primary);">立即注册</a></p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-register">
+  <div class="modal" style="max-width:480px;">
+    <button class="close-btn" onclick="hideModal('register')">✕</button>
+    <h3 style="text-align:center;margin-bottom:20px;">注册生花</h3>
+    <div class="form-group"><label>手机号</label><input type="text" placeholder="请输入手机号"></div>
+    <div class="form-group"><label>验证码</label><div style="display:flex;gap:8px;"><input type="text" placeholder="请输入验证码" style="flex:1;"><button style="padding:10px 16px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;white-space:nowrap;">发送验证码</button></div></div>
+    <div class="form-group"><label>设置密码</label><input type="password" placeholder="至少6位"></div>
+    <button class="btn-register" style="width:100%;padding:12px;font-size:15px;margin-top:8px;" onclick="doRegister()">注册</button>
+    <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--text-secondary);">已有账号？<a href="#" onclick="hideModal('register');showModal('login');" style="color:var(--primary);">立即登录</a></p>
+    <p style="text-align:center;margin-top:4px;font-size:12px;color:var(--text-secondary);">注册后登录，可在需求方与创作者之间自由切换</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-project-detail">
+  <div class="modal" style="max-width:700px;">
+    <button class="close-btn" onclick="hideModal('project-detail')">✕</button>
+    <h3>《大唐妖闻录》12集系列漫剧</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div style="background:#F9FAFB;padding:12px;border-radius:8px;"><div style="font-size:12px;color:var(--text-secondary);">预算</div><div style="font-size:20px;font-weight:700;color:var(--primary);">¥35,000</div></div>
+      <div style="background:#F9FAFB;padding:12px;border-radius:8px;"><div style="font-size:12px;color:var(--text-secondary);">等级要求</div><div style="font-size:20px;font-weight:700;color:var(--l3);">L3+ 精英</div></div>
+    </div>
+    <h4 style="margin-bottom:8px;">项目描述</h4>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">古风玄幻题材，改编自同名网络小说。要求画面精美、角色一致、运镜流畅。每集约3-5分钟，共12集。提供完整剧本和角色设定稿。</p>
+    <h4 style="margin-bottom:8px;">交付标准</h4>
+    <ul style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;padding-left:20px;">
+      <li>1080P/30fps，单集3-5分钟</li>
+      <li>角色一致性 ≥ 95%</li>
+      <li>含配音、字幕、音效</li>
+      <li>分阶段交付：每3集一个验收节点</li>
+    </ul>
+    <h4 style="margin-bottom:8px;">需求方信息</h4>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">某头部视频平台 · 已认证 · 历史项目32个 · 平均评分4.9</p>
+    <button class="btn-register" style="width:100%;padding:12px;font-size:15px;">提交投标</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-upload-story">
+  <div class="modal">
+    <button class="close-btn" onclick="hideModal('upload-story')">✕</button>
+    <h3>投稿故事/作品</h3>
+    <div class="form-group"><label>作品类型</label><select><option>故事投稿（文字/大纲）</option><option>漫剧样片</option><option>完整剧本</option></select></div>
+    <div class="form-group"><label>作品名称</label><input type="text" placeholder="给你的作品起个名字"></div>
+    <div class="form-group"><label>题材分类</label><select><option>玄幻</option><option>都市</option><option>甜宠</option><option>悬疑</option><option>科幻</option><option>古风</option><option>其他</option></select></div>
+    <div class="form-group"><label>作品简介</label><textarea rows="3" placeholder="简要描述你的故事..."></textarea></div>
+    <div class="form-group"><label>上传文件</label><div style="border:2px dashed var(--border);border-radius:8px;padding:32px;text-align:center;cursor:pointer;"><div style="display:flex;justify-content:center;"><div class="ico ico-lg gray">上传</div></div><div style="font-size:13px;color:var(--text-secondary);margin-top:8px;">点击或拖拽上传文件</div></div></div>
+    <div class="form-group"><label>期望版权价格（可选）</label><input type="text" placeholder="如：¥30,000"></div>
+    <button class="btn-register" style="width:100%;padding:12px;font-size:15px;">提交投稿</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-upload-asset">
+  <div class="modal">
+    <button class="close-btn" onclick="hideModal('upload-asset')">✕</button>
+    <h3>上传资产</h3>
+    <div class="form-group"><label>资产类别</label><select><option>角色形象</option><option>人脸模型</option><option>场景环境</option><option>道具武器</option><option>动作预设</option><option>音效配乐</option><option>特效预设</option><option>风格预设</option></select></div>
+    <div class="form-group"><label>资产名称</label><input type="text" placeholder="给你的资产起个名字"></div>
+    <div class="form-group"><label>单价（每次使用）</label><input type="text" placeholder="如：¥5"></div>
+    <div class="form-group"><label>上传文件</label><div style="border:2px dashed var(--border);border-radius:8px;padding:32px;text-align:center;cursor:pointer;"><div style="display:flex;justify-content:center;"><div class="ico ico-lg gray">上传</div></div><div style="font-size:13px;color:var(--text-secondary);margin-top:8px;">支持图片、3D模型、音频等格式</div></div></div>
+    <div style="background:#FFFAF0;padding:12px;border-radius:8px;font-size:13px;margin-bottom:16px;">
+      <strong>肖像权声明：</strong>上传人脸模型需提供肖像权授权书，确保合法合规。
+    </div>
+    <button class="btn-register" style="width:100%;padding:12px;font-size:15px;">提交审核</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-plaza-detail">
+  <div class="modal" style="max-width:700px;">
+    <button class="close-btn" onclick="hideModal('plaza-detail')">✕</button>
+    <div style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);height:200px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:64px;margin-bottom:16px;"></div>
+    <h3>《龙吟九天》· 玄幻史诗</h3>
+    <div style="display:flex;gap:16px;margin:12px 0;font-size:13px;color:var(--text-secondary);">
+      <span>墨染青山 · L3精英</span><span>12.5万浏览</span><span>8,342喜欢</span>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;">九天之上，龙族复兴。一位少年从废墟中崛起，踏上逆天改命之路。本作品为3集样片，完整剧本已储备24集。画面采用国漫+CG混合风格，角色一致性达98%。</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div style="background:#F9FAFB;padding:12px;border-radius:8px;text-align:center;"><div style="font-size:12px;color:var(--text-secondary);">版权价格</div><div style="font-size:18px;font-weight:700;color:var(--primary);">¥50,000</div></div>
+      <div style="background:#F9FAFB;padding:12px;border-radius:8px;text-align:center;"><div style="font-size:12px;color:var(--text-secondary);">已储备</div><div style="font-size:18px;font-weight:700;">24集剧本</div></div>
+      <div style="background:#F9FAFB;padding:12px;border-radius:8px;text-align:center;"><div style="font-size:12px;color:var(--text-secondary);">版权登记</div><div style="font-size:18px;font-weight:700;color:var(--success);">已确权 🔗</div></div>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <button class="btn-register" style="flex:1;padding:12px;font-size:15px;">采购版权</button>
+      <button style="flex:1;padding:12px;font-size:15px;border:1px solid var(--border);border-radius:6px;background:white;cursor:pointer;">联系创作者</button>
+    </div>
+  </div>
+</div>
+
+<!-- 创作者身份选择 -->
+<div class="modal-overlay" id="modal-creator-choice">
+  <div class="modal" style="max-width:620px;">
+    <button class="close-btn" onclick="hideModal('creator-choice')">✕</button>
+    <h3 style="text-align:center;margin-bottom:4px;">成为生花创作者</h3>
+    <p style="text-align:center;color:var(--text-secondary);font-size:14px;margin-bottom:24px;">选择你的身份，我们将为你匹配最合适的入驻路径</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <!-- 有经验的老手 -->
+      <div style="background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all 0.3s;" onclick="hideModal('creator-choice');showModal('portfolio-submit')" onmouseover="this.style.borderColor='var(--primary)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+        <div style="font-size:48px;margin-bottom:12px;">🎬</div>
+        <h4 style="font-size:18px;margin-bottom:8px;">我是老手</h4>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px;">已有AI漫剧制作经验，<br>提交作品审核入驻</p>
+        <div style="background:#FFF5F5;border-radius:8px;padding:10px;font-size:12px;color:var(--primary);line-height:1.6;">
+          提交作品集 → 平台审核 → 定级入驻<br>
+          审核通过进入人才库，可直接接单
+        </div>
+        <button style="margin-top:16px;padding:10px 0;width:100%;border:none;border-radius:8px;background:var(--primary);color:white;font-size:14px;font-weight:600;cursor:pointer;">提交作品入驻</button>
+      </div>
+      <!-- 新手 -->
+      <div style="background:var(--card);border:2px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all 0.3s;" onclick="hideModal('creator-choice');showPage('training')" onmouseover="this.style.borderColor='var(--info)';this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+        <div style="font-size:48px;margin-bottom:12px;">🌱</div>
+        <h4 style="font-size:18px;margin-bottom:8px;">我是新手</h4>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px;">零基础或刚开始接触AI漫剧，<br>希望系统学习后入驻</p>
+        <div style="background:#EBF8FF;border-radius:8px;padding:10px;font-size:12px;color:var(--info);line-height:1.6;">
+          报名课程 → 学习+考核 → 自动定级<br>
+          培训学费可通过接单逐步返还
+        </div>
+        <button style="margin-top:16px;padding:10px 0;width:100%;border:none;border-radius:8px;background:var(--info);color:white;font-size:14px;font-weight:600;cursor:pointer;">进入培训学院</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 老手作品集提交 -->
+<div class="modal-overlay" id="modal-portfolio-submit">
+  <div class="modal" style="max-width:640px;">
+    <button class="close-btn" onclick="hideModal('portfolio-submit')">✕</button>
+    <h3>创作者入驻 · 作品集提交</h3>
+    <p style="color:var(--text-secondary);font-size:13px;margin-bottom:20px;">提交你的代表作品，平台将在 1-3 个工作日内完成审核。审核通过后进入人才库并定级（L1-L5），开通接单权限。</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group"><label>真实姓名</label><input type="text" placeholder="你的姓名"></div>
+      <div class="form-group"><label>手机号</label><input type="text" placeholder="用于接收审核通知"></div>
+    </div>
+
+    <div class="form-group"><label>从业经验</label>
+      <select>
+        <option>1年以内</option>
+        <option>1-3年</option>
+        <option>3-5年</option>
+        <option>5年以上</option>
+      </select>
+    </div>
+
+    <div class="form-group"><label>擅长领域（可多选）</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span class="filter-chip" onclick="this.classList.toggle('active')">古风/仙侠</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">都市/现代</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">科幻/赛博</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">甜宠/恋爱</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">悬疑/恐怖</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">玄幻/热血</span>
+        <span class="filter-chip" onclick="this.classList.toggle('active')">品牌定制</span>
+      </div>
+    </div>
+
+    <div class="form-group"><label>代表作品（至少2个，最多6个）</label>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div style="border:2px dashed var(--primary);border-radius:10px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#FFF5F5;">
+          <div style="font-size:28px;">+</div>
+          <div style="font-size:11px;color:var(--primary);">上传作品1</div>
+        </div>
+        <div style="border:2px dashed var(--primary);border-radius:10px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#FFF5F5;">
+          <div style="font-size:28px;">+</div>
+          <div style="font-size:11px;color:var(--primary);">上传作品2</div>
+        </div>
+        <div style="border:2px dashed var(--border);border-radius:10px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;">
+          <div style="font-size:28px;color:var(--text-secondary);">+</div>
+          <div style="font-size:11px;color:var(--text-secondary);">更多作品</div>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--text-secondary);margin-top:6px;">支持：视频链接（抖音/B站/快手）、图片、PDF作品集</p>
+    </div>
+
+    <div class="form-group"><label>作品链接（补充）</label>
+      <input type="text" placeholder="如：https://www.douyin.com/user/xxx" style="margin-bottom:8px;">
+      <input type="text" placeholder="其他平台主页或作品链接">
+    </div>
+
+    <div class="form-group"><label>个人简介</label>
+      <textarea rows="3" placeholder="简要介绍你的创作经历、擅长风格、代表项目..."></textarea>
+    </div>
+
+    <div style="background:#FFFAF0;padding:14px;border-radius:8px;font-size:13px;margin-bottom:16px;line-height:1.7;">
+      <strong>审核说明：</strong><br>
+      · 评审维度：作品质量(40%) · 技术能力(25%) · 项目经验(20%) · 持续能力(15%)<br>
+      · 审核周期：提交后 1-3 个工作日<br>
+      · 审核结果：通过站内信和短信通知，通过后自动定级并开通接单权限
+    </div>
+
+    <button class="btn-register" style="width:100%;padding:14px;font-size:16px;">提交审核</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-new-post">
+  <div class="modal" style="max-width:600px;">
+    <button class="close-btn" onclick="hideModal('new-post')">✕</button>
+    <h3>发布新帖</h3>
+    <div class="form-group"><label>发布板块</label>
+      <select>
+        <option>经验分享</option>
+        <option>作品互评</option>
+        <option>技术讨论</option>
+        <option>📰 行业资讯</option>
+        <option>接单心得</option>
+        <option>学习打卡</option>
+        <option>❓ 问答求助</option>
+        <option>🤝 组队招募</option>
+      </select>
+    </div>
+    <div class="form-group"><label>帖子标题</label><input type="text" placeholder="起个吸引人的标题..."></div>
+    <div class="form-group"><label>正文内容</label><textarea rows="6" placeholder="分享你的经验、想法或问题..."></textarea></div>
+    <div class="form-group"><label>添加图片（可选）</label>
+      <div style="border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;">
+        <div style="font-size:28px;">🖼️</div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:6px;">点击或拖拽上传图片，最多9张</div>
+      </div>
+    </div>
+    <div class="form-group"><label>标签（用空格分隔）</label><input type="text" placeholder="如：#角色一致性 #教程 #实战"></div>
+    <button class="btn-register" style="width:100%;padding:12px;font-size:15px;margin-top:8px;">发布帖子</button>
+  </div>
+</div>
+
+<!-- 人才详情弹窗 -->
+<div class="modal-overlay" id="modal-talent-detail">
+  <div class="modal" style="max-width:680px;">
+    <button class="close-btn" onclick="hideModal('talent-detail')">✕</button>
+    <div id="talent-detail-content"></div>
+  </div>
+</div>
+
+
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+var currentRole = 'creator';
+
+function toggleRoleDropdown() {
+  var dd = document.getElementById('roleDropdown');
+  var badge = document.getElementById('roleBadge');
+  dd.classList.toggle('show');
+  badge.classList.toggle('open');
+}
+
+function closeRoleDropdown() {
+  document.getElementById('roleDropdown').classList.remove('show');
+  document.getElementById('roleBadge').classList.remove('open');
+}
+
+document.addEventListener('click', function(e) {
+  var wrap = e.target.closest('.role-badge-wrap');
+  if (!wrap) {
+    var dd = document.getElementById('roleDropdown');
+    var badge = document.getElementById('roleBadge');
+    if (dd) dd.classList.remove('show');
+    if (badge) badge.classList.remove('open');
+  }
+});
+
+function switchRole(role) {
+  currentRole = role;
+  var nav = document.getElementById('navLinks');
+  nav.className = 'nav-links show-' + role;
+  var badge = document.getElementById('roleBadge');
+  var badgeText = document.getElementById('roleBadgeText');
+  var checkC = document.getElementById('check-creator');
+  var checkCl = document.getElementById('check-client');
+  if (role === 'creator') {
+    badge.className = 'role-badge creator';
+    badgeText.textContent = '创作者';
+    if (checkC) checkC.style.display = 'inline';
+    if (checkCl) checkCl.style.display = 'none';
+  } else {
+    badge.className = 'role-badge client';
+    badgeText.textContent = '需求方';
+    if (checkC) checkC.style.display = 'none';
+    if (checkCl) checkCl.style.display = 'inline';
+  }
+  if (role === 'client') {
+    showPage('client');
+  } else {
+    showPage('creator');
+  }
+}
+
+function doLogin() {
+  hideModal('login');
+  document.getElementById('identitySwitch').style.display = 'flex';
+  switchRole(currentRole);
+  document.getElementById('navLogin').style.display = 'none';
+  document.getElementById('navRegister').style.display = 'none';
+  document.getElementById('navUserWrap').style.display = 'flex';
+}
+
+function doRegister() {
+  hideModal('register');
+  document.getElementById('identitySwitch').style.display = 'flex';
+  document.getElementById('navLogin').style.display = 'none';
+  document.getElementById('navRegister').style.display = 'none';
+  document.getElementById('navUserWrap').style.display = 'flex';
+  switchRole(currentRole);
+}
+
+function doLogout() {
+  document.getElementById('identitySwitch').style.display = 'none';
+  closeRoleDropdown();
+  document.getElementById('navLogin').style.display = 'block';
+  document.getElementById('navRegister').style.display = 'block';
+  document.getElementById('navUserWrap').style.display = 'none';
+  var nav = document.getElementById('navLinks');
+  nav.className = 'nav-links show-creator';
+  showPage('home');
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const navEl = document.getElementById('nav-' + id);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showModal(id) {
+  document.getElementById('modal-' + id).classList.add('show');
+}
+
+function hideModal(id) {
+  document.getElementById('modal-' + id).classList.remove('show');
+}
+
+function switchPlazaTab(el) {
+  document.querySelectorAll('.plaza-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function filterAssets(el) {
+  document.querySelectorAll('.asset-cat').forEach(c => c.style.borderColor = 'transparent');
+  el.style.borderColor = 'var(--primary)';
+}
+
+// ===== TALENT DATABASE DATA =====
+var TALENT_DATA = [
+  // 导演 (5)
+  {n:'陈导',g:'男',r:'director',rl:'导演',city:'上海',exp:'从业4年',lv:'L4',lc:'l4',v:true,av:true,sk:['古风','科幻','品牌定制'],wk:'代表作品：《龙吟九天》《大唐妖闻录》',st:'12集 作品32部',gd:'linear-gradient(135deg,#F87171,#FB923C)',ic:'🎬'},
+  {n:'张导',g:'男',r:'director',rl:'导演',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['悬疑','都市','刑侦'],wk:'代表作品：《深夜档案》《都市迷踪》',st:'8集 作品18部',gd:'linear-gradient(135deg,#E53E3E,#C53030)',ic:'🎬'},
+  {n:'王导',g:'女',r:'director',rl:'导演',city:'成都',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['甜宠','校园','日常'],wk:'代表作品：《樱花树下》《初恋那件小事》',st:'6集 作品9部',gd:'linear-gradient(135deg,#FC8181,#F56565)',ic:'🎬'},
+  {n:'李导',g:'男',r:'director',rl:'导演',city:'广州',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['玄幻','动作','热血'],wk:'代表作品：《破天录》《剑影江湖》',st:'10集 作品22部',gd:'linear-gradient(135deg,#D53F8C,#B83280)',ic:'🎬'},
+  {n:'赵导',g:'男',r:'director',rl:'导演 · 大学生',city:'杭州',exp:'大四在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['现代','情感'],wk:'作品：《毕业季》短片系列',st:'完成2个作品',gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎬'},
+  // 制作人 (4)
+  {n:'林制片',g:'女',r:'producer',rl:'制作人',city:'杭州',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['项目管理','预算控制','团队搭建'],wk:'代表项目：红果分账系列x3、品牌定制x8',st:'管理26个项目',gd:'linear-gradient(135deg,#4299E1,#3182CE)',ic:'📋'},
+  {n:'周制片',g:'男',r:'producer',rl:'制作人',city:'上海',exp:'从业5年',lv:'L4',lc:'l4',v:true,av:true,sk:['全流程管理','分账优化','资源整合'],wk:'代表项目：年番系列x2、S级定制x5',st:'管理41个项目',gd:'linear-gradient(135deg,#2B6CB0,#2C5282)',ic:'📋'},
+  {n:'吴制片',g:'女',r:'producer',rl:'制作人',city:'深圳',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['品牌定制','短视频','节奏把控'],wk:'代表项目：品牌定制x6、短剧x12',st:'管理19个项目',gd:'linear-gradient(135deg,#63B3ED,#4299E1)',ic:'📋'},
+  {n:'钱制片',g:'男',r:'producer',rl:'制作人 · 工作室',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['工作室运营','批量交付','品控'],wk:'代表项目：分账系列x4、IP改编x3',st:'管理33个项目',gd:'linear-gradient(135deg,#3182CE,#2C5282)',ic:'📋',studio:true},
+  // 编剧 (5)
+  {n:'剧本炼金师',g:'男',r:'writer',rl:'✍️ 编剧',city:'成都',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['玄幻','甜宠','悬疑'],wk:'代表作品：《星河彼岸》《深夜档案》',st:'完成45个剧本',gd:'linear-gradient(135deg,#A78BFA,#C4B5FD)',ic:'✍️'},
+  {n:'故事猎人',g:'女',r:'writer',rl:'✍️ 编剧',city:'上海',exp:'从业5年',lv:'L4',lc:'l4',v:true,av:true,sk:['古风','权谋','大女主'],wk:'代表作品：《凤鸣九霄》《长安秘闻》',st:'完成62个剧本',gd:'linear-gradient(135deg,#6B46C1,#553C9A)',ic:'✍️'},
+  {n:'甜文妹妹',g:'女',r:'writer',rl:'✍️ 编剧',city:'杭州',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['甜宠','霸总','校园'],wk:'代表作品：《总裁的替身新娘》《偷偷喜欢你》',st:'完成28个剧本',gd:'linear-gradient(135deg,#B794F4,#9F7AEA)',ic:'✍️'},
+  {n:'悬笔翁',g:'男',r:'writer',rl:'✍️ 编剧',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['悬疑','刑侦','惊悚'],wk:'代表作品：《凶案现场》《暗夜追踪》',st:'完成31个剧本',gd:'linear-gradient(135deg,#7E46C1,#553C9A)',ic:'✍️'},
+  {n:'新人小刘',g:'男',r:'writer',rl:'✍️ 编剧 · 大学生',city:'广州',exp:'大四在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['都市','搞笑'],wk:'作品：《宿舍日常》3集剧本',st:'完成3个剧本',gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'✍️'},
+  // 生成师 (6)
+  {n:'墨染青山',g:'女',r:'generator',rl:'🤖 生成师 · 角色一致性',city:'北京',exp:'从业2年',lv:'L3',lc:'l3',v:true,av:true,sk:['Seedance','可灵','Midjourney'],wk:'代表作品：《龙吟九天》《大唐妖闻录》',st:'完成47个项目',gd:'linear-gradient(135deg,#38B2AC,#2C7A7B)',ic:'🤖'},
+  {n:'小林同学',g:'男',r:'generator',rl:'🤖 生成师 · 大学生',city:'广州',exp:'大三在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['ComfyUI','Stable Diffusion'],wk:'作品：《校园爱情AI版》3集样片',st:'完成3个作品',gd:'linear-gradient(135deg,#48BB78,#38A169)',ic:'🤖'},
+  {n:'AI画手阿杰',g:'男',r:'generator',rl:'🤖 生成师 · 场景生成',city:'深圳',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['ComfyUI','ControlNet','Flux'],wk:'代表项目：品牌定制x6、分账漫剧x4',st:'完成15个项目',gd:'linear-gradient(135deg,#0BC5EA,#00A3C4)',ic:'🤖'},
+  {n:'风灵制片',g:'女',r:'generator',rl:'🤖 生成师 · 动效生成',city:'上海',exp:'从业2年',lv:'L3',lc:'l3',v:true,av:true,sk:['Runway','Pika','即梦'],wk:'代表作品：《破天录》《剑影江湖》',st:'完成29个项目',gd:'linear-gradient(135deg,#2C7A7B,#234E52)',ic:'🤖'},
+  {n:'灵境工坊',g:'男',r:'generator',rl:'🤖 生成师 · 工作室',city:'成都',exp:'从业3年',lv:'L4',lc:'l4',v:true,av:false,sk:['全流程','批量生成','角色一致性'],wk:'代表项目：年番系列x2、S级定制x3',st:'完成52个项目',gd:'linear-gradient(135deg,#475569,#64748B)',ic:'🤖',studio:true},
+  {n:'星河视觉',g:'女',r:'generator',rl:'🤖 生成师 · 大学生',city:'杭州',exp:'研一在读',stu:true,lv:'L2',lc:'l2',v:false,av:true,sk:['ComfyUI','AnimateDiff','Stable Video'],wk:'作品：《星河传说》2集demo',st:'完成5个作品',gd:'linear-gradient(135deg,#68D391,#48BB78)',ic:'🤖'},
+  // 后期剪辑 (4)
+  {n:'剪辑老王',g:'男',r:'editor',rl:'✂️ 后期剪辑 · 调色',city:'深圳',exp:'从业2年',lv:'L2',lc:'l2',v:true,av:true,sk:['Premiere','DaVinci','AE'],wk:'代表项目：品牌定制x12、分账漫剧x5',st:'完成18个项目',gd:'linear-gradient(135deg,#ED8936,#DD6B20)',ic:'✂️'},
+  {n:'调色师阿伟',g:'男',r:'editor',rl:'✂️ 后期剪辑 · 调色 specialist',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['DaVinci','Baselight','FilmConvert'],wk:'代表项目：S级定制x4、年番x1',st:'完成22个项目',gd:'linear-gradient(135deg,#DD6B20,#C05621)',ic:'✂️'},
+  {n:'音效大师阿强',g:'男',r:'editor',rl:'✂️ 后期剪辑 · 音效',city:'广州',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['AU','Cubase','音效库'],wk:'代表项目：分账漫剧x8、品牌定制x10',st:'完成24个项目',gd:'linear-gradient(135deg,#C05621,#9C4221)',ic:'✂️'},
+  {n:'剪辑小美',g:'女',r:'editor',rl:'✂️ 后期剪辑 · 大学生',city:'成都',exp:'大三在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['Premiere','剪映'],wk:'作品：《校园日记》2集',st:'完成2个作品',gd:'linear-gradient(135deg,#F6AD55,#ED8936)',ic:'✂️'},
+  // 美术-角色设计 (3)
+  {n:'花间词',g:'女',r:'art-char',rl:'美术 · 角色设计',city:'杭州',exp:'从业4年',lv:'L3',lc:'l3',v:true,av:true,sk:['角色立绘','服装设计','表情包'],wk:'代表作品：《花间令》《总裁的替身新娘》',st:'设计68个角色',gd:'linear-gradient(135deg,#f093fb,#f5576c)',ic:'🎨'},
+  {n:'画师阿月',g:'女',r:'art-char',rl:'美术 · 角色设计',city:'上海',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['角色立绘','Q版','道具'],wk:'代表作品：《甜心日记》《校园恋爱物语》',st:'设计34个角色',gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎨'},
+  {n:'角色控',g:'男',r:'art-char',rl:'美术 · 角色设计 · 大学生',city:'北京',exp:'大四在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['角色立绘','表情设计'],wk:'作品：《末世行》角色设定5套',st:'设计5个角色',gd:'linear-gradient(135deg,#FBB6CE,#F687B3)',ic:'🎨'},
+  // 美术-场景设计 (3)
+  {n:'梦境画家',g:'女',r:'art-scene',rl:'美术 · 场景设计',city:'西安',exp:'从业1年',lv:'L2',lc:'l2',v:false,av:true,sk:['场景绘制','氛围渲染'],wk:'作品：《马戏团奇遇记》《樱花树下》',st:'完成8个项目',gd:'linear-gradient(135deg,#a18cd1,#fbc2eb)',ic:'🎨'},
+  {n:'场景王',g:'男',r:'art-scene',rl:'美术 · 场景设计',city:'成都',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['场景绘制','光影设计','氛围渲染'],wk:'代表作品：《龙吟九天》《破天录》场景',st:'完成19个项目',gd:'linear-gradient(135deg,#9F7AEA,#B794F4)',ic:'🎨'},
+  {n:'小景',g:'女',r:'art-scene',rl:'美术 · 场景设计 · 大学生',city:'广州',exp:'大二在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['场景绘制'],wk:'作品：《校园风光》场景6张',st:'完成1个作品',gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'🎨'},
+  // 美术-概念美术 (3)
+  {n:'概念猫',g:'男',r:'art-concept',rl:'美术 · 概念美术',city:'上海',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['概念设计','世界观设定','风格探索'],wk:'代表作品：《星河彼岸》《暗夜追踪》概念稿',st:'完成16个项目',gd:'linear-gradient(135deg,#818CF8,#A78BFA)',ic:'🎨'},
+  {n:'设绘师',g:'女',r:'art-concept',rl:'美术 · 概念美术',city:'杭州',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['概念设计','分镜插画'],wk:'代表作品：《樱花树下》概念图集',st:'完成7个项目',gd:'linear-gradient(135deg,#a18cd1,#8E70C8)',ic:'🎨'},
+  {n:'灵感集',g:'女',r:'art-concept',rl:'美术 · 概念美术 · 大学生',city:'北京',exp:'大三在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['概念设计','风格探索'],wk:'作品：《未来都市》概念设计4张',st:'完成2个作品',gd:'linear-gradient(135deg,#E9D8FD,#D6BCFA)',ic:'🎨'},
+  // 分镜师-分镜脚本 (3)
+  {n:'分镜侠',g:'男',r:'sb-script',rl:'📐 分镜师 · 分镜脚本',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['分镜脚本','叙事节奏','镜头语言'],wk:'代表作品：《大唐妖闻录》《龙吟九天》分镜',st:'完成21个项目',gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},
+  {n:'脚本姑娘',g:'女',r:'sb-script',rl:'📐 分镜师 · 分镜脚本',city:'成都',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['分镜脚本','情感表达'],wk:'代表作品：《甜心日记》《初恋那件小事》分镜',st:'完成11个项目',gd:'linear-gradient(135deg,#43E97B,#38A169)',ic:'📐'},
+  {n:'故事板小张',g:'男',r:'sb-script',rl:'📐 分镜师 · 分镜脚本 · 大学生',city:'武汉',exp:'大三在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['分镜脚本'],wk:'作品：《宿舍日常》分镜3集',st:'完成1个作品',gd:'linear-gradient(135deg,#90F1EF,#4facfe)',ic:'📐'},
+  // 分镜师-运镜设计 (3)
+  {n:'闪电侠',g:'男',r:'sb-camera',rl:'📐 分镜师 · 运镜设计',city:'武汉',exp:'从业2年',lv:'L2',lc:'l2',v:true,av:true,sk:['运镜设计','节奏控制'],wk:'作品：品牌定制x9、分账漫剧x4',st:'完成14个项目',gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},
+  {n:'运镜师老陈',g:'男',r:'sb-camera',rl:'📐 分镜师 · 运镜设计',city:'上海',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:false,sk:['运镜设计','3D运镜','镜头转场'],wk:'代表作品：《破天录》《剑影江湖》运镜',st:'完成17个项目',gd:'linear-gradient(135deg,#0098D4,#006B9D)',ic:'📐'},
+  {n:'镜头控',g:'女',r:'sb-camera',rl:'📐 分镜师 · 运镜设计 · 大学生',city:'广州',exp:'大四在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['运镜设计'],wk:'作品：《校园恋爱》运镜2集',st:'完成2个作品',gd:'linear-gradient(135deg,#6EE2FF,#4facfe)',ic:'📐'},
+  // 分镜师-动态分镜 (3)
+  {n:'动态分镜阿飞',g:'男',r:'sb-dynamic',rl:'📐 分镜师 · 动态分镜',city:'杭州',exp:'从业2年',lv:'L2',lc:'l2',v:false,av:true,sk:['动态分镜','AE','节奏控制'],wk:'代表作品：《星河彼岸》《深夜档案》动态分镜',st:'完成12个项目',gd:'linear-gradient(135deg,#43E97B,#38F9D7)',ic:'📐'},
+  {n:'动效师小周',g:'女',r:'sb-dynamic',rl:'📐 分镜师 · 动态分镜',city:'北京',exp:'从业3年',lv:'L3',lc:'l3',v:true,av:true,sk:['动态分镜','Blender','AE','动效'],wk:'代表作品：《凤鸣九霄》《长安秘闻》动态分镜',st:'完成16个项目',gd:'linear-gradient(135deg,#0BA360,#3CBA92)',ic:'📐'},
+  {n:'动画手小李',g:'男',r:'sb-dynamic',rl:'📐 分镜师 · 动态分镜 · 大学生',city:'成都',exp:'大二在读',stu:true,lv:'L1',lc:'l1',v:false,av:true,sk:['动态分镜','AE'],wk:'作品：《校园日记》动态分镜1集',st:'完成1个作品',gd:'linear-gradient(135deg,#84FAB0,#8FD3F4)',ic:'📐'}
+];
+var LV_LABELS = {L1:'新星', L2:'新锐', L3:'精英', L4:'资深'};
+
+function renderTalentGrid(role) {
+  var grid = document.getElementById('talent-grid');
+  if (!grid) return;
+  var list = role === 'all' ? TALENT_DATA : TALENT_DATA.filter(function(t){ return t.r === role; });
+  // 美术父分类包含3个子类
+  if (role === 'art') list = TALENT_DATA.filter(function(t){ return ['art-char','art-scene','art-concept'].indexOf(t.r) >= 0; });
+  // 分镜师父分类包含3个子类
+  if (role === 'storyboard') list = TALENT_DATA.filter(function(t){ return ['sb-script','sb-camera','sb-dynamic'].indexOf(t.r) >= 0; });
+
+  if (list.length === 0) {
+    grid.innerHTML = '<div class="talent-empty"><div class="empty-icon">🔍</div><p>暂无该分类人才</p><p style="font-size:13px;margin-top:8px;">成为第一个登记的人才吧！</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(function(t){
+    var skills = t.sk.map(function(s){ return '<span class="tc-skill">'+s+'</span>'; }).join('');
+    var verify = t.v ? '<div class="tc-verify">✓ 已认证</div>' : '';
+    var expStr = t.stu ? ''+t.exp : ''+t.exp;
+    return '<div class="talent-card" onclick="showTalentDetail(\''+t.n+'\')">'+
+      '<div class="tc-cover" style="background:'+t.gd+';">'+t.ic+verify+
+      '<div class="tc-level" style="background:var(--'+t.lc+');">'+t.lv+' '+LV_LABELS[t.lv]+'</div></div>'+
+      '<div class="tc-body"><h4>'+t.n+' <span style="font-size:12px;font-weight:400;color:var(--text-secondary);">· '+t.g+'</span></h4>'+
+      '<div class="tc-role">'+t.rl+'</div>'+
+      '<div class="tc-meta"><span>📍 '+t.city+'</span><span>'+expStr+'</span></div>'+
+      '<div class="tc-skills">'+skills+'</div>'+
+      '<div class="tc-works">'+t.wk+'</div></div>'+
+      '<div class="tc-footer"><span class="tc-loc">'+t.st+'</span><button class="btn-contact" onclick="event.stopPropagation();showTalentDetail(\''+t.n+'\')">联系</button></div></div>';
+  }).join('');
+}
+
+function showTalentDetail(name) {
+  var t = TALENT_DATA.find(function(d){ return d.n === name; });
+  if (!t) return;
+  var container = document.getElementById('talent-detail-content');
+  if (!container) return;
+  var skills = t.sk.map(function(s){ return '<span style="padding:4px 12px;border-radius:8px;background:#FFF5F5;font-size:13px;">'+s+'</span>'; }).join('');
+  var verify = t.v ? '<span style="padding:2px 10px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:12px;font-weight:600;">✓ 已认证</span>' : '<span style="padding:2px 10px;border-radius:4px;background:#FFF5F5;color:var(--text-secondary);font-size:12px;font-weight:600;">未认证</span>';
+  var expLabel = t.stu ? ''+t.exp : ''+t.exp;
+  var bio = '专注'+t.rl+'，'+expLabel+'。擅长'+t.sk.join('、')+'。'+t.wk+'。';
+  var rating = t.lv === 'L4' ? '4.9' : t.lv === 'L3' ? '4.8' : t.lv === 'L2' ? '4.6' : '4.5';
+  var income = t.lv === 'L4' ? '¥32.5万' : t.lv === 'L3' ? '¥18.6万' : t.lv === 'L2' ? '¥6.2万' : '¥1.2万';
+  container.innerHTML =
+    '<div style="display:flex;gap:20px;margin-bottom:20px;">'+
+    '<div style="width:100px;height:100px;border-radius:16px;background:'+t.gd+';display:flex;align-items:center;justify-content:center;font-size:48px;flex-shrink:0;">'+t.ic+'</div>'+
+    '<div style="flex:1;">'+
+    '<h3 style="margin-bottom:6px;">'+t.n+' <span style="font-size:14px;font-weight:400;color:var(--text-secondary);">· '+t.g+' · '+t.city+'</span></h3>'+
+    '<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">'+
+    '<span style="padding:2px 10px;border-radius:4px;background:var(--'+t.lc+');color:white;font-size:12px;font-weight:600;">'+t.lv+' '+LV_LABELS[t.lv]+'</span>'+verify+
+    '<span style="font-size:13px;color:var(--primary);font-weight:500;">'+t.rl+'</span>'+
+    '</div>'+
+    '<p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">'+bio+'</p>'+
+    '</div></div>'+
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">'+
+    '<div style="background:#F9FAFB;padding:14px;border-radius:8px;text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary);">'+(t.st.match(/\d+/)?t.st.match(/\d+/)[0]:'—')+'</div><div style="font-size:11px;color:var(--text-secondary);">项目/作品</div></div>'+
+    '<div style="background:#F9FAFB;padding:14px;border-radius:8px;text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary);">'+rating+'</div><div style="font-size:11px;color:var(--text-secondary);">平均评分</div></div>'+
+    '<div style="background:#F9FAFB;padding:14px;border-radius:8px;text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary);">'+income+'</div><div style="font-size:11px;color:var(--text-secondary);">累计收入</div></div>'+
+    '<div style="background:#F9FAFB;padding:14px;border-radius:8px;text-align:center;"><div style="font-size:22px;font-weight:700;color:var(--primary);">'+t.exp+'</div><div style="font-size:11px;color:var(--text-secondary);">从业经验</div></div>'+
+    '</div>'+
+    '<h4 style="margin-bottom:10px;">擅长技能</h4>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">'+skills+'</div>'+
+    '<h4 style="margin-bottom:10px;">代表作品</h4>'+
+    '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:20px;line-height:1.8;">'+t.wk+'</div>'+
+    '<div style="display:flex;gap:12px;">'+
+    '<button class="btn-register" style="flex:1;padding:12px;font-size:15px;">联系TA</button>'+
+    '<button style="flex:1;padding:12px;font-size:15px;border:1px solid var(--border);border-radius:6px;background:white;cursor:pointer;">邀请投标</button>'+
+    '</div>';
+  showModal('talent-detail');
+}
+
+function filterTalent(el, role) {
+  document.querySelectorAll('.talent-sidebar .role-item, .talent-sidebar .role-sub').forEach(function(r){ r.classList.remove('active'); });
+  el.classList.add('active');
+  renderTalentGrid(role);
+}
+
+// Initialize talent grid on load
+renderTalentGrid('all');
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('show');
+  });
+});
+
+// Filter chips toggle
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    if (this.textContent !== '全部项目') {
+      document.querySelector('.filter-chip.active:first-child')?.classList.remove('active');
+    }
+  });
+});
+
+// ===== ICON SYSTEM: Convert .ico text → SVG line icons =====
+function initIcons(){
+  var m={'培':'ic-training','学':'ic-book','单':'ic-orders','接':'ic-briefcase','创':'ic-creation','资':'ic-assets','级':'ic-award','考':'ic-clipboard','活':'ic-calendar','社':'ic-community','全':'ic-home','经':'ic-trending','评':'ic-star','技':'ic-cpu','问':'ic-help','队':'ic-users','人':'ic-user','导':'ic-clapper','制':'ic-clipboard','编':'ic-pen','生':'ic-cpu','剪':'ic-film','美':'ic-palette','镜':'ic-layout','角':'ic-user','脸':'ic-smile','景':'ic-image','道':'ic-box','动':'ic-activity','音':'ic-music','效':'ic-zap','风':'ic-palette','管':'ic-shield','裁':'ic-scale','控':'ic-check-square','返':'ic-refresh','成':'ic-check-circle','L1':'lv1','L2':'lv2','L3':'lv3','L4':'lv4','L5':'lv5','!':'ic-bell','优':'ic-play','腾':'ic-play','视':'ic-play','B':'ic-play','红':'ic-play','需':'ic-clipboard','上传':'ic-upload','作':'ic-creation','收':'ic-trending','通':'ic-bell','设':'ic-check-square','?':'ic-help'};
+  document.querySelectorAll('.ico').forEach(function(el){
+    var t=el.textContent.trim(),id=m[t];
+    if(id){el.className=el.className.replace(/\bico\b/g,'ic').replace(/\bico-(lg|md|sm)\b/g,'ic-$1');el.innerHTML='<svg><use href="#'+id+'"/></svg>';}
+  });
+}
+initIcons();
+</script>
+
+</body>
+</html>

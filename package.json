@@ -1,0 +1,13 @@
+{
+  "name": "shenghua-doc-generator",
+  "version": "1.0.0",
+  "description": "Generate development design document for 生花 platform",
+  "private": true,
+  "scripts": {
+    "generate": "node generate_doc.js"
+  },
+  "dependencies": {
+    "docx": "^8.5.0",
+    "exceljs": "^4.4.0"
+  }
+}

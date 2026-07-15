@@ -1,0 +1,1887 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生花 - AI创作生态平台</title>
+<style>
+:root {
+  --primary: #E53E3E;
+  --primary-dark: #C53030;
+  --primary-light: #FEB2B2;
+  --primary-bg: #FFF5F5;
+  --primary-grad: linear-gradient(135deg, #E53E3E 0%, #F87171 100%);
+  --secondary: #374151;
+  --accent: #ED8936;
+  --bg: #FFFFFF;
+  --card: #FFFFFF;
+  --text: #1F2937;
+  --text-secondary: #9CA3AF;
+  --border: #F0F0F0;
+  --success: #38A169;
+  --warning: #DD6B20;
+  --info: #3182CE;
+  --l1: #A0AEC0;
+  --l2: #4299E1;
+  --l3: #9F7AEA;
+  --l4: #ED8936;
+  --l5: #E53E3E;
+  --shadow: 0 2px 10px rgba(229,62,62,0.03), 0 1px 3px rgba(0,0,0,0.02);
+  --shadow-glow: 0 4px 20px rgba(229,62,62,0.15);
+  --safe-top: 47px;
+  --safe-bottom: 34px;
+  --tab-height: 56px;
+  --status-height: 47px;
+}
+
+/* ===== ICON SYSTEM (SVG filled/duotone icons) ===== */
+.ico, .ic { display:inline-flex; align-items:center; justify-content:center; border-radius:12px; flex-shrink:0; }
+.ico svg, .ic svg { display:block; }
+.ico-lg, .ic-lg { width:48px; height:48px; }
+.ico-lg svg, .ic-lg svg { width:24px; height:24px; }
+.ico-md, .ic-md { width:36px; height:36px; }
+.ico-md svg, .ic-md svg { width:20px; height:20px; }
+.ico-sm, .ic-sm { width:28px; height:28px; border-radius:8px; }
+.ico-sm svg, .ic-sm svg { width:16px; height:16px; }
+.ico.blue, .ic.blue { background:linear-gradient(135deg,#DBEAFE,#EFF6FF); color:#2563EB; }
+.ico.green, .ic.green { background:linear-gradient(135deg,#D1FAE5,#ECFDF5); color:#059669; }
+.ico.purple, .ic.purple { background:linear-gradient(135deg,#E9D5FF,#FAF5FF); color:#7C3AED; }
+.ico.orange, .ic.orange { background:linear-gradient(135deg,#FED7AA,#FFF7ED); color:#EA580C; }
+.ico.red, .ic.red { background:linear-gradient(135deg,#FECACA,#FFF5F5); color:#DC2626; }
+.ico.gray, .ic.gray { background:linear-gradient(135deg,#E5E7EB,#F9FAFB); color:#4B5563; }
+.ico.teal, .ic.teal { background:linear-gradient(135deg,#99F6E4,#F0FDFA); color:#0D9488; }
+/* Tab/header/FAB icon SVG sizing */
+.tab-icon svg, .header-icon svg { width:20px; height:20px; }
+.fab svg { width:22px; height:22px; }
+.cc-icon svg { width:28px; height:28px; }
+
+/* ===== GRADIENT TEXT ===== */
+.grad-text { background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ===== BRAND MARK ===== */
+.brand-mark { display:inline-block; vertical-align:middle; flex-shrink:0; }
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; background: #F0F0F2; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
+
+/* ===== PHONE FRAME ===== */
+.phone-frame {
+  width: 100%; max-width: 480px;
+  height: 100vh;
+  background: var(--bg);
+  overflow: hidden;
+  position: relative;
+}
+@media (min-width: 481px) {
+  .phone-frame {
+    height: 100vh; max-height: 900px;
+    border-radius: 0;
+    box-shadow: 0 0 40px rgba(0,0,0,0.08);
+  }
+}
+
+/* ===== STATUS BAR ===== */
+.status-bar {
+  height: var(--status-height); padding: 14px 28px 0;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:14px; font-weight:600; color:var(--text);
+  position:relative; z-index:100; background:transparent;
+}
+.status-bar .time { margin-left:4px; }
+.status-bar .icons { display:flex; gap:5px; align-items:center; font-size:12px; }
+
+/* ===== SCREEN CONTAINER ===== */
+.screen-container {
+  height: calc(100% - var(--status-height) - var(--tab-height));
+  overflow-y:auto; overflow-x:hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.screen-container::-webkit-scrollbar { display:none; }
+.screen { display:none; }
+.screen.active { display:block; animation: screenIn 0.25s ease-out; }
+@keyframes screenIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ===== TAB BAR ===== */
+.tab-bar {
+  height: var(--tab-height); background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-top: 0.5px solid var(--border);
+  display:flex; align-items:center; justify-content:space-around;
+  padding-bottom: 4px; position:absolute; bottom:0; left:0; right:0; z-index:1000;
+}
+.tab-bar::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:80px; height:1px; background: var(--primary-grad); opacity:0.3; }
+.tab-item { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; transition:all 0.2s; padding:4px 12px; }
+.tab-item .tab-icon { font-size:24px; transition:transform 0.2s; }
+.tab-item .tab-label { font-size:10px; color:var(--text-secondary); font-weight:500; }
+.tab-item.active .tab-icon { transform:scale(1.1); }
+.tab-item.active .tab-label { color:var(--primary); font-weight:600; }
+
+/* ===== NAV HEADER ===== */
+.nav-header {
+  padding: 8px 16px 12px; background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:50;
+}
+.nav-header h1 { font-size:28px; font-weight:700; background: var(--primary-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.nav-header .header-actions { display:flex; gap:12px; }
+.nav-header .header-icon { width:36px; height:36px; border-radius:50%; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; }
+
+/* ===== HOME PAGE ===== */
+.home-banner {
+  margin:12px 16px; border-radius:20px; overflow:hidden;
+  background: linear-gradient(135deg, #FFF0F0 0%, #FFFFFF 40%, #EBF4FF 100%);
+  padding:24px 20px; color:var(--text); position:relative; border:1px solid rgba(255,255,255,0.6);
+  box-shadow: var(--shadow);
+}
+.home-banner::before { content:''; position:absolute; top:-60px; right:-60px; width:200px; height:200px; background:radial-gradient(circle, rgba(229,62,62,0.06) 0%, transparent 70%); border-radius:50%; pointer-events:none; }
+.home-banner h2 { font-size:22px; font-weight:700; margin-bottom:4px; color:var(--text); position:relative; }
+.home-banner p { font-size:13px; color:var(--text-secondary); margin-bottom:16px; }
+.home-banner .banner-btns { display:flex; gap:10px; }
+.home-banner .banner-btn { padding:8px 20px; border-radius:20px; font-size:13px; font-weight:600; border:none; cursor:pointer; transition: all 0.25s; }
+.home-banner .banner-btn-primary { background: var(--primary-grad); color:white; box-shadow: 0 2px 8px rgba(229,62,62,0.2); }
+.home-banner .banner-btn-outline { background: rgba(255,255,255,0.5); color:var(--primary); border:1px solid var(--primary); }
+.home-banner .banner-stats { display:flex; gap:20px; margin-top:16px; }
+.home-banner .bstat .bnum { font-size:20px; font-weight:700; }
+.home-banner .bstat .blbl { font-size:10px; color:var(--text-secondary); }
+
+.quick-actions { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:16px; }
+.quick-action { background:var(--card); border-radius:16px; padding:14px 8px; text-align:center; cursor:pointer; transition:all 0.2s; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.quick-action:active { transform:scale(0.95); }
+.quick-action .qa-icon { font-size:28px; margin-bottom:4px; }
+.quick-action .qa-label { font-size:11px; color:var(--text-secondary); font-weight:500; }
+
+.section-title { padding:20px 16px 12px; display:flex; justify-content:space-between; align-items:center; }
+.section-title h3 { font-size:18px; font-weight:700; position:relative; }
+.section-title h3::after { content:''; display:block; width:24px; height:3px; background: var(--primary-grad); border-radius:2px; margin-top:4px; }
+.section-title .more { font-size:13px; color:var(--primary); cursor:pointer; }
+
+/* Project cards - mobile */
+.m-project { position:relative; margin:0 16px 12px; background:var(--card); border-radius:16px; overflow:hidden; cursor:pointer; transition:all 0.2s; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.m-project:active { transform:scale(0.98); }
+.m-project .mp-thumb { height:130px; display:flex; align-items:center; justify-content:center; font-size:42px; position:relative; overflow:hidden; }
+.m-project .mp-thumb::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 25% 20%,rgba(255,255,255,0.2) 0%,transparent 50%),radial-gradient(circle at 75% 80%,rgba(255,255,255,0.12) 0%,transparent 45%); pointer-events:none; }
+.m-project .mp-thumb::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(135deg,transparent,transparent 12px,rgba(255,255,255,0.05) 12px,rgba(255,255,255,0.05) 24px); pointer-events:none; }
+.plaza-item-m .pi-thumb, .comm-post .cp-images .cp-img, .asset-item-m .ai-thumb { position:relative; overflow:hidden; }
+.plaza-item-m .pi-thumb::before, .comm-post .cp-images .cp-img::before, .asset-item-m .ai-thumb::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 25% 20%,rgba(255,255,255,0.2) 0%,transparent 50%),radial-gradient(circle at 75% 80%,rgba(255,255,255,0.12) 0%,transparent 45%); pointer-events:none; }
+.plaza-item-m .pi-thumb::after, .comm-post .cp-images .cp-img::after, .asset-item-m .ai-thumb::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(135deg,transparent,transparent 10px,rgba(255,255,255,0.05) 10px,rgba(255,255,255,0.05) 20px); pointer-events:none; }
+.m-project .mp-thumb .mp-budget { position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.6); padding:4px 10px; border-radius:8px; font-size:13px; font-weight:600; color:white; }
+.m-project .mp-thumb .mp-level { position:absolute; bottom:10px; left:10px; padding:3px 10px; border-radius:6px; font-size:11px; font-weight:600; color:white; }
+.m-project .mp-body { padding:12px 14px; }
+.m-project .mp-body h4 { font-size:15px; font-weight:600; margin-bottom:4px; }
+.m-project .mp-meta { display:flex; gap:12px; font-size:11px; color:var(--text-secondary); margin-bottom:8px; }
+.m-project .mp-tags { display:flex; gap:4px; flex-wrap:wrap; }
+.m-project .mp-tags .tag { font-size:10px; padding:2px 8px; border-radius:4px; background:var(--bg); color:var(--text-secondary); }
+.m-project .mp-footer { padding:10px 14px; border-top:0.5px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.m-project .mp-footer .client-info { font-size:11px; color:var(--text-secondary); }
+.m-project .mp-footer .btn-apply { padding:5px 16px; border-radius:14px; border:none; background:var(--primary); color:white; font-size:12px; font-weight:600; cursor:pointer; }
+
+/* Plaza - mobile masonry */
+.plaza-tabs { display:flex; gap:0; padding:0 16px; background:var(--card); border-bottom:0.5px solid var(--border); position:sticky; top:0; z-index:10; }
+.plaza-tab { padding:12px 16px; font-size:14px; color:var(--text-secondary); cursor:pointer; border-bottom:2px solid transparent; font-weight:500; }
+.plaza-tab.active { color:var(--primary); border-bottom-color:var(--primary); font-weight:600; }
+.plaza-masonry { padding:12px; column-count:2; column-gap:10px; }
+.plaza-item-m { break-inside:avoid; background:var(--card); border-radius:14px; overflow:hidden; margin-bottom:10px; cursor:pointer; transition:all 0.2s; box-shadow:var(--shadow); border:1px solid var(--border); }
+.plaza-item-m:active { transform:scale(0.97); }
+.plaza-item-m .pi-thumb { display:flex; align-items:center; justify-content:center; font-size:36px; }
+.plaza-item-m .pi-info { padding:10px; }
+.plaza-item-m .pi-info h5 { font-size:13px; font-weight:600; margin-bottom:3px; }
+.plaza-item-m .pi-info .pi-creator { font-size:11px; color:var(--text-secondary); }
+.plaza-item-m .pi-info .pi-stats { display:flex; gap:8px; margin-top:6px; font-size:10px; color:var(--text-secondary); }
+.plaza-item-m .pi-price { padding:8px 10px; border-top:0.5px solid var(--border); font-size:12px; color:var(--primary); font-weight:600; }
+
+/* Community - mobile */
+.comm-post { background:var(--card); margin:8px 16px; border-radius:16px; padding:16px; cursor:pointer; transition:all 0.2s; box-shadow:var(--shadow); border:1px solid var(--border); }
+.comm-post:active { transform:scale(0.98); }
+.comm-post .cp-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.comm-post .cp-avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.comm-post .cp-user .cp-name { font-size:14px; font-weight:600; display:flex; align-items:center; gap:4px; }
+.comm-post .cp-user .cp-time { font-size:11px; color:var(--text-secondary); }
+.comm-post .cp-badge { font-size:9px; padding:1px 6px; border-radius:3px; color:white; }
+.comm-post .cp-title { font-size:15px; font-weight:600; margin-bottom:6px; line-height:1.4; }
+.comm-post .cp-content { font-size:13px; color:var(--text-secondary); line-height:1.6; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin-bottom:10px; }
+.comm-post .cp-images { display:flex; gap:6px; margin-bottom:10px; overflow-x:auto; }
+.comm-post .cp-images .cp-img { width:100px; height:70px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:22px; }
+.comm-post .cp-actions { display:flex; gap:20px; padding-top:10px; border-top:0.5px solid var(--border); }
+.comm-post .cp-action { font-size:12px; color:var(--text-secondary); display:flex; align-items:center; gap:3px; }
+
+/* Profile - mobile */
+.profile-header { background:linear-gradient(135deg,#FFF5F5,#F0F7FF); padding:30px 20px 24px; color:var(--text); text-align:center; }
+.profile-header .pf-avatar { width:72px; height:72px; border-radius:50%; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:36px; margin:0 auto 10px; border:3px solid var(--border); }
+.profile-header .pf-name { font-size:20px; font-weight:700; margin-bottom:4px; }
+.profile-header .pf-level { display:inline-block; padding:3px 12px; border-radius:12px; font-size:12px; font-weight:600; }
+.profile-header .pf-stats { display:flex; justify-content:center; gap:28px; margin-top:16px; }
+.profile-header .pfs .pfs-val { font-size:18px; font-weight:700; }
+.profile-header .pfs .pfs-lbl { font-size:10px; color:var(--text-secondary); }
+
+.profile-menu { padding:12px 16px; }
+.pm-group { background:var(--card); border-radius:14px; margin-bottom:12px; overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--border); }
+.pm-item { display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:0.5px solid var(--border); cursor:pointer; transition:background 0.2s; }
+.pm-item:last-child { border-bottom:none; }
+.pm-item:active { background:var(--bg); }
+.pm-item .pm-icon { font-size:20px; width:28px; text-align:center; }
+.pm-item .pm-text { font-size:15px; flex:1; }
+.pm-item .pm-arrow { color:var(--text-secondary); font-size:14px; }
+.pm-item .pm-value { font-size:13px; color:var(--text-secondary); }
+
+/* Training - mobile */
+.train-card { margin:0 16px 12px; background:var(--card); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--border); }
+.train-card .tc-header { padding:16px; display:flex; gap:14px; }
+.train-card .tc-icon { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; }
+.train-card .tc-info h4 { font-size:16px; font-weight:600; margin-bottom:2px; }
+.train-card .tc-info .tc-sub { font-size:12px; color:var(--text-secondary); }
+.train-card .tc-info .tc-price { font-size:18px; font-weight:700; color:var(--primary); margin-top:4px; }
+.train-card .tc-features { padding:0 16px 16px; display:flex; flex-wrap:wrap; gap:6px; }
+.train-card .tc-feat { font-size:11px; padding:4px 10px; border-radius:8px; background:var(--primary-bg); color:var(--text-secondary); }
+.train-card .tc-feat.highlight { background:var(--primary-bg); color:var(--primary); font-weight:500; }
+.train-card .tc-footer { padding:12px 16px; border-top:0.5px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.train-card .tc-footer .btn-enroll { padding:8px 24px; border-radius:20px; border:none; background:var(--primary-grad); color:white; font-size:13px; font-weight:600; cursor:pointer; }
+
+/* Orders - mobile filter (refined) */
+.m-filters { padding:12px 16px; display:flex; gap:8px; overflow-x:auto; background:var(--card); position:sticky; top:0; z-index:10; }
+.m-filters::-webkit-scrollbar { display:none; }
+.m-filter-chip { padding:6px 16px; border-radius:16px; border:1px solid var(--border); background:white; font-size:12px; white-space:nowrap; cursor:pointer; transition:all 0.2s; font-weight:500; }
+.m-filter-chip:hover { background:var(--primary-bg); color:var(--primary); }
+.m-filter-chip.active { background:var(--primary-grad); color:white; border-color:transparent; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.m-filter-chip .chip-count-m { font-size:10px; opacity:0.7; margin-left:2px; }
+
+/* Mobile project card (refined) */
+.m-project { position:relative; margin:0 16px 12px; background:var(--card); border-radius:18px; overflow:hidden; cursor:pointer; transition:all 0.25s; border: 1px solid var(--border); }
+.m-project:active { transform:scale(0.97); }
+.m-project .mp-thumb { height:130px; display:flex; align-items:flex-end; justify-content:space-between; padding:12px 14px; position:relative; overflow:hidden; }
+.m-project .mp-thumb::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 25% 20%,rgba(255,255,255,0.2) 0%,transparent 50%),radial-gradient(circle at 75% 80%,rgba(255,255,255,0.12) 0%,transparent 45%); pointer-events:none; z-index:1; }
+.m-project .mp-thumb::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.5) 100%); pointer-events:none; z-index:1; }
+.m-project .mp-thumb .thumb-pattern-m { position:absolute; inset:0; opacity:0.06; background-image:radial-gradient(circle at 40% 30%,white 1px,transparent 1px); background-size:16px 16px; pointer-events:none; }
+.m-project .mp-thumb .mp-budget { z-index:2; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); padding:5px 12px; border-radius:8px; font-size:14px; font-weight:700; color:white; border:1px solid rgba(255,255,255,0.1); }
+.m-project .mp-thumb .mp-level { position:absolute; top:10px; left:10px; bottom:auto; z-index:2; padding:4px 10px; border-radius:6px; font-size:11px; font-weight:600; color:white; }
+.m-project .mp-thumb .mp-deadline { position:absolute; bottom:12px; left:12px; z-index:2; font-size:11px; color:rgba(255,255,255,0.85); display:flex; align-items:center; gap:4px; }
+.m-project .mp-thumb .mp-deadline.urgent { color:#FBBF24; font-weight:600; }
+.m-project .mp-body { padding:12px 14px 8px; }
+.m-project .mp-body h4 { font-size:15px; font-weight:600; margin-bottom:4px; line-height:1.4; }
+.m-project .mp-meta { display:flex; gap:12px; font-size:11px; color:var(--text-secondary); margin-bottom:8px; }
+.m-project .mp-tags { display:flex; gap:4px; flex-wrap:wrap; }
+.m-project .mp-tags .tag { font-size:10px; padding:2px 8px; border-radius:6px; background:var(--primary-bg); color:var(--text-secondary); font-weight:500; }
+.m-project .mp-tags .tag.hot { background:#FEF2F2; color:#DC2626; }
+.m-project .mp-tags .tag.new { background:#F0FFF4; color:#059669; }
+.m-project .mp-stats { display:flex; gap:12px; padding:0 14px 8px; font-size:10px; color:var(--text-secondary); }
+.m-project .mp-stats span { display:flex; align-items:center; gap:3px; }
+.m-project .mp-footer { padding:10px 14px; border-top:0.5px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.m-project .mp-footer .client-info { font-size:11px; color:var(--text-secondary); display:flex; align-items:center; gap:4px; }
+.m-project .mp-footer .client-info .ci-avatar { width:20px; height:20px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:white; }
+.m-project .mp-footer .btn-apply { padding:5px 18px; border-radius:14px; border:none; background:var(--primary-grad); color:white; font-size:12px; font-weight:600; cursor:pointer; box-shadow:0 2px 6px rgba(229,62,62,0.2); }
+
+/* Platform activities - mobile */
+.platform-card-m { margin:0 16px 12px; background:var(--card); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); border:1px solid var(--border); }
+.platform-card-m .pcm-header { padding:16px; display:flex; align-items:center; gap:12px; }
+.platform-card-m .pcm-logo { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.platform-card-m .pcm-name { font-size:16px; font-weight:600; }
+.platform-card-m .pcm-desc { font-size:11px; color:var(--text-secondary); }
+.platform-card-m .pcm-activities { padding:0 16px 12px; }
+.platform-card-m .pcm-act { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:0.5px solid var(--border); }
+.platform-card-m .pcm-act:last-child { border-bottom:none; }
+.platform-card-m .pcm-act .act-tag { font-size:10px; padding:2px 6px; border-radius:4px; font-weight:600; }
+.platform-card-m .pcm-act .act-name { font-size:13px; flex:1; }
+.platform-card-m .pcm-act .act-reward { font-size:12px; color:var(--primary); font-weight:600; }
+
+/* Asset - mobile */
+.asset-scroll { display:flex; gap:10px; padding:0 16px 12px; overflow-x:auto; }
+.asset-scroll::-webkit-scrollbar { display:none; }
+.asset-chip-m { min-width:72px; padding:12px 8px; background:var(--card); border-radius:14px; text-align:center; cursor:pointer; flex-shrink:0; border:2px solid transparent; transition:all 0.2s; }
+.asset-chip-m.active { border-color:var(--primary); }
+.asset-chip-m .ac-icon { font-size:24px; margin-bottom:4px; }
+.asset-chip-m .ac-label { font-size:10px; color:var(--text-secondary); }
+.asset-grid-m { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:0 16px 16px; }
+.asset-item-m { background:var(--card); border-radius:14px; overflow:hidden; cursor:pointer; box-shadow:var(--shadow); border:1px solid var(--border); }
+.asset-item-m .ai-thumb { height:110px; display:flex; align-items:center; justify-content:center; font-size:36px; }
+.asset-item-m .ai-info { padding:10px; }
+.asset-item-m .ai-info h5 { font-size:13px; font-weight:500; margin-bottom:4px; }
+.asset-item-m .ai-info .ai-meta { display:flex; justify-content:space-between; font-size:11px; color:var(--text-secondary); }
+.asset-item-m .ai-info .ai-price { color:var(--primary); font-weight:600; }
+
+/* Floating Action Button */
+.fab { position:absolute; bottom:70px; right:16px; width:52px; height:52px; border-radius:50%; background:var(--primary-grad); color:white; display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; box-shadow:0 4px 16px rgba(229,62,62,0.4); z-index:500; transition:all 0.2s; border:none; }
+.fab:active { transform:scale(0.9); }
+
+/* Modal */
+.m-modal-overlay { position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:2000; display:none; align-items:flex-end; justify-content:center; }
+.m-modal-overlay.show { display:flex; }
+.m-modal { background:var(--card); border-radius:20px 20px 0 0; width:100%; max-height:85%; overflow-y:auto; padding:20px 16px calc(var(--safe-bottom) + 16px); animation:slideUp 0.3s ease-out; }
+@keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
+.m-modal .modal-handle { width:36px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 16px; }
+.m-modal h3 { font-size:20px; font-weight:700; margin-bottom:16px; }
+.m-modal .form-group { margin-bottom:14px; }
+.m-modal .form-group label { font-size:13px; font-weight:600; color:var(--text-secondary); display:block; margin-bottom:6px; }
+.m-modal .form-group input, .m-modal .form-group select, .m-modal .form-group textarea {
+  width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:12px; font-size:15px;
+  background:var(--bg); outline:none; font-family:inherit; transition:border 0.2s;
+}
+.m-modal .form-group input:focus, .m-modal .form-group select:focus, .m-modal .form-group textarea:focus { border-color:var(--primary); }
+.m-modal .btn-primary { width:100%; padding:14px; border:none; border-radius:14px; background:var(--primary-grad); color:white; font-size:16px; font-weight:600; cursor:pointer; box-shadow:0 2px 8px rgba(229,62,62,0.2); }
+.m-modal .btn-secondary { width:100%; padding:14px; border:1px solid var(--border); border-radius:14px; background:white; color:var(--text); font-size:16px; font-weight:500; cursor:pointer; margin-top:8px; }
+
+/* Creator choice modal */
+.choice-cards { display:flex; flex-direction:column; gap:12px; }
+.choice-card { border:2px solid var(--border); border-radius:16px; padding:20px; cursor:pointer; transition:all 0.2s; text-align:center; }
+.choice-card:active { transform:scale(0.97); }
+.choice-card .cc-icon { font-size:40px; margin-bottom:8px; }
+.choice-card h4 { font-size:16px; margin-bottom:4px; }
+.choice-card p { font-size:12px; color:var(--text-secondary); line-height:1.5; }
+
+/* Notification dot */
+.notif-dot { width:8px; height:8px; border-radius:50%; background:var(--primary); position:absolute; top:2px; right:2px; }
+
+/* ===== TALENT - mobile ===== */
+.talent-header-m { margin:12px 16px; background:linear-gradient(135deg,#FFF5F5,#EBF8FF); border-radius:16px; padding:20px; color:var(--text); display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); }
+.talent-header-m h2 { font-size:18px; font-weight:700; margin-bottom:4px; }
+.talent-header-m p { font-size:11px; color:var(--text-secondary); }
+.talent-header-m .btn-reg-m { padding:8px 16px; border-radius:16px; border:none; background:var(--primary); color:white; font-size:12px; font-weight:600; white-space:nowrap; cursor:pointer; }
+.talent-chips-m { display:flex; flex-wrap:wrap; gap:8px; padding:0 16px 12px; background:var(--card); }
+.talent-chips-m::-webkit-scrollbar { display:none; }
+.talent-chip-m { min-width:60px; padding:10px 6px; background:var(--card); border-radius:12px; text-align:center; cursor:pointer; border:2px solid var(--border); transition:all 0.2s; }
+.talent-chip-m.active { border-color:var(--primary); background:var(--primary-bg); }
+.talent-chip-m .tc-icon-m { font-size:22px; margin-bottom:2px; }
+.talent-chip-m .tc-label-m { font-size:10px; color:var(--text-secondary); }
+.talent-chip-m .tc-count-m { font-size:9px; color:var(--text-secondary); margin-top:1px; }
+.talent-chip-sub { min-width:52px; padding:7px 6px; background:var(--bg); border-radius:10px; text-align:center; cursor:pointer; border:2px solid transparent; transition:all 0.2s; }
+.talent-chip-sub.active { border-color:var(--primary); background:var(--primary-bg); }
+.talent-chip-sub .tcs-label { font-size:10px; color:var(--text-secondary); }
+.talent-chip-sub .tcs-count { font-size:9px; color:var(--text-secondary); margin-top:1px; }
+.talent-grid-m { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:0 16px 16px; }
+.talent-card-m { background:var(--card); border-radius:14px; overflow:hidden; cursor:pointer; transition:all 0.2s; box-shadow:var(--shadow); border:1px solid var(--border); }
+.talent-card-m:active { transform:scale(0.97); }
+.talent-card-m .tcm-cover { height:80px; display:flex; align-items:center; justify-content:center; font-size:30px; position:relative; }
+.talent-card-m .tcm-cover .tcm-lvl { position:absolute; top:6px; right:6px; padding:1px 6px; border-radius:4px; font-size:9px; font-weight:600; color:white; }
+.talent-card-m .tcm-cover .tcm-vrf { position:absolute; top:6px; left:6px; padding:1px 6px; border-radius:4px; font-size:9px; font-weight:600; background:rgba(255,255,255,0.9); color:var(--success); }
+.talent-card-m .tcm-body { padding:10px; }
+.talent-card-m .tcm-body h5 { font-size:13px; font-weight:600; margin-bottom:2px; }
+.talent-card-m .tcm-body .tcm-role { font-size:11px; color:var(--primary); font-weight:500; margin-bottom:4px; }
+.talent-card-m .tcm-body .tcm-meta { display:flex; gap:8px; font-size:10px; color:var(--text-secondary); margin-bottom:4px; }
+.talent-card-m .tcm-body .tcm-skills { display:flex; gap:3px; flex-wrap:wrap; }
+.talent-card-m .tcm-body .tcm-skill { font-size:9px; padding:1px 5px; border-radius:3px; background:var(--primary-bg); color:var(--text-secondary); }
+
+/* ===== LABEL OUTSIDE PHONE ===== */
+.page-label { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.7); color:white; padding:8px 20px; border-radius:20px; font-size:13px; backdrop-filter:blur(10px); }
+
+/* ===== LEVEL CHART ===== */
+.level-track { padding:16px; }
+.level-node { display:flex; align-items:center; gap:12px; padding:12px 0; }
+.level-dot { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:white; flex-shrink:0; }
+.level-line { width:2px; height:20px; background:var(--border); margin-left:17px; }
+.level-info h5 { font-size:14px; font-weight:600; }
+.level-info p { font-size:11px; color:var(--text-secondary); }
+/* ===== IDENTITY SYSTEM ===== */
+.role-tag-m { display:inline-flex; align-items:center; gap:3px; padding:3px 10px; border-radius:14px; font-size:11px; font-weight:600; cursor:pointer; transition:all 0.2s; background:var(--bg); color:var(--text-secondary); }
+.role-tag-m.creator { background:#FFF5F5; color:var(--primary); }
+.role-tag-m.client { background:#EBF8FF; color:var(--info); }
+.m-bottom-sheet { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:9999; display:none; align-items:flex-end; }
+.m-bottom-sheet.show { display:flex; animation:fadeIn 0.2s; }
+.m-bs-content { width:100%; background:white; border-radius:20px 20px 0 0; padding:8px 20px 32px; animation:slideUp 0.25s ease; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+.m-bs-handle { width:36px; height:4px; background:#F0F0F0; border-radius:2px; margin:0 auto 16px; }
+.m-bs-item { display:flex; align-items:center; gap:12px; padding:14px 12px; border-radius:12px; cursor:pointer; transition:background 0.15s; }
+.m-bs-item:hover, .m-bs-item:active { background:var(--bg); }
+.m-bs-item.active { background:var(--bg); }
+.m-bs-item .mbsi-icon { font-size:24px; }
+.m-bs-item .mbsi-title { font-size:15px; font-weight:600; }
+.m-bs-item .mbsi-desc { font-size:12px; color:var(--text-secondary); }
+.m-bs-item .mbsi-check { margin-left:auto; color:var(--primary); font-weight:700; font-size:16px; }
+.id-badge-m { display:inline-block; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:600; }
+.id-badge-m.client { background:#EBF8FF; color:var(--info); }
+.id-badge-m.creator { background:var(--primary-bg); color:var(--primary); }
+.id-role-select-m { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.id-role-card-m { border:2px solid var(--border); border-radius:12px; padding:16px 10px; text-align:center; cursor:pointer; transition:all 0.2s; }
+.id-role-card-m.selected { border-color:var(--primary); background:var(--primary-bg); }
+.id-role-card-m .idrc-icon-m { font-size:32px; margin-bottom:4px; }
+.id-role-card-m .idrc-title-m { font-size:14px; font-weight:700; }
+.id-role-card-m .idrc-desc-m { font-size:11px; color:var(--text-secondary); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="shGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E53E3E"/><stop offset="100%" stop-color="#F87171"/></linearGradient><symbol id="shBloom" viewBox="0 0 40 40"><g transform="translate(20,20)"><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(60)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(120)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(180)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(240)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(300)"/></g><circle cx="20" cy="20" r="5" fill="white"/><path d="M20,14 L21.4,18.6 L26,20 L21.4,21.4 L20,26 L18.6,21.4 L14,20 L18.6,18.6 Z" fill="url(#shGrad)"/></symbol>
+<symbol id="ic-training" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 8l11 5 9-4.09V14h2V8L12 3z"/><path d="M5 12.82v4.36c0 1.66 3.13 3 7 3s7-1.34 7-3v-4.36l-7 3.18-7-3.18z"/></symbol>
+<symbol id="ic-orders" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6" fill="#fff"/><path d="M8 13h8M8 16.5h5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-creation" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/><circle cx="18.5" cy="5.5" r="1.8"/><circle cx="5" cy="18" r="1.2"/></symbol>
+<symbol id="ic-assets" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-award" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5z"/><circle cx="12" cy="8" r="2.5" fill="#fff"/></symbol>
+<symbol id="ic-calendar" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/><rect x="7" y="2" width="2.5" height="5" rx="1"/><rect x="14.5" y="2" width="2.5" height="5" rx="1"/><path d="M3 10h18" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="8" cy="15" r="1.2" fill="#fff"/><circle cx="12" cy="15" r="1.2" fill="#fff"/><circle cx="16" cy="15" r="1.2" fill="#fff"/></symbol>
+<symbol id="ic-community" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></symbol>
+<symbol id="ic-users" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="7" r="4"/><path d="M4 21v-2a4 4 0 014-4h8a4 4 0 014 4v2H4z"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/></symbol>
+<symbol id="ic-briefcase" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="10" y="12" width="4" height="3" rx="0.5" fill="#fff"/></symbol>
+<symbol id="ic-clapper" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="20" height="15" rx="1"/><path d="M2 11h20" stroke="#fff" stroke-width="1.5" fill="none"/><path d="M4.5 7l1.2-4M10 7l1.2-4M15.5 7l1.2-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-clipboard" viewBox="0 0 24 24" fill="currentColor"><path d="M8 4h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z"/><rect x="9" y="3" width="6" height="4" rx="1" fill="#fff"/><path d="M9 14l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-pen" viewBox="0 0 24 24" fill="currentColor"><path d="M12 19l9-9-3-3-9 9v3h3z"/><path d="M16 4l4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M2 22l3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-cpu" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1" fill="#fff"/><path d="M9 4v-2M15 4v-2M9 22v-2M15 22v-2M4 9h-2M4 15h-2M22 9h-2M22 15h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-film" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v4M17 3v4M7 17v4M17 17v4M3 8h4M3 14h4M17 8h4M17 14h4" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-palette" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="1.5" fill="#fff"/><circle cx="15" cy="8" r="1.5" fill="#fff"/><circle cx="16" cy="14" r="1.5" fill="#fff"/><path d="M12 22c2-2 2-5 0-7s-2-5 0-7" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-layout" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-home" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12l9-9 9 9v10a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1V12z"/></symbol>
+<symbol id="ic-image" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="9" r="2" fill="#fff"/><path d="M21 15l-5-5L5 21" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-trending" viewBox="0 0 24 24" fill="currentColor"><path d="M1 17l5-5 4 4 8-8h-3V6h7v7h-2v-3l-8 8-4-4-5 5z"/></symbol>
+<symbol id="ic-bell" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9z"/><path d="M13.73 21a2 2 0 01-3.46 0" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-search" viewBox="0 0 24 24" fill="currentColor"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-plus" viewBox="0 0 24 24" fill="currentColor"><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z"/></symbol>
+<symbol id="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></symbol>
+<symbol id="ic-user" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 014-4h8a4 4 0 014 4v2H4z"/></symbol>
+<symbol id="ic-smile" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="9" cy="9" r="1.2" fill="#fff"/><circle cx="15" cy="9" r="1.2" fill="#fff"/></symbol>
+<symbol id="ic-box" viewBox="0 0 24 24" fill="currentColor"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+<symbol id="ic-music" viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+<symbol id="ic-zap" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></symbol>
+<symbol id="ic-book" viewBox="0 0 24 24" fill="currentColor"><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="#fff" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="ic-check-circle" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-shield" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/></symbol>
+<symbol id="ic-scale" viewBox="0 0 24 24" fill="currentColor"><rect x="11" y="3" width="2" height="18" rx="1"/><path d="M7 21h10M5 7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M5 7l-3 6a3 3 0 006 0L5 7z"/><path d="M19 7l-3 6a3 3 0 006 0l-3-6z"/></symbol>
+<symbol id="ic-check-square" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/><path d="M8 11l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+<symbol id="ic-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+<symbol id="ic-help" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="17" r="0.8" fill="#fff"/></symbol>
+<symbol id="ic-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 01-9 9 9.75 9.75 0 01-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></symbol>
+<symbol id="ic-upload" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l-5 5h3v6h4v-6h3z"/><rect x="3" y="16" width="18" height="4" rx="2" opacity="0.4"/></symbol>
+<symbol id="lv1" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="12" cy="12" r="2" fill="#fff"/></symbol>
+<symbol id="lv2" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="9" cy="12" r="1.5" fill="#fff"/><circle cx="15" cy="12" r="1.5" fill="#fff"/></symbol>
+<symbol id="lv3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="8" cy="12" r="1.2" fill="#fff"/><circle cx="12" cy="12" r="1.2" fill="#fff"/><circle cx="16" cy="12" r="1.2" fill="#fff"/></symbol>
+<symbol id="lv4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><circle cx="8.5" cy="10" r="1.2" fill="#fff"/><circle cx="15.5" cy="10" r="1.2" fill="#fff"/><circle cx="8.5" cy="14" r="1.2" fill="#fff"/><circle cx="15.5" cy="14" r="1.2" fill="#fff"/></symbol>
+<symbol id="lv5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v7c0 4.5 3.5 7.5 8 10 4.5-2.5 8-5.5 8-10V5l-8-3z"/><path d="M12 7l1.2 2.5L16 10l-2.8 2.2L14 15l-2-1.5L10 15l.8-2.8L8 10l2.8-.5z" fill="#fff"/></symbol>
+</defs></svg>
+
+<div class="phone-frame">
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <span>📶</span><span>📡</span><span>🔋</span>
+    </div>
+  </div>
+
+  <!-- Screen Container -->
+  <div class="screen-container" id="screenContainer">
+
+    <!-- ======================== -->
+    <!-- SCREEN: HOME             -->
+    <!-- ======================== -->
+    <div class="screen active" id="screen-home">
+      <div class="nav-header">
+        <h1 style="display:flex;align-items:center;gap:6px;"><svg class="brand-mark" width="26" height="26" role="img" aria-label="生花"><use href="#shBloom"/></svg>生花</h1>
+        <div class="header-actions">
+          <div class="header-icon" style="position:relative;" onclick="showModal('notif')"><div class="ico ico-sm red" style="font-size:14px;">!</div><div class="notif-dot" style="position:absolute;top:4px;right:4px;"></div></div>
+          <div class="role-tag-m" id="roleTagM" style="display:none;" onclick="showRoleSheetM()">创作者 ▾</div>
+          <div class="header-icon" id="headerAvatar" onclick="handleAvatarClick()" style="font-size:14px;font-weight:700;color:var(--primary);">U</div>
+        </div>
+      </div>
+
+
+      <!-- Banner -->
+      <div class="home-banner">
+        <h2>妙笔<span style="color:#FEB2B2;">生花</span>，人人皆可创作</h2>
+        <p>AI创作生态平台</p>
+
+        <div class="banner-stats">
+          <div class="bstat"><div class="bnum">12,680</div><div class="blbl">创作者</div></div>
+          <div class="bstat"><div class="bnum">3,450</div><div class="blbl">完成项目</div></div>
+          <div class="bstat"><div class="bnum">¥2,800万</div><div class="blbl">交易额</div></div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="quick-action" onclick="switchTab('orders')">
+          <div class="qa-icon"><div class="ico ico-md blue">单</div></div><div class="qa-label">接单大厅</div>
+        </div>
+        <div class="quick-action" onclick="switchTab('plaza')">
+          <div class="qa-icon"><div class="ico ico-md purple">创</div></div><div class="qa-label">创作广场</div>
+        </div>
+        <div class="quick-action" onclick="showSubPage('assets')">
+          <div class="qa-icon"><div class="ico ico-md orange">资</div></div><div class="qa-label">资产库</div>
+        </div>
+        <div class="quick-action" onclick="showSubPage('training')">
+          <div class="qa-icon"><div class="ico ico-md blue">学</div></div><div class="qa-label">培训学院</div>
+        </div>
+        <div class="quick-action" onclick="showSubPage('levels')">
+          <div class="qa-icon"><div class="ico ico-md red">级</div></div><div class="qa-label">等级体系</div>
+        </div>
+        <div class="quick-action" onclick="showSubPage('activities')">
+          <div class="qa-icon"><div class="ico ico-md orange">活</div></div><div class="qa-label">平台活动</div>
+        </div>
+        <div class="quick-action" onclick="switchTab('community')">
+          <div class="qa-icon"><div class="ico ico-md green">社</div></div><div class="qa-label">社区</div>
+        </div>
+        <div class="quick-action" onclick="showSubPage('talent')">
+          <div class="qa-icon"><div class="ico ico-md teal">人</div></div><div class="qa-label">人才库</div>
+        </div>
+        <div class="quick-action" onclick="showSubPage('client')">
+          <div class="qa-icon"><div class="ico ico-md gray">需</div></div><div class="qa-label">需求方</div>
+        </div>
+      </div>
+
+      <!-- Hot Projects -->
+      <div class="section-title">
+        <h3>热门项目</h3>
+        <span class="more" onclick="switchTab('orders')">查看全部 →</span>
+      </div>
+
+      <div class="m-project" onclick="showModal('project-detail')">
+        <div class="mp-thumb" style="background:linear-gradient(135deg,#F87171,#FB923C);">
+
+          <div class="mp-budget">¥35,000</div>
+          <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+        </div>
+        <div class="mp-body">
+          <h4>《大唐妖闻录》12集系列漫剧</h4>
+          <div class="mp-meta"><span>7月15日截止</span><span>8人投标</span></div>
+          <div class="mp-tags"><span class="tag">古风</span><span class="tag">IP改编</span><span class="tag">系列剧</span></div>
+        </div>
+        <div class="mp-footer">
+          <span class="client-info">某头部视频平台</span>
+          <button class="btn-apply">投标</button>
+        </div>
+      </div>
+
+      <div class="m-project" onclick="showModal('project-detail')">
+        <div class="mp-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);">
+
+          <div class="mp-budget">¥12,000</div>
+          <div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
+        </div>
+        <div class="mp-body">
+          <h4>赛博都市 · 品牌宣传漫剧</h4>
+          <div class="mp-meta"><span>7月20日截止</span><span>15人投标</span></div>
+          <div class="mp-tags"><span class="tag">品牌定制</span><span class="tag">科幻</span></div>
+        </div>
+        <div class="mp-footer">
+          <span class="client-info">XX科技</span>
+          <button class="btn-apply">投标</button>
+        </div>
+      </div>
+
+      <!-- Recommended -->
+      <div class="section-title">
+        <h3>广场精选</h3>
+        <span class="more" onclick="switchTab('plaza')">更多 →</span>
+      </div>
+      <div style="display:flex;gap:10px;padding:0 16px 20px;overflow-x:auto;">
+        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
+          <div style="height:120px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);display:flex;align-items:center;justify-content:center;font-size:36px;"></div>
+          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《龙吟九天》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">12.5万 · 8,342</div></div>
+        </div>
+        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
+          <div style="height:120px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);display:flex;align-items:center;justify-content:center;font-size:36px;"></div>
+          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《花间令》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">8.7万 · 5,621</div></div>
+        </div>
+        <div style="min-width:160px;background:var(--card);border-radius:14px;overflow:hidden;flex-shrink:0;cursor:pointer;" onclick="switchTab('plaza')">
+          <div style="height:120px;background:linear-gradient(135deg,#2c3e50,#3498db);display:flex;align-items:center;justify-content:center;font-size:36px;"></div>
+          <div style="padding:10px;"><div style="font-size:13px;font-weight:600;">《深夜档案》</div><div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">9.4万 · 6,789</div></div>
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SCREEN: ORDERS           -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-orders">
+      <div class="nav-header">
+        <h1>接单大厅</h1>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">🔍</div></div>
+      </div>
+      <div class="m-filters">
+        <span class="m-filter-chip active">全部 <span class="chip-count-m">42</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">品牌定制 <span class="chip-count-m">8</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">IP改编 <span class="chip-count-m">12</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">个人 <span class="chip-count-m">10</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">系列 <span class="chip-count-m">7</span></span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">紧急 <span class="chip-count-m">3</span></span>
+      </div>
+
+      <div style="padding-top:8px;">
+        <div class="m-project" onclick="showModal('project-detail')">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#F87171 0%,#DC2626 50%,#991B1B 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥35,000</div>
+            <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+            <div class="mp-deadline urgent">⏰ 8天后截止</div>
+          </div>
+          <div class="mp-body">
+            <h4>《大唐妖闻录》12集系列漫剧</h4>
+            <div class="mp-meta"><span>某头部视频平台</span><span>8人投标</span></div>
+            <div class="mp-tags"><span class="tag hot">古风</span><span class="tag">IP改编</span><span class="tag new">S级</span></div>
+          </div>
+          <div class="mp-stats"><span>📊 12集</span><span>📅 30天</span><span>⭐ 4.8</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#818CF8,#6366F1);">视</span>爱奇艺合作方</span>
+            <button class="btn-apply">投标</button>
+          </div>
+        </div>
+
+        <div class="m-project">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#3B82F6 0%,#6366F1 50%,#4338CA 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥8,000</div>
+            <div class="mp-level" style="background:var(--l2);">L2+ 新锐</div>
+            <div class="mp-deadline">📅 7月20日截止</div>
+          </div>
+          <div class="mp-body">
+            <h4>都市悬疑短剧 · 5集</h4>
+            <div class="mp-meta"><span>个人需求方</span><span>15人投标</span></div>
+            <div class="mp-tags"><span class="tag">都市</span><span class="tag">悬疑</span></div>
+          </div>
+          <div class="mp-stats"><span>📊 5集</span><span>📅 15天</span><span>⭐ 4.5</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#34D399,#059669);">个</span>个人需求方</span>
+            <button class="btn-apply">投标</button>
+          </div>
+        </div>
+
+        <div class="m-project">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#10B981 0%,#059669 50%,#065F46 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥25,000</div>
+            <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+            <div class="mp-deadline urgent">⏰ 3天后截止</div>
+          </div>
+          <div class="mp-body">
+            <h4>品牌定制 · 科技宣传片漫剧</h4>
+            <div class="mp-meta"><span>XX科技 · 已认证</span><span>5人投标</span></div>
+            <div class="mp-tags"><span class="tag hot">品牌</span><span class="tag">科技</span></div>
+          </div>
+          <div class="mp-stats"><span>📊 3集</span><span>📅 14天</span><span>⭐ 4.9</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706);">科</span>XX科技</span>
+            <button class="btn-apply">投标</button>
+          </div>
+        </div>
+
+        <div class="m-project">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#EC4899 0%,#DB2777 50%,#BE185D 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥120,000</div>
+            <div class="mp-level" style="background:var(--l4);">L4+ 资深</div>
+            <div class="mp-deadline">📅 8月1日截止</div>
+          </div>
+          <div class="mp-body">
+            <h4>《九州封神纪》30集长篇IP改编</h4>
+            <div class="mp-meta"><span>头部视频平台 · VIP</span><span>3人投标</span></div>
+            <div class="mp-tags"><span class="tag hot">玄幻</span><span class="tag">长篇</span><span class="tag new">S级</span></div>
+          </div>
+          <div class="mp-stats"><span>📊 30集</span><span>📅 60天</span><span>⭐ 5.0</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED);">头</span>头部视频平台</span>
+            <button class="btn-apply">投标</button>
+          </div>
+        </div>
+
+        <div class="m-project">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#FBBF24 0%,#F59E0B 50%,#D97706 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥1,500</div>
+            <div class="mp-level" style="background:var(--l1);">L1+ 新星</div>
+            <div class="mp-deadline">📅 7月25日</div>
+          </div>
+          <div class="mp-body">
+            <h4>校园甜宠单集 · 练手项目</h4>
+            <div class="mp-meta"><span>小说作者</span><span>32人投标</span></div>
+            <div class="mp-tags"><span class="tag">校园</span><span class="tag">甜宠</span><span class="tag new">新手友好</span></div>
+          </div>
+          <div class="mp-stats"><span>📊 1集</span><span>📅 7天</span><span>⭐ 4.2</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#F472B6,#EC4899);">小</span>小说作者</span>
+            <button class="btn-apply">投标</button>
+          </div>
+        </div>
+
+        <div class="m-project">
+          <div class="mp-thumb" style="background:linear-gradient(135deg,#6B7280 0%,#4B5563 50%,#374151 100%);">
+            <div class="thumb-pattern-m"></div>
+            <div class="mp-budget">¥18,000</div>
+            <div class="mp-level" style="background:var(--l3);">L3+ 精英</div>
+            <div class="mp-deadline urgent">⏰ 11天后截止</div>
+          </div>
+          <div class="mp-body">
+            <h4>民国谍战 · 8集精品短剧</h4>
+            <div class="mp-meta"><span>MCN机构</span><span>6人投标</span></div>
+            <div class="mp-tags"><span class="tag">民国</span><span class="tag hot">谍战</span></div>
+          </div>
+          <div class="mp-stats"><span>📊 8集</span><span>📅 20天</span><span>⭐ 4.6</span></div>
+          <div class="mp-footer">
+            <span class="client-info"><span class="ci-avatar" style="background:linear-gradient(135deg,#A78BFA,#8B5CF6);">M</span>MCN机构</span>
+            <button class="btn-apply">投标</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SCREEN: PLAZA            -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-plaza">
+      <div class="nav-header">
+        <h1>创作广场</h1>
+        <div class="header-actions">
+          <div class="header-icon" style="font-size:14px;color:var(--text-secondary);">+</div>
+          <div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div>
+        </div>
+      </div>
+      <div class="plaza-tabs">
+        <div class="plaza-tab active" onclick="switchPlazaTab(this)">推荐</div>
+        <div class="plaza-tab" onclick="switchPlazaTab(this)">最新</div>
+        <div class="plaza-tab" onclick="switchPlazaTab(this)">热门</div>
+        <div class="plaza-tab" onclick="switchPlazaTab(this)">潜力</div>
+      </div>
+      <div class="plaza-masonry">
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
+          <div class="pi-thumb" style="height:150px;background:linear-gradient(135deg,#FF6B6B,#EE5A24);"></div>
+          <div class="pi-info"><h5>《龙吟九天》</h5><div class="pi-creator">墨染青山 · L3</div><div class="pi-stats"><span>12.5万</span><span>8,342</span></div></div>
+          <div class="pi-price">¥50,000 版权</div>
+        </div>
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
+          <div class="pi-thumb" style="height:120px;background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div>
+          <div class="pi-info"><h5>《花间令》</h5><div class="pi-creator">花间词 · L4</div><div class="pi-stats"><span>8.7万</span><span>5,621</span></div></div>
+          <div class="pi-price">¥35,000 版权</div>
+        </div>
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
+          <div class="pi-thumb" style="height:160px;background:linear-gradient(135deg,#0c3483,#a2b6df);"></div>
+          <div class="pi-info"><h5>《星河彼岸》</h5><div class="pi-creator">剧本炼金师 · L3</div><div class="pi-stats"><span>6.2万</span><span>3,890</span></div></div>
+          <div class="pi-price">¥28,000 版权</div>
+        </div>
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
+          <div class="pi-thumb" style="height:130px;background:linear-gradient(135deg,#fa709a,#fee140);"></div>
+          <div class="pi-info"><h5>《马戏团奇遇》</h5><div class="pi-creator">梦境画家 · L1</div><div class="pi-stats"><span>3.2万</span><span>2,108</span></div></div>
+          <div class="pi-price">¥8,000 版权</div>
+        </div>
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
+          <div class="pi-thumb" style="height:140px;background:linear-gradient(135deg,#2c3e50,#3498db);"></div>
+          <div class="pi-info"><h5>《深夜档案》</h5><div class="pi-creator">暗夜行者 · L3</div><div class="pi-stats"><span>9.4万</span><span>6,789</span></div></div>
+          <div class="pi-price">¥40,000 版权</div>
+        </div>
+        <div class="plaza-item-m" onclick="showModal('plaza-detail')">
+          <div class="pi-thumb" style="height:110px;background:linear-gradient(135deg,#ee9ca7,#ffdde1);"></div>
+          <div class="pi-info"><h5>《樱花树下》</h5><div class="pi-creator">春日物语 · L2</div><div class="pi-stats"><span>5.6万</span><span>3,892</span></div></div>
+          <div class="pi-price">¥12,000 版权</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SCREEN: COMMUNITY        -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-community">
+      <div class="nav-header">
+        <h1>社区</h1>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div></div>
+      </div>
+      <div class="m-filters">
+        <span class="m-filter-chip active">全部</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">经验</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">互评</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">技术</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">资讯</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">求助</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">组队</span>
+      </div>
+
+      <!-- Hot topics -->
+      <div style="margin:12px 16px;background:var(--card);border-radius:16px;padding:14px;">
+        <div style="font-size:15px;font-weight:700;margin-bottom:10px;">今日热榜</div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;cursor:pointer;">
+          <span style="width:18px;height:18px;border-radius:4px;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">1</span>
+          <span style="flex:1;">AI漫剧角色一致性终极方案</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;cursor:pointer;">
+          <span style="width:18px;height:18px;border-radius:4px;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">2</span>
+          <span style="flex:1;">红果分账月入过万经验分享</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;cursor:pointer;">
+          <span style="width:18px;height:18px;border-radius:4px;background:var(--warning);color:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;">3</span>
+          <span style="flex:1;">Seedance 2.0 运镜技巧汇总</span>
+        </div>
+      </div>
+
+      <div class="comm-post">
+        <div class="cp-header">
+          <div class="cp-avatar" style="background:linear-gradient(135deg,#818CF8,#A78BFA);" style="font-size:14px;font-weight:700;color:white;">创</div>
+          <div class="cp-user"><div class="cp-name">墨染青山 <span class="cp-badge" style="background:var(--l3);">L3</span></div><div class="cp-time">2小时前 · 经验分享</div></div>
+        </div>
+        <div class="cp-title">角色一致性终极方案：从60%到98%</div>
+        <div class="cp-content">经过3个月的反复测试，我总结了一套角色一致性的完整工作流。核心思路是建立「角色锚点库」...</div>
+        <div class="cp-images">
+          <div class="cp-img" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div>
+          <div class="cp-img" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);"></div>
+          <div class="cp-img" style="background:linear-gradient(135deg,#818CF8,#A78BFA);"></div>
+        </div>
+        <div class="cp-actions">
+          <span class="cp-action">328</span><span class="cp-action">87</span><span class="cp-action">156</span><span class="cp-action"></span>
+        </div>
+      </div>
+
+      <div class="comm-post">
+        <div class="cp-header">
+          <div class="cp-avatar" style="background:linear-gradient(135deg,#f093fb,#f5576c);"></div>
+          <div class="cp-user"><div class="cp-name">花间词 <span class="cp-badge" style="background:var(--l4);">L4</span></div><div class="cp-time">4小时前 · 接单心得</div></div>
+        </div>
+        <div class="cp-title">红果分账月入3万+全流程复盘</div>
+        <div class="cp-content">上个月通过生花接了红果的分账项目，最终收益超出预期。先说结论：选对项目比埋头做更重要...</div>
+        <div class="cp-actions">
+          <span class="cp-action">256</span><span class="cp-action">63</span><span class="cp-action">98</span><span class="cp-action"></span>
+        </div>
+      </div>
+
+      <div class="comm-post">
+        <div class="cp-header">
+          <div class="cp-avatar" style="background:linear-gradient(135deg,#96fbc4,#f9f586);" style="font-size:14px;font-weight:700;color:white;">音</div>
+          <div class="cp-user"><div class="cp-name">配乐匠人 <span class="cp-badge" style="background:var(--l2);">L2</span></div><div class="cp-time">昨天 · 组队招募</div></div>
+        </div>
+        <div class="cp-title">冲击快手星芒计划，寻编剧+分镜师</div>
+        <div class="cp-content">目前团队已有配乐和音效师各一名，需要古风编剧和有运镜经验的分镜师。预算5万起...</div>
+        <div class="cp-actions">
+          <span class="cp-action">67</span><span class="cp-action">34</span><span class="cp-action">21</span><span class="cp-action"></span>
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SCREEN: PROFILE          -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-profile">
+      <div class="profile-header">
+        <div class="pf-avatar" style="font-size:18px;font-weight:700;color:var(--primary);">U</div>
+        <div class="pf-name">墨染青山</div>
+        <span class="pf-level" style="background:var(--l3);">L3 精英创作者</span>
+        <button id="profileRoleBtn" onclick="showRoleSheetM()" style="margin-top:12px;padding:8px 20px;border-radius:18px;font-size:13px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;">当前：创作者 · 点击切换</button>
+        <button onclick="doLogoutM()" style="margin-top:8px;padding:6px 18px;border-radius:16px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;">退出登录</button>
+        <div class="pf-stats">
+          <div class="pfs"><div class="pfs-val">47</div><div class="pfs-lbl">完成项目</div></div>
+          <div class="pfs"><div class="pfs-val">4.8</div><div class="pfs-lbl">平均评分</div></div>
+          <div class="pfs"><div class="pfs-val">¥18.6万</div><div class="pfs-lbl">累计收入</div></div>
+        </div>
+      </div>
+
+      <!-- Earnings card -->
+      <div style="margin:16px;background:var(--card);border-radius:16px;padding:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span style="font-size:15px;font-weight:600;">本月收入</span>
+          <span style="font-size:12px;color:var(--success);">↑ 18.5%</span>
+        </div>
+        <div style="font-size:32px;font-weight:700;color:var(--primary);margin-bottom:12px;">¥32,500</div>
+        <div style="display:flex;gap:8px;height:60px;align-items:flex-end;">
+          <div style="flex:1;background:var(--primary-light);border-radius:4px;height:40%;"></div>
+          <div style="flex:1;background:var(--primary-light);border-radius:4px;height:55%;"></div>
+          <div style="flex:1;background:var(--primary-light);border-radius:4px;height:45%;"></div>
+          <div style="flex:1;background:var(--primary-light);border-radius:4px;height:70%;"></div>
+          <div style="flex:1;background:var(--primary-light);border-radius:4px;height:60%;"></div>
+          <div style="flex:1;background:var(--primary);border-radius:4px;height:90%;"></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <div style="flex:1;text-align:center;font-size:9px;color:var(--text-secondary);">1月</div>
+          <div style="flex:1;text-align:center;font-size:9px;color:var(--text-secondary);">2月</div>
+          <div style="flex:1;text-align:center;font-size:9px;color:var(--text-secondary);">3月</div>
+          <div style="flex:1;text-align:center;font-size:9px;color:var(--text-secondary);">4月</div>
+          <div style="flex:1;text-align:center;font-size:9px;color:var(--text-secondary);">5月</div>
+          <div style="flex:1;text-align:center;font-size:9px;color:var(--primary);font-weight:600;">6月</div>
+        </div>
+      </div>
+
+      <!-- Tuition refund -->
+      <div style="margin:0 16px 16px;background:var(--card);border-radius:16px;padding:16px;">
+        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">学费返还进度</div>
+        <div style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
+            <span>商业漫剧VIP实战班</span><span style="color:var(--success);font-weight:600;">75%</span>
+          </div>
+          <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden;">
+            <div style="background:var(--success);height:100%;width:75%;border-radius:4px;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
+            <span>AI漫剧入门班</span><span style="color:var(--success);font-weight:600;">已返还</span>
+          </div>
+          <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden;">
+            <div style="background:var(--success);height:100%;width:100%;border-radius:4px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-menu">
+        <div class="pm-group">
+          <div class="pm-item" onclick="switchTab('orders')"><span class="pm-icon"><div class="ico ico-sm green">单</div></span><span class="pm-text">我的订单</span><span class="pm-value">3进行中</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="switchTab('plaza')"><span class="pm-icon"><div class="ico ico-sm purple">作</div></span><span class="pm-text">作品集</span><span class="pm-value">12个</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showSubPage('assets')"><span class="pm-icon"><div class="ico ico-sm orange">资</div></span><span class="pm-text">我的资产</span><span class="pm-value">¥2,340</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('income')"><span class="pm-icon"><div class="ico ico-sm red">收</div></span><span class="pm-text">收益明细</span><span class="pm-arrow">›</span></div>
+        </div>
+        <div class="pm-group">
+          <div class="pm-item" onclick="showSubPage('levels')"><span class="pm-icon"><div class="ico ico-sm red">级</div></span><span class="pm-text">等级成长</span><span class="pm-value">L3精英</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showSubPage('training')"><span class="pm-icon"><div class="ico ico-sm blue">学</div></span><span class="pm-text">培训记录</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item" onclick="showModal('reviews')"><span class="pm-icon">⭐</span><span class="pm-text">我的评价</span><span class="pm-value">4.8分</span><span class="pm-arrow">›</span></div>
+        </div>
+        <div class="pm-group">
+          <div class="pm-item" onclick="showModal('notif')"><span class="pm-icon"><div class="ico ico-sm red">通</div></span><span class="pm-text">消息通知</span><span class="pm-value">5条未读</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item"><span class="pm-icon"><div class="ico ico-sm gray">设</div></span><span class="pm-text">设置</span><span class="pm-arrow">›</span></div>
+          <div class="pm-item"><span class="pm-icon"><div class="ico ico-sm gray">?</div></span><span class="pm-text">帮助与反馈</span><span class="pm-arrow">›</span></div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:16px;font-size:11px;color:var(--text-secondary);">© 2026 帧游计科技 · 生花 · V1.0<br>妙笔生花，人人皆可创作</div>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SUB-PAGE: ASSETS         -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-assets">
+      <div class="nav-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
+          <h1 style="font-size:20px;">资产库</h1>
+        </div>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">+</div></div>
+      </div>
+      <div style="padding:12px 16px 8px;font-size:12px;color:var(--text-secondary);">上传者60-80%分润 · 平台15-30% · 推荐5-10%</div>
+      <div class="asset-scroll">
+        <div class="asset-chip-m active"><div class="ac-icon" style="font-size:14px;font-weight:700;color:var(--primary);">U</div><div class="ac-label">角色</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"><div class="ico ico-sm orange">脸</div></div><div class="ac-label">人脸</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"><div class="ico ico-sm green">景</div></div><div class="ac-label">场景</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"><div class="ico ico-sm gray">道</div></div><div class="ac-label">道具</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"><div class="ico ico-sm blue">动</div></div><div class="ac-label">动作</div></div>
+        <div class="asset-chip-m"><div class="ac-icon" style="font-size:14px;font-weight:700;color:white;">音</div><div class="ac-label">音效</div></div>
+        <div class="asset-chip-m"><div class="ac-icon"></div><div class="ac-label">特效</div></div>
+        <div class="asset-chip-m"><div class="ac-icon" style="font-size:14px;font-weight:700;color:white;">创</div><div class="ac-label">风格</div></div>
+      </div>
+      <div class="asset-grid-m">
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#FF9A9E,#FECFEF);"></div><div class="ai-info"><h5>古风美女 · 全身立绘</h5><div class="ai-meta"><span>1,234次</span><span class="ai-price">¥5/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb);"></div><div class="ai-info"><h5>唐风宫殿 · 场景包</h5><div class="ai-meta"><span>856次</span><span class="ai-price">¥15/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);"></div><div class="ai-info"><h5>硬汉角色 · 人脸</h5><div class="ai-meta"><span>2,345次</span><span class="ai-price">¥3/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#818CF8,#A78BFA);"></div><div class="ai-info"><h5>仙侠特效 · 法术</h5><div class="ai-meta"><span>567次</span><span class="ai-price">¥10/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#96fbc4,#f9f586);" style="font-size:14px;font-weight:700;color:white;">音</div><div class="ai-info"><h5>古风BGM · 10首</h5><div class="ai-meta"><span>1,567次</span><span class="ai-price">¥2/次</span></div></div></div>
+        <div class="asset-item-m"><div class="ai-thumb" style="background:linear-gradient(135deg,#c471f5,#fa71cd);"></div><div class="ai-info"><h5>舞蹈动作 · 预设包</h5><div class="ai-meta"><span>345次</span><span class="ai-price">¥12/次</span></div></div></div>
+      </div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SUB-PAGE: TRAINING       -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-training">
+      <div class="nav-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
+          <h1 style="font-size:20px;">培训学院</h1>
+        </div>
+      </div>
+
+      <div style="margin:12px 16px;background:linear-gradient(135deg,#EBF8FF,#F0FFF4);border-radius:16px;padding:20px;color:var(--text);border:1px solid var(--border);">
+        <div style="font-size:18px;font-weight:700;margin-bottom:4px;">生花培训学院</div>
+        <div style="font-size:12px;color:var(--text-secondary);">线上自学打基础 · 线下VIP实战+就业接单指导</div>
+      </div>
+
+      <div class="train-card">
+        <div class="tc-header">
+          <div class="tc-icon" style="background:linear-gradient(135deg,#4299E1,#3182CE);" style="font-size:16px;font-weight:700;color:white;">书</div>
+          <div class="tc-info">
+            <h4>线上 · 自学基础班</h4>
+            <div class="tc-sub">L1新星 · 录播+社群</div>
+            <div class="tc-price">¥1,980 <span style="font-size:12px;color:var(--text-secondary);font-weight:400;">起</span></div>
+          </div>
+        </div>
+        <div class="tc-features">
+          <span class="tc-feat">AI绘画基础</span><span class="tc-feat">Seedance入门</span><span class="tc-feat">分镜基础</span><span class="tc-feat">20课时</span>
+          <span class="tc-feat" style="background:#FFF5F5;color:var(--primary);">纯学习 · 不含就业</span>
+        </div>
+        <div class="tc-footer">
+          <span style="font-size:12px;color:var(--text-secondary);">已有 2,340人 报名</span>
+          <button class="btn-enroll">报名</button>
+        </div>
+      </div>
+
+      <div class="train-card" style="border:2px solid var(--primary);">
+        <div class="tc-header">
+          <div class="tc-icon" style="background:linear-gradient(135deg,#9F7AEA,#6B46C1);"></div>
+          <div class="tc-info">
+            <h4>线下 · VIP实战班 <span style="font-size:10px;background:var(--accent);color:white;padding:2px 6px;border-radius:4px;">推荐</span></h4>
+            <div class="tc-sub">L2-L3 · 线下集训+1对1</div>
+            <div class="tc-price">¥12,800</div>
+          </div>
+        </div>
+        <div class="tc-features">
+          <span class="tc-feat">商业实战</span><span class="tc-feat">高级运镜</span><span class="tc-feat">1对1辅导</span><span class="tc-feat">60课时</span>
+          <span class="tc-feat highlight">就业接单指导</span>
+          <span class="tc-feat highlight">学费可返还</span>
+        </div>
+        <div class="tc-footer">
+          <span style="font-size:12px;color:var(--text-secondary);">已有 890人 报名</span>
+          <button class="btn-enroll">报名</button>
+        </div>
+      </div>
+
+      <div class="train-card">
+        <div class="tc-header">
+          <div class="tc-icon" style="background:linear-gradient(135deg,#E53E3E,#C53030);" style="font-size:16px;font-weight:700;color:white;">L5</div>
+          <div class="tc-info">
+            <h4>线下 · VIP大师班</h4>
+            <div class="tc-sub">L4-L5 · 封闭集训+项目孵化</div>
+            <div class="tc-price">¥79,800</div>
+          </div>
+        </div>
+        <div class="tc-features">
+          <span class="tc-feat">IP策划</span><span class="tc-feat">团队管理</span><span class="tc-feat">120课时</span>
+          <span class="tc-feat highlight">VIP专属资源</span>
+          <span class="tc-feat highlight">平台签约</span>
+          <span class="tc-feat highlight">高薪项目直推</span>
+        </div>
+        <div class="tc-footer">
+          <span style="font-size:12px;color:var(--text-secondary);">已有 126人 报名</span>
+          <button class="btn-enroll">报名</button>
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SUB-PAGE: LEVELS         -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-levels">
+      <div class="nav-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
+          <h1 style="font-size:20px;">等级体系</h1>
+        </div>
+      </div>
+      <div class="level-track">
+        <div class="level-node"><div class="level-dot" style="background:var(--l5);">L5</div><div class="level-info"><h5>大师</h5><p>独立执导长篇IP · 佣金3% · 平台签约</p></div></div>
+        <div class="level-line"></div>
+        <div class="level-node"><div class="level-dot" style="background:var(--l4);">L4</div><div class="level-info"><h5>资深</h5><p>大型项目 · 佣金5% · 优先推荐</p></div></div>
+        <div class="level-line"></div>
+        <div class="level-node"><div class="level-dot" style="background:var(--l3);">L3</div><div class="level-info"><h5>精英</h5><p>中型项目 · 佣金7% · 品牌合作</p></div></div>
+        <div class="level-line"></div>
+        <div class="level-node"><div class="level-dot" style="background:var(--l2);">L2</div><div class="level-info"><h5>新锐</h5><p>标准项目 · 佣金8% · 基础权益</p></div></div>
+        <div class="level-line"></div>
+        <div class="level-node"><div class="level-dot" style="background:var(--l1);">L1</div><div class="level-info"><h5>新星</h5><p>入门项目 · 佣金10% · 新手保护</p></div></div>
+      </div>
+      <div style="margin:16px;background:var(--card);border-radius:16px;padding:16px;">
+        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">升级条件</div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:2;">
+          ✓ 完成指定数量项目<br>✓ 平均评分 ≥ 4.5星<br>✓ 通过对应等级考核<br>✓ 无重大违规记录
+        </div>
+      </div>
+      <div style="margin:16px;background:var(--card);border-radius:16px;padding:16px;">
+        <div style="font-size:15px;font-weight:600;margin-bottom:12px;">会员订阅 — 先享后付 + 佣金减免</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;line-height:1.5;">月收入达标才扣费，低收入月免费</div>
+        <div style="display:flex;gap:10px;">
+          <div style="flex:1;border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;">
+            <div style="font-size:12px;color:var(--text-secondary);">免费版</div>
+            <div style="font-size:16px;font-weight:700;margin:4px 0;">¥0</div>
+            <div style="font-size:10px;color:var(--text-secondary);">标准佣金</div>
+          </div>
+          <div style="flex:1;border:2px solid var(--accent);border-radius:12px;padding:12px;text-align:center;background:#FFFAF0;">
+            <div style="font-size:12px;color:var(--accent);font-weight:600;">Pro</div>
+            <div style="font-size:16px;font-weight:700;margin:4px 0;">¥98/月</div>
+            <div style="font-size:9px;color:var(--accent);">月入≥¥3K才扣</div>
+            <div style="font-size:10px;color:var(--text-secondary);">佣金-2%</div>
+          </div>
+          <div style="flex:1;border:2px solid var(--primary);border-radius:12px;padding:12px;text-align:center;background:#FFF5F5;">
+            <div style="font-size:12px;color:var(--primary);font-weight:600;">Elite</div>
+            <div style="font-size:16px;font-weight:700;margin:4px 0;">¥298/月</div>
+            <div style="font-size:9px;color:var(--primary);">月入≥¥8K才扣</div>
+            <div style="font-size:10px;color:var(--text-secondary);">佣金-3%</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:10px;line-height:1.6;">需求方（先享后付）：Business ¥128/月（月支≥¥5K才扣·版权佣金6%）/ Enterprise ¥398/月（月支≥¥20K才扣·专属经理）</div>
+      </div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SUB-PAGE: ACTIVITIES     -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-activities">
+      <div class="nav-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
+          <h1 style="font-size:20px;">平台活动</h1>
+        </div>
+      </div>
+
+      <div class="platform-card-m">
+        <div class="pcm-header">
+          <div class="pcm-logo" style="background:linear-gradient(135deg,#000,#25F4EE);" style="font-size:14px;font-weight:700;color:white;">音</div>
+          <div><div class="pcm-name">抖音</div><div class="pcm-desc">短视频/漫剧创作激励</div></div>
+        </div>
+        <div class="pcm-activities">
+          <div class="pcm-act"><span class="act-tag" style="background:#FFF5F5;color:var(--primary);">热门</span><span class="act-name">AI漫剧新力量大赛</span><span class="act-reward">奖金50万</span></div>
+          <div class="pcm-act"><span class="act-tag" style="background:#EBF8FF;color:var(--info);">长期</span><span class="act-name">创作者扶持计划</span><span class="act-reward">流量扶持</span></div>
+          <div class="pcm-act"><span class="act-tag" style="background:#F0FFF4;color:var(--success);">新</span><span class="act-name">百部精品征集令</span><span class="act-reward">单部10万</span></div>
+        </div>
+      </div>
+
+      <div class="platform-card-m">
+        <div class="pcm-header">
+          <div class="pcm-logo" style="background:linear-gradient(135deg,#FF4D4F,#FF7A45);">果</div>
+          <div><div class="pcm-name">红果短剧</div><div class="pcm-desc">短剧/漫剧分账合作</div></div>
+        </div>
+        <div class="pcm-activities">
+          <div class="pcm-act"><span class="act-tag" style="background:#FFF5F5;color:var(--primary);">热门</span><span class="act-name">AI漫剧分账激励季</span><span class="act-reward">加成30%</span></div>
+          <div class="pcm-act"><span class="act-tag" style="background:#FFFAF0;color:var(--warning);">限时</span><span class="act-name">新星导演扶持专项</span><span class="act-reward">保底+分账</span></div>
+          <div class="pcm-act"><span class="act-tag" style="background:#EBF8FF;color:var(--info);">长期</span><span class="act-name">精品漫剧采购通道</span><span class="act-reward">S级单集5万+</span></div>
+        </div>
+      </div>
+
+      <div class="platform-card-m">
+        <div class="pcm-header">
+          <div class="pcm-logo" style="background:linear-gradient(135deg,#FF5000,#FF8C1A);"></div>
+          <div><div class="pcm-name">快手</div><div class="pcm-desc">星芒短剧计划</div></div>
+        </div>
+        <div class="pcm-activities">
+          <div class="pcm-act"><span class="act-tag" style="background:#FFF5F5;color:var(--primary);">热门</span><span class="act-name">星芒AI漫剧专项</span><span class="act-reward">亿级流量</span></div>
+          <div class="pcm-act"><span class="act-tag" style="background:#F0FFF4;color:var(--success);">新</span><span class="act-name">新锐创作者成长计划</span><span class="act-reward">保底3000/集</span></div>
+          <div class="pcm-act"><span class="act-tag" style="background:#FAF5FF;color:#805AD5;">赛事</span><span class="act-name">AI创意马拉松</span><span class="act-reward">奖金池20万</span></div>
+        </div>
+      </div>
+
+      <div class="platform-card-m">
+        <div class="pcm-header">
+          <div class="pcm-logo" style="background:linear-gradient(135deg,#00BE06,#00D26A);">爱</div>
+          <div><div class="pcm-name">爱奇艺</div><div class="pcm-desc">长短视频分账体系</div></div>
+        </div>
+        <div class="pcm-activities">
+          <div class="pcm-act"><span class="act-tag" style="background:#FFF5F5;color:var(--primary);">热门</span><span class="act-name">云腾计划AI漫剧赛道</span><span class="act-reward">S级保底50万</span></div>
+          <div class="pcm-act"><span class="act-tag" style="background:#EBF8FF;color:var(--info);">长期</span><span class="act-name">分账漫剧合作通道</span><span class="act-reward">会员分账</span></div>
+          <div class="pcm-act"><span class="act-tag" style="background:#FAF5FF;color:#805AD5;">赛事</span><span class="act-name">华语AI动画大赏</span><span class="act-reward">荣誉+奖金</span></div>
+        </div>
+      </div>
+      <div style="padding:0 16px 20px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text-secondary);">更多平台</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span class="ico ico-sm gray">优</span>优酷</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span class="ico ico-sm blue">腾</span>腾讯视频</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span class="ico ico-sm green">视</span>微信视频号</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span>🅱️</span>B站</div>
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--card);border-radius:10px;font-size:13px;"><span class="ico ico-sm red">红</span>小红书</div>
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SCREEN: CLIENT (需求方)   -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-client">
+      <div class="nav-header">
+        <h1 style="font-size:22px;">需求方服务</h1>
+        <div class="header-actions">
+          <div class="header-icon" style="font-size:14px;color:var(--text-secondary);" onclick="showSubPage('talent')">🔍</div>
+        </div>
+      </div>
+      <div style="padding:16px 16px 80px;">
+        <!-- Stats Row -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+          <div style="background:var(--card);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);">
+            <div style="font-size:22px;font-weight:700;color:var(--primary);">3</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">进行中项目</div>
+          </div>
+          <div style="background:var(--card);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);">
+            <div style="font-size:22px;font-weight:700;color:var(--success);">12</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">已完成项目</div>
+          </div>
+          <div style="background:var(--card);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);">
+            <div style="font-size:22px;font-weight:700;color:var(--accent);">¥86万</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">累计支出</div>
+          </div>
+        </div>
+
+        <!-- Publish Button -->
+        <button class="btn-primary" style="width:100%;padding:14px;border:none;border-radius:14px;background:var(--primary-grad);color:white;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;box-shadow:0 4px 12px rgba(229,62,62,0.2);" onclick="showModal('publish-project')">+ 发布新项目</button>
+
+        <!-- Project List -->
+        <div style="background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);">
+          <div style="padding:16px 16px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:0.5px solid var(--border);">
+            <span style="font-size:15px;font-weight:600;">我的项目</span>
+            <span style="font-size:12px;color:var(--primary);cursor:pointer;">查看全部 →</span>
+          </div>
+          <div style="padding:0 16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="showModal('project-detail')">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;margin-bottom:2px;">品牌宣传漫剧</div>
+                <div style="display:flex;gap:8px;font-size:11px;color:var(--text-secondary);">
+                  <span>L3精英</span><span>·</span><span>¥25,000</span>
+                </div>
+              </div>
+              <span style="font-size:11px;padding:4px 12px;border-radius:10px;background:#F0FFF4;color:var(--success);font-weight:500;">制作中</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:0.5px solid var(--border);cursor:pointer;" onclick="showModal('project-detail')">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;margin-bottom:2px;">产品演示动画</div>
+                <div style="display:flex;gap:8px;font-size:11px;color:var(--text-secondary);">
+                  <span>L2新锐</span><span>·</span><span>¥8,000</span>
+                </div>
+              </div>
+              <span style="font-size:11px;padding:4px 12px;border-radius:10px;background:#EBF8FF;color:var(--info);font-weight:500;">待验收</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;cursor:pointer;" onclick="showModal('project-detail')">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:500;margin-bottom:2px;">系列IP开发</div>
+                <div style="display:flex;gap:8px;font-size:11px;color:var(--text-secondary);">
+                  <span>L4资深</span><span>·</span><span>¥120,000</span>
+                </div>
+              </div>
+              <span style="font-size:11px;padding:4px 12px;border-radius:10px;background:#FFFAF0;color:var(--warning);font-weight:500;">招标中</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px;">
+          <div style="background:var(--card);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow);cursor:pointer;" onclick="showSubPage('talent')">
+            <div style="font-size:24px;margin-bottom:6px;">👥</div>
+            <div style="font-size:13px;font-weight:500;">浏览人才库</div>
+            <div style="font-size:11px;color:var(--text-secondary);">筛选创作者</div>
+          </div>
+          <div style="background:var(--card);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow);cursor:pointer;" onclick="showSubPage('plaza')">
+            <div style="font-size:24px;margin-bottom:6px;">🎨</div>
+            <div style="font-size:13px;font-weight:500;">创作广场选品</div>
+            <div style="font-size:11px;color:var(--text-secondary);">采购版权作品</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== -->
+    <!-- SUB-PAGE: TALENT         -->
+    <!-- ======================== -->
+    <div class="screen" id="screen-talent">
+      <div class="nav-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:20px;cursor:pointer;" onclick="goBack()">‹</div>
+          <h1 style="font-size:20px;">人才库</h1>
+        </div>
+        <div class="header-actions"><div class="header-icon" style="font-size:14px;color:var(--text-secondary);">Q</div></div>
+      </div>
+
+      <div class="talent-header-m">
+        <div>
+          <h2>AI剧人才信息库</h2>
+          <p>专业人才分类库 · 行业人互相找</p>
+        </div>
+      </div>
+
+      <div class="talent-chips-m" id="talent-chips-m">
+        <div class="talent-chip-m active" onclick="filterTalentM(this,'all')"><div class="tc-icon-m"><div class="ico ico-sm gray">全</div></div><div class="tc-label-m">全部</div><div class="tc-count-m">42</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'director')"><div class="tc-icon-m">爱</div><div class="tc-label-m">导演</div><div class="tc-count-m">5</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'producer')"><div class="tc-icon-m"><div class="ico ico-sm blue">制</div></div><div class="tc-label-m">制作人</div><div class="tc-count-m">4</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'writer')"><div class="tc-icon-m"><div class="ico ico-sm teal">编</div></div><div class="tc-label-m">编剧</div><div class="tc-count-m">5</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'generator')"><div class="tc-icon-m"><div class="ico ico-sm purple">生</div></div><div class="tc-label-m">生成师</div><div class="tc-count-m">6</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'editor')"><div class="tc-icon-m"><div class="ico ico-sm green">剪</div></div><div class="tc-label-m">后期</div><div class="tc-count-m">4</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'art')"><div class="tc-icon-m" style="font-size:14px;font-weight:700;color:white;">创</div><div class="tc-label-m">美术</div><div class="tc-count-m">9</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'art-char')"><div class="tcs-label">角色设计</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'art-scene')"><div class="tcs-label">场景设计</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'art-concept')"><div class="tcs-label">概念美术</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-m" onclick="filterTalentM(this,'storyboard')"><div class="tc-icon-m"><div class="ico ico-sm gray">镜</div></div><div class="tc-label-m">分镜师</div><div class="tc-count-m">9</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-script')"><div class="tcs-label">分镜脚本</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-camera')"><div class="tcs-label">运镜设计</div><div class="tcs-count">3</div></div>
+        <div class="talent-chip-sub" onclick="filterTalentM(this,'sb-dynamic')"><div class="tcs-label">动态分镜</div><div class="tcs-count">3</div></div>
+      </div>
+
+      <div class="m-filters">
+        <span class="m-filter-chip active">全部</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">已认证</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">有作品</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">可接单</span>
+        <span class="m-filter-chip" onclick="this.classList.toggle('active')">大学生</span>
+      </div>
+
+      <div class="talent-grid-m" id="talent-grid-m"></div>
+    </div>
+
+  </div><!-- /screen-container -->
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-item active" onclick="switchTab('home')">
+      <div class="tab-icon"><div class="ico ico-sm gray">家</div></div><div class="tab-label">首页</div>
+    </div>
+    <div class="tab-item" id="tabRole" onclick="switchTab('orders')">
+      <div class="tab-icon" id="tabRoleIcon"><div class="ico ico-sm red">单</div></div><div class="tab-label" id="tabRoleLabel">接单</div>
+    </div>
+    <div class="tab-item" onclick="switchTab('plaza')">
+      <div class="tab-icon"><svg><use href="#ic-creation"/></svg></div><div class="tab-label">广场</div>
+    </div>
+    <div class="tab-item" onclick="switchTab('community')">
+      <div class="tab-icon"><div class="ico ico-sm green">社</div></div><div class="tab-label">社区</div>
+    </div>
+    <div class="tab-item" onclick="switchTab('profile')">
+      <div class="tab-icon" style="font-size:14px;font-weight:700;color:var(--primary);">U</div><div class="tab-label">我的</div>
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <button class="fab" onclick="showModal('new-post')"><svg><use href="#ic-plus"/></svg></button>
+
+  <!-- ===== MODALS ===== -->
+  <!-- Creator Choice -->
+  <div class="m-modal-overlay" id="modal-creator-choice">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>成为创作者</h3>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">选择你的身份，匹配最合适的入驻路径</p>
+      <div class="choice-cards">
+        <div class="choice-card" onclick="hideModal('creator-choice');showModal('portfolio')" style="border-color:var(--primary-light);">
+          <div class="cc-icon"><svg><use href="#ic-creation"/></svg></div>
+          <h4>我是老手</h4>
+          <p>已有AI漫剧经验，提交作品审核入驻<br><span style="color:var(--primary);font-weight:500;">审核通过进入人才库可接单</span></p>
+        </div>
+        <div class="choice-card" onclick="hideModal('creator-choice');switchTab('home');showSubPage('training')" style="border-color:#BEE3F8;">
+          <div class="cc-icon"><div class="ico ico-md green">新</div></div>
+          <h4>我是新手</h4>
+          <p>零基础或刚接触，系统学习后入驻<br><span style="color:var(--info);font-weight:500;">培训学费可通过接单返还</span></p>
+        </div>
+      </div>
+      <button class="btn-secondary" onclick="hideModal('creator-choice')">取消</button>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="m-modal-overlay" id="modal-login-m">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3 style="text-align:center;margin-bottom:16px;">登录生花</h3>
+      <div class="form-group"><label>手机号</label><input type="tel" placeholder="请输入手机号"></div>
+      <div class="form-group"><label>密码</label><input type="password" placeholder="请输入密码"></div>
+      <button class="btn-primary" onclick="doLoginM()">登录</button>
+      <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-secondary);">还没有账号？<a href="#" onclick="hideModal('login-m');showModal('register-m')" style="color:var(--primary);">立即注册</a></p>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="m-modal-overlay" id="modal-register-m">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3 style="text-align:center;margin-bottom:16px;">注册生花</h3>
+      <div class="form-group"><label>手机号</label><input type="tel" placeholder="请输入手机号"></div>
+      <div class="form-group"><label>验证码</label><div style="display:flex;gap:8px;"><input type="text" placeholder="输入验证码" style="flex:1;"><button style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:12px;white-space:nowrap;">发送验证码</button></div></div>
+      <div class="form-group"><label>设置密码</label><input type="password" placeholder="至少6位"></div>
+      <button class="btn-primary" onclick="doRegisterM()">注册</button>
+      <p style="text-align:center;margin-top:8px;font-size:12px;color:var(--text-secondary);">已有账号？<a href="#" onclick="hideModal('register-m');showModal('login-m')" style="color:var(--primary);">立即登录</a></p>
+      <p style="text-align:center;margin-top:4px;font-size:11px;color:var(--text-secondary);">注册后登录，可在需求方与创作者之间自由切换</p>
+    </div>
+  </div>
+
+  <!-- Portfolio Submit -->
+  <div class="m-modal-overlay" id="modal-portfolio">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>创作者入驻 · 作品集提交</h3>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">提交作品，1-3个工作日审核定级，通过后进入人才库</p>
+      <div class="form-group"><label>姓名</label><input type="text" placeholder="你的姓名"></div>
+      <div class="form-group"><label>手机号</label><input type="tel" placeholder="接收审核通知"></div>
+      <div class="form-group"><label>从业经验</label><select><option>1年以内</option><option>1-3年</option><option>3-5年</option><option>5年以上</option></select></div>
+      <div class="form-group"><label>代表作品（至少2个）</label>
+        <div style="display:flex;gap:8px;">
+          <div style="width:90px;height:90px;border:2px dashed var(--primary);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--primary-bg);"><span style="font-size:24px;color:var(--primary);">+</span><span style="font-size:10px;color:var(--primary);">作品1</span></div>
+          <div style="width:90px;height:90px;border:2px dashed var(--primary);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--primary-bg);"><span style="font-size:24px;color:var(--primary);">+</span><span style="font-size:10px;color:var(--primary);">作品2</span></div>
+          <div style="width:90px;height:90px;border:2px dashed var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-size:24px;color:var(--text-secondary);">+</span><span style="font-size:10px;color:var(--text-secondary);">更多</span></div>
+        </div>
+      </div>
+      <div class="form-group"><label>作品链接</label><input type="text" placeholder="抖音/B站/快手主页链接"></div>
+      <div class="form-group"><label>个人简介</label><textarea rows="3" placeholder="创作经历、擅长风格..."></textarea></div>
+      <div style="background:#FFFAF0;padding:12px;border-radius:12px;font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.7;">
+        审核维度：作品质量40% · 技术能力25% · 项目经验20% · 持续能力15%
+      </div>
+      <button class="btn-primary">提交审核</button>
+      <button class="btn-secondary" onclick="hideModal('portfolio')">取消</button>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="m-modal-overlay" id="modal-notif">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>消息通知</h3>
+      <div style="padding:14px 0;border-bottom:0.5px solid var(--border);display:flex;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#F0FFF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">✅</div>
+        <div><div style="font-size:14px;font-weight:500;">项目中标通知</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">恭喜！你已成功中标「品牌宣传漫剧」项目</div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">2小时前</div></div>
+      </div>
+      <div style="padding:14px 0;border-bottom:0.5px solid var(--border);display:flex;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#EBF8FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">💬</div>
+        <div><div style="font-size:14px;font-weight:500;">需求方消息</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">「大唐妖闻录」需求方发来新的修改意见</div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">5小时前</div></div>
+      </div>
+      <div style="padding:14px 0;border-bottom:0.5px solid var(--border);display:flex;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#FFFAF0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">🔥</div>
+        <div><div style="font-size:14px;font-weight:500;">社区热帖</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">你的帖子获得50+点赞，快来看看吧</div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">昨天</div></div>
+      </div>
+      <div style="padding:14px 0;display:flex;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#FAF5FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">💰</div>
+        <div><div style="font-size:14px;font-weight:500;">收益到账</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">资产「古风美女」本月使用费 ¥340 已到账</div><div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">昨天</div></div>
+      </div>
+      <button class="btn-secondary" onclick="hideModal('notif')">关闭</button>
+    </div>
+  </div>
+
+  <!-- Income Details -->
+  <div class="m-modal-overlay" id="modal-income">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>收益明细</h3>
+      <div style="background:linear-gradient(135deg,#FFF5F5,#FFE4E4);border-radius:14px;padding:20px;text-align:center;margin-bottom:16px;border:1px solid var(--border);">
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">本月收入</div>
+        <div style="font-size:36px;font-weight:800;color:var(--primary);">¥32,500</div>
+        <div style="font-size:12px;color:var(--success);margin-top:4px;">↑ 18.5% 较上月</div>
+      </div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">收入明细</div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;font-weight:500;">品牌宣传漫剧</div><div style="font-size:11px;color:var(--text-secondary);">项目佣金 · 7月5日</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--primary);">¥23,250</div>
+      </div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;font-weight:500;">资产使用费</div><div style="font-size:11px;color:var(--text-secondary);">古风美女 · 6月结算</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--primary);">¥5,340</div>
+      </div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;font-weight:500;">版权交易分成</div><div style="font-size:11px;color:var(--text-secondary);">《龙吟九天》· 7月3日</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--primary);">¥3,910</div>
+      </div>
+      <div style="padding:12px 0;display:flex;justify-content:space-between;align-items:center;">
+        <div><div style="font-size:14px;font-weight:500;">学费返还抵扣</div><div style="font-size:11px;color:var(--text-secondary);">VIP实战班 · 进度75%</div></div>
+        <div style="font-size:15px;font-weight:700;color:var(--success);">-¥2,800</div>
+      </div>
+      <button class="btn-secondary" onclick="hideModal('income')">关闭</button>
+    </div>
+  </div>
+
+  <!-- My Reviews -->
+  <div class="m-modal-overlay" id="modal-reviews">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>我的评价</h3>
+      <div style="display:flex;gap:16px;margin-bottom:16px;padding:16px;background:var(--bg);border-radius:14px;">
+        <div style="text-align:center;">
+          <div style="font-size:36px;font-weight:800;color:var(--primary);">4.8</div>
+          <div style="font-size:11px;color:var(--text-secondary);">综合评分</div>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:12px;color:var(--text-secondary);width:40px;">5星</span><div style="flex:1;background:var(--border);border-radius:4px;height:6px;"><div style="background:var(--primary);width:85%;height:100%;border-radius:4px;"></div></div><span style="font-size:11px;color:var(--text-secondary);">85%</span></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:12px;color:var(--text-secondary);width:40px;">4星</span><div style="flex:1;background:var(--border);border-radius:4px;height:6px;"><div style="background:var(--accent);width:10%;height:100%;border-radius:4px;"></div></div><span style="font-size:11px;color:var(--text-secondary);">10%</span></div>
+          <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:12px;color:var(--text-secondary);width:40px;">3星</span><div style="flex:1;background:var(--border);border-radius:4px;height:6px;"><div style="background:var(--text-secondary);width:5%;height:100%;border-radius:4px;"></div></div><span style="font-size:11px;color:var(--text-secondary);">5%</span></div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;">最近评价</div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:500;">XX科技 · 品牌宣传漫剧</span><span style="font-size:12px;">⭐⭐⭐⭐⭐</span></div>
+        <div style="font-size:12px;color:var(--text-secondary);">交付质量超出预期，角色一致性非常好，合作愉快！</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">7月5日</div>
+      </div>
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:500;">个人需求方 · 悬疑短剧</span><span style="font-size:12px;">⭐⭐⭐⭐</span></div>
+        <div style="font-size:12px;color:var(--text-secondary);">整体不错，节奏可以再紧凑一些。</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">6月28日</div>
+      </div>
+      <div style="padding:12px 0;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:500;">MCN机构 · 民国谍战</span><span style="font-size:12px;">⭐⭐⭐⭐⭐</span></div>
+        <div style="font-size:12px;color:var(--text-secondary);">非常专业的合作，分镜水准一流，下次继续合作。</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">6月15日</div>
+      </div>
+      <button class="btn-secondary" onclick="hideModal('reviews')">关闭</button>
+    </div>
+  </div>
+
+  <!-- Project Detail -->
+  <div class="m-modal-overlay" id="modal-project-detail">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <div style="background:linear-gradient(135deg,#F87171,#FB923C);border-radius:14px;height:140px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px;"></div>
+      <h3>《大唐妖闻录》12集系列漫剧</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
+        <div style="background:var(--bg);padding:12px;border-radius:10px;"><div style="font-size:11px;color:var(--text-secondary);">预算</div><div style="font-size:20px;font-weight:700;color:var(--primary);">¥35,000</div></div>
+        <div style="background:var(--bg);padding:12px;border-radius:10px;"><div style="font-size:11px;color:var(--text-secondary);">等级要求</div><div style="font-size:20px;font-weight:700;color:var(--l3);">L3+ 精英</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">古风玄幻题材，改编自同名网络小说。每集3-5分钟，共12集。提供完整剧本和角色设定稿。</p>
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+        <div style="padding:6px 0;">✓ 1080P/30fps</div>
+        <div style="padding:6px 0;">✓ 角色一致性 ≥ 95%</div>
+        <div style="padding:6px 0;">✓ 含配音、字幕、音效</div>
+        <div style="padding:6px 0;">✓ 分阶段验收</div>
+      </div>
+      <button class="btn-primary" onclick="hideModal('project-detail')">提交投标</button>
+      <button class="btn-secondary" onclick="hideModal('project-detail')">关闭</button>
+    </div>
+  </div>
+
+  <!-- New Post -->
+  <div class="m-modal-overlay" id="modal-new-post">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3>发布新帖</h3>
+      <div class="form-group"><label>板块</label><select><option>💡 经验分享</option><option>🎨 作品互评</option><option>🔧 技术讨论</option><option>❓ 问答求助</option><option>🤝 组队招募</option></select></div>
+      <div class="form-group"><label>标题</label><input type="text" placeholder="起个吸引人的标题..."></div>
+      <div class="form-group"><label>内容</label><textarea rows="5" placeholder="分享你的经验、想法..."></textarea></div>
+      <div class="form-group"><label>添加图片</label>
+        <div style="display:flex;gap:8px;">
+          <div style="width:70px;height:70px;border:2px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text-secondary);">+</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="hideModal('new-post')">发布</button>
+      <button class="btn-secondary" onclick="hideModal('new-post')">取消</button>
+    </div>
+  </div>
+
+  <!-- Publish Project Modal -->
+  <div class="m-modal-overlay" id="modal-publish-project">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <h3 style="text-align:center;margin-bottom:16px;">发布新项目</h3>
+      <div class="form-group"><label>项目名称</label><input type="text" placeholder="如：《大唐妖闻录》12集系列漫剧"></div>
+      <div class="form-group"><label>项目类型</label><select><option>品牌定制</option><option>IP改编</option><option>个人项目</option><option>系列剧</option></select></div>
+      <div class="form-group"><label>预算范围</label><select><option>¥5,000以下</option><option>¥5,000-20,000</option><option>¥20,000-50,000</option><option>¥50,000-100,000</option><option>¥100,000以上</option></select></div>
+      <div class="form-group"><label>创作者等级要求</label><select><option>L1+ 新星</option><option>L2+ 新锐</option><option>L3+ 精英</option><option>L4+ 资深</option></select></div>
+      <div class="form-group"><label>截止日期</label><input type="date"></div>
+      <div class="form-group"><label>项目描述</label><textarea rows="4" placeholder="详细描述你的项目需求..."></textarea></div>
+      <button class="btn-primary" onclick="hideModal('publish-project')">发布项目</button>
+      <button class="btn-secondary" onclick="hideModal('publish-project')">取消</button>
+    </div>
+  </div>
+
+  <!-- Plaza Detail -->
+  <div class="m-modal-overlay" id="modal-plaza-detail">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <div style="background:linear-gradient(135deg,#FF6B6B,#EE5A24);border-radius:14px;height:160px;display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:16px;"></div>
+      <h3>《龙吟九天》</h3>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#9F7AEA,#6B46C1);display:flex;align-items:center;justify-content:center;font-size:18px;color:white;flex-shrink:0;">墨</div>
+        <div><div style="font-size:14px;font-weight:600;">墨染青山</div><div style="font-size:12px;color:var(--text-secondary);">L3 精英创作者 · 古风</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;">
+        <div style="background:var(--primary-bg);padding:12px;border-radius:10px;"><div style="font-size:11px;color:var(--text-secondary);">版权价格</div><div style="font-size:20px;font-weight:700;color:var(--primary);">¥50,000</div></div>
+        <div style="background:var(--primary-bg);padding:12px;border-radius:10px;"><div style="font-size:11px;color:var(--text-secondary);">播放量</div><div style="font-size:20px;font-weight:700;color:var(--text);">12.5万</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">古风玄幻题材漫剧，讲述龙族后裔的复仇与成长故事。共15集，每集3-5分钟。角色一致性95%+，含完整配音、字幕、音效。</p>
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">
+        <div style="padding:6px 0;">✓ 1080P/30fps 高清画质</div>
+        <div style="padding:6px 0;">✓ 区块链版权确权</div>
+        <div style="padding:6px 0;">✓ 可商用授权</div>
+        <div style="padding:6px 0;">✓ 含分镜脚本、角色设定稿</div>
+      </div>
+      <button class="btn-primary" onclick="hideModal('plaza-detail')">联系创作者</button>
+      <button class="btn-secondary" onclick="hideModal('plaza-detail')">关闭</button>
+    </div>
+  </div>
+
+  <!-- Talent Detail Modal -->
+  <div class="m-modal-overlay" id="modal-talent-detail-m">
+    <div class="m-modal">
+      <div class="modal-handle"></div>
+      <div id="talent-detail-content-m"></div>
+    </div>
+  </div>
+
+
+</div><!-- /phone-frame -->
+
+<!-- Role Switch Bottom Sheet -->
+<div class="m-bottom-sheet" id="roleSheetM" onclick="hideRoleSheetM()">
+  <div class="m-bs-content" onclick="event.stopPropagation()">
+    <div class="m-bs-handle"></div>
+    <h3 style="text-align:center;margin-bottom:16px;font-size:16px;">切换身份</h3>
+    <div class="m-bs-item active" id="bsItemCreator" onclick="switchRoleM('creator')">
+      <span class="mbsi-icon">🎬</span>
+      <div><div class="mbsi-title">创作者</div><div class="mbsi-desc">接单赚钱 · 管理作品</div></div>
+      <span class="mbsi-check" id="bsCheckCreator">✓</span>
+    </div>
+    <div class="m-bs-item" id="bsItemClient" onclick="switchRoleM('client')">
+      <span class="mbsi-icon">📋</span>
+      <div><div class="mbsi-title">需求方</div><div class="mbsi-desc">发布项目 · 筛选人才</div></div>
+      <span class="mbsi-check" id="bsCheckClient" style="display:none;">✓</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-label">生花 App · 手机端交互原型 — 点击各Tab和按钮体验</div>
+
+<script>
+  // ===== NAVIGATION SYSTEM =====
+  const MAIN_TABS = ['home','orders','plaza','community','profile'];
+  const SUB_PAGES = ['assets','training','levels','activities','client','talent'];
+  var navHistory = [];
+  var currentRoleM = 'creator';
+  var roleTabMap = { creator: 'orders', client: 'client' };
+
+  function getTabId(idx) {
+    if (idx === 1) return roleTabMap[currentRoleM] || 'orders';
+    return MAIN_TABS[idx];
+  }
+
+  function navigateTo(id) {
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    var el = document.getElementById('screen-' + id);
+    if (el) el.classList.add('active');
+    document.getElementById('screenContainer').scrollTop = 0;
+    var tabIdx = MAIN_TABS.indexOf(id);
+    document.querySelectorAll('.tab-item').forEach(function(t, i) {
+      t.classList.toggle('active', getTabId(i) === id);
+    });
+    var fab = document.querySelector('.fab');
+    if (fab) fab.style.display = (id === 'community') ? 'flex' : 'none';
+  }
+
+  function switchTab(id) {
+    navHistory = [];
+    navigateTo(id);
+  }
+
+  function showSubPage(id) {
+    var current = document.querySelector('.screen.active');
+    if (current) {
+      var curId = current.id.replace('screen-', '');
+      if (curId !== id) navHistory.push(curId);
+    }
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    var el = document.getElementById('screen-' + id);
+    if (el) el.classList.add('active');
+    document.getElementById('screenContainer').scrollTop = 0;
+    document.querySelectorAll('.tab-item').forEach(function(t) { t.classList.remove('active'); });
+    var fab = document.querySelector('.fab');
+    if (fab) fab.style.display = 'none';
+  }
+
+  function goBack() {
+    var prev = navHistory.pop();
+    if (prev) { navigateTo(prev); }
+    else { switchTab('home'); }
+  }
+
+  function updateRoleTabBar(role) {
+    var tabIcon = document.getElementById('tabRoleIcon');
+    var tabLabel = document.getElementById('tabRoleLabel');
+    var tabItem = document.getElementById('tabRole');
+    if (role === 'client') {
+      if (tabIcon) tabIcon.innerHTML = '<svg><use href="#ic-briefcase"/></svg>';
+      if (tabLabel) tabLabel.textContent = '发项目';
+      if (tabItem) tabItem.setAttribute('onclick', "switchTab('client')");
+    } else {
+      if (tabIcon) tabIcon.innerHTML = '<svg><use href="#ic-orders"/></svg>';
+      if (tabLabel) tabLabel.textContent = '接单';
+      if (tabItem) tabItem.setAttribute('onclick', "switchTab('orders')");
+    }
+  }
+
+  function showRoleSheetM() {
+    var sheet = document.getElementById('roleSheetM');
+    if (sheet) sheet.classList.add('show');
+  }
+
+  function hideRoleSheetM() {
+    var sheet = document.getElementById('roleSheetM');
+    if (sheet) sheet.classList.remove('show');
+  }
+
+  function updateRoleTagM(role) {
+    var tag = document.getElementById('roleTagM');
+    if (!tag) return;
+    if (role === 'creator') {
+      tag.className = 'role-tag-m creator';
+      tag.textContent = '创作者 ▾';
+    } else {
+      tag.className = 'role-tag-m client';
+      tag.textContent = '需求方 ▾';
+    }
+    var bc = document.getElementById('bsCheckCreator');
+    var bl = document.getElementById('bsCheckClient');
+    var ic = document.getElementById('bsItemCreator');
+    var il = document.getElementById('bsItemClient');
+    if (bc) bc.style.display = role === 'creator' ? 'inline' : 'none';
+    if (bl) bl.style.display = role === 'client' ? 'inline' : 'none';
+    if (ic) ic.className = 'm-bs-item' + (role === 'creator' ? ' active' : '');
+    if (il) il.className = 'm-bs-item' + (role === 'client' ? ' active' : '');
+    var pBtn = document.getElementById('profileRoleBtn');
+    if (pBtn) pBtn.textContent = (role === 'creator' ? '🎬' : '📋') + ' 当前：' + (role === 'creator' ? '创作者' : '需求方') + ' · 点击切换';
+  }
+
+  function switchRoleM(role) {
+    currentRoleM = role;
+    updateRoleTagM(role);
+    updateRoleTabBar(role);
+    hideRoleSheetM();
+    navHistory = [];
+    goBack();
+  }
+
+  var isLoggedInM = false;
+
+  function handleAvatarClick() {
+    if (isLoggedInM) { switchTab('profile'); }
+    else { showModal('login-m'); }
+  }
+
+  function doLoginM() {
+    hideModal('login-m');
+    isLoggedInM = true;
+    var tag = document.getElementById('roleTagM');
+    if (tag) tag.style.display = 'inline-flex';
+    var avatar = document.getElementById('headerAvatar');
+    if (avatar) avatar.textContent = '👩‍🎨';
+    switchRoleM(currentRoleM);
+  }
+
+  function doRegisterM() {
+    hideModal('register-m');
+    isLoggedInM = true;
+    var tag = document.getElementById('roleTagM');
+    if (tag) tag.style.display = 'inline-flex';
+    var avatar = document.getElementById('headerAvatar');
+    if (avatar) avatar.textContent = '👩‍🎨';
+    switchRoleM(currentRoleM);
+  }
+
+  function doLogoutM() {
+    isLoggedInM = false;
+    var tag = document.getElementById('roleTagM');
+    if (tag) tag.style.display = 'none';
+    var avatar = document.getElementById('headerAvatar');
+    if (avatar) avatar.textContent = '👤';
+    currentRoleM = 'creator';
+    updateRoleTabBar('creator');
+    hideRoleSheetM();
+    navHistory = [];
+    goBack();
+  }
+
+  function showModal(id) {
+    document.getElementById('modal-' + id).classList.add('show');
+  }
+  function hideModal(id) {
+    document.getElementById('modal-' + id).classList.remove('show');
+  }
+  document.querySelectorAll('.m-modal-overlay').forEach(function(o) {
+    o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
+  });
+// ===== TALENT DATA (MOBILE) =====
+var TALENT_DATA_M = [
+  {n:'陈导',r:'director',rl:'🎬 导演',city:'上海',exp:'4年',lv:'L4',lc:'l4',v:true,sk:['古风','科幻'],gd:'linear-gradient(135deg,#F87171,#FB923C)',ic:'🎬'},
+  {n:'张导',r:'director',rl:'🎬 导演',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['悬疑','都市'],gd:'linear-gradient(135deg,#E53E3E,#C53030)',ic:'🎬'},
+  {n:'王导',r:'director',rl:'🎬 导演',city:'成都',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['甜宠','校园'],gd:'linear-gradient(135deg,#FC8181,#F56565)',ic:'🎬'},
+  {n:'李导',r:'director',rl:'🎬 导演',city:'广州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['玄幻','动作'],gd:'linear-gradient(135deg,#D53F8C,#B83280)',ic:'🎬'},
+  {n:'赵导',r:'director',rl:'🎬 导演·大学生',city:'杭州',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['现代','情感'],gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎬'},
+  {n:'林制片',r:'producer',rl:'制作人',city:'杭州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['项目管理','预算'],gd:'linear-gradient(135deg,#4299E1,#3182CE)',ic:'📋'},
+  {n:'周制片',r:'producer',rl:'制作人',city:'上海',exp:'5年',lv:'L4',lc:'l4',v:true,sk:['全流程','分账'],gd:'linear-gradient(135deg,#2B6CB0,#2C5282)',ic:'📋'},
+  {n:'吴制片',r:'producer',rl:'制作人',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['品牌','短视频'],gd:'linear-gradient(135deg,#63B3ED,#4299E1)',ic:'📋'},
+  {n:'钱制片',r:'producer',rl:'制作人·工作室',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['工作室','批量交付'],gd:'linear-gradient(135deg,#3182CE,#2C5282)',ic:'📋'},
+  {n:'剧本炼金师',r:'writer',rl:'✍️ 编剧',city:'成都',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['玄幻','悬疑'],gd:'linear-gradient(135deg,#9F7AEA,#6B46C1)',ic:'✍️'},
+  {n:'故事猎人',r:'writer',rl:'✍️ 编剧',city:'上海',exp:'5年',lv:'L4',lc:'l4',v:true,sk:['古风','权谋'],gd:'linear-gradient(135deg,#6B46C1,#553C9A)',ic:'✍️'},
+  {n:'甜文妹妹',r:'writer',rl:'✍️ 编剧',city:'杭州',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['甜宠','霸总'],gd:'linear-gradient(135deg,#B794F4,#9F7AEA)',ic:'✍️'},
+  {n:'悬笔翁',r:'writer',rl:'✍️ 编剧',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['悬疑','刑侦'],gd:'linear-gradient(135deg,#7E46C1,#553C9A)',ic:'✍️'},
+  {n:'新人小刘',r:'writer',rl:'✍️ 编剧·大学生',city:'广州',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['都市','搞笑'],gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'✍️'},
+  {n:'墨染青山',r:'generator',rl:'🤖 生成师',city:'北京',exp:'2年',lv:'L3',lc:'l3',v:true,sk:['Seedance','可灵'],gd:'linear-gradient(135deg,#38B2AC,#2C7A7B)',ic:'🤖'},
+  {n:'小林同学',r:'generator',rl:'🤖 生成师·大学生',city:'广州',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['ComfyUI','SD'],gd:'linear-gradient(135deg,#48BB78,#38A169)',ic:'🤖'},
+  {n:'AI画手阿杰',r:'generator',rl:'🤖 生成师',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['ComfyUI','Flux'],gd:'linear-gradient(135deg,#0BC5EA,#00A3C4)',ic:'🤖'},
+  {n:'风灵制片',r:'generator',rl:'🤖 生成师',city:'上海',exp:'2年',lv:'L3',lc:'l3',v:true,sk:['Runway','Pika'],gd:'linear-gradient(135deg,#2C7A7B,#234E52)',ic:'🤖'},
+  {n:'灵境工坊',r:'generator',rl:'🤖 生成师·工作室',city:'成都',exp:'3年',lv:'L4',lc:'l4',v:true,sk:['全流程','批量'],gd:'linear-gradient(135deg,#475569,#64748B)',ic:'🤖'},
+  {n:'星河视觉',r:'generator',rl:'🤖 生成师·大学生',city:'杭州',exp:'研一',stu:true,lv:'L2',lc:'l2',v:false,sk:['ComfyUI','AnimateDiff'],gd:'linear-gradient(135deg,#68D391,#48BB78)',ic:'🤖'},
+  {n:'剪辑老王',r:'editor',rl:'✂️ 后期·调色',city:'深圳',exp:'2年',lv:'L2',lc:'l2',v:true,sk:['PR','DaVinci'],gd:'linear-gradient(135deg,#ED8936,#DD6B20)',ic:'✂️'},
+  {n:'调色师阿伟',r:'editor',rl:'✂️ 后期·调色',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['DaVinci','Baselight'],gd:'linear-gradient(135deg,#DD6B20,#C05621)',ic:'✂️'},
+  {n:'音效大师阿强',r:'editor',rl:'✂️ 后期·音效',city:'广州',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['AU','Cubase'],gd:'linear-gradient(135deg,#C05621,#9C4221)',ic:'✂️'},
+  {n:'剪辑小美',r:'editor',rl:'✂️ 后期·大学生',city:'成都',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['PR','剪映'],gd:'linear-gradient(135deg,#F6AD55,#ED8936)',ic:'✂️'},
+  {n:'花间词',r:'art-char',rl:'🎨 美术·角色设计',city:'杭州',exp:'4年',lv:'L3',lc:'l3',v:true,sk:['立绘','服装'],gd:'linear-gradient(135deg,#f093fb,#f5576c)',ic:'🎨'},
+  {n:'画师阿月',r:'art-char',rl:'🎨 美术·角色设计',city:'上海',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['立绘','Q版'],gd:'linear-gradient(135deg,#F687B3,#ED64A6)',ic:'🎨'},
+  {n:'角色控',r:'art-char',rl:'🎨 美术·角色设计·大学生',city:'北京',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['立绘','表情'],gd:'linear-gradient(135deg,#FBB6CE,#F687B3)',ic:'🎨'},
+  {n:'梦境画家',r:'art-scene',rl:'🎨 美术·场景设计',city:'西安',exp:'1年',lv:'L2',lc:'l2',v:false,sk:['场景','氛围'],gd:'linear-gradient(135deg,#a18cd1,#fbc2eb)',ic:'🎨'},
+  {n:'场景王',r:'art-scene',rl:'🎨 美术·场景设计',city:'成都',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['场景','光影'],gd:'linear-gradient(135deg,#9F7AEA,#B794F4)',ic:'🎨'},
+  {n:'小景',r:'art-scene',rl:'🎨 美术·场景设计·大学生',city:'广州',exp:'大二',stu:true,lv:'L1',lc:'l1',v:false,sk:['场景'],gd:'linear-gradient(135deg,#D6BCFA,#B794F4)',ic:'🎨'},
+  {n:'概念猫',r:'art-concept',rl:'🎨 美术·概念美术',city:'上海',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['概念设计','世界观'],gd:'linear-gradient(135deg,#818CF8,#A78BFA)',ic:'🎨'},
+  {n:'设绘师',r:'art-concept',rl:'🎨 美术·概念美术',city:'杭州',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['概念','分镜插画'],gd:'linear-gradient(135deg,#a18cd1,#8E70C8)',ic:'🎨'},
+  {n:'灵感集',r:'art-concept',rl:'🎨 美术·概念美术·大学生',city:'北京',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['概念','风格'],gd:'linear-gradient(135deg,#E9D8FD,#D6BCFA)',ic:'🎨'},
+  {n:'分镜侠',r:'sb-script',rl:'📐 分镜师·脚本',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['分镜脚本','叙事'],gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},
+  {n:'脚本姑娘',r:'sb-script',rl:'📐 分镜师·脚本',city:'成都',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['分镜','情感'],gd:'linear-gradient(135deg,#43E97B,#38A169)',ic:'📐'},
+  {n:'故事板小张',r:'sb-script',rl:'📐 分镜师·脚本·大学生',city:'武汉',exp:'大三',stu:true,lv:'L1',lc:'l1',v:false,sk:['分镜'],gd:'linear-gradient(135deg,#90F1EF,#4facfe)',ic:'📐'},
+  {n:'闪电侠',r:'sb-camera',rl:'📐 分镜师·运镜',city:'武汉',exp:'2年',lv:'L2',lc:'l2',v:true,sk:['运镜','节奏'],gd:'linear-gradient(135deg,#4facfe,#00f2fe)',ic:'📐'},
+  {n:'运镜师老陈',r:'sb-camera',rl:'📐 分镜师·运镜',city:'上海',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['运镜','3D','转场'],gd:'linear-gradient(135deg,#0098D4,#006B9D)',ic:'📐'},
+  {n:'镜头控',r:'sb-camera',rl:'📐 分镜师·运镜·大学生',city:'广州',exp:'大四',stu:true,lv:'L1',lc:'l1',v:false,sk:['运镜'],gd:'linear-gradient(135deg,#6EE2FF,#4facfe)',ic:'📐'},
+  {n:'动态分镜阿飞',r:'sb-dynamic',rl:'📐 分镜师·动态',city:'杭州',exp:'2年',lv:'L2',lc:'l2',v:false,sk:['动态分镜','AE'],gd:'linear-gradient(135deg,#43E97B,#38F9D7)',ic:'📐'},
+  {n:'动效师小周',r:'sb-dynamic',rl:'📐 分镜师·动态',city:'北京',exp:'3年',lv:'L3',lc:'l3',v:true,sk:['动态','Blender','AE'],gd:'linear-gradient(135deg,#0BA360,#3CBA92)',ic:'📐'},
+  {n:'动画手小李',r:'sb-dynamic',rl:'📐 分镜师·动态·大学生',city:'成都',exp:'大二',stu:true,lv:'L1',lc:'l1',v:false,sk:['动态','AE'],gd:'linear-gradient(135deg,#84FAB0,#8FD3F4)',ic:'📐'}
+];
+
+function renderTalentGridM(role) {
+  var grid = document.getElementById('talent-grid-m');
+  if (!grid) return;
+  var list = role === 'all' ? TALENT_DATA_M : TALENT_DATA_M.filter(function(t){ return t.r === role; });
+  if (role === 'art') list = TALENT_DATA_M.filter(function(t){ return ['art-char','art-scene','art-concept'].indexOf(t.r) >= 0; });
+  if (role === 'storyboard') list = TALENT_DATA_M.filter(function(t){ return ['sb-script','sb-camera','sb-dynamic'].indexOf(t.r) >= 0; });
+  if (list.length === 0) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-secondary);">暂无该分类人才</div>'; return; }
+  grid.innerHTML = list.map(function(t){
+    var vrf = t.v ? '<div class="tcm-vrf">✓</div>' : '';
+    var expStr = t.stu ? '🎓'+t.exp : '📈'+t.exp;
+    var sk = t.sk.map(function(s){ return '<span class="tcm-skill">'+s+'</span>'; }).join('');
+    return '<div class="talent-card-m" onclick="showTalentDetailM(\''+t.n+'\')">'+
+      '<div class="tcm-cover" style="background:'+t.gd+';">'+t.ic+vrf+'<div class="tcm-lvl" style="background:var(--'+t.lc+');">'+t.lv+'</div></div>'+
+      '<div class="tcm-body"><h5>'+t.n+'</h5>'+
+      '<div class="tcm-role">'+t.rl+'</div>'+
+      '<div class="tcm-meta"><span>📍'+t.city+'</span><span>'+expStr+'</span></div>'+
+      '<div class="tcm-skills">'+sk+'</div></div></div>';
+  }).join('');
+}
+
+function showTalentDetailM(name) {
+  var t = TALENT_DATA_M.find(function(d){ return d.n === name; });
+  if (!t) return;
+  var container = document.getElementById('talent-detail-content-m');
+  if (!container) return;
+  var skills = t.sk.map(function(s){ return '<span style="padding:3px 10px;border-radius:8px;background:var(--bg);font-size:12px;">'+s+'</span>'; }).join('');
+  var verify = t.v ? '<span style="padding:1px 8px;border-radius:4px;background:#F0FFF4;color:var(--success);font-size:10px;font-weight:600;">✓ 已认证</span>' : '<span style="padding:1px 8px;border-radius:4px;background:#FFF5F5;color:var(--text-secondary);font-size:10px;font-weight:600;">未认证</span>';
+  var expLabel = t.stu ? ''+t.exp : ''+t.exp;
+  var bio = '专注'+t.rl+'，'+expLabel+'。擅长'+t.sk.join('、')+'。'+t.wk+'。';
+  var rating = t.lv === 'L4' ? '4.9' : t.lv === 'L3' ? '4.8' : t.lv === 'L2' ? '4.6' : '4.5';
+  var income = t.lv === 'L4' ? '¥32.5w' : t.lv === 'L3' ? '¥18.6w' : t.lv === 'L2' ? '¥6.2w' : '¥1.2w';
+  container.innerHTML =
+    '<div style="display:flex;gap:12px;margin-bottom:16px;">'+
+    '<div style="width:64px;height:64px;border-radius:14px;background:'+t.gd+';display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">'+t.ic+'</div>'+
+    '<div style="flex:1;">'+
+    '<h3 style="font-size:18px;margin-bottom:4px;">'+t.n+'</h3>'+
+    '<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px;">'+
+    '<span style="padding:1px 8px;border-radius:4px;background:var(--'+t.lc+');color:white;font-size:10px;font-weight:600;">'+t.lv+'</span>'+verify+
+    '</div>'+
+    '<div style="font-size:12px;color:var(--primary);font-weight:500;">'+t.rl+'</div>'+
+    '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">📍 '+t.city+' · '+expLabel+'</div>'+
+    '</div></div>'+
+    '<p style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px;">'+bio+'</p>'+
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">'+
+    '<div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">'+(t.st.match(/\d+/)?t.st.match(/\d+/)[0]:'—')+'</div><div style="font-size:9px;color:var(--text-secondary);">项目</div></div>'+
+    '<div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">'+rating+'</div><div style="font-size:9px;color:var(--text-secondary);">评分</div></div>'+
+    '<div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">'+income+'</div><div style="font-size:9px;color:var(--text-secondary);">收入</div></div>'+
+    '<div style="background:var(--bg);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--primary);">'+t.exp+'</div><div style="font-size:9px;color:var(--text-secondary);">经验</div></div>'+
+    '</div>'+
+    '<div style="font-size:13px;font-weight:600;margin-bottom:8px;">擅长技能</div>'+
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">'+skills+'</div>'+
+    '<div style="font-size:13px;font-weight:600;margin-bottom:8px;">代表作品</div>'+
+    '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;">'+t.wk+'</div>'+
+    '<div style="display:flex;gap:8px;">'+
+    '<button class="btn-primary" style="flex:1;">联系TA</button>'+
+    '<button class="btn-secondary" style="flex:1;margin-top:0;" onclick="hideModal(\'talent-detail-m\')">关闭</button>'+
+    '</div>';
+  showModal('talent-detail-m');
+}
+
+function filterTalentM(el, role) {
+  document.querySelectorAll('.talent-chip-m, .talent-chip-sub').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  renderTalentGridM(role);
+}
+
+renderTalentGridM('all');
+
+function switchPlazaTab(el) {
+  document.querySelectorAll('.plaza-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===== ICON SYSTEM: Convert .ico text → SVG line icons =====
+function initIcons(){
+  var m={'培':'ic-training','学':'ic-book','单':'ic-orders','接':'ic-briefcase','创':'ic-creation','资':'ic-assets','级':'ic-award','考':'ic-clipboard','活':'ic-calendar','社':'ic-community','全':'ic-home','经':'ic-trending','评':'ic-star','技':'ic-cpu','问':'ic-help','队':'ic-users','人':'ic-user','导':'ic-clapper','制':'ic-clipboard','编':'ic-pen','生':'ic-cpu','剪':'ic-film','美':'ic-palette','镜':'ic-layout','角':'ic-user','脸':'ic-smile','景':'ic-image','道':'ic-box','动':'ic-activity','音':'ic-music','效':'ic-zap','风':'ic-palette','管':'ic-shield','裁':'ic-scale','控':'ic-check-square','返':'ic-refresh','成':'ic-check-circle','家':'ic-home','新':'ic-plus','L1':'lv1','L2':'lv2','L3':'lv3','L4':'lv4','L5':'lv5','!':'ic-bell','优':'ic-play','腾':'ic-play','视':'ic-play','B':'ic-play','红':'ic-play','Q':'ic-search','+':'ic-plus','需':'ic-clipboard','上传':'ic-upload','作':'ic-creation','收':'ic-trending','通':'ic-bell','设':'ic-check-square','?':'ic-help'};
+  document.querySelectorAll('.ico').forEach(function(el){
+    var t=el.textContent.trim(),id=m[t];
+    if(id){el.className=el.className.replace(/\bico\b/g,'ic').replace(/\bico-(lg|md|sm)\b/g,'ic-$1');el.innerHTML='<svg><use href="#'+id+'"/></svg>';}
+  });
+  document.querySelectorAll('.tab-icon,.header-icon,.cc-icon,.fab').forEach(function(el){
+    if(el.querySelector('svg'))return;
+    var t=el.textContent.trim(),id=m[t];
+    if(id){el.innerHTML='<svg><use href="#'+id+'"/></svg>';}
+  });
+}
+initIcons();
+</script>
+</body>
+</html>

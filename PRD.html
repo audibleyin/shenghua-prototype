@@ -1,0 +1,1265 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生花AI创意平台 · 产品设计文档 V1.2</title>
+<style>
+:root { --primary:#E53E3E; --secondary:#374151; --bg:#fff; --text:#1F2937; --text2:#6B7280; --border:#F0F0F0; --accent:#ED8936; --info:#3182CE; --success:#38A169; --l1:#A0AEC0; --l2:#4299E1; --l3:#9F7AEA; --l4:#ED8936; --l5:#E53E3E; --primary-grad:linear-gradient(135deg,#E53E3E 0%,#F87171 100%); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif; color:var(--text); line-height:1.8; background:#F9FAFB; }
+
+/* Layout */
+.doc { max-width:960px; margin:0 auto; background:white; box-shadow:0 0 60px rgba(229,62,62,0.06), 0 0 20px rgba(0,0,0,0.03); border-radius:0 0 20px 20px; overflow:hidden; }
+
+/* Cover */
+.cover { position:relative; background:linear-gradient(135deg,#FFF0F0 0%,#FFFFFF 40%,#EBF4FF 100%); color:var(--text); padding:120px 60px 80px; text-align:center; border-bottom:4px solid var(--primary); overflow:hidden; }
+.cover::before { content:''; position:absolute; top:-100px; left:5%; width:300px; height:300px; background:radial-gradient(circle,rgba(229,62,62,0.08) 0%,transparent 70%); border-radius:50%; pointer-events:none; }
+.cover::after { content:''; position:absolute; bottom:-100px; right:5%; width:350px; height:350px; background:radial-gradient(circle,rgba(49,130,222,0.06) 0%,transparent 70%); border-radius:50%; pointer-events:none; }
+.cover > * { position:relative; z-index:1; }
+.cover h1 { font-size:46px; font-weight:800; margin-bottom:12px; letter-spacing:2px; background:var(--primary-grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.cover .subtitle { font-size:20px; color:var(--text2); margin-bottom:40px; }
+.cover .meta { display:flex; justify-content:center; gap:40px; font-size:14px; color:var(--text2); }
+.cover .version-badge { display:inline-block; background:var(--primary-grad); color:white; padding:8px 24px; border-radius:24px; font-size:14px; margin-top:20px; box-shadow:0 4px 16px rgba(229,62,62,0.2); }
+
+/* Brand Mark */
+.brand-mark { display:inline-block; vertical-align:middle; flex-shrink:0; }
+.cover .brand-mark { display:block; margin:0 auto 28px; }
+
+/* TOC */
+.toc { padding:40px 60px; border-bottom:2px solid var(--border); }
+.toc h2 { font-size:22px; margin-bottom:20px; color:var(--primary); }
+.toc-list { list-style:none; }
+.toc-list li { padding:6px 0; font-size:15px; border-bottom:1px dotted var(--border); }
+.toc-list li span.num { color:var(--primary); font-weight:700; margin-right:8px; }
+.toc-list li.indent { padding-left:24px; font-size:14px; color:var(--text2); }
+
+/* Content */
+.content { padding:40px 60px; }
+h2.chapter { font-size:28px; color:var(--primary); margin:48px 0 20px; padding-bottom:10px; border-bottom:3px solid var(--primary); position:relative; }
+h2.chapter::after { content:''; position:absolute; bottom:-3px; left:0; width:60px; height:3px; background:var(--primary-grad); border-radius:2px; }
+h2.chapter:first-child { margin-top:0; }
+h3.section { font-size:20px; color:var(--secondary); margin:32px 0 14px; padding-left:12px; border-left:4px solid var(--primary); }
+h4.sub { font-size:16px; color:var(--text); margin:20px 0 10px; }
+p { margin:8px 0; font-size:15px; color:var(--text2); }
+ul, ol { margin:8px 0 8px 20px; font-size:14px; color:var(--text2); }
+li { margin:4px 0; }
+
+/* Tables */
+table { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
+th { background:#FFF5F5; color:var(--text); padding:12px 14px; text-align:left; font-weight:600; border-bottom:2px solid var(--primary); }
+td { padding:10px 14px; border-bottom:1px solid var(--border); }
+tr:nth-child(even) td { background:#FFF5F5; }
+
+/* Architecture Diagram */
+.arch-diagram { margin:24px 0; padding:32px; background:#FFF5F5; border-radius:16px; border:1px solid var(--border); }
+.arch-title { text-align:center; font-size:16px; font-weight:700; margin-bottom:24px; color:var(--secondary); }
+.arch-layer { margin-bottom:16px; }
+.arch-layer-label { font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+.arch-row { display:flex; gap:10px; flex-wrap:wrap; }
+.arch-box { flex:1; min-width:120px; padding:14px 12px; border-radius:10px; text-align:center; font-size:13px; font-weight:600; position:relative; border:1px solid; }
+.arch-box small { display:block; font-size:10px; font-weight:400; opacity:0.7; margin-top:2px; }
+.arch-box.red { background:#FEF2F2; color:#E53E3E; border-color:#FECACA; }
+.arch-box.blue { background:#EFF6FF; color:#2563EB; border-color:#BFDBFE; }
+.arch-box.purple { background:#F5F3FF; color:#7C3AED; border-color:#DDD6FE; }
+.arch-box.orange { background:#FFF7ED; color:#EA580C; border-color:#FED7AA; }
+.arch-box.green { background:#F0FDF4; color:#16A34A; border-color:#BBF7D0; }
+.arch-box.gray { background:#F9FAFB; color:#6B7280; border-color:#E5E7EB; }
+.arch-box.teal { background:#F0FDFA; color:#0D9488; border-color:#99F6E4; }
+.arch-arrow { text-align:center; font-size:20px; color:var(--text2); margin:4px 0; }
+
+/* Flow Diagram */
+.flow-diagram { margin:20px 0; padding:24px; background:#FAFAFA; border-radius:12px; border:1px solid var(--border); }
+.flow-steps { display:flex; align-items:center; gap:0; flex-wrap:wrap; justify-content:center; }
+.flow-step { padding:10px 16px; border-radius:8px; font-size:12px; font-weight:600; color:white; text-align:center; white-space:nowrap; }
+.flow-arrow-r { font-size:18px; color:var(--text2); padding:0 6px; }
+.flow-branch { display:flex; flex-direction:column; gap:8px; align-items:center; }
+
+/* Info Box */
+.info-box { padding:16px 20px; border-radius:12px; margin:16px 0; font-size:14px; line-height:1.7; }
+.info-box.highlight { background:#FFF5F5; border-left:4px solid var(--primary); }
+.info-box.blue { background:#EBF8FF; border-left:4px solid var(--info); }
+.info-box.green { background:#F0FFF4; border-left:4px solid var(--success); }
+.info-box.orange { background:#FFFAF0; border-left:4px solid var(--accent); }
+.info-box strong { color:var(--text); }
+
+/* KPI Card */
+.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:16px 0; }
+.kpi-card { background:#FFF5F5; border-radius:14px; padding:16px; text-align:center; border:1px solid var(--border); transition: all 0.3s; }
+.kpi-card:hover { box-shadow: 0 4px 16px rgba(229,62,62,0.06); transform: translateY(-2px); }
+.kpi-card .kpi-val { font-size:22px; font-weight:700; color:var(--primary); }
+.kpi-card .kpi-lbl { font-size:11px; color:var(--text2); margin-top:4px; }
+
+/* Level colors */
+.lv1 { color:var(--l1); } .lv2 { color:var(--l2); } .lv3 { color:var(--l3); } .lv4 { color:var(--l4); } .lv5 { color:var(--l5); }
+.badge { display:inline-block; padding:2px 10px; border-radius:4px; font-size:11px; font-weight:600; color:white; }
+
+/* Print */
+@media print {
+  body { background:white; }
+  .doc { box-shadow:none; }
+  .cover { page-break-after:always; }
+  h2.chapter { page-break-before:always; }
+}
+@media (max-width:768px) {
+  .content { padding:24px 20px; }
+  .cover { padding:60px 20px 40px; }
+  .cover h1 { font-size:28px; }
+  .kpi-grid { grid-template-columns:repeat(2,1fr); }
+  .arch-row { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="shGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E53E3E"/><stop offset="100%" stop-color="#F87171"/></linearGradient><symbol id="shBloom" viewBox="0 0 40 40"><g transform="translate(20,20)"><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(60)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(120)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(180)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(240)"/><path d="M0,0 C-4,-3 -5,-10 0,-15 C5,-10 4,-3 0,0 Z" fill="url(#shGrad)" transform="rotate(300)"/></g><circle cx="20" cy="20" r="5" fill="white"/><path d="M20,14 L21.4,18.6 L26,20 L21.4,21.4 L20,26 L18.6,21.4 L14,20 L18.6,18.6 Z" fill="url(#shGrad)"/></symbol></defs></svg>
+<div class="doc">
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+  <svg class="brand-mark" width="72" height="72" role="img" aria-label="生花"><use href="#shBloom"/></svg>
+  <h1>生花 AI 创意平台</h1>
+  <div class="subtitle">产品设计文档 · Product Design Document</div>
+  <div class="meta">
+    <span>版本：V1.2</span>
+    <span>日期：2026年7月8日</span>
+    <span>密级：内部</span>
+  </div>
+  <div class="version-badge">AI创作生态平台</div>
+</div>
+
+<!-- ===== TOC ===== -->
+<div class="toc">
+  <h2>目 录</h2>
+  <ul class="toc-list">
+    <li><span class="num">一</span>产品概述</li>
+    <li class="indent">1.1 产品定位与核心价值</li>
+    <li class="indent">1.2 商业模式与收入结构</li>
+    <li class="indent">1.3 核心Slogan与品牌策略</li>
+    <li><span class="num">二</span>产品架构</li>
+    <li class="indent">2.1 整体架构图</li>
+    <li class="indent">2.2 四大核心引擎</li>
+    <li class="indent">2.3 模块关系与数据流</li>
+    <li><span class="num">三</span>用户角色与权限体系</li>
+    <li class="indent">3.1 需求方角色</li>
+    <li class="indent">3.2 供给侧角色</li>
+    <li class="indent">3.3 权限矩阵</li>
+    <li class="indent">3.4 双端身份体系</li>
+    <li><span class="num">四</span>核心模块功能设计</li>
+    <li class="indent">4.1 首页（流量分发引擎）</li>
+    <li class="indent">4.2 接单大厅（交易撮合引擎）</li>
+    <li class="indent">4.3 创作广场（内容生态引擎）</li>
+    <li class="indent">4.4 资产库（数字资产引擎）</li>
+    <li class="indent">4.5 培训学院（人才孵化引擎）</li>
+    <li class="indent">4.6 等级体系（信用评价引擎）</li>
+    <li class="indent">4.7 社区（用户运营引擎）</li>
+    <li class="indent">4.8 需求方服务</li>
+    <li class="indent">4.9 创作者中心</li>
+    <li class="indent">4.10 平台活动专区</li>
+    <li class="indent">4.11 人才信息库（人才发现引擎）</li>
+    <li><span class="num">五</span>核心业务流程</li>
+    <li class="indent">5.1 创作者入驻流程（双通道）</li>
+    <li class="indent">5.2 项目交易全流程</li>
+    <li class="indent">5.3 培训→接单闭环</li>
+    <li class="indent">5.4 版权交易流程</li>
+    <li><span class="num">六</span>业务规则与逻辑</li>
+    <li class="indent">6.1 等级匹配与可见性规则</li>
+    <li class="indent">6.2 佣金与分账规则</li>
+    <li class="indent">6.3 培训学费返还规则</li>
+    <li class="indent">6.4 资产库分润规则</li>
+    <li class="indent">6.5 交易保障规则</li>
+    <li class="indent">6.6 平台收费体系（混合模式）</li>
+    <li><span class="num">七</span>关键产品指标</li>
+  </ul>
+</div>
+
+<div class="content">
+
+<!-- ===== 一、产品概述 ===== -->
+<h2 class="chapter">一、产品概述</h2>
+
+<h3 class="section">1.1 产品定位与核心价值</h3>
+<table>
+  <tr><th style="width:160px;">维度</th><th>说明</th></tr>
+  <tr><td>产品名称</td><td><strong>生花</strong>（AI创意平台）</td></tr>
+  <tr><td>产品定位</td><td>AI创作生态平台 — 连接创作人才与项目需求，以培训赋能、等级认证、交易撮合构建创作产业闭环</td></tr>
+  <tr><td>核心Slogan</td><td>妙笔生花，人人皆可创作</td></tr>
+  <tr><td>目标品类</td><td>AI漫剧（AI漫画短剧），不含真人短剧/传统动画/其他服务</td></tr>
+  <tr><td>核心用户</td><td>需求方（需求方） + 创作者（创作者） + 故事投稿者 + 资产上传者</td></tr>
+  <tr><td>平台模式</td><td>猪八戒网模式（垂直版）+ 双端身份体系（需求方/创作者）+ 自有培训体系作为供给侧核心引擎</td></tr>
+</table>
+
+<div class="info-box highlight">
+  <strong>核心价值主张：</strong><br>
+  ① 为需求方提供经过培训认证的分级创作者池，降低选品风险<br>
+  ② 为创作者提供稳定的商单来源和成长路径（培训→接单→返还学费）<br>
+  ③ 通过创作广场和资产库构建内容生态，让UGC作品和数字资产产生持续收益
+</div>
+
+<h3 class="section">1.2 商业模式与收入结构</h3>
+<table>
+  <tr><th>收入来源</th><th>模式说明</th><th>预估占比</th></tr>
+  <tr><td>交易佣金</td><td>按创作者等级收取 3%-10% 佣金（会员可减免 2%-3%，下限1%）</td><td>25%</td></tr>
+  <tr><td>培训收入</td><td>线上自学班 ¥1,980-¥39,800 / 线下VIP班 ¥3,980-¥79,800</td><td>25%</td></tr>
+  <tr><td>会员订阅</td><td>创作者 Pro ¥98/月·Elite ¥298/月 / 需求方 Business ¥128/月·Enterprise ¥398/月（先享后付：收入达标才扣）</td><td>15%</td></tr>
+  <tr><td>增值服务</td><td>项目置顶·精选推荐·作品置顶·数据分析等按次/按周付费</td><td>12%</td></tr>
+  <tr><td>资产分成</td><td>平台收取资产授权使用费的 15%-30%</td><td>13%</td></tr>
+  <tr><td>版权交易</td><td>创作广场作品版权交易佣金 8%（会员 6%）</td><td>10%</td></tr>
+</table>
+
+<h3 class="section">1.3 核心Slogan与品牌策略</h3>
+<p>「妙笔生花，人人皆可创作」传达了平台的核心理念：AI降低了创作门槛，每个人都有机会成为AI漫剧创作者。平台通过培训赋能、等级认证、交易撮合三大抓手，让「人人皆可创作」从口号变为现实。</p>
+
+<!-- ===== 二、产品架构 ===== -->
+<h2 class="chapter">二、产品架构</h2>
+
+<h3 class="section">2.1 整体架构图</h3>
+<div class="arch-diagram">
+  <div class="arch-title">生花平台 · 产品架构全景图</div>
+
+  <!-- 用户层 -->
+  <div class="arch-layer">
+    <div class="arch-layer-label">用户层 · User Layer</div>
+    <div class="arch-row">
+      <div class="arch-box blue">需求方（需求方）<small>视频平台/品牌/IP方/个人</small></div>
+      <div class="arch-box purple">创作者（创作者）<small>内部学员/外部个人/工作室</small></div>
+      <div class="arch-box teal">故事投稿者<small>普通人投稿好故事</small></div>
+      <div class="arch-box green">资产上传者<small>演员/模特/设计师</small></div>
+    </div>
+  </div>
+
+  <div class="arch-arrow">⬇️ ⬆️</div>
+
+  <!-- 应用层 -->
+  <div class="arch-layer">
+    <div class="arch-layer-label">应用层 · Application Layer</div>
+    <div class="arch-row">
+      <div class="arch-box red" style="flex:2;">首页<small>流量分发引擎</small></div>
+      <div class="arch-box red" style="flex:2;">接单大厅<small>交易撮合引擎</small></div>
+      <div class="arch-box red" style="flex:2;">创作广场<small>内容生态引擎</small></div>
+    </div>
+    <div class="arch-row" style="margin-top:10px;">
+      <div class="arch-box orange" style="flex:2;">资产库<small>数字资产引擎</small></div>
+      <div class="arch-box orange" style="flex:2;">培训学院<small>人才孵化引擎</small></div>
+      <div class="arch-box orange" style="flex:2;">社区<small>用户运营引擎</small></div>
+    </div>
+    <div class="arch-row" style="margin-top:10px;">
+      <div class="arch-box teal" style="flex:3;">人才信息库<small>人才发现引擎</small></div>
+    </div>
+  </div>
+
+  <div class="arch-arrow">⬇️ ⬆️</div>
+
+  <!-- 支撑层 -->
+  <div class="arch-layer">
+    <div class="arch-layer-label">支撑层 · Support Layer</div>
+    <div class="arch-row">
+      <div class="arch-box gray">等级体系<small>L1-L5五级认证</small></div>
+      <div class="arch-box gray">交易保障<small>托管/仲裁/质控</small></div>
+      <div class="arch-box gray">信用评价<small>双向评价+信用分</small></div>
+      <div class="arch-box gray">消息通知<small>站内信/短信/推送</small></div>
+    </div>
+  </div>
+
+  <div class="arch-arrow">⬇️ ⬆️</div>
+
+  <!-- 数据层 -->
+  <div class="arch-layer">
+    <div class="arch-layer-label">数据层 · Data Layer</div>
+    <div class="arch-row">
+      <div class="arch-box gray">用户中心<small>账户/认证/等级</small></div>
+      <div class="arch-box gray">项目中心<small>发布/匹配/交付</small></div>
+      <div class="arch-box gray">内容中心<small>作品/资产/版权</small></div>
+      <div class="arch-box gray">交易中心<small>资金/佣金/分账</small></div>
+      <div class="arch-box gray">培训中心<small>课程/考核/证书</small></div>
+    </div>
+  </div>
+
+  <div class="arch-arrow">⬇️ ⬆️</div>
+
+  <!-- 外部对接 -->
+  <div class="arch-layer">
+    <div class="arch-layer-label">外部对接 · External Integration</div>
+    <div class="arch-row">
+      <div class="arch-box teal">抖音<small>活动/流量</small></div>
+      <div class="arch-box teal">红果短剧<small>分账合作</small></div>
+      <div class="arch-box teal">快手<small>星芒计划</small></div>
+      <div class="arch-box teal">爱奇艺<small>云腾计划</small></div>
+      <div class="arch-box teal">B站/小红书<small>内容分发</small></div>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">2.2 四大核心引擎</h3>
+<table>
+  <tr><th>引擎</th><th>模块</th><th>核心职能</th><th>飞轮效应</th></tr>
+  <tr><td><strong>供给侧引擎</strong></td><td>培训学院</td><td>培养分级创作者 → 优质供给</td><td>更多培训 → 更多创作者 → 更好供给</td></tr>
+  <tr><td><strong>变现侧引擎</strong></td><td>接单大厅</td><td>撮合交易 → 创作者赚到钱</td><td>更多创作者赚钱 → 吸引更多创作者</td></tr>
+  <tr><td><strong>内容侧引擎</strong></td><td>创作广场</td><td>UGC内容池 → 商家选品采购</td><td>更多UGC → 更多采购 → 激励更多创作</td></tr>
+  <tr><td><strong>资源侧引擎</strong></td><td>资产库</td><td>人脸/素材资产化 → 降本增效</td><td>更多资产 → 降低制作成本 → 更多项目</td></tr>
+</table>
+
+<h3 class="section">2.3 模块关系与数据流</h3>
+<div class="flow-diagram">
+  <div class="arch-title">核心数据流向</div>
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--info);">培训学院</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">等级认证</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--primary);">接单大厅</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">项目交付</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">学费返还</div>
+  </div>
+  <div style="height:16px;"></div>
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--l3);">UGC创作</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--l3);">创作广场</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--primary);">版权登记</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">版权交易</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">分润结算</div>
+  </div>
+  <div style="height:16px;"></div>
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--teal,#38B2AC);">资产上传</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">审核入库</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--primary);">授权使用</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">使用付费</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">三方分润</div>
+  </div>
+</div>
+
+<!-- ===== 三、用户角色 ===== -->
+<h2 class="chapter">三、用户角色与权限体系</h2>
+
+<h3 class="section">3.1 需求方角色（需求方）</h3>
+<table>
+  <tr><th>角色</th><th>画像</th><th>核心诉求</th><th>典型场景</th></tr>
+  <tr><td>视频平台</td><td>爱奇艺/快手/红果等</td><td>稳定供给、质量可控、分账合作</td><td>发项目 → 选创作者 → 批量交付 → 分账</td></tr>
+  <tr><td>品牌方/IP方</td><td>品牌定制漫剧营销、IP改编授权方</td><td>高品质定制、品牌调性匹配</td><td>发品牌定制 → 选精英级 → 审核交付</td></tr>
+  <tr><td>个人需求方</td><td>自媒体人、小说作者、个人创业者</td><td>低预算也能做漫剧</td><td>发小体量项目 → 选新锐级 → 快速交付</td></tr>
+  <tr><td>内容采购方</td><td>MCN/发行方</td><td>找到有潜力的故事/漫剧成品</td><td>浏览广场 → 选中作品 → 采购版权</td></tr>
+</table>
+
+<h3 class="section">3.2 供给侧角色</h3>
+<table>
+  <tr><th>角色</th><th>画像</th><th>核心诉求</th><th>典型场景</th></tr>
+  <tr><td>内部学员创作者</td><td>通过平台培训成长</td><td>学有所成、稳定接单、学费返还</td><td>培训 → 考核 → 获等级 → 接单 → 学费返还</td></tr>
+  <tr><td>外部个人创作者</td><td>已有AI漫剧能力的自由职业者</td><td>更多商单、等级认证背书</td><td>提交作品 → 审核定级 → 接单 → 升级</td></tr>
+  <tr><td>外部工作室/公司</td><td>AI漫剧制作团队</td><td>批量接单、团队管理</td><td>公司认证 → 团队定级 → 批量承接项目</td></tr>
+  <tr><td>故事投稿者</td><td>普通人，有好故事但不会制作</td><td>故事被选中、获得版权收益</td><td>投稿 → 生成剧本/样片 → 被选中 → 获版权费</td></tr>
+  <tr><td>资产上传者</td><td>演员/模特/设计师/摄影师</td><td>人脸/素材资产化、被动收入</td><td>上传 → 审核入库 → 被使用 → 获使用费</td></tr>
+</table>
+
+<h4 class="sub">专业角色细分分类（人才信息库核心）</h4>
+<p>平台通过以下7大专业角色分类，将AI行业从业者与大学生全部纳入人才信息库，前期建立信息库积累互动量，后期在此基础上实现交易撮合。</p>
+<table>
+  <tr><th>专业角色</th><th>核心职能</th><th>细分方向</th><th>覆盖人群</th></tr>
+  <tr><td><strong>导演</strong></td><td>整体创意把控、叙事节奏、品质管理</td><td>—</td><td>行业从业者、资深创作者</td></tr>
+  <tr><td><strong>制作人</strong></td><td>项目管理、预算控制、团队搭建、进度追踪</td><td>—</td><td>行业从业者、工作室</td></tr>
+  <tr><td><strong>编剧</strong></td><td>故事创作、剧本编写、分集大纲</td><td>—</td><td>小说作者、编剧、大学生</td></tr>
+  <tr><td><strong>生成师</strong></td><td>AI图像/视频生成、角色一致性、场景控制</td><td>角色一致性、场景生成、运镜生成</td><td>AI从业者、大学生（最大人群）</td></tr>
+  <tr><td><strong>后期剪辑</strong></td><td>视频剪辑、调色、音效、字幕</td><td>—</td><td>剪辑师、后期从业者</td></tr>
+  <tr><td><strong>美术</strong></td><td>视觉设计、角色/场景设计、概念美术</td><td>角色设计、场景设计、概念美术</td><td>设计师、美术专业学生</td></tr>
+  <tr><td><strong>分镜师</strong></td><td>分镜脚本、运镜设计、动态分镜</td><td>分镜脚本、运镜设计、动态分镜</td><td>分镜师、动画专业学生</td></tr>
+</table>
+
+<div class="info-box blue">
+  <strong>分类逻辑：</strong>以上7大角色覆盖AI漫剧完整制作流程（策划→编剧→分镜→生成→美术→后期），可涵盖所有接触AI的创作人群，包括行业从业者和大学生群体。生成师是AI特有的新角色，也是最大的人群类别。
+</div>
+
+<h3 class="section">3.3 权限矩阵</h3>
+<table>
+  <tr><th>功能模块</th><th>游客</th><th>需求方</th><th>L1新星</th><th>L2新锐</th><th>L3精英</th><th>L4资深</th><th>L5大师</th></tr>
+  <tr><td>浏览首页/广场/社区</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>发布项目</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td></tr>
+  <tr><td>投标接单</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td>L1+项目</td><td>L2+项目</td><td>L3+项目</td><td>L4+项目</td><td>全部项目</td></tr>
+  <tr><td>上传作品到广场</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>版权交易</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>上传资产</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>社区发帖</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>报名培训</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>平台签约</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td>可申请</td><td>自动</td></tr>
+  <tr><td>团队管理</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+</table>
+
+<!-- ===== 3.4 双端身份体系 ===== -->
+<h3 class="section">3.4 双端身份体系（需求方 / 创作者）</h3>
+<h4 class="sub">设计理念</h4>
+<p>参照美团/饿了么的商家端与用户端模式，以及Boss直聘的招人版与求职版切换逻辑，平台采用「双端身份」设计：用户注册/登录时不绑定身份角色，注册后通过导航栏的切换按钮在「需求方」和「创作者」之间自由切换，平台根据当前身份展示对应的功能界面和操作入口。</p>
+
+<div class="info-box highlight">
+  <strong>核心设计原则：</strong><br>
+  ① 一个账号，双重身份 — 用户注册后可同时拥有需求方和创作者身份，无需注册两个账号<br>
+  ② 场景隔离，功能聚焦 — 需求方聚焦"提需求"，创作者聚焦"成为创作者"，避免功能干扰<br>
+  ③ 一键切换，无缝衔接 — 参照Boss直聘，用户可随时在需求方/创作者之间切换
+</div>
+
+<h4 class="sub">身份定义与核心功能</h4>
+<table>
+  <tr><th>维度</th><th>需求方（需求方）</th><th>创作者（创作者/供给方）</th></tr>
+  <tr><td><strong>身份定位</strong></td><td>有AI漫剧制作需求的一方</td><td>提供AI漫剧制作服务的一方</td></tr>
+  <tr><td><strong>核心动作</strong></td><td>提需求 — 发布项目、筛选创作者、托管资金、验收交付</td><td>成为创作者 — 提交作品审核、进入人才库、接单赚钱、管理作品</td></tr>
+  <tr><td><strong>典型用户</strong></td><td>视频平台、品牌方、IP方、个人需求方、内容采购方</td><td>导演、编剧、生成师、后期剪辑、美术、分镜师、制作人</td></tr>
+  <tr><td><strong>导航可见项</strong></td><td>发项目、人才库、创作广场、资产库、社区</td><td>接单大厅、创作者中心、培训学院、人才库、社区</td></tr>
+  <tr><td><strong>首页CTA</strong></td><td>「我是需求方 · 发布项目」</td><td>「成为创作者 · 接单赚钱」</td></tr>
+</table>
+
+<h4 class="sub">身份选择与切换流程</h4>
+<div class="flow-diagram">
+  <div class="arch-title">注册 → 登录 → 切换身份端</div>
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--primary);">注册（不选身份）</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">登录</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">点击头像旁身份标签</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-branch">
+      <div class="flow-step" style="background:var(--info);">需求方 — 提需求、选人才、管项目</div>
+      <div class="flow-step" style="background:var(--primary);">创作者 — 成为创作者、接单、管理作品</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
+    ↻ 参照Boss直聘，已登录用户可随时切换身份端，数据各自保留
+  </div>
+</div>
+
+<h4 class="sub">双端功能对照</h4>
+<table>
+  <tr><th>功能模块</th><th>需求方可见</th><th>创作者可见</th><th>说明</th></tr>
+  <tr><td>发布项目</td><td style="color:var(--primary);font-weight:600;">核心</td><td style="color:var(--text-secondary);">—</td><td>需求方核心功能，发布AI漫剧项目需求</td></tr>
+  <tr><td>浏览人才库</td><td style="color:var(--primary);font-weight:600;">核心</td><td style="color:var(--success);font-weight:600;">✓</td><td>需求方筛选创作者，创作者查看同行作品</td></tr>
+  <tr><td>接单大厅</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--primary);font-weight:600;">核心</td><td>创作者核心功能，浏览可接项目并投标</td></tr>
+  <tr><td>创作者中心</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--primary);font-weight:600;">核心</td><td>创作者管理作品、接单记录、收入</td></tr>
+  <tr><td>培训学院</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td>创作者新手学习通道</td></tr>
+  <tr><td>创作广场</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td>双方均可浏览，需求方可采购版权</td></tr>
+  <tr><td>资产库</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td>双方均可浏览，创作者可上传资产</td></tr>
+  <tr><td>社区</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td>双方均可参与社区互动</td></tr>
+  <tr><td>资金托管</td><td style="color:var(--primary);font-weight:600;">核心</td><td style="color:var(--text-secondary);">—</td><td>需求方托管资金，验收后释放</td></tr>
+  <tr><td>等级体系</td><td style="color:var(--success);font-weight:600;">✓</td><td style="color:var(--success);font-weight:600;">✓</td><td>双方均可查看，创作者关注自身等级</td></tr>
+</table>
+
+<div class="info-box blue">
+  <strong>切换机制设计（参照Boss直聘）：</strong><br>
+  · PC端：用户头像旁设置身份标签（如「创作者」），点击后弹出下拉菜单选择切换，导航项和默认页面平滑过渡<br>
+  · 移动端：头像旁集成身份标签，点击弹出底部弹层选择切换，个人中心亦设切换入口<br>
+  · 切换不影响数据：需求方发布的项目和创作者接的单在不同端各自展示，数据互通<br>
+  · 首次登录后默认进入创作者，用户可随时切换到需求方
+</div>
+
+<h4 class="sub">创作者评级体系（双入口 + 动态升级）</h4>
+<p>创作者等级（L1-L5）是平台核心信用评价体系，决定可接项目等级、佣金比例和推荐权重。评级体系采用「双入口 + 动态升级」设计：</p>
+
+<table>
+  <tr><th>评级路径</th><th>适用人群</th><th>流程</th><th>初始等级</th></tr>
+  <tr><td><strong>入口一：培训定级</strong></td><td>零基础新手、转行从业者</td><td>报名课程 → 系统学习 → 阶段考核 → 获得初始等级</td><td>通常L1-L2</td></tr>
+  <tr><td><strong>入口二：作品定级</strong></td><td>已有AI漫剧经验的从业者</td><td>提交代表作品（≥2个）→ 平台审核 → 获得初始等级</td><td>根据作品质量L1-L4</td></tr>
+</table>
+
+<h4 class="sub">动态升级机制</h4>
+<table>
+  <tr><th>升级维度</th><th>权重</th><th>说明</th></tr>
+  <tr><td>接单完成量</td><td>40%</td><td>累计完成项目数量，完成越多升级越快</td></tr>
+  <tr><td>用户反馈评分</td><td>35%</td><td>需求方验收评分（1-5星），平均分需≥4.0方可升级</td></tr>
+  <tr><td>作品质量提升</td><td>15%</td><td>持续在创作广场发布高质量作品</td></tr>
+  <tr><td>社区活跃度</td><td>10%</td><td>发帖、回复、组队等社区贡献</td></tr>
+</table>
+
+<div class="info-box highlight">
+  <strong>等级升降规则：</strong><br>
+  · 升级条件：综合评分达到上一级标准 + 最近10个项目平均评分≥4.0<br>
+  · 降级条件：连续3个项目评分低于3.5，或30天无接单活动<br>
+  · 评级周期：每月1日系统自动结算，T+1公示<br>
+  · 申诉机制：对评级结果有异议可提交作品重新审核
+</div>
+
+<div class="flow-diagram">
+  <div class="arch-title">创作者评级双入口流程</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div>
+      <div style="text-align:center;font-weight:700;color:var(--info);margin-bottom:12px;">入口一：培训定级</div>
+      <div class="flow-steps" style="flex-direction:column;">
+        <div class="flow-step" style="background:var(--primary);width:100%;">注册登录</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">进入培训学院</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">选课报名 → 在线学习</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">阶段考核</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">获得初始等级（L1-L2）+ 开通接单</div>
+      </div>
+    </div>
+    <div>
+      <div style="text-align:center;font-weight:700;color:var(--primary);margin-bottom:12px;">入口二：作品定级</div>
+      <div class="flow-steps" style="flex-direction:column;">
+        <div class="flow-step" style="background:var(--primary);width:100%;">注册登录</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--secondary);width:100%;">提交代表作品（≥2个）</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">平台审核（1-3工作日）</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">审核维度：作品质量40%·技术25%·经验20%·持续力15%</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">获得初始等级（L1-L4）+ 进入人才库 + 开通接单</div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--text2);">
+    ↻ 获得初始等级后，通过接单完成量 + 用户评分动态升级
+  </div>
+</div>
+
+<!-- ===== 四、核心模块功能设计 ===== -->
+<h2 class="chapter">四、核心模块功能设计</h2>
+
+<h3 class="section">4.1 首页（流量分发引擎）</h3>
+<h4 class="sub">功能定位</h4>
+<p>首页是平台的流量调度中心，负责将不同类型的用户引导到最适合的功能模块。</p>
+
+<h4 class="sub">页面结构</h4>
+<table>
+  <tr><th>区域</th><th>内容</th><th>功能逻辑</th></tr>
+  <tr><td>Hero Banner</td><td>平台Slogan + 核心数据 + CTA按钮</td><td>Slogan + 核心数据展示，注册/登录入口保留在导航栏，不在Hero重复展示</td></tr>
+  <tr><td>身份切换器</td><td>头像旁身份标签，点击弹出下拉菜单切换（参照Boss直聘）</td><td>已登录用户可一键切换身份端，导航项和默认页面随之变化（参照Boss直聘）</td></tr>
+  <tr><td>四大引擎卡片</td><td>培训/接单/广场/资产</td><td>点击跳转到对应模块页面，hover显示详细描述</td></tr>
+  <tr><td>五级体系展示</td><td>L1-L5等级卡片</td><td>展示每级权益、可接项目类型、佣金比例</td></tr>
+  <tr><td>平台活动专区</td><td>抖音/红果/快手/爱奇艺活动</td><td>展示各平台最新创作活动和奖励</td></tr>
+  <tr><td>热门项目推荐</td><td>最新/最热门项目卡片</td><td>按用户等级展示可投标项目</td></tr>
+</table>
+
+<h4 class="sub">注册/登录与身份选择逻辑</h4>
+<div class="flow-diagram">
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--primary);">点击「注册」</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">选择身份（需求方/创作者）</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-branch">
+      <div class="flow-step" style="background:var(--primary);">老手 → 提交作品集 → 平台审核定级 → 进入人才库 + 开通接单</div>
+      <div class="flow-step" style="background:var(--info);">🌱 新手 → 培训学院 → 选课报名 → 学习考核</div>
+    </div>
+  </div>
+</div>
+
+<div class="info-box highlight">
+  <strong>老手入驻路径：</strong>有经验的从业者提交作品集，平台审核通过后直接进入人才库并获得等级（L1-L5），开通接单权限。审核不通过则无法入库。<br>
+  审核维度：作品质量 40% · 技术能力 25% · 项目经验 20% · 持续能力 15%<br>
+  审核周期：1-3个工作日，通过后自动定级并开通接单权限
+</div>
+
+<h3 class="section">4.2 接单大厅（交易撮合引擎）</h3>
+<h4 class="sub">功能定位</h4>
+<p>平台核心交易模块，实现需求方与创作者的精准匹配和高效交易。</p>
+
+<h4 class="sub">核心功能清单</h4>
+<table>
+  <tr><th>功能</th><th>说明</th><th>业务规则</th></tr>
+  <tr><td>项目浏览</td><td>卡片式项目列表，展示预算/等级要求/截止日期</td><td>按等级过滤：不同等级创作者看到不同项目池</td></tr>
+  <tr><td>多维筛选</td><td>按类型/等级/预算/紧急程度筛选</td><td>支持组合筛选，实时刷新结果</td></tr>
+  <tr><td>项目详情</td><td>完整项目描述、交付标准、需求方信息</td><td>弹窗展示，包含投标入口</td></tr>
+  <tr><td>投标/接单</td><td>创作者提交投标申请</td><td>需满足等级要求，附带个人简介和作品链接</td></tr>
+  <tr><td>交付管理</td><td>分阶段验收、进度追踪</td><td>按合同约定的里程碑节点验收</td></tr>
+  <tr><td>结算分账</td><td>验收通过后自动释放资金</td><td>扣除平台佣金后，创作者收到净额</td></tr>
+</table>
+
+<h4 class="sub">等级匹配机制</h4>
+<div class="info-box blue">
+  <strong>核心逻辑：不同等级创作者看到不同项目池</strong><br>
+  · L1新星：可见预算 ≤ ¥2,000 的入门项目<br>
+  · L2新锐：可见预算 ≤ ¥5,000 的标准项目 + L1项目<br>
+  · L3精英：可见预算 ≤ ¥15,000 的中型项目 + L1/L2项目<br>
+  · L4资深：可见预算 ≤ ¥50,000 的大型项目 + L1-L3项目<br>
+  · L5大师：可见全部项目，包括独家高价项目
+</div>
+
+<h4 class="sub">UI设计规格（V1.1 细化）</h4>
+<div class="info-box highlight">
+  <strong>卡片式项目列表：</strong><br>
+  · 卡片采用大圆角（24px）设计，hover时上移8px并增强阴影<br>
+  · 缩略图区域使用三色渐变+点阵纹理，底部有透明渐变遮罩<br>
+  · 预算标签使用毛玻璃效果（backdrop-filter: blur），位于右上角<br>
+  · 等级标签在左下角，截止日期在右下角，紧急项目显示⏰图标+黄色高亮<br>
+  · 卡片主体展示项目名、需求方、标签、统计栏（集数/工期/评分）<br>
+  · 底部显示需求方头像徽标+认证标识+渐变色投标按钮<br>
+  · PC端右侧增加热门竞标排行侧边栏和接单小贴士<br>
+  · 筛选器带数字计数，hover时上浮，active状态为渐变色填充
+</div>
+
+<h3 class="section">4.3 创作广场（内容生态引擎）</h3>
+<h4 class="sub">功能定位</h4>
+<p>UGC内容池，让创作者自由发布作品，吸引内容采购方（MCN/发行方）选品采购版权。</p>
+
+<h4 class="sub">核心功能</h4>
+<table>
+  <tr><th>功能</th><th>说明</th><th>业务规则</th></tr>
+  <tr><td>作品展示</td><td>瀑布流/网格布局，展示作品封面、创作者、浏览/点赞数据</td><td>按推荐/最新/热门/潜力排序</td></tr>
+  <tr><td>作品投稿</td><td>创作者上传故事/剧本/样片/完整漫剧</td><td>支持多种类型：故事投稿、漫剧样片、完整剧本</td></tr>
+  <tr><td>版权登记</td><td>区块链版权确权</td><td>投稿即自动登记，生成唯一版权凭证</td></tr>
+  <tr><td>版权采购</td><td>采购方在线选购作品版权</td><td>支持议价，平台提供版权转让协议模板</td></tr>
+  <tr><td>互动社交</td><td>浏览、点赞、评论、收藏、分享</td><td>增加作品曝光，提升创作者影响力</td></tr>
+</table>
+
+<h4 class="sub">UI设计规格（V1.1 细化）</h4>
+<div class="info-box highlight">
+  <strong>网格布局作品展示：</strong><br>
+  · 标签切换改为胶囊式按钮组，带背景色和阴影，四角圆润<br>
+  · 作品卡片hover时上移8px，阴影加深，大圆角设计<br>
+  · 缩略图底部有渐变遮罩，左上角显示状态标签（🔥热门/✓已售/🆕新作/⭐新人佳作）<br>
+  · 统计数据显示emoji图标（👁️❤️💬）+ 数字，创作者名前有等级颜色圆点<br>
+  · 价格标签在卡片底部，右侧显示标签属性（可议价/已售/独家）<br>
+  · PC端4列网格，移动端2列瀑布流
+</div>
+
+<h3 class="section">4.4 资产库（数字资产引擎）</h3>
+<h4 class="sub">功能定位</h4>
+<p>数字资产交易平台，将人脸、角色、场景等创作素材资产化，实现持续分润。</p>
+
+<h4 class="sub">8大资产品类</h4>
+<table>
+  <tr><th>品类</th><th>说明</th><th>典型资产</th></tr>
+  <tr><td>角色形象</td><td>完整角色立绘/模型</td><td>古风美女全身立绘、赛博朋克角色包</td></tr>
+  <tr><td>人脸模型</td><td>可用于AI换脸的人脸数据</td><td>真人授权人脸、虚拟人脸模型</td></tr>
+  <tr><td>场景环境</td><td>背景场景素材</td><td>唐风宫殿、赛博城市、海景环境</td></tr>
+  <tr><td>道具武器</td><td>道具/武器/载具等</td><td>冷兵器3D模型包、未来载具</td></tr>
+  <tr><td>动作预设</td><td>角色动作模板</td><td>舞蹈动作预设包、打斗动作库</td></tr>
+  <tr><td>音效配乐</td><td>BGM/音效/配音</td><td>古风BGM套装、环境音效库</td></tr>
+  <tr><td>特效预设</td><td>视觉特效模板</td><td>仙侠法术特效、粒子效果包</td></tr>
+  <tr><td>风格预设</td><td>画风/滤镜/调色</td><td>水彩风格滤镜、胶片质感预设</td></tr>
+</table>
+
+<div class="info-box green">
+  <strong>资产分润规则：</strong><br>
+  · 上传者获得 60%-80%（根据独家/非独家）<br>
+  · 平台收取 15%-30%<br>
+  · 推荐人获得 5%-10%（如有）<br>
+  · 每次使用按设定单价扣费，月度结算
+</div>
+
+<h4 class="sub">肖像权合规</h4>
+<p>上传人脸模型必须提供肖像权授权书，平台进行人工审核。未通过审核的人脸资产不予入库。违规使用者将面临封号及法律追责。</p>
+
+<h3 class="section">4.5 培训学院（人才孵化引擎）</h3>
+<h4 class="sub">功能定位</h4>
+<p>平台供给侧核心引擎，通过付费培训培养分级创作者，线下课程包含就业接单指导。</p>
+
+<h4 class="sub">课程体系</h4>
+<table>
+  <tr><th>维度</th><th>线上 · 自学基础班</th><th>线下 · VIP实战班</th><th>线下 · VIP大师班</th></tr>
+  <tr><td>价格</td><td>¥1,980 - ¥39,800</td><td>¥3,980 - ¥12,800</td><td>¥39,800 - ¥79,800</td></tr>
+  <tr><td>课时</td><td>20课时</td><td>60课时</td><td>120课时</td></tr>
+  <tr><td>形式</td><td>录播视频 + 社群答疑</td><td>线下集训 + 导师1对1</td><td>封闭集训 + 项目孵化</td></tr>
+  <tr><td>内容</td><td>AI绘画基础 + Seedance入门 + 分镜基础</td><td>高级运镜 + 叙事设计 + 商业项目实战</td><td>IP策划 + 团队管理 + 全流程品控</td></tr>
+  <tr><td>认证</td><td>L1新星</td><td>L2-L3</td><td>L4-L5</td></tr>
+  <tr><td>就业服务</td><td>纯学习，不含就业</td><td>接单指导 + 学费返还</td><td>VIP资源 + 签约 + 高薪直推</td></tr>
+</table>
+
+<div class="info-box orange">
+  <strong>线下VIP班专属服务：</strong><br>
+  · 专属接单顾问1对1辅导<br>
+  · 简历/作品集优化 + 模拟面试<br>
+  · 优先推荐高薪商业项目<br>
+  · 学费可通过接单逐步返还（仅限线下课程）
+</div>
+
+<h3 class="section">4.6 等级体系（信用评价引擎）</h3>
+<h4 class="sub">五级体系详解</h4>
+<table>
+  <tr><th>等级</th><th>名称</th><th>可接项目</th><th>佣金比例</th><th>核心权益</th></tr>
+  <tr><td><span class="badge" style="background:var(--l1);">L1</span></td><td>新星</td><td>入门项目（≤¥2,000）</td><td>15%</td><td>新手保护期、基础接单</td></tr>
+  <tr><td><span class="badge" style="background:var(--l2);">L2</span></td><td>新锐</td><td>标准项目（≤¥5,000）</td><td>12%</td><td>更多项目可见、基础推荐</td></tr>
+  <tr><td><span class="badge" style="background:var(--l3);">L3</span></td><td>精英</td><td>中型项目（≤¥15,000）</td><td>10%</td><td>品牌合作优先、团队功能</td></tr>
+  <tr><td><span class="badge" style="background:var(--l4);">L4</span></td><td>资深</td><td>大型项目（≤¥50,000）</td><td>8%</td><td>高薪项目优先、专属顾问</td></tr>
+  <tr><td><span class="badge" style="background:var(--l5);">L5</span></td><td>大师</td><td>全部项目（无上限）</td><td>5%</td><td>平台签约、独家项目、VIP资源</td></tr>
+</table>
+
+<h4 class="sub">UI设计规格（V1.1 细化）</h4>
+<div class="info-box highlight">
+  <strong>五级成长卡片展示：</strong><br>
+  · 五张卡片横向排列，每张卡片顶部有4px等级色条<br>
+  · 等级图标使用56px圆形色块，带光泽渐变高光（lv-shine）<br>
+  · 卡片内嵌半透明大号等级数字装饰（右下角，opacity: 0.04）<br>
+  · 预算范围使用圆角药丸标签显示，权限列表用✓符号前置<br>
+  · 佣金显示为左"佣金"右百分比的双栏布局，中间有分割线<br>
+  · hover时整卡上移8px，阴影加深，带弹性过渡（cubic-bezier）<br>
+  · 新增升级路径步骤条（L1→L2→L3→L4→L5→大师特权）<br>
+  · 新增会员订阅对比卡片（免费版/Pro/Elite），带先享后付条件说明
+</div>
+
+<h4 class="sub">升降级规则</h4>
+<table>
+  <tr><th>类型</th><th>条件</th></tr>
+  <tr><td rowspan="5" style="vertical-align:top;"><strong>升级条件</strong></td><td>完成指定数量的项目（如L1→L2需完成5个项目）</td></tr>
+  <tr><td>平均评分 ≥ 4.5星</td></tr>
+  <tr><td>通过对应等级的能力考核</td></tr>
+  <tr><td>无重大违规记录</td></tr>
+  <tr><td>培训学员通过课程结业考核可自动升级</td></tr>
+  <tr><td rowspan="5" style="vertical-align:top;"><strong>降级规则</strong></td><td>连续3个月无活跃接单记录</td></tr>
+  <tr><td>平均评分降至3.5星以下</td></tr>
+  <tr><td>收到3次以上需求方投诉</td></tr>
+  <tr><td>交付质量严重不达标</td></tr>
+  <tr><td>违反平台规则（如抄袭、作弊）</td></tr>
+</table>
+
+<h4 class="sub">外部创作者准入标准</h4>
+<table>
+  <tr><th>评审维度</th><th>权重</th><th>说明</th></tr>
+  <tr><td>作品质量</td><td>40%</td><td>一致性、叙事水平、画面完成度</td></tr>
+  <tr><td>技术能力</td><td>25%</td><td>AI工具运用、角色一致性、场景控制</td></tr>
+  <tr><td>项目经验</td><td>20%</td><td>过往项目数量、规模、需求方评价</td></tr>
+  <tr><td>持续能力</td><td>15%</td><td>新作产出频率、稳定性</td></tr>
+</table>
+
+<h3 class="section">4.7 社区（用户运营引擎）</h3>
+<h4 class="sub">功能定位</h4>
+<p>创作者交流社区，促进经验分享、技术讨论、互助成长，增强用户粘性和平台活跃度。</p>
+
+<h4 class="sub">板块分类</h4>
+<table>
+  <tr><th>板块</th><th>定位</th><th>内容类型</th></tr>
+  <tr><td>经验分享</td><td>创作者分享实战经验</td><td>接单心得、工具技巧、行业洞察</td></tr>
+  <tr><td>作品互评</td><td>发布作品寻求反馈</td><td>样片展示、分镜评审、风格讨论</td></tr>
+  <tr><td>技术讨论</td><td>AI工具和技术问题</td><td>Seedance技巧、角色一致性、运镜方法</td></tr>
+  <tr><td>行业资讯</td><td>行业动态和趋势</td><td>平台活动、政策解读、市场分析</td></tr>
+  <tr><td>接单心得</td><td>项目合作经验</td><td>需求方沟通、交付技巧、定价策略</td></tr>
+  <tr><td>学习打卡</td><td>培训学员学习记录</td><td>课程笔记、作业展示、成长记录</td></tr>
+  <tr><td>问答求助</td><td>提问和解答</td><td>技术问题、业务困惑、资源求助</td></tr>
+  <tr><td>组队招募</td><td>寻找合作伙伴</td><td>编剧/分镜/配音招募、团队组建</td></tr>
+</table>
+
+<h4 class="sub">核心功能</h4>
+<ul>
+  <li><strong>发帖</strong>：选择板块 → 填写标题/正文 → 上传图片（最多9张）→ 添加标签 → 发布</li>
+  <li><strong>互动</strong>：点赞、评论、收藏、分享</li>
+  <li><strong>热榜</strong>：根据浏览量、互动量、时效性综合计算排名</li>
+  <li><strong>活跃达人</strong>：展示社区贡献最多的创作者</li>
+  <li><strong>排序</strong>：最新/最热/精华/待回答</li>
+</ul>
+
+<h3 class="section">4.8 需求方服务</h3>
+<h4 class="sub">合作流程</h4>
+<div class="flow-diagram">
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--primary);">① 发布项目</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--info);">② 筛选创作者</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">③ 托管资金</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">④ 过程管理</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--l3);">⑤ 验收结算</div>
+  </div>
+</div>
+
+<h4 class="sub">发单表单字段</h4>
+<table>
+  <tr><th>字段</th><th>类型</th><th>说明</th></tr>
+  <tr><td>项目名称</td><td>文本</td><td>如：《大唐妖闻录》12集系列漫剧</td></tr>
+  <tr><td>项目类型</td><td>选择</td><td>系列漫剧/品牌定制/单集短片/IP改编</td></tr>
+  <tr><td>预算范围</td><td>选择</td><td>¥500-2K / ¥2K-5K / ¥5K-15K / ¥15K-50K / ¥50K+</td></tr>
+  <tr><td>等级要求</td><td>选择</td><td>L1+新星 / L2+新锐 / L3+精英 / L4+资深</td></tr>
+  <tr><td>项目描述</td><td>长文本</td><td>详细需求、风格要求、交付标准</td></tr>
+</table>
+
+<h4 class="sub">交易保障</h4>
+<table>
+  <tr><th>保障</th><th>说明</th></tr>
+  <tr><td>资金托管</td><td>需求方付款进入平台托管账户，验收通过后释放给创作者</td></tr>
+  <tr><td>争议仲裁</td><td>双方争议由平台仲裁团队介入，依据合同条款和交付记录裁决</td></tr>
+  <tr><td>质量管控</td><td>分阶段验收机制，每个里程碑节点需求方确认后才进入下一阶段</td></tr>
+  <tr><td>信用评价</td><td>双向评价体系，影响信用分和等级升降</td></tr>
+</table>
+
+<h3 class="section">4.9 创作者中心</h3>
+<h4 class="sub">功能定位</h4>
+<p>创作者的个人工作台，集中管理订单、收益、等级、资产等核心数据。</p>
+
+<h4 class="sub">模块结构</h4>
+<table>
+  <tr><th>模块</th><th>功能</th><th>数据展示</th></tr>
+  <tr><td>数据总览</td><td>核心指标仪表盘</td><td>本月收入、进行中项目、待投标项目、资产收益</td></tr>
+  <tr><td>我的订单</td><td>订单管理</td><td>进行中/已完成/已取消的项目列表</td></tr>
+  <tr><td>作品集</td><td>作品管理</td><td>已发布的作品、广场投稿、版权交易记录</td></tr>
+  <tr><td>等级成长</td><td>等级追踪</td><td>当前等级、升级进度、历史变更记录</td></tr>
+  <tr><td>收益明细</td><td>财务管理</td><td>收入/支出明细、提现记录、税务信息</td></tr>
+  <tr><td>我的资产</td><td>资产管理</td><td>上传的资产列表、使用次数、分润收入</td></tr>
+  <tr><td>培训记录</td><td>学习管理</td><td>课程进度、考核成绩、学费返还进度</td></tr>
+  <tr><td>账号设置</td><td>个人信息</td><td>头像/昵称/简介、实名认证、银行卡绑定</td></tr>
+</table>
+
+<h4 class="sub">学费返还进度</h4>
+<p>仅线下VIP课程享有学费返还权益。创作者通过平台接单，每笔订单自动扣除一定比例用于返还学费，直到全部返还完毕。进度条实时展示返还比例。</p>
+
+<h3 class="section">4.10 平台活动专区</h3>
+<h4 class="sub">功能定位</h4>
+<p>聚合抖音、红果、快手、爱奇艺等主流平台的创作活动和激励计划，帮助创作者获取额外流量和收益。</p>
+
+<h4 class="sub">对接平台</h4>
+<table>
+  <tr><th>平台</th><th>合作类型</th><th>活动示例</th></tr>
+  <tr><td>抖音</td><td>创作激励/大赛</td><td>AI漫剧新力量大赛、创作者扶持计划、百部精品征集令</td></tr>
+  <tr><td>红果短剧</td><td>分账合作</td><td>AI漫剧分账激励季、新星导演扶持、精品漫剧采购通道</td></tr>
+  <tr><td>快手</td><td>星芒计划</td><td>星芒AI漫剧专项、新锐创作者成长计划、AI创意马拉松</td></tr>
+  <tr><td>爱奇艺</td><td>云腾计划</td><td>AI漫剧赛道、分账漫剧合作、华语AI动画大赏</td></tr>
+  <tr><td>优酷</td><td>内容合作</td><td>待开放</td></tr>
+  <tr><td>腾讯视频</td><td>内容合作</td><td>待开放</td></tr>
+  <tr><td>微信视频号</td><td>内容分发</td><td>待开放</td></tr>
+  <tr><td>B站</td><td>内容分发</td><td>待开放</td></tr>
+  <tr><td>小红书</td><td>内容种草</td><td>待开放</td></tr>
+</table>
+
+<h3 class="section">4.11 人才信息库（人才发现引擎）</h3>
+<h4 class="sub">功能定位</h4>
+<p>建立专业人才分类信息库，汇聚AI行业从业者与大学生。从业者提交专业信息与作品，平台审核通过后进入人才库，获得等级并开通接单权限。<strong>审核不通过则无法入库。</strong></p>
+
+<div class="info-box highlight">
+  <strong>核心策略：先建库，后交易</strong><br>
+  ① 前期目标：吸引AI行业从业者+大学生提交作品审核，建立专业人才信息库<br>
+  ② 互动价值：行业人互相发现、作品展示、建立个人品牌<br>
+  ③ 后期变现：在信息库基础上撮合项目、对接需求方、实现交易闭环
+</div>
+
+<div class="info-box orange">
+  <strong>与「成为创作者」的关系：统一入口，审核入库</strong><br>
+  人才库不设单独的登记入口。用户通过「成为创作者」→「我是老手」提交作品集，平台审核通过后直接进入人才库并获得等级，开通接单权限。审核不通过则无法入库。<br>
+  · <strong>统一入口</strong>：「成为创作者」→ 选择身份 → 提交作品 → 平台审核<br>
+  · <strong>审核通过</strong>：进入人才库 + 获得L1-L5等级 + 开通接单权限<br>
+  · <strong>审核不通过</strong>：不进入人才库，可补充作品后重新提交
+</div>
+
+<h4 class="sub">核心功能</h4>
+<table>
+  <tr><th>功能</th><th>说明</th><th>业务规则</th></tr>
+  <tr><td>加入人才库</td><td>从业者通过「成为创作者」提交专业信息+作品集</td><td>选择专业角色→填写信息→上传作品（≥2个）→平台审核→通过则入库+定级+开通接单</td></tr>
+  <tr><td>分类浏览</td><td>按7大专业角色分类浏览人才</td><td>支持角色筛选、细分方向筛选、城市筛选</td></tr>
+  <tr><td>人才搜索</td><td>按技能/工具/作品/城市搜索</td><td>支持关键词搜索+多维度组合筛选</td></tr>
+  <tr><td>人才详情</td><td>展示个人信息、作品集、技能、等级</td><td>含联系方式（认证后可见）</td></tr>
+  <tr><td>作品展示</td><td>每位人才可展示代表作品</td><td>支持视频链接、图片、PDF作品集</td></tr>
+  <tr><td>项目撮合</td><td>需求方可直接邀请人才投标</td><td>后期功能，前期以信息展示为主</td></tr>
+</table>
+
+<h4 class="sub">加入人才库流程</h4>
+<div class="flow-diagram">
+  <div class="arch-title">提交作品 → 平台审核 → 入库定级 → 接单赚钱</div>
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--primary);">点击「成为创作者」</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">选择「我是老手」</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--info);">填写信息+上传作品（≥2个）</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">平台审核定级（1-3工作日）</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">审核通过 → 入库+定级+接单</div>
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
+    ✗ 审核不通过 → 不入库，可补充作品后重新提交
+  </div>
+</div>
+
+<h4 class="sub">与现有模块的关系</h4>
+<table>
+  <tr><th>关联模块</th><th>关系</th></tr>
+  <tr><td>接单大厅</td><td>人才库中已审核通过的创作者可接单，需求方可邀请人才投标</td></tr>
+  <tr><td>培训学院</td><td>新手通过培训→考核→定级后进入人才库</td></tr>
+  <tr><td>创作广场</td><td>人才的作品可同步展示在创作广场，进行版权交易</td></tr>
+  <tr><td>资产库</td><td>人才上传的素材可资产化，实现持续分润</td></tr>
+  <tr><td>社区</td><td>人才库用户可参与社区互动，组队招募</td></tr>
+</table>
+
+<div class="info-box green">
+  <strong>差异化优势：</strong>生花建立AI剧专业人才信息库，抢占行业第一认知，通过审核入库+作品展示快速积累优质人才，为后续交易撮合奠定基础。
+</div>
+
+<h4 class="sub">分类数据概览（原型示例）</h4>
+<p>人才库按7大专业角色分类展示，美术与分镜师设细分方向。用户点击侧边栏角色分类（PC端）或角色芯片（移动端）可实时切换人才列表。原型内置42条示例数据：</p>
+<table>
+  <tr><th>专业角色</th><th>细分方向</th><th>示例数据量</th><th>覆盖人群</th></tr>
+  <tr><td>导演</td><td>—</td><td>5</td><td>资深导演、新锐导演、在校大学生</td></tr>
+  <tr><td>制作人</td><td>—</td><td>4</td><td>独立制片人、工作室负责人</td></tr>
+  <tr><td>编剧</td><td>—</td><td>5</td><td>职业编剧、小说作者、大学生</td></tr>
+  <tr><td>生成师</td><td>角色一致性/场景生成/动效生成</td><td>6</td><td>AI从业者、工作室、大学生（最大人群）</td></tr>
+  <tr><td>后期剪辑</td><td>调色/音效</td><td>4</td><td>剪辑师、调色师、音效师</td></tr>
+  <tr><td>美术</td><td>角色设计3 / 场景设计3 / 概念美术3</td><td>9</td><td>设计师、美术专业学生</td></tr>
+  <tr><td>分镜师</td><td>分镜脚本3 / 运镜设计3 / 动态分镜3</td><td>9</td><td>分镜师、动画专业学生</td></tr>
+  <tr><td><strong>合计</strong></td><td>—</td><td><strong>42</strong></td><td>—</td></tr>
+</table>
+
+<h4 class="sub">筛选与切换功能</h4>
+<table>
+  <tr><th>功能</th><th>PC端</th><th>移动端</th></tr>
+  <tr><td>角色分类切换</td><td>左侧边栏点击角色项/子项，右侧人才列表实时切换</td><td>顶部角色芯片横滑，点击切换人才列表</td></tr>
+  <tr><td>父分类聚合</td><td>点击「美术」显示全部3个细分方向人才，点击「分镜师」显示全部3个细分方向人才</td><td>同PC端逻辑</td></tr>
+  <tr><td>子分类精确筛选</td><td>点击「角色设计」仅显示角色设计方向人才</td><td>移动端按芯片筛选，仅显示父分类级别</td></tr>
+  <tr><td>辅助筛选</td><td>已认证 / 有作品 / 可接单 / 大学生 / 工作室</td><td>已认证 / 有作品 / 可接单 / 大学生</td></tr>
+  <tr><td>空状态</td><td>显示“暂无该分类人才” + 引导加入</td><td>显示空状态提示</td></tr>
+</table>
+
+<div class="info-box blue">
+  <strong>PC端与移动端差异：</strong>PC端侧边栏支持7大角色 + 6个细分方向的精确筛选；移动端受屏幕空间限制，芯片展示8个角色分类（含「全部」），点击美术/分镜师芯片展示其下全部细分人才。细分方向的精确筛选在PC端体验更完整。
+</div>
+
+<!-- ===== 五、核心业务流程 ===== -->
+<h2 class="chapter">五、核心业务流程</h2>
+
+<h3 class="section">5.1 创作者入驻流程</h3>
+<div class="flow-diagram">
+  <div class="arch-title">创作者入驻 · 两条路径</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div>
+      <div style="text-align:center;font-weight:700;color:var(--primary);margin-bottom:12px;">有经验的老手</div>
+      <div class="flow-steps" style="flex-direction:column;">
+        <div class="flow-step" style="background:var(--primary);width:100%;">点击「成为创作者」</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--secondary);width:100%;">选择「我是老手」</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">填写信息+上传作品（≥2个）</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">平台审核定级（1-3工作日）</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">审核通过 → 入才库 + 定级 + 接单</div>
+      </div>
+    </div>
+    <div>
+      <div style="text-align:center;font-weight:700;color:var(--info);margin-bottom:12px;">🌱 零基础的新手</div>
+      <div class="flow-steps" style="flex-direction:column;">
+        <div class="flow-step" style="background:var(--primary);width:100%;">点击「成为创作者」</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--secondary);width:100%;">选择「我是新手」</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">进入培训学院</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--info);width:100%;">选择课程（线上/线下）</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">在线付费 → 开始学习</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--accent);width:100%;">阶段考核 → 获得认证</div>
+        <div class="flow-arrow-r">↓</div>
+        <div class="flow-step" style="background:var(--success);width:100%;">自动定级 → 入才库 → 开通接单 → 学费返还</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="info-box blue">
+  <strong>统一审核入库：</strong>有经验的老手提交作品集后由平台审核定级，审核通过直接进入人才库并开通接单；审核不通过则无法入库，可补充作品后重新提交。新手通道通过培训→考核→定级的路径入驻，考核通过后同样进入人才库。
+</div>
+
+<h3 class="section">5.2 项目交易全流程</h3>
+<div class="flow-diagram">
+  <div class="arch-title">从发单到交付 · 交易闭环</div>
+  <div class="flow-steps" style="flex-wrap:wrap;justify-content:center;">
+    <div class="flow-step" style="background:var(--info);">需求方发布项目</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--info);">需求方托管资金</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">系统按等级推送</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--primary);">创作者投标</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--info);">需求方选标</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">分阶段交付</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">验收通过</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">释放资金</div>
+  </div>
+  <div style="margin-top:12px;text-align:center;">
+    <div class="flow-step" style="background:var(--l3);display:inline-block;">争议 → 平台仲裁 → 裁决执行</div>
+  </div>
+</div>
+
+<h3 class="section">5.3 培训→接单闭环</h3>
+<div class="flow-diagram">
+  <div class="arch-title">培训变现飞轮</div>
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--info);">报名课程</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--info);">在线学习</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">阶段考核</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">获得等级</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--primary);">接单大厅</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">完成项目</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">学费返还</div>
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
+    ↩️ 创作者赚到钱 → 口碑传播 → 吸引更多学员 → 培训收入增长 → 飞轮加速
+  </div>
+</div>
+
+<h3 class="section">5.4 版权交易流程</h3>
+<div class="flow-diagram">
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--l3);">创作者投稿</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">区块链确权</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--info);">广场展示</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--primary);">采购方选中</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">议价签约</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">版权转让+分润</div>
+  </div>
+</div>
+
+<!-- ===== 六、业务规则 ===== -->
+<h2 class="chapter">六、业务规则与逻辑</h2>
+
+<h3 class="section">6.1 等级匹配与可见性规则</h3>
+<div class="info-box highlight">
+  <strong>核心原则：等级越高，可见项目越多，佣金越低</strong>
+</div>
+<table>
+  <tr><th>创作者等级</th><th>可见项目预算上限</th><th>平台佣金</th><th>特殊权限</th></tr>
+  <tr><td>L1 新星</td><td>≤ ¥2,000</td><td>15%</td><td>新手保护期（前3单免佣金）</td></tr>
+  <tr><td>L2 新锐</td><td>≤ ¥5,000</td><td>12%</td><td>基础推荐位</td></tr>
+  <tr><td>L3 精英</td><td>≤ ¥15,000</td><td>10%</td><td>品牌合作优先、团队管理</td></tr>
+  <tr><td>L4 资深</td><td>≤ ¥50,000</td><td>8%</td><td>高薪项目优先、专属顾问</td></tr>
+  <tr><td>L5 大师</td><td>无上限</td><td>5%</td><td>独家项目、平台签约、VIP资源</td></tr>
+</table>
+
+<h3 class="section">6.2 佣金与分账规则</h3>
+<table>
+  <tr><th>交易类型</th><th>平台抽成</th><th>会员优惠</th><th>说明</th></tr>
+  <tr><td>接单交易</td><td>3%-10%（按L1-L5等级）</td><td>Pro会员-2% / Elite会员-3%（下限1%）</td><td>从项目金额中扣除，创作者收到净额。L1新手前5单免佣金</td></tr>
+  <tr><td>版权交易</td><td>8%</td><td>Business/Enterprise会员 6%</td><td>从版权交易金额中扣除，向采购方收取</td></tr>
+  <tr><td>资产使用</td><td>15%-30%</td><td>Elite创作者/Enterprise会员-3%</td><td>从每次使用费中扣除</td></tr>
+  <tr><td>提现手续费</td><td>1%（最低¥1/笔）</td><td>L1-L2免费 / Elite/Enterprise会员免</td><td>提现时扣除，月度结算</td></tr>
+</table>
+<div class="info-box highlight">
+  <strong>佣金计算公式：</strong><br>
+  实际佣金 = 项目金额 × (等级佣金率 - 会员减免率)，最低1%<br>
+  示例：L3创作者（标准佣金7%）购买Pro会员（减免2%）→ 实际佣金5%<br>
+  示例：L5创作者（标准佣金3%）购买Elite会员（减免3%）→ 实际佣金1%（触达下限）
+</div>
+<p>会员采用"先享后付"机制：月收入达标才扣会员费，低收入月免费。详细收费体系见 6.6 平台收费体系。</p>
+
+<h3 class="section">6.3 培训学费返还规则</h3>
+<div class="info-box orange">
+  <strong>仅线下VIP课程享有学费返还权益，线上课程不参与返还。</strong>
+</div>
+<table>
+  <tr><th>规则</th><th>说明</th></tr>
+  <tr><td>适用范围</td><td>仅限线下VIP实战班和VIP大师班学员</td></tr>
+  <tr><td>返还方式</td><td>每笔接单收入自动扣除一定比例用于返还学费</td></tr>
+  <tr><td>返还比例</td><td>每笔订单收入的 20%-30%（可配置）</td></tr>
+  <tr><td>返还上限</td><td>累计返还金额不超过课程学费总额</td></tr>
+  <tr><td>返还终止</td><td>学费全额返还后，停止扣除</td></tr>
+  <tr><td>多课程叠加</td><td>同时有多门课程未返还时，按报名顺序依次返还</td></tr>
+</table>
+
+<h3 class="section">6.4 资产库分润规则</h3>
+<table>
+  <tr><th>角色</th><th>分润比例</th><th>会员优惠</th><th>说明</th></tr>
+  <tr><td>资产上传者</td><td>60%-80%</td><td>Elite创作者会员：平台分成-3%</td><td>独家资产80%，非独家资产60%</td></tr>
+  <tr><td>平台</td><td>15%-30%</td><td>—</td><td>独家资产15%，非独家资产30%</td></tr>
+  <tr><td>推荐人</td><td>5%-10%</td><td>—</td><td>如有推荐关系，从平台份额中分配</td></tr>
+</table>
+<p>结算周期：每月15日结算上月收益，支持提现到银行卡。提现手续费1%（L1-L2免费，Elite会员免）。详细收费规则见6.6节。</p>
+
+<h3 class="section">6.5 交易保障规则</h3>
+<table>
+  <tr><th>保障机制</th><th>触发条件</th><th>处理流程</th></tr>
+  <tr><td>资金托管</td><td>需求方发单时</td><td>付款→平台托管→验收通过→释放资金</td></tr>
+  <tr><td>争议仲裁</td><td>任一方发起争议</td><td>提交证据→平台审核→48h内裁决→执行</td></tr>
+  <tr><td>质量管控</td><td>分阶段验收</td><td>里程碑验收→需求方确认→进入下一阶段</td></tr>
+  <tr><td>信用评价</td><td>项目完成后</td><td>双方互评→影响信用分→影响等级和推荐权重</td></tr>
+  <tr><td>违约处罚</td><td>创作者逾期/需求方拒收</td><td>警告→扣信用分→限制接单→封号</td></tr>
+</table>
+
+<!-- ===== 6.6 平台收费体系 ===== -->
+<h3 class="section">6.6 平台收费体系（低佣金 + 先享后付混合模式）</h3>
+
+<h4 class="sub">双重收费风险评估</h4>
+<div class="info-box orange">
+  <strong>用户反馈与风险识别：</strong><br>
+  原方案（交易佣金5%-15% + 会员费¥98-598/月）存在以下风险：<br>
+  · <strong>L1-L3中低等级创作者负担过重</strong>：L1标准佣金15%高于行业均值（猪八戒10%），新手月收入可能不足¥2,000，再叠加¥98会员费，净收入被严重压缩<br>
+  · <strong>会员费"入不敷出"</strong>：L1创作者月接单¥3,000，佣金¥450；买Pro会员¥98仅省¥60（15%→13%省2%×¥3,000=¥60），净亏¥38<br>
+  · <strong>跳单风险</strong>：猪八戒网早期20%佣金导致大面积跳单，生花L1的15%同样存在此风险，尤其大额项目（¥10,000+）佣金过千元，供需双方有强烈动机绕开平台<br>
+  · <strong>小预算需求方流失</strong>：Business ¥198/月对月采购不足¥5,000的小需求方不划算（仅省2%版权佣金=¥100，却付¥198）
+</div>
+
+<h4 class="sub">竞品教训与对照</h4>
+<table>
+  <tr><th style="width:110px;">竞品</th><th style="width:140px;">收费模式</th><th>演进教训</th><th style="width:160px;">对生花的启示</th></tr>
+  <tr><td><strong>猪八戒网</strong></td><td>交易佣金+会员特权</td><td>早期20%固定佣金→跳单严重→改为0佣金纯会员→收入天花板低→最终回归阶梯佣金+会员。核心教训：佣金过高必然跳单，纯会员不可持续</td><td>① 降低L1佣金至10%以下 ② 设置佣金下限防止0% ③ 会员费改为"先享后付"</td></tr>
+  <tr><td><strong>Boss直聘</strong></td><td>会员订阅+按次付费</td><td>收费名目繁多（年费+月费+按次），用户体感差，求职端VIP被吐槽"不买就没流量"。核心教训：收费项过多损害口碑</td><td>① 精简收费场景 ② 不设"不买会员就没流量"的强制门槛 ③ 会员权益聚焦增值而非基础功能</td></tr>
+  <tr><td><strong>美团/饿了么</strong></td><td>平台抽成+配送费+会员</td><td>佣金15%-25%+配送费，商家利润被压缩，引发商家集体抗议。核心教训：佣金叠加其他费用导致商家出逃</td><td>① 不叠加提现手续费（新手免费） ② 佣金含全流程服务，不额外收费</td></tr>
+  <tr><td><strong>影视分账平台</strong><br><small>（爱奇艺/快手）</small></td><td>分账制</td><td>扶持期100%让利→成熟期5:5分账。核心教训：先用低门槛培养生态，再逐步变现</td><td>① L1-L2享受扶持期低佣金 ② 前5单免佣 ③ 等级提升后佣金递减</td></tr>
+</table>
+
+<div class="info-box highlight">
+  <strong>优化方案：低佣金 + 先享后付 + 新手扶持</strong><br>
+  ① <strong>降低佣金率</strong>：L1-L5从15%-5%降至10%-3%，最高佣金10%低于猪八戒标准（10%）和美团（15%-25%），消除跳单动机<br>
+  ② <strong>先享后付机制</strong>：会员费不再固定月扣，改为"月收入达标才扣费"，低收入月份自动免费，消除"入不敷出"风险<br>
+  ③ <strong>新手扶持期</strong>：L1前5单免佣金（原3单），L1-L2自动赠送30天Pro会员免费体验<br>
+  ④ <strong>佣金下限保护</strong>：最低佣金率不低于1%，保证平台基础收入<br>
+  ⑤ <strong>需求方降价</strong>：Business ¥198→¥128/月，Enterprise ¥598→¥398/月，降低小需求方门槛
+</div>
+
+<h4 class="sub">收费场景与规则总览（优化后）</h4>
+<table>
+  <tr><th>收费场景</th><th>收费方式</th><th>收费对象</th><th>收费比例/金额</th><th>会员优惠</th><th>结算周期</th></tr>
+  <tr><td><strong>项目交易完成</strong></td><td>交易佣金</td><td>创作者</td><td>L1:10% / L2:8% / L3:7% / L4:5% / L5:3%</td><td>Pro会员-2% / Elite会员-3%（下限1%）</td><td>验收通过后T+1~7天</td></tr>
+  <tr><td><strong>资产授权使用</strong></td><td>分成</td><td>上传者承担</td><td>平台15-30% / 上传者60-80% / 推荐人5-10%</td><td>Elite创作者/Enterprise会员-3%</td><td>月结（每月15日）</td></tr>
+  <tr><td><strong>版权交易</strong></td><td>佣金</td><td>采购方</td><td>8%</td><td>Business/Enterprise会员 6%</td><td>交易完成后T+3</td></tr>
+  <tr><td><strong>培训报名</strong></td><td>直销收入</td><td>学员</td><td>线上¥1,980-39,800 / 线下¥3,980-79,800</td><td>—</td><td>报名时支付</td></tr>
+  <tr><td><strong>增值服务-项目置顶</strong></td><td>按次付费</td><td>需求方</td><td>¥200/次（7天）</td><td>Business会员2次/月免费</td><td>使用时支付</td></tr>
+  <tr><td><strong>增值服务-精选推荐</strong></td><td>按周付费</td><td>需求方</td><td>¥500/周</td><td>Enterprise会员1次/月免费</td><td>使用时支付</td></tr>
+  <tr><td><strong>增值服务-作品置顶</strong></td><td>按次付费</td><td>创作者</td><td>¥100/次（7天）</td><td>Pro会员1次/月免费</td><td>使用时支付</td></tr>
+  <tr><td><strong>提现手续费</strong></td><td>固定比例</td><td>创作者/上传者</td><td>1%（最低¥1/笔）</td><td>L1-L2免费 / Elite/Enterprise会员免</td><td>提现时扣除</td></tr>
+</table>
+
+<h4 class="sub">与创作者等级体系（L1-L5）的关联逻辑（优化后）</h4>
+<p>平台佣金比例与创作者等级深度绑定，等级越高佣金越低。会员订阅在等级佣金基础上叠加减免，但设有1%佣金下限保护：</p>
+<table>
+  <tr><th>等级</th><th>标准佣金</th><th>+ Pro会员</th><th>+ Elite会员</th><th>实际最低佣金</th><th>结算周期</th><th>月接单上限</th></tr>
+  <tr><td><span class="badge" style="background:var(--l1);">L1</span> 新星</td><td>10%</td><td>8%</td><td>7%</td><td>7%</td><td>T+7</td><td>5单</td></tr>
+  <tr><td><span class="badge" style="background:var(--l2);">L2</span> 新锐</td><td>8%</td><td>6%</td><td>5%</td><td>5%</td><td>T+5</td><td>10单</td></tr>
+  <tr><td><span class="badge" style="background:var(--l3);">L3</span> 精英</td><td>7%</td><td>5%</td><td>4%</td><td>4%</td><td>T+3</td><td>不限</td></tr>
+  <tr><td><span class="badge" style="background:var(--l4);">L4</span> 资深</td><td>5%</td><td>3%</td><td>2%</td><td>2%</td><td>T+1</td><td>不限</td></tr>
+  <tr><td><span class="badge" style="background:var(--l5);">L5</span> 大师</td><td>3%</td><td>1%</td><td>1%（下限）</td><td>1%</td><td>即时</td><td>不限</td></tr>
+</table>
+
+<div class="info-box blue">
+  <strong>优化要点：</strong><br>
+  · 等级佣金是基础，会员优惠是叠加，两者独立计算，最低佣金率1%<br>
+  · <strong>L1新手保护期：前5单免佣金</strong>（原3单），并赠送30天Pro会员免费体验<br>
+  · <strong>先享后付</strong>：会员费当月收入达标才扣，低收入月自动免费<br>
+  · 结算周期随等级缩短，高等级创作者享受更快资金周转<br>
+  · 会员不可替代等级：仍需通过接单+评分动态升级，不可用会员费"买等级"<br>
+  · L1-L2提现手续费全免，降低新手资金成本
+</div>
+
+<h4 class="sub">"先享后付"会员计费机制</h4>
+<div class="info-box green">
+  <strong>核心机制：月收入达标才扣会员费，不达标当月免费</strong><br>
+  参照影视分账平台"扶持期让利"策略和SaaS产品"免费增值"模式，生花平台会员采用"先享后付"计费：<br>
+  · <strong>Pro创作者</strong>（¥98/月）：当月接单收入 ≥ ¥3,000 时扣费，低于则免费<br>
+  · <strong>Elite创作者</strong>（¥298/月）：当月接单收入 ≥ ¥8,000 时扣费，低于则免费<br>
+  · <strong>Business</strong>（¥128/月）：当月项目支出 ≥ ¥5,000 时扣费，低于则免费<br>
+  · <strong>Enterprise</strong>（¥398/月）：当月项目支出 ≥ ¥20,000 时扣费，低于则免费<br>
+  <br>
+  <strong>优势：</strong>① 消除"入不敷出"顾虑——低收入不扣费 ② 降低新手尝试成本 ③ 会员权益即开即用，无需纠结"值不值" ④ 平台与创作者利益绑定——创作者赚钱平台才收费
+</div>
+
+<h4 class="sub">会员权益对比表 — 创作者端（优化后）</h4>
+<table>
+  <tr><th style="width:160px;">权益</th><th>免费版</th><th>Pro创作者<br>¥98/月<br><small>（月收入≥¥3,000才扣）</small></th><th>Elite创作者<br>¥298/月<br><small>（月收入≥¥8,000才扣）</small></th></tr>
+  <tr><td><strong>佣金比例</strong></td><td>标准（L1-L5对应10%-3%）</td><td>标准-2%</td><td>标准-3%（下限1%）</td></tr>
+  <tr><td>作品置顶（广场）</td><td style="color:var(--text-secondary);">—</td><td>1次/月</td><td>3次/月</td></tr>
+  <tr><td>项目优先匹配</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td><td>优先</td></tr>
+  <tr><td>数据分析面板</td><td>基础</td><td>高级（转化率/趋势）</td><td>专业（竞品/定价参考）</td></tr>
+  <tr><td>独家项目入口</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>专属顾问</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>提现手续费</td><td>L1-L2免费 / L3+ 1%</td><td>1%</td><td>免</td></tr>
+  <tr><td>资产分成优惠</td><td>标准</td><td>标准</td><td>平台-3%</td></tr>
+  <tr><td>结算加速</td><td>标准（T+1~7）</td><td>标准</td><td>T+1（加速）</td></tr>
+  <tr><td>社区徽章</td><td>普通</td><td>Pro标识</td><td>Elite标识</td></tr>
+</table>
+
+<h4 class="sub">会员权益对比表 — 需求方端（优化后）</h4>
+<table>
+  <tr><th style="width:160px;">权益</th><th>免费版</th><th>Business<br>¥128/月<br><small>（月支出≥¥5,000才扣）</small></th><th>Enterprise<br>¥398/月<br><small>（月支出≥¥20,000才扣）</small></th></tr>
+  <tr><td><strong>项目发布数</strong></td><td>3个/月</td><td>不限</td><td>不限</td></tr>
+  <tr><td>项目置顶</td><td style="color:var(--text-secondary);">—</td><td>2次/月</td><td>5次/月</td></tr>
+  <tr><td>精选推荐位</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td>1次/月</td></tr>
+  <tr><td><strong>版权交易佣金</strong></td><td>8%</td><td>6%</td><td>6%</td></tr>
+  <tr><td>创作者筛选</td><td>基础筛选</td><td>高级筛选+优先匹配</td><td>精准匹配+定向邀请</td></tr>
+  <tr><td>资金托管费</td><td>免</td><td>免</td><td>免</td></tr>
+  <tr><td>提现手续费</td><td>1%</td><td>1%</td><td>免</td></tr>
+  <tr><td>专属客户经理</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>批量项目管理</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--text-secondary);">—</td><td style="color:var(--success);font-weight:600;">✓</td></tr>
+  <tr><td>定制合同模板</td><td>标准</td><td>标准</td><td>定制</td></tr>
+  <tr><td>资产采购优惠</td><td>标准</td><td>标准</td><td>平台-3%</td></tr>
+</table>
+
+<h4 class="sub">收费流程示意</h4>
+<div class="flow-diagram">
+  <div class="arch-title">项目交易收费流程（优化后）</div>
+  <div class="flow-steps">
+    <div class="flow-step" style="background:var(--info);">需求方付款托管</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--secondary);">项目进行</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--accent);">分阶段验收</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--success);">验收通过</div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--primary);">扣除佣金<br><small>（≥1%下限）</small></div>
+    <div class="flow-arrow-r">→</div>
+    <div class="flow-step" style="background:var(--l3);">创作者收到净额</div>
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text2);">
+    佣金 = 项目金额 × (等级佣金率 - 会员减免率)，最低1% · 月末核算会员费（收入达标才扣）
+  </div>
+</div>
+
+<div class="info-box green">
+  <strong>优化后设计原则：</strong><br>
+  ① <strong>低佣金为主</strong>：L1-L5佣金降至10%-3%，最高10%低于竞品，消除跳单动机<br>
+  ② <strong>先享后付</strong>：会员费月收入达标才扣，低收入免费，消除"入不敷出"风险<br>
+  ③ <strong>新手扶持</strong>：L1前5单免佣+30天Pro体验，L1-L2提现免费，降低入门门槛<br>
+  ④ <strong>佣金下限</strong>：最低1%佣金，保证平台基础收入，防止0佣金跳单<br>
+  ⑤ <strong>防跳单设计</strong>：低佣金+资金托管+平台仲裁+信用体系，多管齐下降低私下交易动机
+</div>
+
+<!-- ===== 七、关键产品指标 ===== -->
+<h2 class="chapter">七、关键产品指标（North Star Metrics）</h2>
+
+<h3 class="section">7.1 核心指标体系</h3>
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-val">GMV</div><div class="kpi-lbl">平台总交易额</div></div>
+  <div class="kpi-card"><div class="kpi-val">MAU</div><div class="kpi-lbl">月活跃用户数</div></div>
+  <div class="kpi-card"><div class="kpi-val">转化率</div><div class="kpi-lbl">投标→中标转化率</div></div>
+  <div class="kpi-card"><div class="kpi-val">NPS</div><div class="kpi-lbl">净推荐值</div></div>
+</div>
+
+<table>
+  <tr><th>维度</th><th>指标</th><th>目标（Year 1）</th><th>说明</th></tr>
+  <tr><td rowspan="3">交易</td><td>月度GMV</td><td>¥500万</td><td>平台每月交易总额</td></tr>
+  <tr><td>月度订单数</td><td>2,000+</td><td>每月完成的项目数</td></tr>
+  <tr><td>平均客单价</td><td>¥5,000</td><td>平均每笔交易金额</td></tr>
+  <tr><td rowspan="3">用户</td><td>注册创作者</td><td>15,000+</td><td>平台注册创作者总数</td></tr>
+  <tr><td>月活创作者</td><td>5,000+</td><td>每月有接单活动的创作者</td></tr>
+  <tr><td>注册需求方</td><td>3,000+</td><td>平台注册需求方总数</td></tr>
+  <tr><td rowspan="3">培训</td><td>月度培训收入</td><td>¥200万</td><td>课程销售收入</td></tr>
+  <tr><td>学员转化率</td><td>60%</td><td>学员完成培训后入驻接单的比例</td></tr>
+  <tr><td>学费返还率</td><td>75%</td><td>线下学员通过接单返还学费的比例</td></tr>
+  <tr><td rowspan="3">内容</td><td>广场作品数</td><td>10,000+</td><td>创作广场累计作品</td></tr>
+  <tr><td>版权交易额</td><td>¥100万/月</td><td>月度版权交易金额</td></tr>
+  <tr><td>资产库规模</td><td>20,000+</td><td>入库数字资产总数</td></tr>
+  <tr><td rowspan="2">质量</td><td>项目好评率</td><td>≥ 95%</td><td>需求方对交付项目的满意度</td></tr>
+  <tr><td>争议率</td><td>≤ 3%</td><td>需要仲裁的项目占比</td></tr>
+</table>
+
+<div style="text-align:center;padding:60px 0 20px;color:var(--text2);font-size:13px;">
+  <p>— 文档结束 —</p>
+  <p>生花AI创意平台 · 产品设计文档 V1.2</p>
+  <p>© 2026 帧游计科技 · 机密文件 · 仅供内部使用</p>
+</div>
+
+</div><!-- /content -->
+</div><!-- /doc -->
+</body>
+</html>

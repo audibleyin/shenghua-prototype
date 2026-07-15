@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI短剧合作发布会 · 朵朵校友圈 × 海创院</title>
+<style>
+/* ================================================================
+   AI短剧合作发布会 · 深色科幻风海报
+   朵朵校友圈 × 浙江省海创科技交流研究院
+   ================================================================ */
+:root {
+  /* —— 深色科幻底色 —— */
+  --bg-deep: #050810;
+  --bg-dark: #0A0E1A;
+  --bg-card: rgba(15, 22, 42, 0.6);
+
+  /* —— 霓虹光效色系 —— */
+  --neon-cyan: #00E5FF;
+  --neon-cyan-soft: rgba(0, 229, 255, 0.15);
+  --neon-magenta: #FF2D92;
+  --neon-magenta-soft: rgba(255, 45, 146, 0.15);
+  --neon-gold: #FFB800;
+  --neon-gold-soft: rgba(255, 184, 0, 0.12);
+  --brand-red: #E53E3E;
+
+  /* —— 文字色系 —— */
+  --text: #F0F4FF;
+  --text-secondary: #8892B0;
+  --text-muted: #5A6378;
+
+  /* —— 渐变 —— */
+  --grad-title: linear-gradient(135deg, #00E5FF 0%, #A78BFA 40%, #FF2D92 100%);
+  --grad-cyan: linear-gradient(135deg, #00E5FF 0%, #0099FF 100%);
+  --grad-magenta: linear-gradient(135deg, #FF2D92 0%, #C026D3 100%);
+  --grad-gold: linear-gradient(135deg, #FFB800 0%, #FF6B00 100%);
+  --grad-btn: linear-gradient(135deg, #00E5FF 0%, #5B6CFF 50%, #FF2D92 100%);
+
+  /* —— 玻璃拟态 —— */
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(20px);
+
+  /* —— 尺寸 —— */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ================================================================
+   海报容器 — A3竖版比例 (420mm × 297mm → 竖版 297×420)
+   实际使用 max-width 适配屏幕展示
+   ================================================================ */
+.poster {
+  position: relative;
+  width: 100%;
+  max-width: 842px; /* A3宽 @96dpi */
+  min-height: 1191px; /* A3高 @96dpi */
+  margin: 0 auto;
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+/* —— 深色背景渐变网格 —— */
+.poster::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(0, 229, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, rgba(255, 45, 146, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 70%, rgba(167, 139, 250, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 100%, rgba(0, 153, 255, 0.06) 0%, transparent 50%);
+  z-index: 0;
+}
+
+/* —— 故事板网格背景 —— */
+.poster::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+}
+
+.poster > * { position: relative; z-index: 2; }
+
+/* ================================================================
+   胶片帧装饰条 — 顶部 & 底部
+   ================================================================ */
+.film-strip {
+  position: absolute;
+  left: 0; right: 0;
+  height: 24px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: linear-gradient(90deg,
+    rgba(0,229,255,0.06) 0%,
+    rgba(255,45,146,0.06) 50%,
+    rgba(0,229,255,0.06) 100%);
+}
+.film-strip.top { top: 0; }
+.film-strip.bottom { bottom: 0; }
+
+.film-strip::before, .film-strip::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+}
+.film-strip.top::before { top: 0; background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent); }
+.film-strip.top::after { bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); }
+.film-strip.bottom::before { top: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); }
+.film-strip.bottom::after { bottom: 0; background: linear-gradient(90deg, transparent, var(--neon-magenta), transparent); }
+
+.film-hole {
+  width: 14px;
+  height: 10px;
+  margin: 0 6px;
+  border-radius: 2px;
+  background: var(--bg-deep);
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.15);
+}
+
+/* ================================================================
+   顶部品牌栏
+   ================================================================ */
+.brand-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 48px 20px;
+  gap: 24px;
+}
+
+.partner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.partner.left { text-align: right; align-items: flex-end; }
+.partner.right { text-align: left; align-items: flex-start; }
+
+.partner .name {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+.partner .en {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.partner.left .name { background: var(--grad-cyan); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.partner.right .name { background: var(--grad-magenta); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* —— × 联合标识 —— */
+.co-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+.co-mark::before {
+  content: '';
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,255,0.12) 0%, transparent 70%);
+  top: -10px;
+}
+.co-mark .x {
+  font-size: 24px;
+  font-weight: 200;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+}
+.co-mark .label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* ================================================================
+   Hero 主标题区
+   ================================================================ */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 16px 48px 28px;
+}
+
+/* —— AI信号波纹装饰 —— */
+.hero .signal-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  height: 160px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 0 40px rgba(0, 229, 255, 0.03),
+              0 0 0 80px rgba(255, 45, 146, 0.02);
+  pointer-events: none;
+}
+.hero .signal-wave::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 45, 146, 0.06);
+}
+
+/* —— 顶部标签 —— */
+.hero .badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--neon-cyan);
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  margin-bottom: 20px;
+}
+
+/* —— 主标题 —— */
+.hero h1 {
+  font-size: 72px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  line-height: 1.1;
+  background: var(--grad-title);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 60px rgba(0, 229, 255, 0.2);
+  margin-bottom: 8px;
+}
+
+.hero .tagline {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 6px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* —— 副标题 —— */
+.hero .subtitle {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text);
+  position: relative;
+  display: inline-block;
+}
+.hero .subtitle::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  margin: 14px auto 0;
+  border-radius: 2px;
+  background: var(--grad-cyan);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+}
+
+/* ================================================================
+   时间 & 地点
+   ================================================================ */
+.datetime {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 4px 48px 28px;
+}
+
+.dt-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dt-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dt-icon.cal {
+  background: linear-gradient(135deg, rgba(0,229,255,0.15), rgba(0,229,255,0.05));
+  border: 1px solid rgba(0,229,255,0.2);
+}
+.dt-icon.loc {
+  background: linear-gradient(135deg, rgba(255,45,146,0.15), rgba(255,45,146,0.05));
+  border: 1px solid rgba(255,45,146,0.2);
+}
+.dt-icon svg { width: 14px; height: 14px; }
+
+.dt-text { display: flex; flex-direction: column; gap: 1px; }
+.dt-text .val { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: 1px; }
+.dt-text .lbl { font-size: 9px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; }
+
+.dt-sep {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+/* ================================================================
+   区块通用标题
+   ================================================================ */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 48px;
+  margin-bottom: 20px;
+}
+.section-head .bar {
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.section-head .bar.cyan { background: var(--grad-cyan); box-shadow: 0 0 8px rgba(0,229,255,0.3); }
+.section-head .bar.magenta { background: var(--grad-magenta); box-shadow: 0 0 8px rgba(255,45,146,0.3); }
+.section-head .bar.gold { background: var(--grad-gold); box-shadow: 0 0 8px rgba(255,184,0,0.3); }
+.section-head .title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+.section-head .en {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-left: auto;
+}
+
+/* ================================================================
+   行业数据卡片
+   ================================================================ */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 0 48px;
+  margin-bottom: 28px;
+}
+
+.data-card {
+  position: relative;
+  padding: 18px 14px 16px;
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+/* 顶部霓虹线 */
+.data-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.data-card:nth-child(1)::before { background: var(--grad-cyan); box-shadow: 0 0 8px rgba(0,229,255,0.4); }
+.data-card:nth-child(2)::before { background: var(--grad-magenta); box-shadow: 0 0 8px rgba(255,45,146,0.4); }
+.data-card:nth-child(3)::before { background: var(--grad-gold); box-shadow: 0 0 8px rgba(255,184,0,0.4); }
+.data-card:nth-child(4)::before { background: linear-gradient(135deg, #00E5FF, #FF2D92); box-shadow: 0 0 8px rgba(167,139,250,0.4); }
+
+/* 角标装饰 — 分镜格 */
+.data-card::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.data-card .value {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+.data-card:nth-child(1) .value { color: var(--neon-cyan); }
+.data-card:nth-child(2) .value { color: var(--neon-magenta); }
+.data-card:nth-child(3) .value { color: var(--neon-gold); }
+.data-card:nth-child(4) .value {
+  background: var(--grad-title);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.data-card .label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.data-card .sub {
+  font-size: 8.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* —— 行业描述文字 —— */
+.industry-desc {
+  padding: 0 48px;
+  margin-bottom: 24px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+.industry-desc .highlight {
+  color: var(--neon-cyan);
+  font-weight: 600;
+}
+
+/* ================================================================
+   集训营亮点 — 双列布局
+   ================================================================ */
+.training-section {
+  padding: 0 48px;
+  margin-bottom: 28px;
+}
+
+.training-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.training-col {
+  position: relative;
+  padding: 20px 20px 16px;
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+}
+
+/* 分镜格角标 */
+.training-col::before {
+  content: '';
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 20px; height: 20px;
+  border-top: 1px solid rgba(0,229,255,0.2);
+  border-right: 1px solid rgba(0,229,255,0.2);
+}
+
+.training-col .col-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.training-col .col-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.training-col .col-icon svg { width: 14px; height: 14px; }
+.training-col.left .col-icon {
+  background: linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.05));
+  border: 1px solid rgba(0,229,255,0.2);
+}
+.training-col.right .col-icon {
+  background: linear-gradient(135deg, rgba(255,45,146,0.2), rgba(255,45,146,0.05));
+  border: 1px solid rgba(255,45,146,0.2);
+}
+.training-col .col-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+.training-col .col-meta {
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-left: auto;
+}
+
+/* 亮点条目 */
+.highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.highlight-item:last-child { margin-bottom: 0; }
+
+.h-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.training-col.left .h-dot {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 6px rgba(0,229,255,0.5);
+}
+.training-col.right .h-dot {
+  background: var(--neon-magenta);
+  box-shadow: 0 0 6px rgba(255,45,146,0.5);
+}
+
+.h-content { flex: 1; }
+.h-content .h-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.h-content .h-desc {
+  font-size: 9px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* 底部强调条 */
+.training-banner {
+  margin-top: 14px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg,
+    rgba(0,229,255,0.08) 0%,
+    rgba(167,139,250,0.08) 50%,
+    rgba(255,45,146,0.08) 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  text-align: center;
+}
+.training-banner .text {
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--grad-title);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
+/* ================================================================
+   合作价值 — 三卡片
+   ================================================================ */
+.value-section {
+  padding: 0 48px;
+  margin-bottom: 28px;
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.value-card {
+  position: relative;
+  padding: 18px 16px 16px;
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  text-align: center;
+}
+
+/* 顶部装饰条 */
+.value-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.value-card:nth-child(1)::before { background: var(--grad-cyan); }
+.value-card:nth-child(2)::before { background: linear-gradient(135deg, #A78BFA, #FF2D92); }
+.value-card:nth-child(3)::before { background: var(--grad-gold); }
+
+/* 角装饰 */
+.value-card::after {
+  content: '';
+  position: absolute;
+  bottom: 10px; left: 10px;
+  width: 14px; height: 14px;
+  border-left: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.value-card .num {
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 6px;
+  line-height: 1;
+}
+.value-card:nth-child(1) .num { color: var(--neon-cyan); }
+.value-card:nth-child(2) .num {
+  background: linear-gradient(135deg, #A78BFA, #FF2D92);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.value-card:nth-child(3) .num { color: var(--neon-gold); }
+
+.value-card .v-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.value-card .v-desc {
+  font-size: 9px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ================================================================
+   底部CTA + 信息
+   ================================================================ */
+.cta-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 48px 40px;
+}
+
+.cta-left { flex: 1; }
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  border-radius: var(--radius);
+  background: var(--grad-btn);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(0, 229, 255, 0.2),
+              0 4px 16px rgba(255, 45, 146, 0.15);
+  margin-bottom: 14px;
+}
+.cta-btn svg { width: 16px; height: 16px; }
+
+.cta-info {
+  font-size: 9px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+}
+.cta-info .org { color: var(--text-secondary); font-weight: 600; }
+
+/* 二维码占位 */
+.qr-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.qr-box {
+  width: 80px; height: 80px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+/* QR码网格模拟 */
+.qr-box::before {
+  content: '';
+  position: absolute;
+  top: 8px; left: 8px; right: 8px; bottom: 8px;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+/* QR定位角 */
+.qr-box::after {
+  content: '';
+  position: absolute;
+  top: 10px; left: 10px;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(0,229,255,0.4);
+  border-radius: 3px;
+}
+.qr-label {
+  font-size: 8px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ================================================================
+   数字粒子流装饰 (CSS纯图形)
+   ================================================================ */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+.p1 { top: 120px; left: 8%; width: 4px; height: 4px; background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+.p2 { top: 180px; right: 10%; width: 3px; height: 3px; background: var(--neon-magenta); box-shadow: 0 0 6px var(--neon-magenta); }
+.p3 { top: 240px; left: 15%; width: 2px; height: 2px; background: var(--neon-gold); box-shadow: 0 0 4px var(--neon-gold); }
+.p4 { top: 320px; right: 8%; width: 4px; height: 4px; background: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
+.p5 { top: 80px; right: 25%; width: 2px; height: 2px; background: rgba(255,255,255,0.3); }
+
+/* —— AI生成波纹线条 —— */
+.ai-wave {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.15;
+}
+.ai-wave svg { display: block; }
+
+/* ================================================================
+   响应式
+   ================================================================ */
+@media (max-width: 842px) {
+  .poster { border-radius: 0; }
+  .hero h1 { font-size: 48px; }
+  .data-grid { grid-template-columns: repeat(2, 1fr); }
+  .training-grid { grid-template-columns: 1fr; }
+  .value-grid { grid-template-columns: 1fr; }
+  .brand-bar, .hero, .datetime, .data-grid, .training-section,
+  .value-section, .cta-section, .section-head, .industry-desc {
+    padding-left: 24px; padding-right: 24px;
+  }
+  .cta-section { flex-direction: column; align-items: center; text-align: center; }
+}
+
+@media print {
+  body { background: var(--bg-deep); }
+  .poster { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     海报主体
+     ============================================================ -->
+<div class="poster">
+
+  <!-- 胶片帧装饰条 - 顶部 -->
+  <div class="film-strip top">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+
+  <!-- 数字粒子装饰 -->
+  <div class="particle p1"></div>
+  <div class="particle p2"></div>
+  <div class="particle p3"></div>
+  <div class="particle p4"></div>
+  <div class="particle p5"></div>
+
+  <!-- AI波纹装饰 -->
+  <div class="ai-wave" style="top:100px;left:0;width:200px;">
+    <svg viewBox="0 0 200 60" fill="none">
+      <path d="M0,30 Q25,10 50,30 T100,30 T150,30 T200,30" stroke="#00E5FF" stroke-width="1" opacity="0.4"/>
+      <path d="M0,35 Q25,15 50,35 T100,35 T150,35 T200,35" stroke="#FF2D92" stroke-width="1" opacity="0.3"/>
+    </svg>
+  </div>
+  <div class="ai-wave" style="top:200px;right:0;width:180px;transform:scaleX(-1);">
+    <svg viewBox="0 0 180 50" fill="none">
+      <path d="M0,25 Q30,5 60,25 T120,25 T180,25" stroke="#A78BFA" stroke-width="1" opacity="0.4"/>
+      <path d="M0,30 Q30,10 60,30 T120,30 T180,30" stroke="#00E5FF" stroke-width="1" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <!-- ============================================================
+       顶部品牌栏
+       ============================================================ -->
+  <div class="brand-bar">
+    <div class="partner left">
+      <div class="name">朵朵校友圈</div>
+      <div class="en">DuoDuo Alumni Circle</div>
+    </div>
+    <div class="co-mark">
+      <div class="x">×</div>
+      <div class="label">联合主办</div>
+    </div>
+    <div class="partner right">
+      <div class="name">浙江省海创科技交流研究院</div>
+      <div class="en">ZHSCI · Haichuang Institute</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       Hero 主标题区
+       ============================================================ -->
+  <div class="hero">
+    <div class="signal-wave"></div>
+    <div class="badge">2026 AI 短剧行业战略合作 · 联合发布会</div>
+    <h1>AI 短剧</h1>
+    <div class="tagline">产教融合 · 人才破局 · 共创未来</div>
+    <div class="subtitle">AIGC 短剧人才孵化计划 &amp; 行业生态发布会</div>
+  </div>
+
+  <!-- ============================================================
+       时间 & 地点
+       ============================================================ -->
+  <div class="datetime">
+    <div class="dt-item">
+      <div class="dt-icon cal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </div>
+      <div class="dt-text">
+        <div class="val">2026.07.21</div>
+        <div class="lbl">Date</div>
+      </div>
+    </div>
+    <div class="dt-sep"></div>
+    <div class="dt-item">
+      <div class="dt-icon loc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FF2D92" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <div class="dt-text">
+        <div class="val">杭州 · 西湖科学咖啡馆</div>
+        <div class="lbl">Venue · 浙江大学紫金港校区</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       行业数据卡片
+       ============================================================ -->
+  <div class="section-head">
+    <div class="bar cyan"></div>
+    <div class="title">行业背景与市场机遇</div>
+    <div class="en">Market Insight</div>
+  </div>
+
+  <div class="data-grid">
+    <div class="data-card">
+      <div class="value">300亿+</div>
+      <div class="label">2026 AI短剧市场规模</div>
+      <div class="sub">年增长率超 180%</div>
+    </div>
+    <div class="data-card">
+      <div class="value">50万+</div>
+      <div class="label">AI短剧人才缺口</div>
+      <div class="sub">生成师 / 导演 / 编剧等</div>
+    </div>
+    <div class="data-card">
+      <div class="value">8亿+</div>
+      <div class="label">短剧用户覆盖</div>
+      <div class="sub">抖音 / 红果 / 快手等</div>
+    </div>
+    <div class="data-card">
+      <div class="value">10天</div>
+      <div class="label">零基础 → 独立成片</div>
+      <div class="sub">5天集训 + 5天实训</div>
+    </div>
+  </div>
+
+  <div class="industry-desc">
+    AI 正在重塑短剧产业全链路——从<span class="highlight">剧本创作</span>、<span class="highlight">分镜设计</span>、<span class="highlight">视频生成</span>到<span class="highlight">后期剪辑</span>。
+    行业面临 50 万级人才缺口，具备「AI 工具能力 + 影视创作思维」的复合型人才极度稀缺。
+    朵朵校友圈联合海创院，推出 AIGC 短剧人才孵化计划，填补行业人才缺口。
+  </div>
+
+  <!-- ============================================================
+       集训营亮点
+       ============================================================ -->
+  <div class="section-head">
+    <div class="bar magenta"></div>
+    <div class="title">AIGC 短剧集训营 · 核心亮点</div>
+    <div class="en">Training Program</div>
+  </div>
+
+  <div class="training-section">
+    <div class="training-grid">
+      <!-- 左列：5天集中培训 -->
+      <div class="training-col left">
+        <div class="col-head">
+          <div class="col-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2">
+              <path d="M2 3h20v14H2z"/>
+              <path d="M8 21h8M12 17v4"/>
+            </svg>
+          </div>
+          <div class="col-title">5 天集中培训</div>
+          <div class="col-meta">30 课时</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">编剧核心</div>
+            <div class="h-desc">爆款短剧结构 · 3秒钩子 + 1集3反转 · AI适配剧本简化写法</div>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">导演实战</div>
+            <div class="h-desc">分镜头设计 · 景别/角度/运动 · 分镜转 AI 提示词技巧</div>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">AI 生成师核心</div>
+            <div class="h-desc">Pika / 即梦 文生视频精控 · 光影风格镜头语言 · 镜头衔接连贯</div>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">数字人 & 音频</div>
+            <div class="h-desc">HeyGen 数字人驱动 · AI配音多音色 · 音效BGM自动生成</div>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">全流程实操</div>
+            <div class="h-desc">剧本→分镜→AI生成→剪辑→1分钟完整短剧成片</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右列：5天项目实训 -->
+      <div class="training-col right">
+        <div class="col-head">
+          <div class="col-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#FF2D92" stroke-width="2">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          <div class="col-title">5 天项目实训</div>
+          <div class="col-meta">小组实战</div>
+        </div>
+
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">选题与剧本创作</div>
+            <div class="h-desc">项目选题申报 · 5集完整剧本大纲 · 适配 AI 生成的剧本调整</div>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">分镜头 & 提示词</div>
+            <div class="h-desc">50+镜头分镜脚本 · 核心镜头 AI 提示词 · 生成难度评估</div>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">AI 素材批量生成</div>
+            <div class="h-desc">人物/场景/动作全素材 · 数字人 · 配音音效 · 质量优化</div>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">剪辑与后期制作</div>
+            <div class="h-desc">5集初版成片 · 封面海报设计 · 节奏调色音效精修</div>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="h-dot"></div>
+          <div class="h-content">
+            <div class="h-title">路演评比</div>
+            <div class="h-desc">最终成片提交 · 项目路演 PPT · 优秀作品评选与推荐</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="training-banner">
+      <div class="text">★  10 天完成「从零基础到独立制作 AIGC 短剧」的完整蜕变  ★</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       合作价值
+       ============================================================ -->
+  <div class="section-head">
+    <div class="bar gold"></div>
+    <div class="title">合作价值与学员权益</div>
+    <div class="en">Core Value</div>
+  </div>
+
+  <div class="value-section">
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="num">01</div>
+        <div class="v-title">产教融合</div>
+        <div class="v-desc">海创院科研背书 + 朵朵校友圈实战平台<br>打通「学→练→产」完整闭环</div>
+      </div>
+      <div class="value-card">
+        <div class="num">02</div>
+        <div class="v-title">人才认证</div>
+        <div class="v-desc">培训考核通过即获行业等级认证<br>进入人才库 · 对接真实商业项目</div>
+      </div>
+      <div class="value-card">
+        <div class="num">03</div>
+        <div class="v-title">就业出口</div>
+        <div class="v-desc">结业即对接平台商单<br>优秀作品推荐至主流短剧平台</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       底部 CTA + 二维码
+       ============================================================ -->
+  <div class="cta-section">
+    <div class="cta-left">
+      <button class="cta-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        立即报名 · 席位有限
+      </button>
+      <div class="cta-info">
+        <div><span class="org">主办方：</span>朵朵校友圈 · 浙江省海创科技交流研究院</div>
+        <div><span class="org">合作咨询：</span>西湖科学咖啡馆（浙江大学紫金港校区南门）</div>
+        <div><span class="org">适合人群：</span>创作者 / 转行从业者 / 大学生 / 短剧爱好者</div>
+      </div>
+    </div>
+    <div class="qr-area">
+      <div class="qr-box"></div>
+      <div class="qr-label">扫码预约</div>
+    </div>
+  </div>
+
+  <!-- 胶片帧装饰条 - 底部 -->
+  <div class="film-strip bottom">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+
+</div>
+
+</body>
+</html>
