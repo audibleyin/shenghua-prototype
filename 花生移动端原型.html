@@ -1,0 +1,2614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="light">
+<title>花生 · AI短剧数据查询工具</title>
+<style>
+/* ========== 品牌变量 ========== */
+:root{
+  --red:#E53E3E; --red-l:#F87171; --grad:linear-gradient(135deg,#E53E3E,#F87171);
+  --bg:#FFFFFF; --warm:#FFF5F5; --warm2:#FAF5FF; --warm3:#F0FFF4; --warm4:#FFFAF0;
+  --ink:#1A202C; --ink2:#4A5568; --ink3:#718096; --line:#E2E8F0;
+  --r:16px; --r-s:10px; --r-l:24px;
+  --sh:0 4px 24px rgba(229,62,62,.08); --sh-l:0 2px 12px rgba(229,62,62,.06);
+  --blue:#3182CE; --blue-l:#63B3ED;
+  --green:#38A169; --green-l:#68D391;
+  --purple:#805AD5; --purple-l:#B794F4;
+  --orange:#DD6B20; --orange-l:#F6AD55;
+  --teal:#319795; --teal-l:#4FD1C5;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#F7F7FA;color:var(--ink);line-height:1.7;font-size:14px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ========== CSS图标系统 ========== */
+.ico{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:-1px}
+.ico-lg{width:44px;height:44px;border-radius:12px;font-size:18px}
+.ico-sm{width:22px;height:22px;border-radius:6px;font-size:10px}
+.ico-red{background:linear-gradient(135deg,var(--red),var(--red-l))}
+.ico-blue{background:linear-gradient(135deg,var(--blue),var(--blue-l))}
+.ico-green{background:linear-gradient(135deg,var(--green),var(--green-l))}
+.ico-purple{background:linear-gradient(135deg,var(--purple),var(--purple-l))}
+.ico-orange{background:linear-gradient(135deg,var(--orange),var(--orange-l))}
+.ico-teal{background:linear-gradient(135deg,var(--teal),var(--teal-l))}
+.brand-mark{display:inline-block;vertical-align:middle}
+
+/* ========== App容器 ========== */
+.app{max-width:430px;margin:0 auto;background:var(--bg);min-height:100vh;position:relative;box-shadow:0 0 40px rgba(0,0,0,.06)}
+
+/* ========== 顶部导航栏 ========== */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(229,62,62,.08);padding:calc(10px + var(--safe-top)) 16px 10px}
+.topbar-inner{display:flex;align-items:center;gap:8px}
+.topbar-brand{display:flex;align-items:center;gap:6px;font-weight:800;font-size:16px;flex-shrink:0}
+.topbar-brand .brand-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.topbar-search{flex:1;display:flex;align-items:center;gap:6px;background:var(--warm);border:1px solid rgba(229,62,62,.1);border-radius:20px;padding:7px 14px;font-size:12.5px;color:var(--ink3)}
+.topbar-search .ico{width:18px;height:18px;font-size:9px;border-radius:5px}
+.topbar-search .placeholder{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-search .ai-tag{font-size:10px;color:var(--red);font-weight:700;background:rgba(229,62,62,.08);padding:2px 6px;border-radius:4px;flex-shrink:0}
+
+/* ========== 页面容器 ========== */
+.page{display:none;min-height:calc(100vh - 56px);padding-bottom:calc(80px + var(--safe-bottom))}
+.page.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ========== 卡片 ========== */
+.card{background:#fff;border-radius:var(--r);padding:16px;box-shadow:var(--sh-l);margin:0 16px 12px}
+.card-flat{background:#fff;border-radius:var(--r);padding:16px;margin:0 16px 12px;border:1px solid var(--line)}
+.card-title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;margin-bottom:12px}
+.card-title .ico{width:24px;height:24px;font-size:11px;border-radius:7px}
+.card-title .more{margin-left:auto;font-size:12px;color:var(--ink3);font-weight:500}
+
+/* ========== 区块标题 ========== */
+.sec-title{display:flex;align-items:center;gap:8px;padding:0 16px;margin:20px 0 12px;font-size:17px;font-weight:800}
+.sec-title .text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent);margin-left:4px}
+.sec-title .ico{width:26px;height:26px;font-size:11px;border-radius:8px}
+
+/* ========== 首页 - 大盘数据 ========== */
+.dashboard{margin:0 16px 12px;background:linear-gradient(135deg,var(--red),var(--red-l));border-radius:var(--r);padding:20px 16px;color:#fff;position:relative;overflow:hidden}
+.dashboard::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1)}
+.dashboard::after{content:'';position:absolute;bottom:-40px;left:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.08)}
+.dashboard-label{font-size:12px;opacity:.85;margin-bottom:12px;position:relative;z-index:1}
+.dashboard-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;position:relative;z-index:1}
+.dashboard-item{text-align:center}
+.dashboard-item .val{font-size:22px;font-weight:900;letter-spacing:-.5px}
+.dashboard-item .val .unit{font-size:13px;font-weight:600;opacity:.85}
+.dashboard-item .label{font-size:11px;opacity:.75;margin-top:2px}
+.dashboard-item .trend{font-size:11px;margin-top:2px;font-weight:600}
+.dashboard-trend-up{color:#B7F0C0}
+.dashboard-trend-down{color:#FED7D7}
+
+/* ========== 快捷筛选标签 ========== */
+.quick-tags{display:flex;gap:8px;overflow-x:auto;padding:0 16px 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.quick-tags::-webkit-scrollbar{display:none}
+.qtag{display:flex;align-items:center;gap:4px;padding:6px 14px;border-radius:20px;font-size:12.5px;font-weight:600;white-space:nowrap;flex-shrink:0;border:1.5px solid var(--line);background:#fff;color:var(--ink2);transition:all .2s}
+.qtag.active{border-color:var(--red);background:var(--warm);color:var(--red)}
+.qtag .ico{width:18px;height:18px;font-size:9px;border-radius:5px}
+
+/* ========== 榜单列表 ========== */
+.rank-list{padding:0 16px}
+.rank-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.rank-item:last-child{border-bottom:none}
+.rank-num{width:28px;text-align:center;font-size:18px;font-weight:900;flex-shrink:0}
+.rank-num.top1{color:var(--red)}
+.rank-num.top2{color:var(--orange)}
+.rank-num.top3{color:var(--blue)}
+.rank-num.other{color:var(--ink3);font-size:15px}
+.rank-cover{width:48px;height:64px;border-radius:8px;flex-shrink:0;overflow:hidden;background:var(--warm)}
+.rank-cover .cover-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--red)}
+.rank-info{flex:1;min-width:0}
+.rank-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.rank-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:3px}
+.rank-tag{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600}
+.tag-red{background:rgba(229,62,62,.08);color:var(--red)}
+.tag-blue{background:rgba(49,130,206,.08);color:var(--blue)}
+.tag-green{background:rgba(56,161,105,.08);color:var(--green)}
+.tag-purple{background:rgba(128,90,213,.08);color:var(--purple)}
+.tag-orange{background:rgba(221,107,32,.08);color:var(--orange)}
+.tag-teal{background:rgba(49,151,149,.08);color:var(--teal)}
+.rank-meta{font-size:11px;color:var(--ink3);display:flex;gap:8px}
+.rank-heat{text-align:right;flex-shrink:0}
+.rank-heat .val{font-size:16px;font-weight:800;color:var(--red)}
+.rank-heat .label{font-size:10px;color:var(--ink3)}
+.rank-arrow{color:var(--ink3);font-size:14px;flex-shrink:0}
+
+/* ========== 筛选条 ========== */
+.filter-bar{display:flex;gap:6px;padding:12px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.filter-bar::-webkit-scrollbar{display:none}
+.filter-tab{padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0;border:1.5px solid var(--line);background:#fff;color:var(--ink2)}
+.filter-tab.active{border-color:var(--red);background:var(--grad);color:#fff}
+.filter-row{display:flex;gap:6px;padding:0 16px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-chip{padding:5px 12px;border-radius:16px;font-size:11.5px;font-weight:500;white-space:nowrap;flex-shrink:0;background:var(--warm);color:var(--ink2)}
+.filter-chip.active{background:var(--red);color:#fff}
+
+/* ========== 播放趋势图表 ========== */
+.chart-area{padding:12px 0}
+.chart-bars{display:flex;align-items:flex-end;gap:3px;height:80px;padding:0 4px}
+.chart-bar{flex:1;border-radius:3px 3px 0 0;background:var(--grad);opacity:.75;min-height:4px;position:relative;transition:opacity .2s}
+.chart-bar:hover{opacity:1}
+.chart-labels{display:flex;justify-content:space-between;padding:6px 4px 0;font-size:9px;color:var(--ink3)}
+.chart-legend{display:flex;gap:12px;justify-content:center;margin-top:8px;font-size:11px;color:var(--ink3)}
+.chart-legend .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:middle}
+
+/* ========== AI程度评级 ========== */
+.ai-level{display:flex;gap:6px;margin:8px 0}
+.ai-level-item{flex:1;text-align:center;padding:10px 6px;border-radius:10px;border:1.5px solid var(--line);font-size:11px;color:var(--ink3);font-weight:600}
+.ai-level-item.active{border-color:var(--purple);background:rgba(128,90,213,.06);color:var(--purple)}
+.ai-level-item .ico{margin:0 auto 4px;width:24px;height:24px;font-size:11px;border-radius:7px}
+
+/* ========== 详情信息行 ========== */
+.info-row{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.info-row:last-child{border-bottom:none}
+.info-label{font-size:13px;color:var(--ink3);min-width:80px;flex-shrink:0}
+.info-value{font-size:13px;font-weight:600;text-align:right;flex:1}
+.info-value .tag{margin-left:4px}
+
+/* ========== 对比卡片 ========== */
+.compare-card{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--r-s);background:var(--warm);margin-bottom:8px}
+.compare-info{flex:1;min-width:0}
+.compare-name{font-size:13px;font-weight:700;margin-bottom:2px}
+.compare-meta{font-size:11px;color:var(--ink3)}
+.compare-heat{text-align:right;flex-shrink:0}
+.compare-heat .val{font-size:15px;font-weight:800;color:var(--red)}
+.compare-heat .label{font-size:10px;color:var(--ink3)}
+
+/* ========== 趋势 - 占比环形图 ========== */
+.donut-wrap{display:flex;align-items:center;gap:16px;padding:8px 0}
+.donut{width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--red) 0% 18.3%,var(--line) 18.3% 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.donut-inner{width:72px;height:72px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut-inner .pct{font-size:20px;font-weight:900;color:var(--red)}
+.donut-inner .label{font-size:10px;color:var(--ink3)}
+.donut-legend{flex:1}
+.donut-legend-item{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px}
+.donut-legend-item .dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.donut-legend-item .label{color:var(--ink2);flex:1}
+.donut-legend-item .val{font-weight:700}
+
+/* ========== 趋势预测 ========== */
+.predict-card{background:linear-gradient(135deg,rgba(56,161,105,.08),rgba(104,211,145,.04));border:1px solid rgba(56,161,105,.15);border-radius:var(--r);padding:16px;margin:0 16px 12px}
+.predict-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--green);margin-bottom:10px}
+.predict-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px dashed rgba(56,161,105,.15)}
+.predict-item:last-child{border-bottom:none}
+.predict-item .name{font-size:13px;font-weight:600;flex:1}
+.predict-item .arrow{font-size:12px;color:var(--green);font-weight:700}
+.predict-item .pct{font-size:13px;font-weight:800;color:var(--green)}
+
+/* ========== 报告列表 ========== */
+.report-item{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--r);background:#fff;border:1px solid var(--line);margin-bottom:10px;transition:all .2s}
+.report-item:active{background:var(--warm)}
+.report-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0}
+.report-info{flex:1;min-width:0}
+.report-title{font-size:14px;font-weight:700;margin-bottom:3px}
+.report-desc{font-size:11.5px;color:var(--ink3);line-height:1.5}
+.report-date{font-size:11px;color:var(--ink3);margin-top:2px}
+.report-arrow{color:var(--ink3);font-size:16px;flex-shrink:0}
+
+/* ========== 人才页面 ========== */
+.talent-page-header{background:linear-gradient(135deg,var(--purple),var(--purple-l));padding:calc(20px + var(--safe-top)) 20px 20px;color:#fff;position:relative;overflow:hidden}
+.talent-page-header::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.08)}
+.talent-page-header .title{font-size:22px;font-weight:800;margin-bottom:4px;position:relative;z-index:1}
+.talent-page-header .sub{font-size:12px;opacity:.8;position:relative;z-index:1}
+.talent-count{font-size:12px;color:var(--ink3);padding:0 16px;margin-bottom:8px}
+.talent-count strong{color:var(--purple)}
+
+/* ========== 我的页面 ========== */
+.profile-header{background:var(--grad);padding:calc(24px + var(--safe-top)) 20px 24px;color:#fff;position:relative;overflow:hidden}
+.profile-header::before{content:'';position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.1)}
+.profile-avatar{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;margin-bottom:12px;position:relative;z-index:1}
+.profile-name{font-size:18px;font-weight:800;margin-bottom:4px;position:relative;z-index:1}
+.profile-tag{font-size:12px;opacity:.85;position:relative;z-index:1}
+.profile-menu{padding:0 16px;margin-top:16px}
+.profile-menu-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.profile-menu-item:last-child{border-bottom:none}
+.profile-menu-item .ico{width:32px;height:32px;font-size:13px;border-radius:9px}
+.profile-menu-item .label{flex:1;font-size:14px;font-weight:600}
+.profile-menu-item .arrow{color:var(--ink3);font-size:14px}
+
+/* ========== 底部导航 ========== */
+.tabbar{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;z-index:200;background:rgba(255,255,255,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(229,62,62,.08);display:flex;padding-bottom:var(--safe-bottom)}
+.tabbar-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 0 6px;cursor:pointer;transition:all .2s}
+.tabbar-icon{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink3);background:var(--line);transition:all .2s}
+.tabbar-label{font-size:10px;color:var(--ink3);font-weight:600}
+.tabbar-item.active .tabbar-icon{background:var(--grad);color:#fff}
+.tabbar-item.active .tabbar-label{color:var(--red)}
+
+/* ========== 搜索页 ========== */
+.search-page{position:fixed;top:0;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;background:#fff;z-index:300;display:none;flex-direction:column}
+.search-page.active{display:flex}
+.search-page-header{display:flex;align-items:center;gap:10px;padding:calc(12px + var(--safe-top)) 16px 12px;border-bottom:1px solid var(--line)}
+.search-input-wrap{flex:1;display:flex;align-items:center;gap:8px;background:var(--warm);border:1.5px solid rgba(229,62,62,.12);border-radius:22px;padding:9px 16px}
+.search-input-wrap .ico{width:20px;height:20px;font-size:10px;border-radius:6px}
+.search-input{flex:1;border:none;background:none;outline:none;font-size:14px;color:var(--ink)}
+.search-input::placeholder{color:var(--ink3)}
+.search-cancel{font-size:14px;color:var(--red);font-weight:600;flex-shrink:0}
+.search-body{flex:1;overflow-y:auto;padding:16px}
+.search-suggest-title{font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:10px}
+.search-suggest-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--r-s);background:var(--warm);margin-bottom:8px}
+.search-suggest-item .ico{width:28px;height:28px;font-size:12px;border-radius:8px}
+.search-suggest-item .text{font-size:13px;color:var(--ink2);flex:1}
+.search-suggest-item .text strong{color:var(--red)}
+.search-hot-title{font-size:13px;font-weight:700;color:var(--ink2);margin:20px 0 10px}
+.search-hot-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.search-hot-item:last-child{border-bottom:none}
+.search-hot-num{width:20px;font-size:14px;font-weight:800;color:var(--ink3);text-align:center;flex-shrink:0}
+.search-hot-item:nth-child(1) .search-hot-num{color:var(--red)}
+.search-hot-item:nth-child(2) .search-hot-num{color:var(--orange)}
+.search-hot-item:nth-child(3) .search-hot-num{color:var(--blue)}
+.search-hot-name{font-size:13px;font-weight:600;flex:1}
+.search-hot-heat{font-size:11px;color:var(--ink3)}
+
+/* ========== 杂项 ========== */
+.note{padding:12px 14px;border-radius:var(--r-s);background:var(--warm);border-left:3px solid var(--red);font-size:12px;color:var(--ink2);line-height:1.6;margin:0 16px 12px}
+.hl{color:var(--red);font-weight:600}
+.hl-blue{color:var(--blue);font-weight:600}
+.hl-green{color:var(--green);font-weight:600}
+.hl-purple{color:var(--purple);font-weight:600}
+.mt{margin-top:12px}
+.divider{height:1px;background:var(--line);margin:12px 0}
+.btn-grad{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 24px;border-radius:22px;background:var(--grad);color:#fff;font-size:13px;font-weight:700;border:none;box-shadow:0 4px 16px rgba(229,62,62,.25)}
+.empty{text-align:center;padding:40px 20px;color:var(--ink3);font-size:13px}
+.cover-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+
+/* ========== 人才库 ========== */
+.talent-hero{margin:0 16px 12px;background:linear-gradient(135deg,var(--purple),var(--purple-l));border-radius:var(--r);padding:20px 16px;color:#fff;position:relative;overflow:hidden;cursor:pointer}
+.talent-hero::before{content:'';position:absolute;top:-20px;right:-10px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.1)}
+.talent-hero::after{content:'';position:absolute;bottom:-20px;left:40%;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.08)}
+.talent-hero-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;position:relative;z-index:1;margin-top:12px}
+.talent-hero-item{text-align:center}
+.talent-hero-item .val{font-size:20px;font-weight:900}
+.talent-hero-item .label{font-size:11px;opacity:.8;margin-top:2px}
+
+.talent-list-card{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--r);background:#fff;border:1px solid var(--line);margin-bottom:10px;transition:all .2s}
+.talent-list-card:active{background:var(--warm)}
+.talent-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
+.talent-avatar-sm{width:40px;height:40px;font-size:16px}
+.talent-info{flex:1;min-width:0}
+.talent-name{font-size:14px;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.talent-role{font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;background:rgba(128,90,213,.1);color:var(--purple)}
+.talent-meta{font-size:11px;color:var(--ink3);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap}
+.talent-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.talent-tag{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600;background:var(--warm);color:var(--ink2)}
+.talent-tag-blue{background:rgba(49,130,206,.08);color:var(--blue)}
+.talent-tag-red{background:rgba(229,62,62,.08);color:var(--red)}
+.talent-tag-green{background:rgba(56,161,105,.08);color:var(--green)}
+.talent-tag-purple{background:rgba(128,90,213,.08);color:var(--purple)}
+.talent-tag-orange{background:rgba(221,107,32,.08);color:var(--orange)}
+.talent-tag-teal{background:rgba(49,151,149,.08);color:var(--teal)}
+.talent-arrow{color:var(--ink3);font-size:14px;flex-shrink:0}
+
+/* 人才详情 */
+.talent-detail-header{background:linear-gradient(135deg,var(--purple),var(--purple-l));padding:32px 20px 24px;color:#fff;text-align:center;position:relative;overflow:hidden}
+.talent-detail-header::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.08)}
+.talent-detail-header .talent-avatar{width:72px;height:72px;font-size:28px;margin:0 auto 12px;border:3px solid rgba(255,255,255,.3)}
+.talent-detail-header .talent-name{font-size:20px;font-weight:800;justify-content:center;color:#fff}
+.talent-detail-header .talent-role{display:inline-block;margin-top:4px;background:rgba(255,255,255,.15);color:#fff}
+.talent-detail-header .talent-meta{justify-content:center;color:rgba(255,255,255,.75);margin-top:6px}
+.talent-stats{display:flex;gap:0;background:#fff;border-radius:var(--r);margin:-16px 16px 12px;box-shadow:var(--sh);position:relative;z-index:2;overflow:hidden}
+.talent-stats-item{flex:1;text-align:center;padding:14px 8px;border-right:1px solid var(--line)}
+.talent-stats-item:last-child{border-right:none}
+.talent-stats-item .val{font-size:18px;font-weight:900;color:var(--purple)}
+.talent-stats-item .label{font-size:10px;color:var(--ink3);margin-top:2px}
+.talent-section-title{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.talent-section-title .ico{width:22px;height:22px;font-size:10px;border-radius:6px}
+.talent-desc{font-size:12.5px;color:var(--ink2);line-height:1.8;padding:4px 0}
+.talent-contact-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.talent-contact-item:last-child{border-bottom:none}
+.talent-contact-item .label{color:var(--ink3);min-width:60px}
+.talent-contact-item .val{font-weight:600;flex:1}
+.talent-contact-item .ico{width:24px;height:24px;font-size:10px;border-radius:6px}
+
+.talent-works-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r-s);background:var(--warm);margin-bottom:8px}
+.talent-works-item .works-cover{width:36px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0}
+.talent-works-item .works-info{flex:1;min-width:0}
+.talent-works-item .works-name{font-size:13px;font-weight:600}
+.talent-works-item .works-meta{font-size:11px;color:var(--ink3);margin-top:2px}
+.talent-works-item .works-heat{font-size:13px;font-weight:700;color:var(--red);text-align:right;flex-shrink:0}
+
+/* ========== 题材排行条 ========== */
+.genre-bar-item{margin-bottom:14px}
+.genre-bar-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.genre-bar-name{font-size:13px;font-weight:700;flex:1}
+.genre-bar-val{font-size:12px;font-weight:700;color:var(--red)}
+.genre-bar-track{height:8px;border-radius:4px;background:var(--warm);overflow:hidden}
+.genre-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+
+/* ========== Toast通知 ========== */
+.toast-wrap{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;pointer-events:none}
+.toast{background:rgba(26,32,44,.92);color:#fff;padding:14px 24px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;align-items:center;gap:8px;max-width:300px;text-align:center;opacity:0;transform:translateY(10px) scale(.95);transition:all .25s ease}
+.toast.show{opacity:1;transform:translateY(0) scale(1)}
+.toast .ico{width:24px;height:24px;font-size:11px;border-radius:7px}
+
+/* ========== 报告详情页 ========== */
+.report-detail-header{margin:0 16px 12px;background:linear-gradient(135deg,var(--purple),var(--purple-l));border-radius:var(--r);padding:20px 16px;color:#fff;position:relative;overflow:hidden}
+.report-detail-header.report-type-month{background:linear-gradient(135deg,var(--red),var(--red-l))}
+.report-detail-header::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1)}
+.report-detail-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,.2);margin-bottom:10px;position:relative;z-index:1}
+.report-detail-title{font-size:20px;font-weight:900;margin-bottom:6px;position:relative;z-index:1;line-height:1.4}
+.report-detail-date{font-size:12px;opacity:.85;position:relative;z-index:1}
+.report-section-title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;margin-bottom:10px}
+.report-section-title .ico{width:24px;height:24px;font-size:11px;border-radius:7px}
+.report-highlight{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.report-highlight-item{background:var(--warm);border-radius:var(--r-s);padding:12px;text-align:center}
+.report-highlight-item .val{font-size:20px;font-weight:900;color:var(--red)}
+.report-highlight-item .label{font-size:11px;color:var(--ink3);margin-top:2px}
+.report-chart-placeholder{height:120px;border-radius:var(--r-s);background:linear-gradient(135deg,var(--warm),#fff);border:1.5px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--ink3);font-size:12px}
+.report-chart-placeholder .ico{width:36px;height:36px;font-size:15px;border-radius:10px}
+.report-content{font-size:13px;color:var(--ink2);line-height:1.85}
+.report-content p{margin-bottom:10px}
+.report-content strong{color:var(--ink)}
+.report-toc{background:var(--warm);border-radius:var(--r-s);padding:12px 16px;margin-bottom:12px}
+.report-toc-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;color:var(--ink2);border-bottom:1px solid rgba(229,62,62,.06)}
+.report-toc-item:last-child{border-bottom:none}
+.report-toc-item .num{width:20px;height:20px;border-radius:6px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+
+/* ========== 简单列表页(收藏/历史等) ========== */
+.simple-page-header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:10}
+.simple-page-header .back-btn{font-size:20px;color:var(--ink2);cursor:pointer}
+.simple-page-header .title{font-size:15px;font-weight:700}
+.simple-list-item{display:flex;align-items:center;gap:12px;padding:14px;margin:0 16px 10px;border-radius:var(--r);background:#fff;border:1px solid var(--line);transition:all .2s}
+.simple-list-item:active{background:var(--warm)}
+.simple-list-item .item-cover{width:48px;height:64px;border-radius:8px;flex-shrink:0;overflow:hidden}
+.simple-list-item .item-info{flex:1;min-width:0}
+.simple-list-item .item-name{font-size:14px;font-weight:700;margin-bottom:3px}
+.simple-list-item .item-meta{font-size:11px;color:var(--ink3)}
+.simple-list-item .item-val{font-size:15px;font-weight:800;color:var(--red);flex-shrink:0}
+
+/* ========== 制作方人员条目 ========== */
+.crew-section-label{font-size:13px;font-weight:700;color:var(--ink2);margin:12px 0 8px;display:flex;align-items:center;gap:6px}
+.crew-section-label .ico{width:20px;height:20px;font-size:9px;border-radius:5px}
+.crew-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--r-s);background:var(--warm);margin-bottom:6px;cursor:pointer;transition:all .15s}
+.crew-item:active{background:rgba(229,62,62,.08)}
+.crew-item .avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
+.crew-item .info{flex:1;min-width:0}
+.crew-item .name{font-size:13px;font-weight:700}
+.crew-item .meta{font-size:11px;color:var(--ink3);margin-top:1px}
+.crew-item .role-badge{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600;white-space:nowrap}
+.crew-item .arrow{color:var(--ink3);font-size:12px;flex-shrink:0}
+
+/* ========== 按钮反馈态 ========== */
+.btn-grad.added{background:linear-gradient(135deg,var(--green),var(--green-l));box-shadow:0 4px 16px rgba(56,161,105,.25)}
+.badge-individual{display:inline-flex;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;background:rgba(49,130,206,.1);color:var(--blue)}
+</style>
+</head>
+<body>
+
+<!-- ========== Toast通知容器 ========== -->
+<div class="toast-wrap" id="toast-wrap">
+  <div class="toast" id="toast-el">
+    <span class="ico ico-red" id="toast-ico">提</span>
+    <span id="toast-msg">提示</span>
+  </div>
+</div>
+
+<!-- ========== SVG品牌Logo定义 ========== -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <linearGradient id="shGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E53E3E"/>
+      <stop offset="100%" stop-color="#F87171"/>
+    </linearGradient>
+    <symbol id="shBloom" viewBox="0 0 48 48">
+      <g transform="translate(24,24)">
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(60)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(120)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(240)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(300)"/>
+        <circle cx="0" cy="0" r="5.5" fill="#FFFFFF"/>
+        <path d="M0,-4 L1,-1 L4,0 L1,1 L0,4 L-1,1 L-4,0 L-1,-1 Z" fill="#E53E3E"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="app">
+
+<!-- ========== 顶部搜索栏 ========== -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand" onclick="goHome()" style="cursor:pointer">
+      <svg class="brand-mark" width="26" height="26"><use href="#shBloom"/></svg>
+      <span class="brand-text">花生</span>
+    </div>
+    <div class="topbar-search" onclick="openSearch()">
+      <span class="ico ico-red ico-sm">搜</span>
+      <span class="placeholder">搜索AI短剧剧名、制作方、AI工具…</span>
+      <span class="ai-tag">AI</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 首页 ========== -->
+<div class="page active" id="page-home">
+  <!-- 大盘数据 -->
+  <div style="padding:16px 0 0">
+    <div class="dashboard">
+      <div class="dashboard-label">AI短剧大盘数据 · 2026.07.15</div>
+      <div class="dashboard-grid">
+        <div class="dashboard-item">
+          <div class="val">1,247<span class="unit">部</span></div>
+          <div class="label">今日AI短剧总量</div>
+        </div>
+        <div class="dashboard-item">
+          <div class="val">18.3<span class="unit">%</span></div>
+          <div class="label">AI短剧占比</div>
+        </div>
+        <div class="dashboard-item">
+          <div class="val">+12<span class="unit">%</span></div>
+          <div class="label">较昨日</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 快捷筛选标签 -->
+  <div class="quick-tags">
+    <div class="qtag active"><span class="ico ico-red ico-sm">全</span>全部</div>
+    <div class="qtag"><span class="ico ico-red ico-sm">甜</span>甜宠</div>
+    <div class="qtag"><span class="ico ico-blue ico-sm">重</span>重生</div>
+    <div class="qtag"><span class="ico ico-green ico-sm">悬</span>悬疑</div>
+    <div class="qtag"><span class="ico ico-purple ico-sm">科</span>科幻</div>
+    <div class="qtag"><span class="ico ico-orange ico-sm">复</span>复仇</div>
+    <div class="qtag"><span class="ico ico-teal ico-sm">战</span>战神</div>
+  </div>
+
+  <!-- 今日热度榜 TOP5 -->
+  <div class="sec-title">
+    <span class="ico ico-red">榜</span>
+    <span class="text">今日热度榜 TOP5</span>
+  </div>
+  <div class="card">
+    <div class="rank-list">
+      <div class="rank-item" onclick="goDetail('重生之AI霸总')">
+        <div class="rank-num top1">1</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">霸总</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI霸总</div>
+          <div class="rank-tags">
+            <span class="rank-tag tag-red">甜宠</span>
+            <span class="rank-tag tag-purple">全AI生成</span>
+          </div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑12%</span></div>
+        </div>
+        <div class="rank-heat">
+          <div class="val">423万</div>
+          <div class="label">热度</div>
+        </div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI甜宠日记')">
+        <div class="rank-num top2">2</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">甜宠</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI甜宠日记</div>
+          <div class="rank-tags">
+            <span class="rank-tag tag-red">甜宠</span>
+            <span class="rank-tag tag-purple">半AI</span>
+          </div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑8%</span></div>
+        </div>
+        <div class="rank-heat">
+          <div class="val">387万</div>
+          <div class="label">热度</div>
+        </div>
+      </div>
+      <div class="rank-item" onclick="goDetail('赛博重生')">
+        <div class="rank-num top3">3</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">赛博</div></div>
+        <div class="rank-info">
+          <div class="rank-name">赛博重生</div>
+          <div class="rank-tags">
+            <span class="rank-tag tag-purple">科幻</span>
+            <span class="rank-tag tag-green">全AI生成</span>
+          </div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑15%</span></div>
+        </div>
+        <div class="rank-heat">
+          <div class="val">351万</div>
+          <div class="label">热度</div>
+        </div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI复仇女王')">
+        <div class="rank-num other">4</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">复仇</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI复仇女王</div>
+          <div class="rank-tags">
+            <span class="rank-tag tag-orange">复仇</span>
+            <span class="rank-tag tag-blue">半AI</span>
+          </div>
+          <div class="rank-meta"><span>小程序</span><span>可灵</span><span style="color:var(--red)">↓3%</span></div>
+        </div>
+        <div class="rank-heat">
+          <div class="val">298万</div>
+          <div class="label">热度</div>
+        </div>
+      </div>
+      <div class="rank-item" onclick="goDetail('战神归来AI版')">
+        <div class="rank-num other">5</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#319795,#4FD1C5)">战神</div></div>
+        <div class="rank-info">
+          <div class="rank-name">战神归来AI版</div>
+          <div class="rank-tags">
+            <span class="rank-tag tag-teal">战神</span>
+            <span class="rank-tag tag-purple">全AI生成</span>
+          </div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑6%</span></div>
+        </div>
+        <div class="rank-heat">
+          <div class="val">265万</div>
+          <div class="label">热度</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn-grad" onclick="switchPage('page-rank')" style="width:100%">查看完整榜单</button>
+    </div>
+  </div>
+
+  <!-- AI工具热度 -->
+  <div class="sec-title">
+    <span class="ico ico-blue">具</span>
+    <span class="text">AI工具热度</span>
+  </div>
+  <div class="card">
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-blue ico-sm">可</span>
+        <span class="genre-bar-name">可灵 (视频生成)</span>
+        <span class="genre-bar-val">42%</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:42%;background:linear-gradient(90deg,#3182CE,#63B3ED)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-purple ico-sm">S</span>
+        <span class="genre-bar-name">Sora (视频生成)</span>
+        <span class="genre-bar-val">28%</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:28%;background:linear-gradient(90deg,#805AD5,#B794F4)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-green ico-sm">R</span>
+        <span class="genre-bar-name">Runway (视频生成)</span>
+        <span class="genre-bar-val">18%</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:18%;background:linear-gradient(90deg,#38A169,#68D391)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-orange ico-sm">G</span>
+        <span class="genre-bar-name">GPT (剧本生成)</span>
+        <span class="genre-bar-val">12%</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:12%;background:linear-gradient(90deg,#DD6B20,#F6AD55)"></div></div>
+    </div>
+  </div>
+
+  <!-- 人才库入口 -->
+  <div class="sec-title">
+    <span class="ico ico-purple">才</span>
+    <span class="text">行业人才库</span>
+  </div>
+  <div class="talent-hero" onclick="switchPage('page-talent')">
+    <div style="font-size:15px;font-weight:800;position:relative;z-index:1">寻找AI短剧行业合作伙伴</div>
+    <div style="font-size:12px;opacity:.8;margin-top:4px;position:relative;z-index:1">发现导演、制作人、AI生成师、编剧等专业人才</div>
+    <div class="talent-hero-grid">
+      <div class="talent-hero-item"><div class="val">1,280+</div><div class="label">注册人才</div></div>
+      <div class="talent-hero-item"><div class="val">8</div><div class="label">角色分类</div></div>
+      <div class="talent-hero-item"><div class="val">56%</div><div class="label">本月活跃</div></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>自然语言查询：</strong>试试输入 <span class="hl">"最近7天甜宠题材AI短剧"</span> 或 <span class="hl">"用可灵制作的复仇题材"</span>，AI助手帮你精准定位。
+  </div>
+</div>
+
+<!-- ========== 热度榜单页 ========== -->
+<div class="page" id="page-rank">
+  <div class="filter-bar">
+    <div class="filter-tab active" onclick="switchRankTab(this)">日榜</div>
+    <div class="filter-tab" onclick="switchRankTab(this)">周榜</div>
+    <div class="filter-tab" onclick="switchRankTab(this)">月榜</div>
+    <div class="filter-tab" onclick="switchRankTab(this)">新晋榜</div>
+    <div class="filter-tab" onclick="switchRankTab(this)">飙升榜</div>
+  </div>
+  <div class="filter-row" id="platform-filter">
+    <div class="filter-chip active" onclick="switchChip(this)">全部平台</div>
+    <div class="filter-chip" onclick="switchChip(this)">抖音</div>
+    <div class="filter-chip" onclick="switchChip(this)">快手</div>
+    <div class="filter-chip" onclick="switchChip(this)">微信小程序</div>
+    <div class="filter-chip" onclick="switchChip(this)">小红书</div>
+  </div>
+  <div class="filter-row" id="genre-filter">
+    <div class="filter-chip active" onclick="switchChip(this)">全部题材</div>
+    <div class="filter-chip" onclick="switchChip(this)">甜宠</div>
+    <div class="filter-chip" onclick="switchChip(this)">重生</div>
+    <div class="filter-chip" onclick="switchChip(this)">悬疑</div>
+    <div class="filter-chip" onclick="switchChip(this)">科幻</div>
+    <div class="filter-chip" onclick="switchChip(this)">复仇</div>
+    <div class="filter-chip" onclick="switchChip(this)">战神</div>
+  </div>
+  <div class="filter-row" id="tool-filter">
+    <div class="filter-chip active" onclick="switchChip(this)">全部AI工具</div>
+    <div class="filter-chip" onclick="switchChip(this)">可灵</div>
+    <div class="filter-chip" onclick="switchChip(this)">Sora</div>
+    <div class="filter-chip" onclick="switchChip(this)">Runway</div>
+    <div class="filter-chip" onclick="switchChip(this)">GPT</div>
+  </div>
+
+  <div class="sec-title">
+    <span class="ico ico-blue">榜</span>
+    <span class="text" id="rank-title">日榜 · AI短剧热度排行</span>
+  </div>
+
+  <div class="card" id="rank-card">
+    <!-- 日榜 -->
+    <div class="rank-list rank-tab-content" id="rank-day">
+      <div class="rank-item" onclick="goDetail('重生之AI霸总')">
+        <div class="rank-num top1">1</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">霸总</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI霸总</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑12%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">423万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI甜宠日记')">
+        <div class="rank-num top2">2</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">甜宠</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI甜宠日记</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑8%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">387万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('赛博重生')">
+        <div class="rank-num top3">3</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">赛博</div></div>
+        <div class="rank-info">
+          <div class="rank-name">赛博重生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑15%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">351万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI复仇女王')">
+        <div class="rank-num other">4</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">复仇</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI复仇女王</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵</span><span style="color:var(--red)">↓3%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">298万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('战神归来AI版')">
+        <div class="rank-num other">5</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#319795,#4FD1C5)">战神</div></div>
+        <div class="rank-info">
+          <div class="rank-name">战神归来AI版</div>
+          <div class="rank-tags"><span class="rank-tag tag-teal">战神</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑6%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">265万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI悬案追踪')">
+        <div class="rank-num other">6</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#38A169,#68D391)">悬案</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI悬案追踪</div>
+          <div class="rank-tags"><span class="rank-tag tag-green">悬疑</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑22%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">231万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('重生之AI修仙')">
+        <div class="rank-num other">7</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">修仙</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI修仙</div>
+          <div class="rank-tags"><span class="rank-tag tag-blue">重生</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑9%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">198万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('甜心AI管家')">
+        <div class="rank-num other">8</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">甜心</div></div>
+        <div class="rank-info">
+          <div class="rank-name">甜心AI管家</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小红书</span><span>可灵</span><span style="color:var(--red)">↓5%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">176万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI末日求生')">
+        <div class="rank-num other">9</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">末日</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI末日求生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑18%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">154万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('霸总AI替身')">
+        <div class="rank-num other">10</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">替身</div></div>
+        <div class="rank-info">
+          <div class="rank-name">霸总AI替身</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵+GPT</span><span style="color:var(--green)">↑4%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">132万</div><div class="label">热度</div></div>
+      </div>
+    </div>
+
+    <!-- 周榜 -->
+    <div class="rank-list rank-tab-content" id="rank-week" style="display:none">
+      <div class="rank-item" onclick="goDetail('赛博重生')">
+        <div class="rank-num top1">1</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">赛博</div></div>
+        <div class="rank-info">
+          <div class="rank-name">赛博重生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑28%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">2,431万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('重生之AI霸总')">
+        <div class="rank-num top2">2</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">霸总</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI霸总</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑15%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">2,158万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI悬案追踪')">
+        <div class="rank-num top3">3</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#38A169,#68D391)">悬案</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI悬案追踪</div>
+          <div class="rank-tags"><span class="rank-tag tag-green">悬疑</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑45%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">1,876万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI甜宠日记')">
+        <div class="rank-num other">4</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">甜宠</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI甜宠日记</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑5%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">1,654万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI末日求生')">
+        <div class="rank-num other">5</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">末日</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI末日求生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑32%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">1,432万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('重生之AI修仙')">
+        <div class="rank-num other">6</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">修仙</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI修仙</div>
+          <div class="rank-tags"><span class="rank-tag tag-blue">重生</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑12%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">1,245万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI复仇女王')">
+        <div class="rank-num other">7</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">复仇</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI复仇女王</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵</span><span style="color:var(--red)">↓2%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">1,023万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('战神归来AI版')">
+        <div class="rank-num other">8</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#319795,#4FD1C5)">战神</div></div>
+        <div class="rank-info">
+          <div class="rank-name">战神归来AI版</div>
+          <div class="rank-tags"><span class="rank-tag tag-teal">战神</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑8%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">876万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('甜心AI管家')">
+        <div class="rank-num other">9</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">甜心</div></div>
+        <div class="rank-info">
+          <div class="rank-name">甜心AI管家</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小红书</span><span>可灵</span><span style="color:var(--red)">↓8%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">654万</div><div class="label">周热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('霸总AI替身')">
+        <div class="rank-num other">10</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">替身</div></div>
+        <div class="rank-info">
+          <div class="rank-name">霸总AI替身</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵+GPT</span><span style="color:var(--green)">↑6%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">523万</div><div class="label">周热度</div></div>
+      </div>
+    </div>
+
+    <!-- 月榜 -->
+    <div class="rank-list rank-tab-content" id="rank-month" style="display:none">
+      <div class="rank-item" onclick="goDetail('重生之AI霸总')">
+        <div class="rank-num top1">1</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">霸总</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI霸总</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑18%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">8,920万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI甜宠日记')">
+        <div class="rank-num top2">2</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">甜宠</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI甜宠日记</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑10%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">7,680万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('赛博重生')">
+        <div class="rank-num top3">3</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">赛博</div></div>
+        <div class="rank-info">
+          <div class="rank-name">赛博重生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑35%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">5,320万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI悬案追踪')">
+        <div class="rank-num other">4</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#38A169,#68D391)">悬案</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI悬案追踪</div>
+          <div class="rank-tags"><span class="rank-tag tag-green">悬疑</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑52%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">4,210万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI复仇女王')">
+        <div class="rank-num other">5</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">复仇</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI复仇女王</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵</span><span style="color:var(--green)">↑5%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">3,980万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('战神归来AI版')">
+        <div class="rank-num other">6</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#319795,#4FD1C5)">战神</div></div>
+        <div class="rank-info">
+          <div class="rank-name">战神归来AI版</div>
+          <div class="rank-tags"><span class="rank-tag tag-teal">战神</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑9%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">3,450万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('重生之AI修仙')">
+        <div class="rank-num other">7</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">修仙</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI修仙</div>
+          <div class="rank-tags"><span class="rank-tag tag-blue">重生</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑14%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">2,980万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI末日求生')">
+        <div class="rank-num other">8</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">末日</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI末日求生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑42%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">2,540万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('甜心AI管家')">
+        <div class="rank-num other">9</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">甜心</div></div>
+        <div class="rank-info">
+          <div class="rank-name">甜心AI管家</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小红书</span><span>可灵</span><span style="color:var(--red)">↓6%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">1,890万</div><div class="label">月热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('霸总AI替身')">
+        <div class="rank-num other">10</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">替身</div></div>
+        <div class="rank-info">
+          <div class="rank-name">霸总AI替身</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵+GPT</span><span style="color:var(--green)">↑7%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">1,560万</div><div class="label">月热度</div></div>
+      </div>
+    </div>
+
+    <!-- 新晋榜 -->
+    <div class="rank-list rank-tab-content" id="rank-new" style="display:none">
+      <div class="rank-item" onclick="goDetail('AI悬案追踪')">
+        <div class="rank-num top1">1</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#38A169,#68D391)">悬案</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI悬案追踪</div>
+          <div class="rank-tags"><span class="rank-tag tag-green">悬疑</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">231万</div><div class="label">上线3天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI末日求生')">
+        <div class="rank-num top2">2</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">末日</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI末日求生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">154万</div><div class="label">上线5天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI科幻纪元')">
+        <div class="rank-num top3">3</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">纪元</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI科幻纪元</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">98万</div><div class="label">上线2天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI甜宠萌妻')">
+        <div class="rank-num other">4</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">萌妻</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI甜宠萌妻</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">76万</div><div class="label">上线4天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI重生之逆袭')">
+        <div class="rank-num other">5</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#319795,#4FD1C5)">逆袭</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI重生之逆袭</div>
+          <div class="rank-tags"><span class="rank-tag tag-blue">重生</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">65万</div><div class="label">上线3天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI总裁的替身')">
+        <div class="rank-num other">6</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">总裁</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI总裁的替身</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">52万</div><div class="label">上线6天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI萌宠日记')">
+        <div class="rank-num other">7</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">萌宠</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI萌宠日记</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小红书</span><span>GPT</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">43万</div><div class="label">上线2天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI战神归来2')">
+        <div class="rank-num other">8</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#319795,#4FD1C5)">战神</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI战神归来2</div>
+          <div class="rank-tags"><span class="rank-tag tag-teal">战神</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">38万</div><div class="label">上线1天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI悬疑之夜')">
+        <div class="rank-num other">9</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#38A169,#68D391)">悬夜</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI悬疑之夜</div>
+          <div class="rank-tags"><span class="rank-tag tag-green">悬疑</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>快手</span><span>Sora</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">31万</div><div class="label">上线3天</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI修仙归来')">
+        <div class="rank-num other">10</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">修仙</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI修仙归来</div>
+          <div class="rank-tags"><span class="rank-tag tag-blue">重生</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">NEW</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">25万</div><div class="label">上线4天</div></div>
+      </div>
+    </div>
+
+    <!-- 飙升榜 -->
+    <div class="rank-list rank-tab-content" id="rank-surge" style="display:none">
+      <div class="rank-item" onclick="goDetail('AI悬案追踪')">
+        <div class="rank-num top1">1</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#38A169,#68D391)">悬案</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI悬案追踪</div>
+          <div class="rank-tags"><span class="rank-tag tag-green">悬疑</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑89%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">231万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI末日求生')">
+        <div class="rank-num top2">2</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">末日</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI末日求生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑67%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">154万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('赛博重生')">
+        <div class="rank-num top3">3</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED)">赛博</div></div>
+        <div class="rank-info">
+          <div class="rank-name">赛博重生</div>
+          <div class="rank-tags"><span class="rank-tag tag-purple">科幻</span><span class="rank-tag tag-green">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>Sora</span><span style="color:var(--green)">↑45%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">351万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('重生之AI修仙')">
+        <div class="rank-num other">4</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">修仙</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI修仙</div>
+          <div class="rank-tags"><span class="rank-tag tag-blue">重生</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑38%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">198万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('重生之AI霸总')">
+        <div class="rank-num other">5</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">霸总</div></div>
+        <div class="rank-info">
+          <div class="rank-name">重生之AI霸总</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑22%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">423万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI甜宠日记')">
+        <div class="rank-num other">6</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4)">甜宠</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI甜宠日记</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>快手</span><span>Runway</span><span style="color:var(--green)">↑18%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">387万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('战神归来AI版')">
+        <div class="rank-num other">7</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#319795,#4FD1C5)">战神</div></div>
+        <div class="rank-info">
+          <div class="rank-name">战神归来AI版</div>
+          <div class="rank-tags"><span class="rank-tag tag-teal">战神</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>抖音</span><span>可灵+GPT</span><span style="color:var(--green)">↑15%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">265万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('AI复仇女王')">
+        <div class="rank-num other">8</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">复仇</div></div>
+        <div class="rank-info">
+          <div class="rank-name">AI复仇女王</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵</span><span style="color:var(--green)">↑12%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">298万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('霸总AI替身')">
+        <div class="rank-num other">9</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55)">替身</div></div>
+        <div class="rank-info">
+          <div class="rank-name">霸总AI替身</div>
+          <div class="rank-tags"><span class="rank-tag tag-orange">复仇</span><span class="rank-tag tag-purple">全AI生成</span></div>
+          <div class="rank-meta"><span>小程序</span><span>可灵+GPT</span><span style="color:var(--green)">↑9%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">132万</div><div class="label">热度</div></div>
+      </div>
+      <div class="rank-item" onclick="goDetail('甜心AI管家')">
+        <div class="rank-num other">10</div>
+        <div class="rank-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171)">甜心</div></div>
+        <div class="rank-info">
+          <div class="rank-name">甜心AI管家</div>
+          <div class="rank-tags"><span class="rank-tag tag-red">甜宠</span><span class="rank-tag tag-blue">半AI</span></div>
+          <div class="rank-meta"><span>小红书</span><span>可灵</span><span style="color:var(--green)">↑6%</span></div>
+        </div>
+        <div class="rank-heat"><div class="val">176万</div><div class="label">热度</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 短剧详情页 ========== -->
+<div class="page" id="page-detail">
+  <!-- 返回栏 -->
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)">
+    <span onclick="goBack()" style="font-size:20px;color:var(--ink2);cursor:pointer">‹</span>
+    <span style="font-size:15px;font-weight:700" id="detail-title">重生之AI霸总</span>
+    <span class="ico ico-red ico-sm" style="margin-left:auto">藏</span>
+  </div>
+
+  <!-- 基本信息 -->
+  <div class="card">
+    <div style="display:flex;gap:12px;margin-bottom:12px">
+      <div style="width:80px;height:106px;border-radius:10px;overflow:hidden;flex-shrink:0">
+        <div class="cover-placeholder" style="width:100%;height:100%;background:linear-gradient(135deg,#E53E3E,#F87171);font-size:12px">重生之<br>AI霸总</div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:17px;font-weight:800;margin-bottom:4px">重生之AI霸总</div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
+          <span class="rank-tag tag-red">甜宠</span>
+          <span class="rank-tag tag-purple">全AI生成</span>
+          <span class="rank-tag tag-blue">抖音</span>
+        </div>
+        <div style="font-size:12px;color:var(--ink3);line-height:1.6">
+          上线时间：2026-07-01<br>
+          集数：25集 · 每集约2分钟<br>
+          制作方：<span style="color:var(--purple);font-weight:700;cursor:pointer" id="detail-producer-link" onclick="goTalentDetail('AI Studio')">@AI Studio</span> <span class="rank-tag tag-red" id="detail-producer-tag" style="font-size:9px">制作团队</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-grad" style="flex:1" onclick="showToast('原型演示：播放功能，该功能将在正式版上线','red','播')">▶ 播放预览</button>
+      <button style="flex:1;padding:10px;border-radius:22px;background:var(--warm);color:var(--red);font-size:13px;font-weight:700;border:1.5px solid rgba(229,62,62,.15)" onclick="toggleCompare(this)">加入对比</button>
+    </div>
+  </div>
+
+  <!-- 制作方信息 -->
+  <div class="sec-title">
+    <span class="ico ico-orange">制</span>
+    <span class="text">制作方信息</span>
+  </div>
+  <div class="card" id="drama-crew-section">
+    <div id="drama-studio-area"></div>
+    <div id="drama-members-area"></div>
+  </div>
+
+  <!-- 核心数据 -->
+  <div class="sec-title">
+    <span class="ico ico-red">数</span>
+    <span class="text">核心数据</span>
+  </div>
+  <div class="card">
+    <div class="info-row"><span class="info-label">总播放量</span><span class="info-value hl">423万</span></div>
+    <div class="info-row"><span class="info-label">完播率</span><span class="info-value hl-green">68%</span></div>
+    <div class="info-row"><span class="info-label">日均播放</span><span class="info-value">30.2万/天</span></div>
+    <div class="info-row"><span class="info-label">互动率</span><span class="info-value hl-blue">12.5%</span></div>
+    <div class="info-row"><span class="info-label">当前排名</span><span class="info-value">日榜 <span class="hl">第1名</span></span></div>
+  </div>
+
+  <!-- 播放趋势曲线 -->
+  <div class="sec-title">
+    <span class="ico ico-blue">趋</span>
+    <span class="text">播放量趋势 (近14天)</span>
+  </div>
+  <div class="card">
+    <div class="chart-area">
+      <div class="chart-bars" id="detail-chart">
+        <div class="chart-bar" style="height:20%"></div>
+        <div class="chart-bar" style="height:35%"></div>
+        <div class="chart-bar" style="height:30%"></div>
+        <div class="chart-bar" style="height:50%"></div>
+        <div class="chart-bar" style="height:45%"></div>
+        <div class="chart-bar" style="height:65%"></div>
+        <div class="chart-bar" style="height:80%"></div>
+        <div class="chart-bar" style="height:70%"></div>
+        <div class="chart-bar" style="height:90%"></div>
+        <div class="chart-bar" style="height:85%"></div>
+        <div class="chart-bar" style="height:75%"></div>
+        <div class="chart-bar" style="height:60%"></div>
+        <div class="chart-bar" style="height:50%"></div>
+        <div class="chart-bar" style="height:40%"></div>
+      </div>
+      <div class="chart-labels">
+        <span>7/1</span><span>7/4</span><span>7/7</span><span>7/10</span><span>7/13</span><span>7/15</span>
+      </div>
+    </div>
+    <div class="note" style="margin:12px 0 0">
+      <strong>趋势解读：</strong>上线后第3天进入爆发期，第9天达到峰值（日均45万播放），目前进入稳定期，热度仍保持高位。
+    </div>
+  </div>
+
+  <!-- AI工具明细 -->
+  <div class="sec-title">
+    <span class="ico ico-purple">具</span>
+    <span class="text">AI工具明细</span>
+  </div>
+  <div class="card">
+    <div class="info-row">
+      <span class="info-label">视频生成</span>
+      <span class="info-value"><span class="rank-tag tag-blue">可灵</span> <span class="rank-tag" style="font-size:10px;padding:2px 5px;border-radius:4px;font-weight:600;background:rgba(49,130,206,.08);color:var(--blue)">熟练度92%</span> <span class="rank-tag tag-purple">Sora</span> <span class="rank-tag" style="font-size:10px;padding:2px 5px;border-radius:4px;font-weight:600;background:rgba(128,90,213,.08);color:var(--purple)">熟练度78%</span></span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">剧本生成</span>
+      <span class="info-value"><span class="rank-tag tag-orange">GPT-4</span> <span class="rank-tag" style="font-size:10px;padding:2px 5px;border-radius:4px;font-weight:600;background:rgba(221,107,32,.08);color:var(--orange)">熟练度85%</span></span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">AI配音</span>
+      <span class="info-value"><span class="rank-tag tag-green">ElevenLabs</span> <span class="rank-tag" style="font-size:10px;padding:2px 5px;border-radius:4px;font-weight:600;background:rgba(56,161,105,.08);color:var(--green)">熟练度70%</span></span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">制作成本</span>
+      <span class="info-value">约 <span class="hl">¥8,000-12,000</span></span>
+    </div>
+  </div>
+
+  <!-- AI程度评级 -->
+  <div class="sec-title">
+    <span class="ico ico-purple">级</span>
+    <span class="text">AI程度评级</span>
+  </div>
+  <div class="card">
+    <div class="ai-level">
+      <div class="ai-level-item">
+        <span class="ico ico-blue">辅</span>
+        辅助AI
+      </div>
+      <div class="ai-level-item">
+        <span class="ico ico-orange">半</span>
+        半AI
+      </div>
+      <div class="ai-level-item active">
+        <span class="ico ico-purple">全</span>
+        全AI生成
+      </div>
+    </div>
+    <div class="note" style="margin:12px 0 0;background:rgba(128,90,213,.06);border-left-color:var(--purple)">
+      <strong class="hl-purple">全AI生成</strong>：画面、剧本、配音均由AI工具生成，无真人出镜拍摄。AI生成置信度 <strong class="hl-purple">95%</strong>。
+    </div>
+  </div>
+
+  <!-- 同类对比 -->
+  <div class="sec-title">
+    <span class="ico ico-green">比</span>
+    <span class="text">同类AI短剧对比</span>
+  </div>
+  <div class="card">
+    <div class="compare-card">
+      <div style="width:36px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0">
+        <div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4);font-size:8px">甜宠</div>
+      </div>
+      <div class="compare-info">
+        <div class="compare-name">AI甜宠日记</div>
+        <div class="compare-meta">甜宠 · 半AI · 快手</div>
+      </div>
+      <div class="compare-heat"><div class="val">387万</div><div class="label">热度</div></div>
+    </div>
+    <div class="compare-card">
+      <div style="width:36px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0">
+        <div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171);font-size:8px">甜心</div>
+      </div>
+      <div class="compare-info">
+        <div class="compare-name">甜心AI管家</div>
+        <div class="compare-meta">甜宠 · 半AI · 小红书</div>
+      </div>
+      <div class="compare-heat"><div class="val">176万</div><div class="label">热度</div></div>
+    </div>
+    <div class="compare-card">
+      <div style="width:36px;height:48px;border-radius:6px;overflow:hidden;flex-shrink:0">
+        <div class="cover-placeholder" style="background:linear-gradient(135deg,#DD6B20,#F6AD55);font-size:8px">霸总</div>
+      </div>
+      <div class="compare-info">
+        <div class="compare-name">霸总AI替身</div>
+        <div class="compare-meta">复仇 · 全AI · 小程序</div>
+      </div>
+      <div class="compare-heat"><div class="val">132万</div><div class="label">热度</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 人才库页 ========== -->
+<div class="page" id="page-talent">
+  <div class="talent-page-header">
+    <div class="title">行业人才信息库</div>
+    <div class="sub">发现AI短剧行业的专业创作者与合作伙伴</div>
+  </div>
+
+  <!-- 角色筛选 -->
+  <div class="filter-bar" style="padding-top:12px">
+    <div class="filter-tab active" onclick="switchTalentFilter(this,'all')">全部</div>
+    <div class="filter-tab" onclick="switchTalentFilter(this,'director')">导演</div>
+    <div class="filter-tab" onclick="switchTalentFilter(this,'producer')">制作人</div>
+    <div class="filter-tab" onclick="switchTalentFilter(this,'writer')">编剧</div>
+    <div class="filter-tab" onclick="switchTalentFilter(this,'ai_gen')">AI生成师</div>
+    <div class="filter-tab" onclick="switchTalentFilter(this,'editor')">后期剪辑</div>
+    <div class="filter-tab" onclick="switchTalentFilter(this,'design')">美术设计</div>
+    <div class="filter-tab" onclick="switchTalentFilter(this,'storyboard')">分镜师</div>
+    <div class="filter-tab" onclick="switchTalentFilter(this,'other')">其他</div>
+  </div>
+
+  <!-- 题材筛选 -->
+  <div class="filter-row">
+    <div class="filter-chip active" onclick="switchChip(this)">全部题材</div>
+    <div class="filter-chip" onclick="switchChip(this)">甜宠</div>
+    <div class="filter-chip" onclick="switchChip(this)">重生</div>
+    <div class="filter-chip" onclick="switchChip(this)">悬疑</div>
+    <div class="filter-chip" onclick="switchChip(this)">科幻</div>
+    <div class="filter-chip" onclick="switchChip(this)">复仇</div>
+    <div class="filter-chip" onclick="switchChip(this)">战神</div>
+  </div>
+
+  <!-- AI工具筛选 -->
+  <div class="filter-row">
+    <div class="filter-chip active" onclick="switchChip(this)">全部AI工具</div>
+    <div class="filter-chip" onclick="switchChip(this)">可灵</div>
+    <div class="filter-chip" onclick="switchChip(this)">Sora</div>
+    <div class="filter-chip" onclick="switchChip(this)">Runway</div>
+    <div class="filter-chip" onclick="switchChip(this)">GPT</div>
+    <div class="filter-chip" onclick="switchChip(this)">ElevenLabs</div>
+  </div>
+
+  <div class="talent-count">共 <strong>1,280+</strong> 位AI短剧行业人才</div>
+
+  <div style="padding:0 16px">
+    <!-- 导演 -->
+    <div class="talent-list-card" onclick="goTalentDetail('张明远')">
+      <div class="talent-avatar" style="background:linear-gradient(135deg,var(--red),var(--red-l))">张</div>
+      <div class="talent-info">
+        <div class="talent-name">张明远 <span class="talent-role">导演</span></div>
+        <div class="talent-meta">5年经验 · 8部AI短剧 · 抖音</div>
+        <div class="talent-tags">
+          <span class="talent-tag talent-tag-blue">可灵</span>
+          <span class="talent-tag talent-tag-purple">Sora</span>
+          <span class="talent-tag talent-tag-red">甜宠</span>
+        </div>
+      </div>
+      <span class="talent-arrow">›</span>
+    </div>
+
+    <!-- 制作人 -->
+    <div class="talent-list-card" onclick="goTalentDetail('陈思琪')">
+      <div class="talent-avatar" style="background:linear-gradient(135deg,var(--blue),var(--blue-l))">陈</div>
+      <div class="talent-info">
+        <div class="talent-name">陈思琪 <span class="talent-role">制作人</span></div>
+        <div class="talent-meta">3年经验 · 15部AI短剧 · 全平台</div>
+        <div class="talent-tags">
+          <span class="talent-tag talent-tag-blue">可灵</span>
+          <span class="talent-tag talent-tag-green">Runway</span>
+          <span class="talent-tag talent-tag-teal">科幻</span>
+        </div>
+      </div>
+      <span class="talent-arrow">›</span>
+    </div>
+
+    <!-- AI生成师 -->
+    <div class="talent-list-card" onclick="goTalentDetail('王艺')">
+      <div class="talent-avatar" style="background:linear-gradient(135deg,var(--green),var(--green-l))">王</div>
+      <div class="talent-info">
+        <div class="talent-name">王艺 <span class="talent-role">AI生成师</span></div>
+        <div class="talent-meta">2年经验 · 12部AI短剧 · 可灵/Sora专家</div>
+        <div class="talent-tags">
+          <span class="talent-tag talent-tag-blue">可灵</span>
+          <span class="talent-tag talent-tag-purple">Sora</span>
+          <span class="talent-tag talent-tag-orange">复仇</span>
+        </div>
+      </div>
+      <span class="talent-arrow">›</span>
+    </div>
+
+    <!-- 编剧 -->
+    <div class="talent-list-card" onclick="goTalentDetail('李悠然')">
+      <div class="talent-avatar" style="background:linear-gradient(135deg,var(--orange),var(--orange-l))">李</div>
+      <div class="talent-info">
+        <div class="talent-name">李悠然 <span class="talent-role">编剧</span></div>
+        <div class="talent-meta">4年经验 · 20部短剧 · 擅长AI剧本创作</div>
+        <div class="talent-tags">
+          <span class="talent-tag talent-tag-orange">GPT</span>
+          <span class="talent-tag talent-tag-red">甜宠</span>
+          <span class="talent-tag talent-tag-green">悬疑</span>
+        </div>
+      </div>
+      <span class="talent-arrow">›</span>
+    </div>
+
+    <!-- 后期剪辑 -->
+    <div class="talent-list-card" onclick="goTalentDetail('赵一鸣')">
+      <div class="talent-avatar" style="background:linear-gradient(135deg,var(--teal),var(--teal-l))">赵</div>
+      <div class="talent-info">
+        <div class="talent-name">赵一鸣 <span class="talent-role">后期剪辑师</span></div>
+        <div class="talent-meta">3年经验 · 10部AI短剧 · 精剪/特效</div>
+        <div class="talent-tags">
+          <span class="talent-tag talent-tag-blue">可灵</span>
+          <span class="talent-tag talent-tag-purple">Sora</span>
+          <span class="talent-tag talent-tag-teal">科幻</span>
+        </div>
+      </div>
+      <span class="talent-arrow">›</span>
+    </div>
+
+    <!-- 美术设计 -->
+    <div class="talent-list-card" onclick="goTalentDetail('刘子涵')">
+      <div class="talent-avatar" style="background:linear-gradient(135deg,var(--purple),var(--purple-l))">刘</div>
+      <div class="talent-info">
+        <div class="talent-name">刘子涵 <span class="talent-role">美术设计</span></div>
+        <div class="talent-meta">角色设计 · 场景设计 · UI/海报</div>
+        <div class="talent-tags">
+          <span class="talent-tag talent-tag-red">甜宠</span>
+          <span class="talent-tag talent-tag-purple">科幻</span>
+          <span class="talent-tag talent-tag-blue">海报</span>
+        </div>
+      </div>
+      <span class="talent-arrow">›</span>
+    </div>
+
+    <!-- 分镜师 -->
+    <div class="talent-list-card" onclick="goTalentDetail('周欣')">
+      <div class="talent-avatar" style="background:linear-gradient(135deg,var(--red),var(--purple-l))">周</div>
+      <div class="talent-info">
+        <div class="talent-name">周欣 <span class="talent-role">分镜师</span></div>
+        <div class="talent-meta">静态分镜 · 动态分镜 · 分镜AI化</div>
+        <div class="talent-tags">
+          <span class="talent-tag talent-tag-green">悬疑</span>
+          <span class="talent-tag talent-tag-orange">复仇</span>
+        </div>
+      </div>
+      <span class="talent-arrow">›</span>
+    </div>
+
+    <!-- 运营/投流 -->
+    <div class="talent-list-card" onclick="goTalentDetail('林悦')">
+      <div class="talent-avatar" style="background:linear-gradient(135deg,var(--orange),var(--red-l))">林</div>
+      <div class="talent-info">
+        <div class="talent-name">林悦 <span class="talent-role">运营/投流</span></div>
+        <div class="talent-meta">3年经验 · 投流ROI 2.8 · 全平台</div>
+        <div class="talent-tags">
+          <span class="talent-tag talent-tag-blue">抖音投放</span>
+          <span class="talent-tag talent-tag-red">甜宠</span>
+          <span class="talent-tag talent-tag-purple">数据优化</span>
+        </div>
+      </div>
+      <span class="talent-arrow">›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 人才详情页 ========== -->
+<div class="page" id="page-talent-detail">
+  <!-- 返回栏 -->
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);position:relative;z-index:3">
+    <span onclick="goBack()" style="font-size:20px;color:var(--ink2);cursor:pointer">‹</span>
+    <span style="font-size:15px;font-weight:700" id="talent-detail-name">人才详情</span>
+    <span class="ico ico-teal ico-sm" style="margin-left:auto">关</span>
+  </div>
+  
+  <!-- 头部信息 -->
+  <div class="talent-detail-header" id="talent-detail-header">
+    <div class="talent-avatar" id="talent-detail-avatar" style="background:linear-gradient(135deg,var(--red),var(--red-l))">张</div>
+    <div class="talent-name" id="talent-detail-title">张明远</div>
+    <span class="talent-role" id="talent-detail-role">导演</span>
+    <div class="talent-meta" id="talent-detail-meta">5年经验 · 8部AI短剧 · 抖音</div>
+  </div>
+  
+  <!-- 统计卡片 -->
+  <div class="talent-stats" id="talent-detail-stats">
+    <div class="talent-stats-item"><div class="val">8部</div><div class="label">参与作品</div></div>
+    <div class="talent-stats-item"><div class="val">3.2亿</div><div class="label">累计播放</div></div>
+    <div class="talent-stats-item"><div class="val">92%</div><div class="label">好评率</div></div>
+    <div class="talent-stats-item"><div class="val">42</div><div class="label">合作次数</div></div>
+  </div>
+
+  <!-- 个人简介 -->
+  <div class="card">
+    <div class="talent-section-title">
+      <span class="ico ico-red">简</span>
+      个人简介
+    </div>
+    <div class="talent-desc" id="talent-detail-bio">
+      专注于AI短剧导演，擅长甜宠与科幻题材。自2024年起全面转向AI短剧制作，精通可灵、Sora等主流AI视频生成工具。曾执导《重生之AI霸总》等多部爆款AI短剧，累计播放量超3亿。注重AI创意与叙事节奏的平衡，善于利用AI工具提升制作效率。
+    </div>
+  </div>
+
+  <!-- 代表作品 -->
+  <div class="card">
+    <div class="talent-section-title">
+      <span class="ico ico-blue">作</span>
+      代表作品
+    </div>
+    <div class="talent-works-item" onclick="goDetail('重生之AI霸总')">
+      <div class="works-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#E53E3E,#F87171);font-size:8px">AI霸总</div></div>
+      <div class="works-info">
+        <div class="works-name">重生之AI霸总</div>
+        <div class="works-meta">导演 · 甜宠 · 抖音 · 25集</div>
+      </div>
+      <div class="works-heat">423万</div>
+    </div>
+    <div class="talent-works-item" onclick="goDetail('AI甜宠日记')">
+      <div class="works-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#805AD5,#B794F4);font-size:8px">甜宠</div></div>
+      <div class="works-info">
+        <div class="works-name">AI甜宠日记</div>
+        <div class="works-meta">导演 · 甜宠 · 快手 · 20集</div>
+      </div>
+      <div class="works-heat">387万</div>
+    </div>
+    <div class="talent-works-item" onclick="goDetail('赛博重生')">
+      <div class="works-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,#3182CE,#63B3ED);font-size:8px">赛博</div></div>
+      <div class="works-info">
+        <div class="works-name">赛博重生</div>
+        <div class="works-meta">导演 · 科幻 · 抖音 · 15集</div>
+      </div>
+      <div class="works-heat">351万</div>
+    </div>
+  </div>
+
+  <!-- 擅长AI工具 -->
+  <div class="card">
+    <div class="talent-section-title">
+      <span class="ico ico-purple">具</span>
+      擅长AI工具
+    </div>
+    <div class="talent-tags" style="margin-bottom:8px">
+      <span class="talent-tag talent-tag-blue" style="font-size:12px;padding:4px 10px">可灵 (视频生成)</span>
+      <span class="talent-tag talent-tag-purple" style="font-size:12px;padding:4px 10px">Sora (视频生成)</span>
+      <span class="talent-tag talent-tag-orange" style="font-size:12px;padding:4px 10px">GPT-4 (剧本)</span>
+    </div>
+    <div class="talent-desc" style="font-size:12px;color:var(--ink3)">
+      <strong class="hl-purple">熟练度：</strong>可灵 <span class="hl">★★★★★</span> · Sora <span class="hl">★★★★☆</span> · GPT <span class="hl">★★★★☆</span>
+    </div>
+  </div>
+
+  <!-- 擅长题材 -->
+  <div class="card">
+    <div class="talent-section-title">
+      <span class="ico ico-green">题</span>
+      擅长题材
+    </div>
+    <div class="talent-tags">
+      <span class="talent-tag talent-tag-red" style="font-size:12px;padding:4px 10px">甜宠</span>
+      <span class="talent-tag talent-tag-teal" style="font-size:12px;padding:4px 10px">科幻</span>
+      <span class="talent-tag talent-tag-blue" style="font-size:12px;padding:4px 10px">重生</span>
+    </div>
+  </div>
+
+  <!-- 联系方式 -->
+  <div class="card">
+    <div class="talent-section-title">
+      <span class="ico ico-orange">联</span>
+      联系方式
+    </div>
+    <div class="talent-contact-item">
+      <span class="ico ico-blue ico-sm">微</span>
+      <span class="label">微信</span>
+      <span class="val">zhangmingyuan_ai</span>
+    </div>
+    <div class="talent-contact-item">
+      <span class="ico ico-teal ico-sm">邮</span>
+      <span class="label">邮箱</span>
+      <span class="val">zhang@aistudio.com</span>
+    </div>
+    <div class="talent-contact-item">
+      <span class="ico ico-purple ico-sm">作</span>
+      <span class="label">合作意向</span>
+      <span class="val"><span class="rank-tag tag-green">可合作</span></span>
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn-grad" style="width:100%" onclick="showToast('合作邀请已发送，对方将在24小时内回复','green','成')">发送合作邀请</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 报告详情页 ========== -->
+<div class="page" id="page-report-detail">
+  <!-- 返回栏 -->
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:10">
+    <span onclick="goBack()" style="font-size:20px;color:var(--ink2);cursor:pointer">‹</span>
+    <span style="font-size:15px;font-weight:700" id="report-detail-nav-title">报告详情</span>
+    <span class="ico ico-purple ico-sm" style="margin-left:auto" onclick="showToast('已收藏该报告','purple','藏')">藏</span>
+  </div>
+
+  <!-- 报告头部(动态填充) -->
+  <div class="report-detail-header" id="report-detail-header">
+    <div class="report-detail-badge" id="report-detail-badge">周报</div>
+    <div class="report-detail-title" id="report-detail-title">AI短剧行业周报</div>
+    <div class="report-detail-date" id="report-detail-date">2026-07-15</div>
+  </div>
+
+  <!-- 报告摘要 -->
+  <div class="card">
+    <div class="report-section-title">
+      <span class="ico ico-blue">摘</span>
+      本期摘要
+    </div>
+    <div class="report-content" id="report-detail-summary"></div>
+  </div>
+
+  <!-- 核心数据 -->
+  <div class="card">
+    <div class="report-section-title">
+      <span class="ico ico-red">数</span>
+      核心数据
+    </div>
+    <div class="report-highlight" id="report-detail-highlights"></div>
+  </div>
+
+  <!-- 图表占位 -->
+  <div class="card">
+    <div class="report-section-title">
+      <span class="ico ico-green">图</span>
+      数据图表
+    </div>
+    <div class="report-chart-placeholder">
+      <span class="ico ico-green">图</span>
+      <span>趋势图表区域（原型占位）</span>
+      <span style="font-size:11px;color:var(--ink3)">完整图表将在正式版中展示</span>
+    </div>
+  </div>
+
+  <!-- 目录 -->
+  <div class="card">
+    <div class="report-section-title">
+      <span class="ico ico-orange">目</span>
+      报告目录
+    </div>
+    <div class="report-toc" id="report-detail-toc"></div>
+  </div>
+
+  <!-- 完整内容 -->
+  <div class="card">
+    <div class="report-section-title">
+      <span class="ico ico-purple">内</span>
+      报告正文
+    </div>
+    <div class="report-content" id="report-detail-content"></div>
+  </div>
+
+  <!-- 底部操作 -->
+  <div style="padding:0 16px 20px;display:flex;gap:8px">
+    <button class="btn-grad" style="flex:1" onclick="showToast('报告已下载至本地','green','下')">下载报告</button>
+    <button style="flex:1;padding:10px;border-radius:22px;background:var(--warm);color:var(--red);font-size:13px;font-weight:700;border:1.5px solid rgba(229,62,62,.15)" onclick="showToast('分享链接已复制','red','享')">分享报告</button>
+  </div>
+</div>
+
+<!-- ========== 简单列表页(收藏/历史/对比) ========== -->
+<div class="page" id="page-simple-list">
+  <div class="simple-page-header">
+    <span class="back-btn" onclick="goBack()">‹</span>
+    <span class="title" id="simple-list-title">列表</span>
+  </div>
+  <div id="simple-list-body" style="padding-top:12px"></div>
+</div>
+
+<!-- ========== 题材趋势页 ========== -->
+<div class="page" id="page-trends">
+  <!-- AI短剧占比 -->
+  <div class="sec-title">
+    <span class="ico ico-green">占</span>
+    <span class="text">AI短剧占比变化</span>
+  </div>
+  <div class="card">
+    <div class="donut-wrap">
+      <div class="donut">
+        <div class="donut-inner">
+          <div class="pct">18.3%</div>
+          <div class="label">AI短剧占比</div>
+        </div>
+      </div>
+      <div class="donut-legend">
+        <div class="donut-legend-item">
+          <span class="dot" style="background:var(--red)"></span>
+          <span class="label">AI短剧</span>
+          <span class="val hl">18.3%</span>
+        </div>
+        <div class="donut-legend-item">
+          <span class="dot" style="background:var(--line)"></span>
+          <span class="label">传统短剧</span>
+          <span class="val" style="color:var(--ink3)">81.7%</span>
+        </div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:4px">环比上月 <span class="hl-blue">+4.2%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 占比变化曲线 -->
+  <div class="sec-title">
+    <span class="ico ico-blue">线</span>
+    <span class="text">占比变化趋势 (近6个月)</span>
+  </div>
+  <div class="card">
+    <div class="chart-area">
+      <div class="chart-bars" style="height:100px">
+        <div class="chart-bar" style="height:25%;background:linear-gradient(135deg,var(--green),var(--green-l))"></div>
+        <div class="chart-bar" style="height:35%;background:linear-gradient(135deg,var(--green),var(--green-l))"></div>
+        <div class="chart-bar" style="height:45%;background:linear-gradient(135deg,var(--green),var(--green-l))"></div>
+        <div class="chart-bar" style="height:55%;background:linear-gradient(135deg,var(--green),var(--green-l))"></div>
+        <div class="chart-bar" style="height:70%;background:linear-gradient(135deg,var(--green),var(--green-l))"></div>
+        <div class="chart-bar" style="height:90%;background:linear-gradient(135deg,var(--green),var(--green-l))"></div>
+      </div>
+      <div class="chart-labels">
+        <span>2月</span><span>3月</span><span>4月</span><span>5月</span><span>6月</span><span>7月</span>
+      </div>
+    </div>
+    <div class="chart-legend">
+      <span><span class="dot" style="background:var(--green)"></span>AI短剧占比</span>
+    </div>
+    <div class="note note-green" style="margin:12px 0 0;background:rgba(56,161,105,.06);border-left-color:var(--green)">
+      <strong class="hl-green">趋势洞察：</strong>AI短剧占比从2月的5.1%增长至7月的18.3%，6个月增长 <strong class="hl-green">3.6倍</strong>，增速持续加快。
+    </div>
+  </div>
+
+  <!-- 题材热度排行 -->
+  <div class="sec-title">
+    <span class="ico ico-red">排</span>
+    <span class="text">题材热度排行</span>
+  </div>
+  <div class="card">
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-red ico-sm">甜</span>
+        <span class="genre-bar-name">甜宠</span>
+        <span class="genre-bar-val">423万均播</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:95%;background:linear-gradient(90deg,#E53E3E,#F87171)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-blue ico-sm">重</span>
+        <span class="genre-bar-name">重生</span>
+        <span class="genre-bar-val">312万均播</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:70%;background:linear-gradient(90deg,#3182CE,#63B3ED)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-green ico-sm">悬</span>
+        <span class="genre-bar-name">悬疑</span>
+        <span class="genre-bar-val">278万均播</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:62%;background:linear-gradient(90deg,#38A169,#68D391)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-purple ico-sm">科</span>
+        <span class="genre-bar-name">科幻</span>
+        <span class="genre-bar-val">245万均播</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:55%;background:linear-gradient(90deg,#805AD5,#B794F4)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-orange ico-sm">复</span>
+        <span class="genre-bar-name">复仇</span>
+        <span class="genre-bar-val">198万均播</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:44%;background:linear-gradient(90deg,#DD6B20,#F6AD55)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-teal ico-sm">战</span>
+        <span class="genre-bar-name">战神</span>
+        <span class="genre-bar-val">165万均播</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:37%;background:linear-gradient(90deg,#319795,#4FD1C5)"></div></div>
+    </div>
+  </div>
+
+  <!-- AI vs 传统对比 -->
+  <div class="sec-title">
+    <span class="ico ico-purple">比</span>
+    <span class="text">AI vs 传统短剧对比</span>
+  </div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;margin-bottom:12px">
+      <div style="font-size:11px;color:var(--ink3)">题材</div>
+      <div style="font-size:11px;color:var(--red);font-weight:700">AI短剧均播</div>
+      <div style="font-size:11px;color:var(--ink3)">传统短剧均播</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;padding:8px 0;border-bottom:1px solid var(--line)">
+      <div style="font-size:12px;font-weight:700">甜宠</div>
+      <div style="font-size:12px;font-weight:700;color:var(--red)">423万</div>
+      <div style="font-size:12px;color:var(--ink3)">387万</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;padding:8px 0;border-bottom:1px solid var(--line)">
+      <div style="font-size:12px;font-weight:700">科幻</div>
+      <div style="font-size:12px;font-weight:700;color:var(--red)">245万</div>
+      <div style="font-size:12px;color:var(--ink3)">156万</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;padding:8px 0">
+      <div style="font-size:12px;font-weight:700">悬疑</div>
+      <div style="font-size:12px;font-weight:700;color:var(--red)">278万</div>
+      <div style="font-size:12px;color:var(--ink3)">234万</div>
+    </div>
+    <div class="note" style="margin:12px 0 0">
+      <strong>洞察：</strong>甜宠题材AI短剧已<span class="hl">超越传统短剧</span>，科幻题材AI短剧领先优势明显（+56%），悬疑题材差距缩小中。
+    </div>
+  </div>
+
+  <!-- 趋势预测 -->
+  <div class="sec-title">
+    <span class="ico ico-green">测</span>
+    <span class="text">趋势预测 (7天内)</span>
+  </div>
+  <div class="predict-card">
+    <div class="predict-title">
+      <span class="ico ico-green ico-sm">测</span>
+      AI预测：上升最快题材
+    </div>
+    <div class="predict-item">
+      <span class="name">悬疑</span>
+      <span class="arrow">↑</span>
+      <span class="pct">+89%</span>
+    </div>
+    <div class="predict-item">
+      <span class="name">科幻</span>
+      <span class="arrow">↑</span>
+      <span class="pct">+67%</span>
+    </div>
+    <div class="predict-item">
+      <span class="name">重生</span>
+      <span class="arrow">↑</span>
+      <span class="pct">+45%</span>
+    </div>
+    <div class="predict-item">
+      <span class="name">甜宠</span>
+      <span class="arrow">↑</span>
+      <span class="pct">+12%</span>
+    </div>
+    <div class="predict-item">
+      <span class="name">战神</span>
+      <span class="arrow" style="color:var(--ink3)">→</span>
+      <span class="pct" style="color:var(--ink3)">持平</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 数据报告页 ========== -->
+<div class="page" id="page-report">
+  <div class="sec-title">
+    <span class="ico ico-purple">报</span>
+    <span class="text">行业数据报告</span>
+  </div>
+
+  <!-- 周报 -->
+  <div class="sec-title" style="font-size:15px;margin-top:16px">
+    <span class="ico ico-purple ico-sm" style="width:22px;height:22px;font-size:10px;border-radius:6px">周</span>
+    <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">行业周报</span>
+  </div>
+  <div style="padding:0 16px">
+    <div class="report-item" onclick="goReportDetail('w28')">
+      <div class="report-icon" style="background:linear-gradient(135deg,var(--purple),var(--purple-l))">周</div>
+      <div class="report-info">
+        <div class="report-title">AI短剧行业周报 W28</div>
+        <div class="report-desc">本周热度TOP10 · 新晋作品5部 · 悬疑题材飙升89%</div>
+        <div class="report-date">2026-07-15 · 本周报</div>
+      </div>
+      <span class="report-arrow">›</span>
+    </div>
+    <div class="report-item" onclick="goReportDetail('w27')">
+      <div class="report-icon" style="background:linear-gradient(135deg,var(--purple),var(--purple-l))">周</div>
+      <div class="report-info">
+        <div class="report-title">AI短剧行业周报 W27</div>
+        <div class="report-desc">甜宠题材持续领跑 · 可灵使用率升至42%</div>
+        <div class="report-date">2026-07-08 · 上周报</div>
+      </div>
+      <span class="report-arrow">›</span>
+    </div>
+    <div class="report-item" onclick="goReportDetail('w26')">
+      <div class="report-icon" style="background:linear-gradient(135deg,var(--purple),var(--purple-l))">周</div>
+      <div class="report-info">
+        <div class="report-title">AI短剧行业周报 W26</div>
+        <div class="report-desc">AI短剧总量突破1000部 · 占比达16.5%</div>
+        <div class="report-date">2026-07-01 · 2周前</div>
+      </div>
+      <span class="report-arrow">›</span>
+    </div>
+  </div>
+
+  <!-- 月报 -->
+  <div class="sec-title" style="font-size:15px;margin-top:20px">
+    <span class="ico ico-purple ico-sm" style="width:22px;height:22px;font-size:10px;border-radius:6px">月</span>
+    <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">行业月报</span>
+  </div>
+  <div style="padding:0 16px">
+    <div class="report-item" onclick="goReportDetail('m06')">
+      <div class="report-icon" style="background:linear-gradient(135deg,var(--red),var(--red-l))">月</div>
+      <div class="report-info">
+        <div class="report-title">2026年6月 AI短剧行业月报</div>
+        <div class="report-desc">大盘走势 · 题材分析 · 制作方排行 · 平台分布 · AI工具趋势</div>
+        <div class="report-date">2026-07-01 · 月度报告</div>
+      </div>
+      <span class="report-arrow">›</span>
+    </div>
+    <div class="report-item" onclick="goReportDetail('m05')">
+      <div class="report-icon" style="background:linear-gradient(135deg,var(--red),var(--red-l))">月</div>
+      <div class="report-info">
+        <div class="report-title">2026年5月 AI短剧行业月报</div>
+        <div class="report-desc">AI短剧占比首破15% · 科幻题材异军突起</div>
+        <div class="report-date">2026-06-01 · 2月前</div>
+      </div>
+      <span class="report-arrow">›</span>
+    </div>
+  </div>
+
+  <!-- AI工具排行 -->
+  <div class="sec-title" style="font-size:15px;margin-top:20px">
+    <span class="ico ico-blue ico-sm" style="width:22px;height:22px;font-size:10px;border-radius:6px">具</span>
+    <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">AI工具使用排行</span>
+  </div>
+  <div class="card">
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-blue ico-sm">可</span>
+        <span class="genre-bar-name">可灵 (视频生成)</span>
+        <span class="genre-bar-val">市占 42%</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:42%;background:linear-gradient(90deg,#3182CE,#63B3ED)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-purple ico-sm">S</span>
+        <span class="genre-bar-name">Sora (视频生成)</span>
+        <span class="genre-bar-val">市占 28%</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:28%;background:linear-gradient(90deg,#805AD5,#B794F4)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-green ico-sm">R</span>
+        <span class="genre-bar-name">Runway (视频生成)</span>
+        <span class="genre-bar-val">市占 18%</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:18%;background:linear-gradient(90deg,#38A169,#68D391)"></div></div>
+    </div>
+    <div class="genre-bar-item">
+      <div class="genre-bar-head">
+        <span class="ico ico-orange ico-sm">G</span>
+        <span class="genre-bar-name">GPT (剧本生成)</span>
+        <span class="genre-bar-val">市占 12%</span>
+      </div>
+      <div class="genre-bar-track"><div class="genre-bar-fill" style="width:12%;background:linear-gradient(90deg,#DD6B20,#F6AD55)"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 我的页面 ========== -->
+<div class="page" id="page-mine">
+  <div class="profile-header">
+    <div class="profile-avatar">花</div>
+    <div class="profile-name">花生用户</div>
+    <div class="profile-tag">AI短剧数据探索者 · 免费版</div>
+  </div>
+
+  <div class="profile-menu">
+    <div class="profile-menu-item" onclick="goSimplePage('favorites')">
+      <span class="ico ico-red">藏</span>
+      <span class="label">我的收藏</span>
+      <span style="font-size:12px;color:var(--ink3)">12部</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="profile-menu-item" onclick="goSimplePage('compare')">
+      <span class="ico ico-green">比</span>
+      <span class="label">对比列表</span>
+      <span style="font-size:12px;color:var(--ink3)">3组</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="profile-menu-item" onclick="goSimplePage('history')">
+      <span class="ico ico-blue">史</span>
+      <span class="label">浏览历史</span>
+      <span style="font-size:12px;color:var(--ink3)">48条</span>
+      <span class="arrow">›</span>
+    </div>
+  </div>
+
+  <div class="profile-menu" style="margin-top:12px">
+    <div class="profile-menu-item" onclick="showToast('会员升级功能将在正式版开放','purple','会')">
+      <span class="ico ico-purple">会</span>
+      <span class="label">升级会员</span>
+      <span style="font-size:11px;color:var(--red);font-weight:600">解锁完整数据</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="profile-menu-item" onclick="showToast('消息通知功能将在正式版上线','orange','消')">
+      <span class="ico ico-orange">消</span>
+      <span class="label">消息通知</span>
+      <span style="font-size:12px;color:var(--ink3)">3条</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="profile-menu-item" onclick="showToast('设置功能将在正式版开放','teal','设')">
+      <span class="ico ico-teal">设</span>
+      <span class="label">设置</span>
+      <span class="arrow">›</span>
+    </div>
+  </div>
+
+  <div class="profile-menu" style="margin-top:12px">
+    <div class="profile-menu-item" onclick="showToast('花生 · AI短剧数据查询工具 V1.0 原型演示版','red','关')">
+      <span class="ico ico-red">关</span>
+      <span class="label">关于花生</span>
+      <span class="arrow">›</span>
+    </div>
+    <div class="profile-menu-item" onclick="showToast('感谢您的反馈！请通过正式版提交意见','green','馈')">
+      <span class="ico ico-green">馈</span>
+      <span class="label">意见反馈</span>
+      <span class="arrow">›</span>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:24px 16px;cursor:pointer" onclick="goHome()">
+    <svg class="brand-mark" width="26" height="26"><use href="#shBloom"/></svg>
+    <div style="font-size:12px;color:var(--ink3);margin-top:6px">花生 · AI短剧数据查询工具</div>
+    <div style="font-size:11px;color:var(--ink3);margin-top:2px">V1.0 · 2026</div>
+  </div>
+</div>
+
+<!-- ========== 搜索页 ========== -->
+<div class="search-page" id="search-page">
+  <div class="search-page-header">
+    <div class="search-input-wrap">
+      <span class="ico ico-red ico-sm">搜</span>
+      <input type="text" class="search-input" id="search-input" placeholder="输入剧名、制作方或自然语言查询…" />
+      <span class="ai-tag" style="font-size:10px;color:var(--red);font-weight:700;background:rgba(229,62,62,.08);padding:2px 6px;border-radius:4px">AI</span>
+    </div>
+    <span class="search-cancel" onclick="closeSearch()">取消</span>
+  </div>
+  <div class="search-body">
+    <div class="search-suggest-title">自然语言查询示例</div>
+    <div class="search-suggest-item" onclick="fillSearch('最近7天甜宠题材AI短剧')">
+      <span class="ico ico-red">甜</span>
+      <span class="text">最近7天<strong>甜宠题材</strong>AI短剧</span>
+    </div>
+    <div class="search-suggest-item" onclick="fillSearch('用可灵制作的复仇题材')">
+      <span class="ico ico-blue">复</span>
+      <span class="text">用<strong>可灵</strong>制作的<strong>复仇题材</strong></span>
+    </div>
+    <div class="search-suggest-item" onclick="fillSearch('播放量超过100万的全AI生成短剧')">
+      <span class="ico ico-purple">全</span>
+      <span class="text">播放量超过100万的<strong>全AI生成</strong>短剧</span>
+    </div>
+    <div class="search-suggest-item" onclick="fillSearch('抖音平台新晋AI短剧')">
+      <span class="ico ico-green">新</span>
+      <span class="text"><strong>抖音</strong>平台<strong>新晋</strong>AI短剧</span>
+    </div>
+    <div class="search-suggest-item" onclick="fillSearch('导演张明远')" style="background:rgba(128,90,213,.06)">
+      <span class="ico ico-purple">才</span>
+      <span class="text">搜索<strong>导演</strong> · <strong>张明远</strong> · 人才库</span>
+    </div>
+    <div class="search-suggest-item" onclick="fillSearch('可灵AI生成师')" style="background:rgba(128,90,213,.06)">
+      <span class="ico ico-purple">具</span>
+      <span class="text">搜索<strong>可灵</strong>AI生成师 · 人才库</span>
+    </div>
+
+    <div class="search-hot-title">热门搜索</div>
+    <div class="search-hot-item" onclick="goDetail('重生之AI霸总')">
+      <span class="search-hot-num">1</span>
+      <span class="search-hot-name">重生之AI霸总</span>
+      <span class="search-hot-heat">423万</span>
+    </div>
+    <div class="search-hot-item" onclick="goDetail('AI甜宠日记')">
+      <span class="search-hot-num">2</span>
+      <span class="search-hot-name">AI甜宠日记</span>
+      <span class="search-hot-heat">387万</span>
+    </div>
+    <div class="search-hot-item" onclick="goDetail('赛博重生')">
+      <span class="search-hot-num">3</span>
+      <span class="search-hot-name">赛博重生</span>
+      <span class="search-hot-heat">351万</span>
+    </div>
+    <div class="search-hot-item" onclick="goDetail('AI复仇女王')">
+      <span class="search-hot-num">4</span>
+      <span class="search-hot-name">AI复仇女王</span>
+      <span class="search-hot-heat">298万</span>
+    </div>
+    <div class="search-hot-item" onclick="goDetail('战神归来AI版')">
+      <span class="search-hot-num">5</span>
+      <span class="search-hot-name">战神归来AI版</span>
+      <span class="search-hot-heat">265万</span>
+    </div>
+    <div class="search-hot-item" onclick="goDetail('AI悬案追踪')">
+      <span class="search-hot-num">6</span>
+      <span class="search-hot-name">AI悬案追踪</span>
+      <span class="search-hot-heat">231万</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 底部导航栏 ========== -->
+<div class="tabbar">
+  <div class="tabbar-item active" onclick="switchPage('page-home',this)">
+    <div class="tabbar-icon">首</div>
+    <div class="tabbar-label">首页</div>
+  </div>
+  <div class="tabbar-item" onclick="switchPage('page-rank',this)">
+    <div class="tabbar-icon">榜</div>
+    <div class="tabbar-label">榜单</div>
+  </div>
+  <div class="tabbar-item" onclick="switchPage('page-trends',this)">
+    <div class="tabbar-icon">趋</div>
+    <div class="tabbar-label">趋势</div>
+  </div>
+  <div class="tabbar-item" onclick="switchPage('page-report',this)">
+    <div class="tabbar-icon">报</div>
+    <div class="tabbar-label">报告</div>
+  </div>
+  <div class="tabbar-item" onclick="switchPage('page-talent',this)">
+    <div class="tabbar-icon">才</div>
+    <div class="tabbar-label">人才</div>
+  </div>
+  <div class="tabbar-item" onclick="switchPage('page-mine',this)">
+    <div class="tabbar-icon">我</div>
+    <div class="tabbar-label">我的</div>
+  </div>
+</div>
+
+</div><!-- /.app -->
+
+<script>
+// 页面切换
+var pageHistory = [];
+var talentData = {
+  '张明远':{name:'张明远',role:'导演',avatar:'张',grad:'var(--red),var(--red-l)',meta:'5年经验 · 8部AI短剧 · 抖音',bio:'专注于AI短剧导演，擅长甜宠与科幻题材。自2024年起全面转向AI短剧制作，精通可灵、Sora等主流AI视频生成工具。曾执导《重生之AI霸总》等多部爆款AI短剧，累计播放量超3亿。注重AI创意与叙事节奏的平衡，善于利用AI工具提升制作效率。'},
+  '陈思琪':{name:'陈思琪',role:'制作人',avatar:'陈',grad:'var(--blue),var(--blue-l)',meta:'3年经验 · 15部AI短剧 · 全平台',bio:'资深AI短剧制作人，全流程项目管理经验丰富。统筹15部AI短剧制作，覆盖甜宠、科幻、悬疑等多题材。擅长AI制作流程优化，将单部AI短剧制作周期从14天压缩至7天，成本降低40%。'},
+  '王艺':{name:'王艺',role:'AI生成师',avatar:'王',grad:'var(--green),var(--green-l)',meta:'2年经验 · 12部AI短剧 · 可灵/Sora专家',bio:'AI视频生成专家，精通可灵和Sora两大AI视频生成平台。独创"AI视频生成工作流"被多位同行采用。在AI画面一致性、角色一致性方面有独特方法论，产出作品质量稳定。'},
+  '李悠然':{name:'李悠然',role:'编剧',avatar:'李',grad:'var(--orange),var(--orange-l)',meta:'4年经验 · 20部短剧 · 擅长AI剧本创作',bio:'AI短剧编剧，擅长将传统编剧技法与AI剧本生成相结合。熟练使用GPT-4、Claude等AI工具辅助创作，在甜宠和悬疑题材上有深厚积累。作品节奏紧凑、反转巧妙，深受观众喜爱。'},
+  '赵一鸣':{name:'赵一鸣',role:'后期剪辑师',avatar:'赵',grad:'var(--teal),var(--teal-l)',meta:'3年经验 · 10部AI短剧 · 精剪/特效',bio:'AI短剧后期剪辑专家，精通AI生成素材的后期处理流程。擅长AI画面修复、节奏剪辑、特效合成。在赛博朋克、科幻题材的视觉风格把控上有独特见解。'},
+  '刘子涵':{name:'刘子涵',role:'美术设计',avatar:'刘',grad:'var(--purple),var(--purple-l)',meta:'角色设计 · 场景设计 · UI/海报',bio:'AI短剧美术设计师，覆盖角色设计、场景设计、海报设计全流程。擅长利用Midjourney、Stable Diffusion等AI工具进行概念设计和视觉开发。甜宠题材海报设计尤为出色。'},
+  '周欣':{name:'周欣',role:'分镜师',avatar:'周',grad:'var(--red),var(--purple-l)',meta:'静态分镜 · 动态分镜 · 分镜AI化',bio:'AI短剧分镜师，精通静态分镜和动态分镜设计。率先将AI工具引入分镜流程，利用AI快速生成分镜预览，大幅提升前期沟通效率。悬疑和复仇题材分镜节奏把控精准。'},
+  'AI Studio':{name:'AI Studio',role:'制作团队',avatar:'A',grad:'var(--red),var(--red-l)',meta:'AI短剧制作团队 · 爆款打造者',bio:'AI Studio是一支专注于AI短剧制作的创作团队，团队涵盖导演、编剧、AI生成师、后期剪辑等全流程角色。代表作《重生之AI霸总》累计播放423万，是AI短剧赛道的标杆团队。'},
+  '林悦':{name:'林悦',role:'运营/投流',avatar:'林',grad:'var(--orange),var(--red-l)',meta:'3年经验 · 投流ROI 2.8 · 全平台',bio:'AI短剧运营与投流专家，精通抖音、快手、小程序等多平台投放策略。累计投放AI短剧50+部，平均ROI达到2.8。擅长通过数据驱动优化投放策略，单部最高ROI达4.5。对AI短剧的用户画像和转化漏斗有深入研究。'}
+};
+
+function switchPage(pageId, tabEl){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var target = document.getElementById(pageId);
+  if(target) target.classList.add('active');
+  // 底部导航高亮
+  if(tabEl){
+    document.querySelectorAll('.tabbar-item').forEach(function(t){ t.classList.remove('active'); });
+    tabEl.classList.add('active');
+  } else {
+    document.querySelectorAll('.tabbar-item').forEach(function(t){ t.classList.remove('active'); });
+    var tabMap = {'page-home':0,'page-rank':1,'page-trends':2,'page-report':3,'page-talent':4,'page-mine':5};
+    var idx = tabMap[pageId];
+    if(idx !== undefined){
+      var items = document.querySelectorAll('.tabbar-item');
+      if(items[idx]) items[idx].classList.add('active');
+    }
+  }
+  window.scrollTo(0,0);
+}
+
+// 跳转人才详情页
+function goTalentDetail(name){
+  var data = talentData[name];
+  if(!data){
+    alert('人才信息未找到');
+    return;
+  }
+  var activePage = document.querySelector('.page.active');
+  if(activePage) pageHistory.push(activePage.id);
+  document.getElementById('talent-detail-name').textContent = data.name;
+  document.getElementById('talent-detail-title').textContent = data.name;
+  document.getElementById('talent-detail-role').textContent = data.role;
+  document.getElementById('talent-detail-meta').textContent = data.meta;
+  document.getElementById('talent-detail-bio').textContent = data.bio;
+  var avatarEl = document.getElementById('talent-detail-avatar');
+  avatarEl.textContent = data.avatar;
+  avatarEl.style.background = 'linear-gradient(135deg,' + data.grad + ')';
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-talent-detail').classList.add('active');
+  document.querySelectorAll('.tabbar-item').forEach(function(t){ t.classList.remove('active'); });
+  window.scrollTo(0,0);
+}
+
+// 人才筛选Tab切换
+function switchTalentFilter(el, filter){
+  el.parentElement.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+// ========== 短剧制作人员数据 ==========
+var dramaCrewData = {
+  '重生之AI霸总':{studio:'张明远',studioType:'individual',members:[
+    {name:'陈思琪',role:'制作人'},{name:'王艺',role:'AI生成师'},
+    {name:'李悠然',role:'编剧'},{name:'赵一鸣',role:'后期剪辑'},
+    {name:'刘子涵',role:'美术设计'},{name:'周欣',role:'分镜师'}]},
+  'AI甜宠日记':{studio:'陈思琪',studioType:'individual',members:[
+    {name:'李悠然',role:'编剧'},{name:'王艺',role:'AI生成师'}]},
+  '赛博重生':{studio:'王艺',studioType:'individual',members:[
+    {name:'李悠然',role:'编剧'},{name:'赵一鸣',role:'后期剪辑'}]},
+  'AI复仇女王':{studio:'陈思琪',studioType:'individual',members:[
+    {name:'王艺',role:'AI生成师'},{name:'李悠然',role:'编剧'}]},
+  '战神归来AI版':{studio:'AI Studio',studioType:'team',members:[
+    {name:'张明远',role:'导演'},{name:'赵一鸣',role:'后期剪辑'}]},
+  'AI悬案追踪':{studio:'周欣',studioType:'individual',members:[
+    {name:'李悠然',role:'编剧'}]},
+  '霸总AI替身':{studio:'赵一鸣',studioType:'individual',members:[
+    {name:'刘子涵',role:'美术设计'}]},
+  '甜心AI管家':{studio:'林悦',studioType:'individual',members:[
+    {name:'刘子涵',role:'美术设计'}]},
+  'AI霸总日记':{studio:'AI Studio',studioType:'team',members:[{name:'张明远',role:'导演'}]},
+  '赛博甜心':{studio:'王艺',studioType:'individual',members:[]},
+  'AI复仇者':{studio:'AI Studio',studioType:'team',members:[{name:'陈思琪',role:'制作人'}]},
+  '战神AI觉醒':{studio:'赵一鸣',studioType:'individual',members:[]}
+};
+
+var roleBadgeMap = {
+  '导演':'tag-red','制作人':'tag-blue','AI生成师':'tag-green',
+  '编剧':'tag-orange','后期剪辑':'tag-teal','美术设计':'tag-purple',
+  '分镜师':'tag-purple','运营/投流':'tag-orange'
+};
+
+// 填充制作方信息
+function populateCrewInfo(dramaName){
+  var crew = dramaCrewData[dramaName];
+  var studioArea = document.getElementById('drama-studio-area');
+  var membersArea = document.getElementById('drama-members-area');
+  if(!studioArea || !membersArea) return;
+  if(!crew){
+    studioArea.innerHTML = '<div class="empty" style="padding:16px">暂无制作方信息</div>';
+    membersArea.innerHTML = '';
+    return;
+  }
+  var studioData = talentData[crew.studio];
+  if(studioData){
+    var isTeam = crew.studioType === 'team';
+    var roleLabel = isTeam ? '制作团队' : studioData.role;
+    var roleClass = isTeam ? 'rank-tag tag-red' : 'badge-individual';
+    // 更新基本信息卡的制作方
+    var producerLink = document.getElementById('detail-producer-link');
+    var producerTag = document.getElementById('detail-producer-tag');
+    if(producerLink){
+      producerLink.textContent = '@' + studioData.name;
+      producerLink.setAttribute('onclick', "goTalentDetail('"+crew.studio+"')");
+    }
+    if(producerTag){
+      producerTag.className = roleClass;
+      producerTag.textContent = roleLabel;
+    }
+    // 制作方板块渲染
+    studioArea.innerHTML =
+      '<div class="compare-card" onclick="goTalentDetail(\''+crew.studio+'\')" style="cursor:pointer">'+
+        '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,'+studioData.grad+');display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0">'+studioData.avatar+'</div>'+
+        '<div class="compare-info">'+
+          '<div class="compare-name">'+studioData.name+' <span class="'+roleClass+'" style="font-size:10px">'+roleLabel+'</span></div>'+
+          '<div class="compare-meta">'+studioData.meta+'</div>'+
+        '</div>'+
+        '<span style="color:var(--ink3);font-size:14px">›</span>'+
+      '</div>';
+  }
+  if(crew.members && crew.members.length > 0){
+    var html = '<div class="crew-section-label"><span class="ico ico-red ico-sm">人</span>参与人员 <span style="font-weight:400;color:var(--ink3);font-size:12px">('+crew.members.length+'人)</span></div>';
+    crew.members.forEach(function(m){
+      var person = talentData[m.name];
+      if(!person){ return; }
+      var badgeClass = roleBadgeMap[m.role] || 'tag-red';
+      html +=
+        '<div class="crew-item" onclick="goTalentDetail(\''+m.name+'\')">'+
+          '<div class="avatar" style="background:linear-gradient(135deg,'+person.grad+')">'+person.avatar+'</div>'+
+          '<div class="info">'+
+            '<div class="name">'+person.name+'</div>'+
+            '<div class="meta">'+person.meta+'</div>'+
+          '</div>'+
+          '<span class="role-badge '+badgeClass+'">'+m.role+'</span>'+
+          '<span class="arrow">›</span>'+
+        '</div>';
+    });
+    membersArea.innerHTML = html;
+  } else {
+    membersArea.innerHTML = '';
+  }
+}
+
+// 跳转详情页
+function goDetail(name){
+  pageHistory.push(document.querySelector('.page.active').id || 'page-home');
+  var titleEl = document.getElementById('detail-title');
+  if(titleEl) titleEl.textContent = name;
+  populateCrewInfo(name);
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-detail').classList.add('active');
+  document.querySelectorAll('.tabbar-item').forEach(function(t){ t.classList.remove('active'); });
+  window.scrollTo(0,0);
+}
+
+// 回到首页
+function goHome(){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-home').classList.add('active');
+  document.querySelectorAll('.tabbar-item').forEach(function(t){ t.classList.remove('active'); });
+  var firstTab = document.querySelectorAll('.tabbar-item')[0];
+  if(firstTab) firstTab.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// 返回上一页
+function goBack(){
+  var prev = pageHistory.pop() || 'page-home';
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById(prev).classList.add('active');
+  document.querySelectorAll('.tabbar-item').forEach(function(t){ t.classList.remove('active'); });
+  var map = {'page-home':0,'page-rank':1,'page-trends':2,'page-report':3,'page-talent':4,'page-mine':5};
+  var idx = map[prev];
+  if(idx !== undefined){
+    document.querySelectorAll('.tabbar-item')[idx].classList.add('active');
+  }
+  window.scrollTo(0,0);
+}
+
+// 榜单Tab切换
+function switchRankTab(el){
+  el.parentElement.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  var titleMap = {'日榜':'日榜 · AI短剧热度排行','周榜':'周榜 · AI短剧热度排行','月榜':'月榜 · AI短剧热度排行','新晋榜':'新晋榜 · 近期上线亮眼作品','飙升榜':'飙升榜 · 热度环比增幅最大'};
+  var titleEl = document.getElementById('rank-title');
+  if(titleEl) titleEl.textContent = titleMap[el.textContent.trim()] || 'AI短剧热度排行';
+  // 切换榜单内容
+  var tabMap = {'日榜':'rank-day','周榜':'rank-week','月榜':'rank-month','新晋榜':'rank-new','飙升榜':'rank-surge'};
+  var targetId = tabMap[el.textContent.trim()];
+  document.querySelectorAll('.rank-tab-content').forEach(function(c){ c.style.display = 'none'; });
+  var target = document.getElementById(targetId);
+  if(target) target.style.display = '';
+}
+
+// 筛选Chip切换
+function switchChip(el){
+  el.parentElement.querySelectorAll('.filter-chip').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+// 搜索页
+function openSearch(){
+  document.getElementById('search-page').classList.add('active');
+  setTimeout(function(){
+    var input = document.getElementById('search-input');
+    if(input) input.focus();
+  },100);
+}
+function closeSearch(){
+  document.getElementById('search-page').classList.remove('active');
+  var input = document.getElementById('search-input');
+  if(input) input.value = '';
+}
+function fillSearch(text){
+  var input = document.getElementById('search-input');
+  if(input){
+    input.value = text;
+    input.focus();
+  }
+}
+
+// 快捷标签切换
+document.querySelectorAll('.quick-tags .qtag').forEach(function(tag){
+  tag.addEventListener('click',function(){
+    tag.parentElement.querySelectorAll('.qtag').forEach(function(t){ t.classList.remove('active'); });
+    tag.classList.add('active');
+  });
+});
+
+// ========== Toast通知 ==========
+var toastTimer = null;
+function showToast(msg, color, icoText){
+  var toast = document.getElementById('toast-el');
+  var toastMsg = document.getElementById('toast-msg');
+  var toastIco = document.getElementById('toast-ico');
+  if(!toast || !toastMsg) return;
+  toastMsg.textContent = msg;
+  var colorMap = {'red':'ico-red','green':'ico-green','blue':'ico-blue','purple':'ico-purple','orange':'ico-orange','teal':'ico-teal'};
+  toastIco.className = 'ico ' + (colorMap[color] || 'ico-red');
+  toastIco.textContent = icoText || '提';
+  toast.classList.add('show');
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2000);
+}
+
+// ========== 报告数据 ==========
+var reportData = {
+  'w28': {
+    type: '周报', typeClass: '', badge: '本周报',
+    title: 'AI短剧行业周报 W28', date: '2026-07-15 · 第28周',
+    summary: '<p>本周AI短剧市场持续升温，新增上线作品<strong>5部</strong>，累计在播AI短剧达<strong>1,047部</strong>。甜宠题材继续领跑热度榜，悬疑题材以<strong>89%</strong>的周环比增幅成为最大黑马。可灵AI视频生成工具使用率升至<strong>42%</strong>，稳居行业第一。</p>',
+    highlights: [{val:'1,047',label:'在播AI短剧'},{val:'+5',label:'本周新上线'},{val:'89%',label:'悬疑周环比↑'},{val:'42%',label:'可灵市占率'}],
+    toc: ['大盘概览','热门作品TOP10','题材热度分析','平台分布','AI工具使用趋势','制作方动态','下周展望'],
+    content: '<p><strong>一、大盘概览</strong></p><p>本周AI短剧总量突破1,047部，占全部短剧的18.3%，环比增长4.2%。日均新上线0.7部。全AI生成短剧占比达到65%，半AI占比28%。</p><p><strong>二、热门作品TOP10</strong></p><p>本周热度TOP3分别为《重生之AI霸总》(423万)、《AI甜宠日记》(387万)、《赛博重生》(351万)。新晋作品《AI悬案追踪》上线3天即冲入TOP10。</p><p><strong>三、题材热度分析</strong></p><p>甜宠题材以423万均播稳居第一，悬疑题材周环比飙升89%成为最大黑马，科幻题材受《赛博重生》带动增长67%。</p><p><strong>四、平台分布</strong></p><p>抖音平台AI短剧占比最高(45%)，快手紧随其后(28%)，微信小程序(15%)和小红书(12%)分列三四位。</p><p><strong>五、AI工具使用趋势</strong></p><p>可灵以42%的使用率稳居视频生成工具第一，Sora使用率升至28%，Runway保持18%。剧本生成方面GPT占比12%。</p>'
+  },
+  'w27': {
+    type: '周报', typeClass: '', badge: '上周报',
+    title: 'AI短剧行业周报 W27', date: '2026-07-08 · 第27周',
+    summary: '<p>本周甜宠题材持续领跑，AI短剧总量稳步增长。可灵AI使用率首次突破<strong>40%</strong>大关，标志着AI视频生成工具进入主流阶段。新晋作品3部，悬疑题材开始发力。</p>',
+    highlights: [{val:'1,042',label:'在播AI短剧'},{val:'+3',label:'本周新上线'},{val:'40%',label:'可灵市占率↑'},{val:'17.8%',label:'AI短剧占比'}],
+    toc: ['大盘概览','热门作品TOP10','题材热度分析','平台分布','AI工具使用趋势','制作方动态','下周展望'],
+    content: '<p><strong>一、大盘概览</strong></p><p>本周AI短剧总量1,042部，占全部短剧的17.8%。日均播放量较上周增长8.3%。</p><p><strong>二、热门作品TOP10</strong></p><p>《重生之AI霸总》连续3周蝉联日榜第一，《AI甜宠日记》紧随其后。《赛博重生》本周排名上升2位至第3。</p><p><strong>三、题材热度分析</strong></p><p>甜宠题材持续领跑，均播423万。科幻题材受《赛博重生》带动排名上升。悬疑题材开始发力，周环比增长23%。</p><p><strong>四、平台分布</strong></p><p>抖音平台AI短剧数量最多，快手AI短剧质量提升明显，完播率高于行业平均。</p><p><strong>五、AI工具使用趋势</strong></p><p>可灵AI使用率首次突破40%，达到42%，成为行业标杆。Sora使用率稳定在25%左右。</p>'
+  },
+  'w26': {
+    type: '周报', typeClass: '', badge: '2周前',
+    title: 'AI短剧行业周报 W26', date: '2026-07-01 · 第26周',
+    summary: '<p>本周AI短剧总量突破<strong>1,000部</strong>里程碑，占全部短剧的<strong>16.5%</strong>，标志着AI短剧正式进入规模化生产阶段。可灵、Sora等AI工具使用率持续攀升。</p>',
+    highlights: [{val:'1,000+',label:'在播AI短剧'},{val:'16.5%',label:'AI短剧占比'},{val:'38%',label:'可灵市占率'},{val:'+12%',label:'周环比增长'}],
+    toc: ['大盘概览','热门作品TOP10','题材热度分析','平台分布','AI工具使用趋势','制作方动态','下周展望'],
+    content: '<p><strong>一、大盘概览</strong></p><p>本周AI短剧总量正式突破1,000部大关，占全部短剧的16.5%。这一里程碑标志着AI短剧从实验阶段进入规模化生产阶段。</p><p><strong>二、热门作品TOP10</strong></p><p>《重生之AI霸总》以423万热度稳居榜首，TOP10中甜宠题材占据4席，科幻题材2席。</p><p><strong>三、题材热度分析</strong></p><p>甜宠题材以绝对优势领跑，科幻题材异军突起，悬疑和复仇题材稳步增长。</p><p><strong>四、平台分布</strong></p><p>抖音、快手、微信小程序三大平台占据AI短剧总量的88%。</p><p><strong>五、AI工具使用趋势</strong></p><p>可灵使用率38%居首，Sora 25%，Runway 18%。AI工具生态逐渐成熟。</p>'
+  },
+  'm06': {
+    type: '月报', typeClass: 'report-type-month', badge: '月度报告',
+    title: '2026年6月 AI短剧行业月报', date: '2026-07-01 · 6月月报',
+    summary: '<p>2026年6月，AI短剧行业迎来爆发式增长。全月新上线AI短剧<strong>32部</strong>，在播总量突破<strong>1,000部</strong>。AI短剧占全部短剧比例首次突破<strong>16%</strong>，可灵AI使用率升至<strong>42%</strong>。大盘走势、题材分析、制作方排行、平台分布、AI工具趋势五大维度全面解析。</p>',
+    highlights: [{val:'1,000+',label:'在播AI短剧'},{val:'32',label:'6月新上线'},{val:'16.5%',label:'AI短剧占比'},{val:'42%',label:'可灵市占率'}],
+    toc: ['大盘走势','题材分析','制作方排行','平台分布','AI工具趋势','月度总结','7月展望'],
+    content: '<p><strong>一、大盘走势</strong></p><p>6月AI短剧总量从968部增长至1,000部，月度增长率3.3%。日均播放量环比增长15%，用户观看时长增长22%。AI短剧正在从"新鲜事物"转变为"日常消费"。</p><p><strong>二、题材分析</strong></p><p>甜宠题材以423万均播稳居第一，月度增长8%。科幻题材异军突起，月度增长67%，成为增长最快的题材。悬疑题材增长35%。</p><p><strong>三、制作方排行</strong></p><p>AI Studio以423万总播放量居制作方榜首，张明远导演作品累计3.2亿播放。新晋制作团队"赛博工坊"凭借《赛博重生》跻身TOP5。</p><p><strong>四、平台分布</strong></p><p>抖音平台AI短剧占比45%，快手28%，微信小程序15%，小红书12%。快手平台AI短剧完播率最高(72%)。</p><p><strong>五、AI工具趋势</strong></p><p>可灵AI使用率从35%升至42%，稳居第一。Sora使用率25%，Runway 18%。ElevenLabs在AI配音领域增长迅速。</p><p><strong>六、月度总结</strong></p><p>6月是AI短剧行业的关键转折月，总量突破1000部里程碑，占比突破16%，可灵使用率突破40%。行业从"尝鲜期"正式进入"规模化发展期"。</p>'
+  },
+  'm05': {
+    type: '月报', typeClass: 'report-type-month', badge: '2月前',
+    title: '2026年5月 AI短剧行业月报', date: '2026-06-01 · 5月月报',
+    summary: '<p>2026年5月，AI短剧占比首破<strong>15%</strong>，科幻题材异军突起。全月新上线<strong>28部</strong>AI短剧，可灵AI使用率突破<strong>35%</strong>。行业进入快速增长通道。</p>',
+    highlights: [{val:'968',label:'在播AI短剧'},{val:'28',label:'5月新上线'},{val:'15.2%',label:'AI短剧占比'},{val:'35%',label:'可灵市占率'}],
+    toc: ['大盘走势','题材分析','制作方排行','平台分布','AI工具趋势','月度总结','6月展望'],
+    content: '<p><strong>一、大盘走势</strong></p><p>5月AI短剧总量从860部增长至968部，月度增长率12.6%，增速较4月加快。AI短剧占全部短剧比例首次突破15%，达到15.2%。</p><p><strong>二、题材分析</strong></p><p>甜宠题材持续领跑，均播398万。科幻题材异军突起，月度增长89%，成为5月最大亮点。悬疑题材增长28%。</p><p><strong>三、制作方排行</strong></p><p>AI Studio稳居榜首，多家新晋制作团队表现亮眼。《赛博重生》的赛博工坊首次进入TOP10。</p><p><strong>四、平台分布</strong></p><p>抖音平台AI短剧数量持续领先，快手平台增长最快，月度增长18%。微信小程序AI短剧完播率最高。</p><p><strong>五、AI工具趋势</strong></p><p>可灵使用率从28%升至35%，增长显著。Sora使用率稳定在22%，Runway保持16%。GPT在剧本生成领域持续渗透。</p><p><strong>六、月度总结</strong></p><p>5月AI短剧行业保持高速增长，科幻题材异军突起为行业带来新的增长极。可灵使用率突破35%标志着AI视频生成工具进入主流应用阶段。</p>'
+  }
+};
+
+// 跳转报告详情页
+function goReportDetail(reportId){
+  var data = reportData[reportId];
+  if(!data){ showToast('报告内容未找到','red','错'); return; }
+  var activePage = document.querySelector('.page.active');
+  if(activePage) pageHistory.push(activePage.id);
+  document.getElementById('report-detail-nav-title').textContent = data.title;
+  document.getElementById('report-detail-title').textContent = data.title;
+  document.getElementById('report-detail-date').textContent = data.date;
+  document.getElementById('report-detail-badge').textContent = data.badge;
+  document.getElementById('report-detail-summary').innerHTML = data.summary;
+  var hlHtml = '';
+  data.highlights.forEach(function(h){ hlHtml += '<div class="report-highlight-item"><div class="val">'+h.val+'</div><div class="label">'+h.label+'</div></div>'; });
+  document.getElementById('report-detail-highlights').innerHTML = hlHtml;
+  var tocHtml = '';
+  data.toc.forEach(function(t, i){ tocHtml += '<div class="report-toc-item"><span class="num">'+(i+1)+'</span>'+t+'</div>'; });
+  document.getElementById('report-detail-toc').innerHTML = tocHtml;
+  document.getElementById('report-detail-content').innerHTML = data.content;
+  var header = document.getElementById('report-detail-header');
+  header.className = 'report-detail-header' + (data.typeClass ? ' '+data.typeClass : '');
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-report-detail').classList.add('active');
+  document.querySelectorAll('.tabbar-item').forEach(function(t){ t.classList.remove('active'); });
+  window.scrollTo(0,0);
+}
+
+// 简单列表页(收藏/历史/对比)
+var simpleListData = {
+  'favorites': {
+    title: '我的收藏',
+    items: [
+      {name:'重生之AI霸总',meta:'甜宠 · 全AI · 抖音',val:'423万',grad:'#E53E3E,#F87171',label:'霸总'},
+      {name:'AI甜宠日记',meta:'甜宠 · 半AI · 快手',val:'387万',grad:'#805AD5,#B794F4',label:'甜宠'},
+      {name:'赛博重生',meta:'科幻 · 全AI · 抖音',val:'351万',grad:'#3182CE,#63B3ED',label:'赛博'},
+      {name:'AI复仇女王',meta:'复仇 · 全AI · 快手',val:'298万',grad:'#DD6B20,#F6AD55',label:'复仇'},
+      {name:'战神归来AI版',meta:'战神 · 半AI · 小程序',val:'265万',grad:'#319795,#4FD1C5',label:'战神'},
+      {name:'AI悬案追踪',meta:'悬疑 · 全AI · 抖音',val:'231万',grad:'#38A169,#68D391',label:'悬案'},
+      {name:'甜心AI管家',meta:'甜宠 · 半AI · 小红书',val:'176万',grad:'#805AD5,#B794F4',label:'甜心'},
+      {name:'霸总AI替身',meta:'复仇 · 全AI · 小程序',val:'132万',grad:'#E53E3E,#F87171',label:'霸总'},
+      {name:'AI霸总日记',meta:'甜宠 · 半AI · 抖音',val:'156万',grad:'#E53E3E,#F87171',label:'霸总'},
+      {name:'赛博甜心',meta:'科幻 · 半AI · 快手',val:'143万',grad:'#3182CE,#63B3ED',label:'赛博'},
+      {name:'AI复仇者',meta:'复仇 · 全AI · 抖音',val:'121万',grad:'#DD6B20,#F6AD55',label:'复仇'},
+      {name:'战神AI觉醒',meta:'战神 · 全AI · 小程序',val:'98万',grad:'#319795,#4FD1C5',label:'战神'}
+    ]
+  },
+  'history': {
+    title: '浏览历史',
+    items: [
+      {name:'重生之AI霸总',meta:'今天 14:32 查看',val:'423万',grad:'#E53E3E,#F87171',label:'霸总'},
+      {name:'AI甜宠日记',meta:'今天 11:15 查看',val:'387万',grad:'#805AD5,#B794F4',label:'甜宠'},
+      {name:'赛博重生',meta:'昨天 20:48 查看',val:'351万',grad:'#3182CE,#63B3ED',label:'赛博'},
+      {name:'AI复仇女王',meta:'昨天 16:20 查看',val:'298万',grad:'#DD6B20,#F6AD55',label:'复仇'},
+      {name:'战神归来AI版',meta:'7/13 21:05 查看',val:'265万',grad:'#319795,#4FD1C5',label:'战神'},
+      {name:'AI悬案追踪',meta:'7/13 09:12 查看',val:'231万',grad:'#38A169,#68D391',label:'悬案'}
+    ]
+  },
+  'compare': {
+    title: '对比列表',
+    items: [
+      {name:'重生之AI霸总 vs AI甜宠日记',meta:'甜宠题材对比 · 抖音/快手',val:'423 vs 387万',grad:'#E53E3E,#F87171',label:'对比'},
+      {name:'赛博重生 vs AI复仇女王',meta:'科幻/复仇对比 · 抖音/快手',val:'351 vs 298万',grad:'#3182CE,#63B3ED',label:'对比'},
+      {name:'战神归来AI版 vs AI悬案追踪',meta:'战神/悬疑对比 · 小程序/抖音',val:'265 vs 231万',grad:'#319795,#4FD1C5',label:'对比'}
+    ]
+  }
+};
+
+function goSimplePage(pageType){
+  var data = simpleListData[pageType];
+  if(!data){ showToast('页面内容未找到','red','错'); return; }
+  var activePage = document.querySelector('.page.active');
+  if(activePage) pageHistory.push(activePage.id);
+  document.getElementById('simple-list-title').textContent = data.title;
+  var html = '';
+  data.items.forEach(function(item){
+    var detailName = item.name.indexOf(' vs ') > -1 ? item.name.split(' vs ')[0] : item.name;
+    html += '<div class="simple-list-item" onclick="goDetail(\''+detailName+'\')">'+
+      '<div class="item-cover"><div class="cover-placeholder" style="background:linear-gradient(135deg,'+item.grad+')">'+item.label+'</div></div>'+
+      '<div class="item-info"><div class="item-name">'+item.name+'</div><div class="item-meta">'+item.meta+'</div></div>'+
+      '<div class="item-val">'+item.val+'</div></div>';
+  });
+  document.getElementById('simple-list-body').innerHTML = html;
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-simple-list').classList.add('active');
+  document.querySelectorAll('.tabbar-item').forEach(function(t){ t.classList.remove('active'); });
+  window.scrollTo(0,0);
+}
+
+// 加入对比按钮切换
+function toggleCompare(btn){
+  if(btn.classList.contains('added')){
+    btn.classList.remove('added');
+    btn.textContent = '加入对比';
+    showToast('已从对比列表移除','blue','移');
+  } else {
+    btn.classList.add('added');
+    btn.textContent = '✓ 已加入对比';
+    showToast('已加入对比列表','green','成');
+  }
+}
+
+// ========== 通用筛选事件委托 ==========
+// 确保所有filter-chip元素都能正确切换active状态
+document.addEventListener('click', function(e){
+  var chip = e.target.closest('.filter-chip');
+  if(chip && !chip.hasAttribute('onclick')){
+    chip.parentElement.querySelectorAll('.filter-chip').forEach(function(c){ c.classList.remove('active'); });
+    chip.classList.add('active');
+  }
+  var tab = e.target.closest('.filter-tab');
+  if(tab && !tab.hasAttribute('onclick')){
+    tab.parentElement.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
+    tab.classList.add('active');
+  }
+});
+
+// AI程度评级点击切换
+document.querySelectorAll('.ai-level-item').forEach(function(item){
+  item.addEventListener('click', function(){
+    item.parentElement.querySelectorAll('.ai-level-item').forEach(function(i){ i.classList.remove('active'); });
+    item.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

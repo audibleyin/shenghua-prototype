@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>花生 · AI短剧数据查询工具 — 产品需求文档 PRD</title>
+<style>
+/* ========== 品牌变量 ========== */
+:root{
+  --red:#E53E3E; --red-l:#F87171; --grad:linear-gradient(135deg,#E53E3E,#F87171);
+  --bg:#FFFFFF; --warm:#FFF5F5; --warm2:#FAF5FF; --warm3:#F0FFF4; --warm4:#FFFAF0;
+  --ink:#1A202C; --ink2:#4A5568; --ink3:#718096; --line:#E2E8F0;
+  --r:16px; --r-s:10px; --r-l:24px;
+  --sh:0 4px 24px rgba(229,62,62,.08); --sh-l:0 2px 12px rgba(229,62,62,.06);
+  --blue:#3182CE; --blue-l:#63B3ED; --green:#38A169; --green-l:#68D391;
+  --purple:#805AD5; --purple-l:#B794F4; --orange:#DD6B20; --orange-l:#F6AD55;
+  --teal:#319795; --teal-l:#4FD1C5;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'-apple-system','BlinkMacSystemFont','Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+/* CSS图标系统 */
+.ico{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;font-size:15px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:-1px}
+.ico-lg{width:56px;height:56px;border-radius:14px;font-size:24px}
+.ico-sm{width:28px;height:28px;border-radius:8px;font-size:12px}
+.ico-red{background:linear-gradient(135deg,var(--red),var(--red-l))}
+.ico-blue{background:linear-gradient(135deg,var(--blue),var(--blue-l))}
+.ico-green{background:linear-gradient(135deg,var(--green),var(--green-l))}
+.ico-purple{background:linear-gradient(135deg,var(--purple),var(--purple-l))}
+.ico-orange{background:linear-gradient(135deg,var(--orange),var(--orange-l))}
+.ico-teal{background:linear-gradient(135deg,var(--teal),var(--teal-l))}
+.brand-mark{display:inline-block;vertical-align:middle}
+/* 导航栏 */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(229,62,62,.08)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px}
+.nav-brand .brand-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{padding:7px 14px;border-radius:8px;font-size:13.5px;color:var(--ink2);font-weight:500;transition:all .2s}
+.nav-links a:hover{background:var(--warm);color:var(--red)}
+.nav-links a.active{background:var(--grad);color:#fff}
+.nav-tag{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--warm);color:var(--red);font-weight:600;margin-left:8px}
+@media(max-width:900px){.nav-links{display:none}}
+/* 主容器 */
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+section{padding:64px 0 32px}
+@media(max-width:768px){section{padding:40px 0 20px}}
+/* 封面 */
+.cover{text-align:center;padding:120px 0 64px;background:linear-gradient(180deg,var(--warm) 0%,#FFFFFF 100%)}
+.cover .brand-mark{width:72px;height:72px;margin-bottom:24px}
+.cover h1{font-size:42px;font-weight:900;letter-spacing:-1px;margin-bottom:12px}
+.cover h1 .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.cover .subtitle{font-size:18px;color:var(--ink2);margin-bottom:28px}
+.cover .meta{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+.cover .meta-item{font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:6px}
+.cover .meta-item strong{color:var(--ink2)}
+.cover .badges{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:32px}
+.cover .badge{padding:8px 20px;border-radius:30px;font-size:13px;font-weight:600;border:1.5px solid}
+.cover .badge.b1{color:var(--red);border-color:rgba(229,62,62,.3);background:rgba(229,62,62,.04)}
+.cover .badge.b2{color:var(--blue);border-color:rgba(49,130,206,.3);background:rgba(49,130,206,.04)}
+.cover .badge.b3{color:var(--green);border-color:rgba(56,161,105,.3);background:rgba(56,161,105,.04)}
+.cover .badge.b4{color:var(--purple);border-color:rgba(128,90,213,.3);background:rgba(128,90,213,.04)}
+/* 章节标题 */
+.sec-head{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-head .num{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex-shrink:0}
+.sec-head h2{font-size:26px;font-weight:800;letter-spacing:-.5px}
+.sec-head h2::after{content:'';display:block;width:48px;height:4px;border-radius:2px;background:var(--grad);margin-top:6px}
+.sec-head .desc{font-size:14px;color:var(--ink3);margin-left:auto;align-self:flex-end;padding-bottom:4px}
+@media(max-width:768px){.sec-head .desc{display:none}.sec-head h2{font-size:22px}}
+/* 卡片 */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--sh-l);transition:all .25s}
+.card:hover{box-shadow:var(--sh);transform:translateY(-2px);border-color:rgba(229,62,62,.15)}
+.card-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;margin-bottom:12px}
+.card-title .ico{width:28px;height:28px;font-size:12px;border-radius:8px}
+/* 网格 */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+/* 表格 */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--sh-l)}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:600px}
+th{background:var(--warm);padding:14px 18px;text-align:left;font-weight:700;white-space:nowrap}
+td{padding:14px 18px;border-top:1px solid var(--line);vertical-align:top}
+tr:hover td{background:rgba(229,62,62,.02)}
+.tag-yes{display:inline-flex;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(56,161,105,.1);color:var(--green)}
+.tag-no{display:inline-flex;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(160,174,192,.1);color:var(--ink3)}
+.tag-plus{display:inline-flex;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;background:rgba(229,62,62,.1);color:var(--red)}
+/* 标签切换 */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;border-bottom:2px solid var(--line)}
+.tab{padding:10px 20px;border-radius:8px 8px 0 0;font-size:14px;font-weight:600;color:var(--ink3);cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-2px;display:flex;align-items:center;gap:8px}
+.tab:hover{color:var(--red);background:rgba(229,62,62,.03)}
+.tab.active{color:var(--red);border-bottom-color:var(--red);background:rgba(229,62,62,.04)}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* 折叠面板 */
+.fold{border:1px solid var(--line);border-radius:var(--r-s);margin-bottom:12px;overflow:hidden;transition:box-shadow .2s}
+.fold:hover{box-shadow:var(--sh-l)}
+.fold-head{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none;transition:background .2s}
+.fold-head:hover{background:var(--warm)}
+.fold-head .ico{width:32px;height:32px;font-size:13px;border-radius:9px}
+.fold-title{font-weight:700;font-size:15px;flex:1}
+.fold-arrow{color:var(--ink3);transition:transform .25s;font-size:13px;font-weight:bold}
+.fold.open .fold-arrow{transform:rotate(90deg)}
+.fold-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.fold.open .fold-body{max-height:2000px}
+.fold-body-inner{padding:0 20px 20px 60px;color:var(--ink2);font-size:14px;line-height:1.85}
+.fold-body-inner ul{padding-left:20px;margin-top:8px}
+.fold-body-inner li{margin-bottom:6px}
+/* 用户画像 */
+.persona{display:flex;gap:20px;align-items:flex-start}
+.persona .ico{width:48px;height:48px;font-size:20px;border-radius:12px}
+.persona-body h4{font-size:17px;font-weight:700;margin-bottom:4px}
+.persona-body .role{font-size:13px;color:var(--red);font-weight:600;margin-bottom:8px}
+.persona-body .traits{font-size:13.5px;color:var(--ink2)}
+.persona-body .need{margin-top:8px;padding:10px 14px;border-radius:10px;background:var(--warm);font-size:13px;color:var(--ink2)}
+.persona-body .need strong{color:var(--red)}
+/* 时间线 */
+.timeline{position:relative;padding-left:36px}
+.timeline::before{content:'';position:absolute;left:12px;top:8px;bottom:8px;width:3px;background:linear-gradient(180deg,var(--red),var(--red-l),var(--blue),var(--green));border-radius:2px;opacity:.3}
+.tl-item{position:relative;margin-bottom:28px}
+.tl-item::before{content:'';position:absolute;left:-30px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--grad);border:3px solid #fff;box-shadow:0 0 0 2px var(--red)}
+.tl-item h4{font-size:16px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.tl-item .phase-tag{font-size:11px;padding:2px 10px;border-radius:6px;font-weight:700}
+.tl-item .p1{background:rgba(229,62,62,.1);color:var(--red)}
+.tl-item .p2{background:rgba(49,130,206,.1);color:var(--blue)}
+.tl-item .p3{background:rgba(56,161,105,.1);color:var(--green)}
+.tl-item .p4{background:rgba(128,90,213,.1);color:var(--purple)}
+.tl-item .time{font-size:13px;color:var(--ink3);margin-bottom:8px}
+.tl-item ul{font-size:14px;color:var(--ink2);padding-left:20px}
+.tl-item ul li{margin-bottom:4px}
+/* UI构想 */
+.mockup{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-l);background:#fff}
+.mockup-bar{height:36px;background:var(--warm);display:flex;align-items:center;gap:6px;padding:0 14px;border-bottom:1px solid var(--line)}
+.mockup-bar span{width:10px;height:10px;border-radius:50%}
+.mockup-bar .r1{background:#FF6B6B}.mockup-bar .r2{background:#FFD93D}.mockup-bar .r3{background:#6BCB77}
+.mockup-bar .url{margin-left:12px;font-size:12px;color:var(--ink3);background:#fff;padding:4px 14px;border-radius:6px;flex:1;max-width:300px}
+.mockup-body{padding:20px}
+.mockup-grid{display:grid;grid-template-columns:200px 1fr;gap:16px;min-height:200px}
+.mockup-side{background:var(--warm);border-radius:10px;padding:12px}
+.mockup-side-item{padding:8px 10px;border-radius:6px;font-size:12px;color:var(--ink2);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.mockup-side-item.active{background:var(--grad);color:#fff}
+.mockup-main{display:flex;flex-direction:column;gap:10px}
+.mockup-row{display:flex;gap:10px}
+.mockup-block{background:var(--warm);border-radius:8px;padding:12px;flex:1}
+.mockup-block .label{font-size:11px;color:var(--ink3);margin-bottom:4px}
+.mockup-block .val{font-size:20px;font-weight:800;color:var(--red)}
+.mockup-block .chart{height:40px;display:flex;align-items:flex-end;gap:3px;margin-top:8px}
+.mockup-block .chart .bar{flex:1;background:var(--grad);border-radius:3px 3px 0 0;opacity:.7}
+.search-bar{background:#fff;border:1.5px solid var(--line);border-radius:24px;padding:10px 20px;font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:8px}
+.search-bar .ico{width:20px;height:20px;font-size:10px;border-radius:6px}
+@media(max-width:600px){.mockup-grid{grid-template-columns:1fr}.mockup-side{display:none}}
+/* 页脚 */
+footer{background:var(--warm);padding:40px 0;margin-top:60px}
+footer .wrap{text-align:center}
+footer p{font-size:13px;color:var(--ink3);margin-bottom:8px}
+footer .brand-mark{width:28px;height:28px;margin-bottom:12px}
+/* 杂项 */
+.hl{color:var(--red);font-weight:600}
+.hl-blue{color:var(--blue);font-weight:600}
+.hl-green{color:var(--green);font-weight:600}
+.hl-purple{color:var(--purple);font-weight:600}
+.mt{margin-top:16px}
+.note{padding:16px 20px;border-radius:var(--r-s);background:var(--warm);border-left:4px solid var(--red);font-size:14px;color:var(--ink2)}
+.note-blue{background:rgba(49,130,206,.06);border-left-color:var(--blue)}
+.note-green{background:rgba(56,161,105,.06);border-left-color:var(--green)}
+.kv-list{list-style:none;padding:0}
+.kv-list li{display:flex;align-items:baseline;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.kv-list li:last-child{border-bottom:none}
+.kv-list .k{font-weight:600;min-width:100px;flex-shrink:0}
+.kv-list .v{color:var(--ink2)}
+</style>
+</head>
+<body>
+
+<!-- ========== SVG品牌Logo定义 ========== -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <linearGradient id="shGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E53E3E"/>
+      <stop offset="100%" stop-color="#F87171"/>
+    </linearGradient>
+    <symbol id="shBloom" viewBox="0 0 48 48">
+      <g transform="translate(24,24)">
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(60)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(120)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(240)"/>
+        <ellipse cx="0" cy="-13" rx="5" ry="9" fill="url(#shGrad)" opacity=".9" transform="rotate(300)"/>
+        <circle cx="0" cy="0" r="5.5" fill="#FFFFFF"/>
+        <path d="M0,-4 L1,-1 L4,0 L1,1 L0,4 L-1,1 L-4,0 L-1,-1 Z" fill="#E53E3E"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ========== 导航栏 ========== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#cover" class="nav-brand">
+      <svg class="brand-mark" width="28" height="28"><use href="#shBloom"/></svg>
+      <span class="brand-text">花生</span>
+      <span class="nav-tag">PRD v2.0</span>
+    </a>
+    <div class="nav-links">
+      <a href="#sec1" class="active">竞品分析</a>
+      <a href="#sec2">产品定位</a>
+      <a href="#sec3">用户画像</a>
+      <a href="#sec4">核心功能</a>
+      <a href="#sec5">差异化</a>
+      <a href="#sec6">界面交互</a>
+      <a href="#sec7">技术难点</a>
+      <a href="#sec8">路线图</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== 封面 ========== -->
+<section class="cover" id="cover">
+  <svg class="brand-mark" width="72" height="72"><use href="#shBloom"/></svg>
+  <h1><span class="accent">花生</span> · AI短剧数据查询工具</h1>
+  <p class="subtitle">产品需求文档 PRD</p>
+  <div class="meta">
+    <div class="meta-item"><span>版本</span><strong>V2.0</strong></div>
+    <div class="meta-item"><span>日期</span><strong>2026-07-14</strong></div>
+    <div class="meta-item"><span>状态</span><strong>Draft</strong></div>
+    <div class="meta-item"><span>密级</span><strong>内部</strong></div>
+  </div>
+  <div class="badges">
+    <span class="badge b1">AI短剧垂类</span>
+    <span class="badge b2">数据查询</span>
+    <span class="badge b3">榜单排行</span>
+    <span class="badge b4">趋势分析</span>
+  </div>
+</section>
+
+<div class="wrap">
+
+<!-- ========== 第1章：竞品分析 ========== -->
+<section id="sec1">
+  <div class="sec-head">
+    <div class="num">1</div>
+    <h2>竞品分析</h2>
+    <span class="desc">剧查查 · 短剧数据服务平台</span>
+  </div>
+
+  <div class="tabs" id="comp-tabs">
+    <div class="tab active" data-tab="c1"><span class="ico ico-red ico-sm">定</span>产品定位</div>
+    <div class="tab" data-tab="c2"><span class="ico ico-blue ico-sm">功</span>核心功能</div>
+    <div class="tab" data-tab="c3"><span class="ico ico-green ico-sm">商</span>商业模式</div>
+    <div class="tab" data-tab="c4"><span class="ico ico-orange ico-sm">缺</span>不足之处</div>
+  </div>
+
+  <div class="tab-panel active" id="c1">
+    <div class="card">
+      <div class="card-title"><span class="ico ico-red">定</span>产品定位</div>
+      <ul class="kv-list">
+        <li><span class="k">产品名称</span><span class="v">剧查查</span></li>
+        <li><span class="k">定位</span><span class="v">面向短剧行业的<strong>数据查询与分析工具</strong>，以"短剧版猫眼/灯塔"为自我认知</span></li>
+        <li><span class="k">覆盖范围</span><span class="v"><strong>全品类短剧</strong> — 涵盖传统真人短剧、AI短剧、混合制作短剧，不区分制作方式</span></li>
+        <li><span class="k">目标市场</span><span class="v">短剧制作方、投资方、发行方</span></li>
+        <li><span class="k">核心价值</span><span class="v">提供短剧播放量、热度榜、题材趋势等数据维度，辅助行业决策</span></li>
+        <li><span class="k">用户规模</span><span class="v">日活约 5-8万，以B端从业者为主</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="c2">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="ico ico-blue">榜</span>热度榜单</div>
+        <p style="font-size:14px;color:var(--ink2)">日/周/月维度短剧热度排行，支持按平台（抖音、快手、微信小程序等）筛选查看。</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico ico-blue">趋</span>题材趋势</div>
+        <p style="font-size:14px;color:var(--ink2)">短剧题材分类统计（战神、重生、甜宠、复仇等），展示各题材热度变化趋势。</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico ico-blue">搜</span>短剧搜索</div>
+        <p style="font-size:14px;color:var(--ink2)">按剧名、演员、制作方搜索短剧信息，查看播放量、上线时间等基础数据。</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico ico-blue">报</span>数据报告</div>
+        <p style="font-size:14px;color:var(--ink2)">定期输出行业数据报告（周报/月报），汇总行业大盘走势。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="c3">
+    <div class="card">
+      <div class="card-title"><span class="ico ico-green">商</span>商业模式</div>
+      <ul class="kv-list">
+        <li><span class="k">主要收入</span><span class="v"><strong>会员订阅</strong> — 分为个人版（¥99/月）和团队版（¥399/月），解锁完整数据查看权限</span></li>
+        <li><span class="k">增值服务</span><span class="v">数据API接口服务（按调用量计费）、定制化数据报告（¥2000+/份）</span></li>
+        <li><span class="k">潜在方向</span><span class="v">广告投放对接（短剧推广渠道）、流量撮合（撮合制作方与平台）</span></li>
+        <li><span class="k">变现瓶颈</span><span class="v">数据维度单一（仅播放量/热度），用户付费意愿受限于数据的信息增量</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="c4">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="ico ico-orange">缺</span>未区分AI短剧</div>
+        <p style="font-size:14px;color:var(--ink2)">剧查查将AI短剧与传统真人短剧<span class="hl">混合统计</span>，无法单独查看AI短剧的热度、趋势和排行。随着AI短剧爆发式增长，用户急需独立的AI短剧数据维度，这恰是花生的切入点。</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico ico-orange">缺</span>缺乏AI维度数据</div>
+        <p style="font-size:14px;color:var(--ink2)">不提供AI工具使用分析、AI生成方式分类、制作成本对比等<span class="hl">AI短剧专属数据维度</span>，无法满足AI短剧从业者对垂类数据的需求。</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico ico-orange">缺</span>数据深度不足</div>
+        <p style="font-size:14px;color:var(--ink2)">数据停留在播放量/热度的统计层面，缺乏完播率、转化率、投放ROI等深层运营数据。</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="ico ico-orange">缺</span>无预测能力</div>
+        <p style="font-size:14px;color:var(--ink2)">仅呈现历史数据，不具备趋势预测和预警能力，用户无法提前判断下一波热点。</p>
+      </div>
+    </div>
+    <div class="note mt" style="margin-top:20px">
+      <strong>总结：</strong>剧查查是全品类短剧数据工具，解决了"看数据"的基本需求，但随着AI短剧赛道爆发，<span class="hl">全品类混合统计已无法满足AI短剧垂类的数据需求</span>。花生正是切入这一空白——专注AI短剧数据查询。
+    </div>
+  </div>
+</section>
+
+<!-- ========== 第2章：产品定位 ========== -->
+<section id="sec2">
+  <div class="sec-head">
+    <div class="num">2</div>
+    <h2>产品定位</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="ico ico-red">标</span>产品目标</div>
+      <p style="font-size:14.5px;color:var(--ink2);line-height:1.9">
+        成为<strong>AI短剧赛道最专业的数据查询与分析工具</strong>，为AI短剧制作方、投资方、MCN及行业研究者提供精准、实时、深度的AI短剧数据服务，帮助用户在快速增长的AI短剧市场中做出数据驱动的决策。
+      </p>
+      <div style="margin-top:16px;padding:14px;background:var(--warm);border-radius:10px">
+        <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px">一句话定义</div>
+        <div style="font-size:14.5px;color:var(--ink);font-weight:600">「看AI短剧数据，上花生。」</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="ico ico-red">值</span>核心价值主张</div>
+      <ul class="kv-list">
+        <li><span class="k">垂类聚焦</span><span class="v"><strong>只查AI短剧</strong>，不掺杂传统真人短剧数据，榜单和趋势纯粹反映AI短剧赛道</span></li>
+        <li><span class="k">专属维度</span><span class="v">提供剧查查不具备的<span class="hl">AI短剧专属数据维度</span>：AI工具类型、生成方式、制作成本、AI程度评级等</span></li>
+        <li><span class="k">实时榜单</span><span class="v">AI短剧独立热度排行，按日/周/月更新，支持按AI工具类型和平台筛选</span></li>
+        <li><span class="k">趋势洞察</span><span class="v">AI短剧题材趋势分析，AI短剧占比变化追踪，帮助用户把握赛道走向</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note note-blue mt">
+    <strong>差异化锚点：</strong>剧查查是"全品类短剧数据工具"，花生是"AI短剧垂类数据工具"。剧查查告诉你"短剧什么火了"，花生告诉你"AI短剧什么火了"。
+  </div>
+</section>
+
+<!-- ========== 第3章：目标用户画像 ========== -->
+<section id="sec3">
+  <div class="sec-head">
+    <div class="num">3</div>
+    <h2>目标用户画像</h2>
+    <span class="desc">五类核心用户</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="persona">
+        <span class="ico ico-red ico-lg">制</span>
+        <div class="persona-body">
+          <h4>AI短剧制作方</h4>
+          <div class="role">用AI工具制作短剧的团队 / 个人创作者</div>
+          <div class="traits">
+            <strong>画像：</strong>25-40岁，掌握AI视频生成/配音工具，批量制作AI短剧内容。需要了解同行数据来优化选题和制作策略。<br>
+            <strong>痛点：</strong>不知道哪些AI短剧题材正在火、自己的作品排名如何、同行用的什么AI工具。
+          </div>
+          <div class="need"><strong>核心需求：</strong>查看AI短剧热度榜、对比同行数据、了解热门AI工具类型和制作方式。</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="persona">
+        <span class="ico ico-blue ico-lg">投</span>
+        <div class="persona-body">
+          <h4>短剧投资方</h4>
+          <div class="role">关注AI短剧赛道的基金 / 个人投资人</div>
+          <div class="traits">
+            <strong>画像：</strong>35-50岁，有资金实力，看好AI短剧赛道但缺乏专业数据支撑，投资决策高度依赖数据依据。<br>
+            <strong>痛点：</strong>AI短剧市场规模多大？增长趋势如何？哪些题材ROI最高？哪些制作团队值得关注？
+          </div>
+          <div class="need"><strong>核心需求：</strong>AI短剧行业大盘数据、题材ROI对比、增长趋势预测，让投资决策有据可依。</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="persona">
+        <span class="ico ico-green ico-lg">M</span>
+        <div class="persona-body">
+          <h4>MCN机构</h4>
+          <div class="role">运营AI短剧账号的内容机构</div>
+          <div class="traits">
+            <strong>画像：</strong>管理多位达人/账号，有成熟的内容运营体系，正在布局AI短剧赛道，需要批量数据支持运营决策。<br>
+            <strong>痛点：</strong>旗下AI短剧数据分散在各平台，难以统一汇总；竞品AI短剧策略不透明；选题缺乏数据依据。
+          </div>
+          <div class="need"><strong>核心需求：</strong>多账号数据汇总、竞品AI短剧监控、批量题材趋势分析。</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="persona">
+        <span class="ico ico-orange ico-lg">研</span>
+        <div class="persona-body">
+          <h4>行业研究者</h4>
+          <div class="role">AI短剧行业分析师 / 媒体记者</div>
+          <div class="traits">
+            <strong>画像：</strong>28-45岁，从事内容行业研究或科技媒体报道，需要深度数据支撑撰写行业分析报告和报道。<br>
+            <strong>痛点：</strong>缺乏AI短剧细分数据来源，现有工具不区分AI和传统短剧，难以量化AI短剧的发展态势。
+          </div>
+          <div class="need"><strong>核心需求：</strong>AI短剧占比数据、增长曲线、题材分布、行业报告导出。</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="grid-column:1/-1">
+      <div class="persona">
+        <span class="ico ico-purple ico-lg">平</span>
+        <div class="persona-body">
+          <h4>平台运营方</h4>
+          <div class="role">抖音 / 快手 / 小红书等平台短剧运营人员</div>
+          <div class="traits">
+            <strong>画像：</strong>负责平台短剧内容生态运营，需要了解AI短剧在平台内的占比、增长趋势、优质AI短剧制作方，以便制定流量策略和扶持政策。<br>
+            <strong>痛点：</strong>平台内部数据系统未对AI短剧单独标记分类，难以从全量短剧中筛选AI短剧数据。
+          </div>
+          <div class="need"><strong>核心需求：</strong>平台内AI短剧数据看板、AI短剧占比追踪、优质AI短剧制作方发现。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 第4章：核心功能模块 ========== -->
+<section id="sec4">
+  <div class="sec-head">
+    <div class="num">4</div>
+    <h2>核心功能模块</h2>
+    <span class="desc">数据查询 · 分析 · 榜单 · 报告</span>
+  </div>
+
+  <div class="tabs" id="func-tabs">
+    <div class="tab active" data-tab="f1"><span class="ico ico-red ico-sm">搜</span>AI短剧搜索</div>
+    <div class="tab" data-tab="f2"><span class="ico ico-blue ico-sm">榜</span>热度榜单</div>
+    <div class="tab" data-tab="f3"><span class="ico ico-green ico-sm">趋</span>题材趋势</div>
+    <div class="tab" data-tab="f4"><span class="ico ico-purple ico-sm">报</span>数据报告</div>
+    <div class="tab" data-tab="f5"><span class="ico ico-orange ico-sm">才</span>人才信息库</div>
+  </div>
+
+  <!-- AI短剧搜索 -->
+  <div class="tab-panel active" id="f1">
+    <div class="card">
+      <div class="card-title"><span class="ico ico-red">搜</span>AI短剧搜索 — 精准查询每一部AI短剧的数据</div>
+      <p style="font-size:14px;color:var(--ink2);margin-bottom:16px">支持多维度搜索AI短剧，查看播放量、完播率、AI工具类型、制作方等完整数据。所有结果均为<strong>AI短剧</strong>，不混杂传统真人短剧。</p>
+      <div class="grid-3">
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-red ico-sm">名</span>按剧名搜索</div>
+          <p style="font-size:13px;color:var(--ink2)">输入剧名关键词，模糊匹配AI短剧库。展示播放量、上线时间、平台、AI工具类型等基础信息。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-red ico-sm">方</span>按制作方搜索</div>
+          <p style="font-size:13px;color:var(--ink2)">按制作团队/个人搜索其全部AI短剧作品，查看制作方数据总览和作品矩阵。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-red ico-sm">具</span>按AI工具类型筛选</div>
+          <p style="font-size:13px;color:var(--ink2)">按使用的AI工具筛选：视频生成（Sora/可灵/Runway）、AI配音、全流程AI等。了解各类工具的产出表现。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-red ico-sm">台</span>按平台筛选</div>
+          <p style="font-size:13px;color:var(--ink2)">按发布平台筛选：抖音、快手、微信小程序、小红书等。支持多平台对比查看。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-red ico-sm">详</span>短剧详情页</div>
+          <p style="font-size:13px;color:var(--ink2)">点击进入单部AI短剧详情：播放趋势曲线、AI工具明细、制作成本区间、同类对比、历史排行变化。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-red ico-sm">收</span>收藏与对比</div>
+          <p style="font-size:13px;color:var(--ink2)">收藏感兴趣的AI短剧，支持多部作品数据对比（播放量趋势、题材、AI工具、成本效率等维度）。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 热度榜单 -->
+  <div class="tab-panel" id="f2">
+    <div class="card">
+      <div class="card-title"><span class="ico ico-blue">榜</span>热度榜单 — AI短剧独立排行，不与传统短剧混合</div>
+      <p style="font-size:14px;color:var(--ink2);margin-bottom:16px">提供日榜、周榜、月榜三种时间维度的AI短剧热度排行。所有榜单<strong>仅收录AI短剧</strong>，让用户看清AI短剧赛道的真实竞争格局。</p>
+      <div class="grid-2">
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-blue ico-sm">日</span>日/周/月榜</div>
+          <p style="font-size:13px;color:var(--ink2)">三种时间维度的AI短剧热度排行。日榜反映即时热点，周榜展现稳定趋势，月榜揭示长期格局。支持切换查看。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-blue ico-sm">筛</span>多维筛选</div>
+          <p style="font-size:13px;color:var(--ink2)">支持按平台（抖音/快手/小程序）、AI工具类型、题材分类、时长区间等多维度筛选排行，精准定位目标作品。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-blue ico-sm">新</span>新晋榜与飙升榜</div>
+          <p style="font-size:13px;color:var(--ink2)">新晋榜单展示近期上线的AI短剧中表现亮眼的作品；飙升榜展示热度环比增幅最大的AI短剧，捕捉黑马。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-blue ico-sm">制</span>制作方榜</div>
+          <p style="font-size:13px;color:var(--ink2)">AI短剧制作方排行——按总播放量、作品数、平均热度排名，发现AI短剧赛道头部制作团队和潜力新秀。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 题材趋势 -->
+  <div class="tab-panel" id="f3">
+    <div class="card">
+      <div class="card-title"><span class="ico ico-green">趋</span>题材趋势 — AI短剧垂类趋势分析</div>
+      <p style="font-size:14px;color:var(--ink2);margin-bottom:16px">追踪AI短剧题材分布和热度变化趋势，提供AI短剧 vs 传统短剧的对比分析，帮助用户判断AI短剧赛道的走向和机会。</p>
+      <div class="grid-3">
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-green ico-sm">分</span>题材分布</div>
+          <p style="font-size:13px;color:var(--ink2)">AI短剧题材分类统计（甜宠/复仇/重生/悬疑等），展示各题材占比和平均播放量，了解AI短剧题材偏好。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-green ico-sm">比</span>AI vs 传统对比</div>
+          <p style="font-size:13px;color:var(--ink2)">同题材下AI短剧与传统真人短剧的热度对比，了解AI短剧在哪些题材已具备竞争力，哪些题材仍是传统短剧主导。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-green ico-sm">占</span>占比变化</div>
+          <p style="font-size:13px;color:var(--ink2)">AI短剧在全部短剧中的数量占比和播放量占比变化曲线，量化AI短剧的市场渗透趋势。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 数据报告 -->
+  <div class="tab-panel" id="f4">
+    <div class="card">
+      <div class="card-title"><span class="ico ico-purple">报</span>数据报告 — AI短剧行业周报与月报</div>
+      <div class="grid-3">
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-purple ico-sm">周</span>行业周报</div>
+          <p style="font-size:13px;color:var(--ink2)">每周自动生成AI短剧行业数据周报：本周热度TOP10、新晋作品、题材变化、AI工具使用率排行。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-purple ico-sm">月</span>行业月报</div>
+          <p style="font-size:13px;color:var(--ink2)">月度AI短剧行业深度报告：大盘走势、题材分析、制作方排行、平台分布、AI工具趋势、增长预测。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-purple ico-sm">具</span>AI工具排行</div>
+          <p style="font-size:13px;color:var(--ink2)">按使用率对AI工具排行：视频生成工具、配音工具、综合制作平台。展示各工具的市场占有率和产出表现。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 行业人才信息库 -->
+  <div class="tab-panel" id="f5">
+    <div class="card">
+      <div class="card-title"><span class="ico ico-orange">才</span>行业人才信息库 — AI短剧从业者发现与连接平台</div>
+      <p style="font-size:14px;color:var(--ink2);margin-bottom:16px">为AI短剧行业从业者提供垂直的人才信息检索与互相发现的平台，让行业内的导演、制作人、编剧等不同角色的人能够快速找到合适的合作伙伴。</p>
+      <div class="grid-3">
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-orange ico-sm">角</span>角色分类体系</div>
+          <p style="font-size:13px;color:var(--ink2)">按AI短剧制作流程细分：导演、制作人、编剧、AI生成师、后期剪辑师、美术设计（角色/场景/海报）、分镜师（静态/动态）、其他（运营/投流等）。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-orange ico-sm">搜</span>多维人才搜索</div>
+          <p style="font-size:13px;color:var(--ink2)">支持按角色分类、擅长题材、AI工具熟练度等多维度筛选。支持按名称、角色、技能关键词搜索，快速定位目标人才。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-orange ico-sm">详</span>人才详情页</div>
+          <p style="font-size:13px;color:var(--ink2)">展示个人简介、代表作品（可跳转至短剧详情页）、擅长的AI工具及熟练度、合作意向、联系方式（可选公开）。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-orange ico-sm">联</span>与短剧详情页联动</div>
+          <p style="font-size:13px;color:var(--ink2)">短剧详情页中的制作方可点击跳转至人才库中的对应人物主页，实现数据与人才的闭环连接。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-orange ico-sm">邀</span>合作邀请</div>
+          <p style="font-size:13px;color:var(--ink2)">用户可向人才发送合作邀请，人才可选择公开联系方式（微信/邮箱），方便行业合作对接。</p>
+        </div>
+        <div class="card" style="box-shadow:none;border-color:var(--line)">
+          <div class="card-title"><span class="ico ico-orange ico-sm">统</span>数据统计</div>
+          <p style="font-size:13px;color:var(--ink2)">展示人才参与作品数、累计播放量、好评率、合作次数等数据指标，帮助用户评估人才实力。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 第5章：差异化对比 ========== -->
+<section id="sec5">
+  <div class="sec-head">
+    <div class="num">5</div>
+    <h2>与剧查查的差异化对比</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:160px">对比维度</th>
+          <th style="width:42%">剧查查</th>
+          <th style="width:42%">花生</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>覆盖范围</strong></td>
+          <td>全品类短剧（传统+AI混合）</td>
+          <td><span class="hl">仅AI短剧</span>，垂类专注</td>
+        </tr>
+        <tr>
+          <td><strong>榜单</strong></td>
+          <td>全品类混合排行，AI短剧被真人短剧淹没</td>
+          <td><span class="hl">AI短剧独立排行</span>，赛道格局一目了然</td>
+        </tr>
+        <tr>
+          <td><strong>数据维度</strong></td>
+          <td>通用维度：播放量/热度/题材</td>
+          <td>通用维度 + <span class="hl">AI专属维度</span>：AI工具类型/生成方式/制作成本/AI程度评级</td>
+        </tr>
+        <tr>
+          <td><strong>趋势分析</strong></td>
+          <td>全品类短剧趋势</td>
+          <td><span class="hl">AI短剧垂类趋势</span> + AI vs 传统对比 + 占比变化</td>
+        </tr>
+        <tr>
+          <td><strong>制作方维度</strong></td>
+          <td>不区分AI/非AI制作方</td>
+          <td><span class="hl">AI短剧制作方独立排行</span>，发现头部AI制作团队</td>
+        </tr>
+        <tr>
+          <td><strong>用户群体</strong></td>
+          <td>全品类短剧从业者</td>
+          <td>AI短剧关注者（制作方/投资方/MCN/研究者/平台方）</td>
+        </tr>
+        <tr>
+          <td><strong>分析深度</strong></td>
+          <td>宽泛统计，浅层数据</td>
+          <td><span class="hl">垂类深耕</span>，AI短剧专属深度分析</td>
+        </tr>
+        <tr>
+          <td><strong>人才库</strong></td>
+          <td>无人才信息功能</td>
+          <td><span class="hl">行业人才信息库</span>，AI短剧从业者发现与连接平台</td>
+        </tr>
+        <tr>
+          <td><strong>竞争壁垒</strong></td>
+          <td>全品类数据积累</td>
+          <td><span class="hl">AI短剧识别能力</span> + 垂类数据壁垒</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note note-green mt" style="margin-top:20px">
+    <strong>核心差异：</strong>唯一的差异就是——剧查查查<span class="hl-green">全品类短剧</span>，花生只查<span class="hl">AI短剧</span>。不做创作、不做社区、不做协作分发，就是专注把AI短剧的数据查询做到极致。
+  </div>
+</section>
+
+<!-- ========== 第6章：界面与交互构想 ========== -->
+<section id="sec6">
+  <div class="sec-head">
+    <div class="num">6</div>
+    <h2>界面与交互构想</h2>
+    <span class="desc">核心页面布局与交互亮点</span>
+  </div>
+
+  <div class="tabs" id="ui-tabs">
+    <div class="tab active" data-tab="u1"><span class="ico ico-red ico-sm">首</span>数据查询首页</div>
+    <div class="tab" data-tab="u2"><span class="ico ico-blue ico-sm">详</span>短剧详情页</div>
+    <div class="tab" data-tab="u3"><span class="ico ico-green ico-sm">趋</span>题材趋势页</div>
+    <div class="tab" data-tab="u4"><span class="ico ico-orange ico-sm">才</span>人才库页</div>
+  </div>
+
+  <div class="tab-panel active" id="u1">
+    <div class="mockup">
+      <div class="mockup-bar"><span class="r1"></span><span class="r2"></span><span class="r3"></span><span class="url">huasheng.com</span></div>
+      <div class="mockup-body">
+        <div class="mockup-grid">
+          <div class="mockup-side">
+            <div class="mockup-side-item active"><span class="ico ico-red ico-sm">首</span>首页</div>
+            <div class="mockup-side-item"><span class="ico ico-blue ico-sm">榜</span>热度榜单</div>
+            <div class="mockup-side-item"><span class="ico ico-green ico-sm">趋</span>题材趋势</div>
+            <div class="mockup-side-item"><span class="ico ico-purple ico-sm">报</span>数据报告</div>
+            <div class="mockup-side-item"><span class="ico ico-orange ico-sm">才</span>人才库</div>
+            <div class="mockup-side-item"><span class="ico ico-orange ico-sm">藏</span>我的收藏</div>
+          </div>
+          <div class="mockup-main">
+            <div class="search-bar"><span class="ico ico-red ico-sm">搜</span>搜索AI短剧剧名、制作方、AI工具...</div>
+            <div class="mockup-row">
+              <div class="mockup-block"><div class="label">今日AI短剧总量</div><div class="val">1,247</div></div>
+              <div class="mockup-block"><div class="label">AI短剧占比</div><div class="val" style="color:var(--green)">18.3%</div></div>
+              <div class="mockup-block"><div class="label">较昨日</div><div class="val" style="color:var(--blue)">+12%</div></div>
+            </div>
+            <div class="mockup-block" style="min-height:100px">
+              <div class="label">今日AI短剧热度榜 TOP5</div>
+              <div style="display:flex;gap:6px;margin-top:8px;flex-direction:column">
+                <div style="background:#fff;border-radius:6px;padding:6px 10px;font-size:12px;border:1px solid var(--line);display:flex;justify-content:space-between"><span>1. 重生之AI霸总</span><span style="color:var(--red);font-weight:700">423万</span></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 10px;font-size:12px;border:1px solid var(--line);display:flex;justify-content:space-between"><span>2. AI甜宠日记</span><span style="color:var(--red);font-weight:700">387万</span></div>
+                <div style="background:#fff;border-radius:6px;padding:6px 10px;font-size:12px;border:1px solid var(--line);display:flex;justify-content:space-between"><span>3. 赛博重生</span><span style="color:var(--red);font-weight:700">351万</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note mt" style="margin-top:16px">
+      <strong>交互亮点：</strong>搜索框支持<span class="hl">自然语言查询</span>（如"最近7天甜宠题材AI短剧"），快捷筛选标签（题材/AI工具/平台）可组合叠加。首页一眼看到AI短剧大盘数据和当日热度榜。
+    </div>
+  </div>
+
+  <div class="tab-panel" id="u2">
+    <div class="mockup">
+      <div class="mockup-bar"><span class="r1"></span><span class="r2"></span><span class="r3"></span><span class="url">huasheng.com/drama/12345</span></div>
+      <div class="mockup-body">
+        <div class="mockup-main">
+          <div class="mockup-row">
+            <div class="mockup-block"><div class="label">剧名</div><div style="font-size:14px;font-weight:700">重生之AI霸总</div></div>
+            <div class="mockup-block"><div class="label">总播放量</div><div class="val">423万</div></div>
+            <div class="mockup-block"><div class="label">完播率</div><div class="val" style="color:var(--green)">68%</div></div>
+          </div>
+          <div class="mockup-row">
+            <div class="mockup-block"><div class="label">AI工具</div><div style="font-size:13px;font-weight:600;color:var(--blue)">可灵(视频) + GPT(剧本)</div></div>
+            <div class="mockup-block"><div class="label">制作方</div><div style="font-size:13px;font-weight:600">@AI Studio</div></div>
+            <div class="mockup-block"><div class="label">AI程度</div><div style="font-size:13px;font-weight:700;color:var(--purple)">全AI生成</div></div>
+          </div>
+          <div class="mockup-block" style="flex:2">
+            <div class="label">播放量趋势 (近14天)</div>
+            <div class="chart">
+              <div class="bar" style="height:20%"></div><div class="bar" style="height:35%"></div><div class="bar" style="height:30%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:45%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:80%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:90%"></div><div class="bar" style="height:85%"></div><div class="bar" style="height:75%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:40%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note note-blue mt" style="margin-top:16px">
+      <strong>交互亮点：</strong>详情页突出<span class="hl-blue">AI工具信息</span>——用了什么AI工具生成、AI程度评级（辅助/半AI/全AI）。趋势图支持点击节点查看当日详情。底部展示<span class="hl">同类AI短剧对比</span>，一键加入对比列表。
+    </div>
+  </div>
+
+  <div class="tab-panel" id="u3">
+    <div class="mockup">
+      <div class="mockup-bar"><span class="r1"></span><span class="r2"></span><span class="r3"></span><span class="url">huasheng.com/trends</span></div>
+      <div class="mockup-body">
+        <div class="mockup-main">
+          <div class="mockup-row">
+            <div class="mockup-block"><div class="label">AI短剧占比</div><div class="val" style="color:var(--green)">18.3%</div></div>
+            <div class="mockup-block"><div class="label">环比上月</div><div class="val" style="color:var(--blue)">+4.2%</div></div>
+            <div class="mockup-block"><div class="label">最热题材</div><div style="font-size:13px;font-weight:700;color:var(--red);margin-top:4px">甜宠</div></div>
+          </div>
+          <div class="mockup-row">
+            <div class="mockup-block" style="flex:2">
+              <div class="label">AI短剧占比变化 (近6个月)</div>
+              <div class="chart" style="height:60px">
+                <div class="bar" style="height:25%"></div><div class="bar" style="height:35%"></div><div class="bar" style="height:45%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:90%"></div>
+              </div>
+            </div>
+            <div class="mockup-block" style="flex:1">
+              <div class="label">上升最快题材</div>
+              <div style="font-size:13px;margin-top:6px;color:var(--green);font-weight:600">悬疑 +89%</div>
+              <div style="font-size:13px;margin-top:4px;color:var(--green);font-weight:600">科幻 +67%</div>
+              <div style="font-size:13px;margin-top:4px;color:var(--green);font-weight:600">重生 +45%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note note-green mt" style="margin-top:16px">
+      <strong>交互亮点：</strong>趋势页核心是<span class="hl-green">AI短剧占比变化曲线</span>——直观展示AI短剧在整个短剧市场中的渗透趋势。题材热度可切换"AI短剧 vs 传统短剧"对比视图，同屏对比同题材下AI和传统短剧的竞争力差异。
+    </div>
+  </div>
+
+  <div class="tab-panel" id="u4">
+    <div class="mockup">
+      <div class="mockup-bar"><span class="r1"></span><span class="r2"></span><span class="r3"></span><span class="url">huasheng.com/talent</span></div>
+      <div class="mockup-body">
+        <div class="mockup-main">
+          <div class="mockup-row">
+            <div class="mockup-block" style="flex:1">
+              <div class="label">角色筛选</div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px">
+                <span style="font-size:11px;padding:3px 8px;border-radius:6px;background:var(--grad);color:#fff">全部</span>
+                <span style="font-size:11px;padding:3px 8px;border-radius:6px;background:var(--warm);color:var(--ink2)">导演</span>
+                <span style="font-size:11px;padding:3px 8px;border-radius:6px;background:var(--warm);color:var(--ink2)">制作人</span>
+                <span style="font-size:11px;padding:3px 8px;border-radius:6px;background:var(--warm);color:var(--ink2)">编剧</span>
+                <span style="font-size:11px;padding:3px 8px;border-radius:6px;background:var(--warm);color:var(--ink2)">AI生成师</span>
+              </div>
+            </div>
+          </div>
+          <div class="mockup-row">
+            <div class="mockup-block" style="flex:1">
+              <div class="label">人才列表</div>
+              <div style="display:flex;gap:8px;margin-top:6px;flex-direction:column">
+                <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;background:#fff;border-radius:6px;border:1px solid var(--line)">
+                  <span style="width:28px;height:28px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">张</span>
+                  <span style="font-size:12px;font-weight:600;flex:1">张明远 <span style="font-size:10px;color:var(--purple);background:rgba(128,90,213,.1);padding:1px 5px;border-radius:4px">导演</span></span>
+                  <span style="font-size:11px;color:var(--ink3)">8部作品</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;background:#fff;border-radius:6px;border:1px solid var(--line)">
+                  <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">陈</span>
+                  <span style="font-size:12px;font-weight:600;flex:1">陈思琪 <span style="font-size:10px;color:var(--blue);background:rgba(49,130,206,.1);padding:1px 5px;border-radius:4px">制作人</span></span>
+                  <span style="font-size:11px;color:var(--ink3)">15部作品</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;background:#fff;border-radius:6px;border:1px solid var(--line)">
+                  <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-l));color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">王</span>
+                  <span style="font-size:12px;font-weight:600;flex:1">王艺 <span style="font-size:10px;color:var(--green);background:rgba(56,161,105,.1);padding:1px 5px;border-radius:4px">AI生成师</span></span>
+                  <span style="font-size:11px;color:var(--ink3)">12部作品</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note mt" style="margin-top:16px">
+      <strong>交互亮点：</strong>人才库支持按<span class="hl">角色分类、擅长题材、AI工具熟练度</span>多维度筛选。人才详情页展示个人简介、代表作品（可跳转短剧详情页）、AI工具熟练度、联系方式。短剧详情页中的制作方<span class="hl">可直接点击跳转</span>至人才库主页，实现数据与人才的闭环连接。
+    </div>
+  </div>
+</section>
+
+<!-- ========== 第7章：技术实现难点与建议 ========== -->
+<section id="sec7">
+  <div class="sec-head">
+    <div class="num">7</div>
+    <h2>技术实现难点与建议</h2>
+  </div>
+
+  <div class="fold open">
+    <div class="fold-head">
+      <span class="ico ico-red">难</span>
+      <span class="fold-title">难点一：AI短剧识别 — 如何判断哪些短剧是AI生成的</span>
+      <span class="fold-arrow">›</span>
+    </div>
+    <div class="fold-body"><div class="fold-body-inner">
+      <strong>挑战描述：</strong>花生最核心的技术壁垒。平台上的短剧不会主动标注"我是AI生成的"，需要花生自行判断。AI视频生成技术不断进化，AI画面与真人拍摄越来越难以区分，识别难度持续上升。误判会导致数据失真，直接影响产品可信度。<br><br>
+      <strong>解决方案：</strong>
+      <ul>
+        <li><strong>多信号融合识别</strong>：综合画面特征（AI生成伪影/纹理异常）、音频特征（AI配音声纹）、元数据（制作方历史/发布频率）等多维度信号判断</li>
+        <li><strong>AI内容检测模型</strong>：训练专门的视频AI生成检测模型，基于帧级特征判断画面是否由AI生成（如Sora/可灵/Runway的生成特征）</li>
+        <li><strong>人工标注+社区众包</strong>：初期以人工标注为主建立Ground Truth数据集，后续引入社区纠错机制持续优化</li>
+        <li><strong>置信度标注</strong>：每部短剧标注"AI生成概率"（如95% AI/70% AI/不确定），让用户了解识别可靠性</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="fold">
+    <div class="fold-head">
+      <span class="ico ico-blue">难</span>
+      <span class="fold-title">难点二：多平台数据采集与整合</span>
+      <span class="fold-arrow">›</span>
+    </div>
+    <div class="fold-body"><div class="fold-body-inner">
+      <strong>挑战描述：</strong>需要从抖音、快手、微信小程序、小红书等多个平台采集AI短剧数据。各平台数据接口不统一，部分无公开API，反爬策略日益严格。且需要在全量短剧中筛选出AI短剧，数据量巨大。<br><br>
+      <strong>解决方案：</strong>
+      <ul>
+        <li>分层采集策略：<strong>官方API优先</strong>→数据合作伙伴→合规爬虫兜底，确保数据来源合规稳定</li>
+        <li>建立<strong>数据清洗与标准化中台</strong>：统一各平台数据为内部标准格式（播放量、完播率、互动率等维度）</li>
+        <li>引入<strong>增量更新机制</strong>：热门榜单5分钟刷新，长尾数据1小时更新，平衡实时性和成本</li>
+        <li>采集后先过<strong>AI识别管线</strong>再入库，确保入库数据均为AI短剧</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="fold">
+    <div class="fold-head">
+      <span class="ico ico-green">难</span>
+      <span class="fold-title">难点三：AI短剧数据标准化与标签体系</span>
+      <span class="fold-arrow">›</span>
+    </div>
+    <div class="fold-body"><div class="fold-body-inner">
+      <strong>挑战描述：</strong>AI短剧是新兴赛道，没有现成的数据标准。AI工具类型如何分类？AI程度如何评级？制作成本如何估算？各维度标签需要从0到1建立，且需要行业认可。<br><br>
+      <strong>解决方案：</strong>
+      <ul>
+        <li>建立<strong>AI短剧标签体系</strong>：AI工具类型（视频生成/配音/剧本/全流程）、AI程度（辅助/半AI/全AI）、题材分类、时长区间</li>
+        <li>制定<strong>数据标准文档</strong>并开源，推动成为行业事实标准，建立先发优势</li>
+        <li><strong>制作成本估算模型</strong>：基于AI工具定价和时长推算制作成本区间，为投资方提供参考</li>
+        <li>标签体系<strong>持续迭代</strong>：随AI工具和技术发展定期更新分类标准</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="fold">
+    <div class="fold-head">
+      <span class="ico ico-orange">难</span>
+      <span class="fold-title">难点四：实时榜单更新与高并发查询性能</span>
+      <span class="fold-arrow">›</span>
+    </div>
+    <div class="fold-body"><div class="fold-body-inner">
+      <strong>挑战描述：</strong>热度榜单需要5分钟级别刷新，用户查询需毫秒级响应。AI短剧数据量随时间快速增长，多维度筛选（平台+AI工具+题材+时间）的组合查询性能压力大。<br><br>
+      <strong>解决方案：</strong>
+      <ul>
+        <li><strong>预计算+缓存</strong>：热门榜单和常用筛选组合预计算结果缓存，查询直接命中缓存</li>
+        <li><strong>列式存储+向量化查询</strong>：ClickHouse/Doris作为OLAP引擎，支撑亿级数据的多维聚合查询</li>
+        <li><strong>分层刷新策略</strong>：日榜5分钟、周榜30分钟、月榜2小时，根据时效性需求分配计算资源</li>
+        <li><strong>读写分离</strong>：写入走消息队列异步入库，查询走只读副本，互不影响</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="fold">
+    <div class="fold-head">
+      <span class="ico ico-purple">难</span>
+      <span class="fold-title">难点五：趋势预测分析模型</span>
+      <span class="fold-arrow">›</span>
+    </div>
+    <div class="fold-body"><div class="fold-body-inner">
+      <strong>挑战描述：</strong>用户不仅需要看历史数据，更希望预测AI短剧题材趋势走向。AI短剧是新兴赛道，历史数据少、变化快，传统时间序列预测方法效果有限。<br><br>
+      <strong>解决方案：</strong>
+      <ul>
+        <li>采用<strong>多变量时间序列模型</strong>：结合播放量、发布量、互动率、外部热度信号（社交媒体讨论量）等多维输入</li>
+        <li><strong>迁移学习</strong>：用传统短剧的历史趋势数据预训练，迁移到AI短剧场景，弥补数据不足</li>
+        <li>输出<strong>置信区间</strong>而非点预测，让用户了解预测不确定性</li>
+        <li><strong>短期优先</strong>：先做好7天内趋势预测（准确率可控），逐步扩展到30天</li>
+      </ul>
+    </div></div>
+  </div>
+</section>
+
+<!-- ========== 第8章：实施路线图 ========== -->
+<section id="sec8">
+  <div class="sec-head">
+    <div class="num">8</div>
+    <h2>实施路线图</h2>
+    <span class="desc">四阶段推进</span>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <h4>第一阶段：MVP验证 <span class="phase-tag p1">Phase 1</span></h4>
+      <div class="time">2026 Q3 · 3个月</div>
+      <ul>
+        <li><strong>基础搜索功能上线</strong>：AI短剧按剧名/制作方搜索，查看播放量、上线时间等基础数据</li>
+        <li><strong>热度榜单</strong>：日/周/月AI短剧热度排行，支持按平台筛选</li>
+        <li><strong>人工标注AI短剧</strong>：初期以人工方式标注和收录AI短剧，建立Ground Truth数据集</li>
+        <li><strong>目标</strong>：内测200名用户，收录AI短剧5000+部，验证数据准确性和用户留存</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <h4>第二阶段：趋势分析+AI识别 <span class="phase-tag p2">Phase 2</span></h4>
+      <div class="time">2026 Q4 · 3个月</div>
+      <ul>
+        <li><strong>题材趋势分析上线</strong>：AI短剧题材分布、热度变化趋势、上升/下降题材榜</li>
+        <li><strong>AI识别模型v1</strong>：上线自动化AI短剧识别模型，替代纯人工标注，识别准确率目标85%+</li>
+        <li><strong>多平台数据接入</strong>：接入抖音、快手、微信小程序、小红书等多平台数据源</li>
+        <li><strong>目标</strong>：公测上线，日活5000+，AI短剧收录量破2万，付费转化率≥3%</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <h4>第三阶段：数据报告+深度分析 <span class="phase-tag p3">Phase 3</span></h4>
+      <div class="time">2027 Q1 · 3个月</div>
+      <ul>
+        <li><strong>行业周报/月报</strong>：自动生成AI短剧行业数据报告，支持导出PDF/Excel</li>
+        <li><strong>AI vs 传统对比</strong>：同题材下AI短剧与传统短剧热度对比分析</li>
+        <li><strong>占比变化追踪</strong>：AI短剧在全部短剧中的数量/播放量占比变化曲线</li>
+        <li><strong>目标</strong>：月活2万+，付费用户1000+，发布首份AI短剧行业白皮书</li>
+      </ul>
+    </div>
+    <div class="tl-item">
+      <h4>第四阶段：商业化+生态合作 <span class="phase-tag p4">Phase 4</span></h4>
+      <div class="time">2027 Q2 · 持续迭代</div>
+      <ul>
+        <li><strong>数据API服务</strong>：开放AI短剧数据API，按调用量计费，服务B端企业</li>
+        <li><strong>趋势预测模型</strong>：上线AI短剧题材趋势预测，提前7天预判热度走向</li>
+        <li><strong>行业标准</strong>：推动AI短剧数据标签体系成为行业事实标准，与平台方建立数据合作</li>
+        <li><strong>目标</strong>：月活10万+，ARR 2000万+，成为AI短剧数据领域首选工具</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</div><!-- /.wrap -->
+
+<!-- ========== 页脚 ========== -->
+<footer>
+  <div class="wrap" style="text-align:center">
+    <svg class="brand-mark" width="28" height="28"><use href="#shBloom"/></svg>
+    <p style="font-weight:700;color:var(--ink);font-size:15px;margin-bottom:4px">花生 · AI短剧数据查询工具</p>
+    <p>AI短剧数据，一查便知。</p>
+    <p style="margin-top:12px">PRD V2.0 · 2026-07-14 · 内部机密 · 仅供团队内部参考</p>
+  </div>
+</footer>
+
+<script>
+// 标签切换
+function initTabs(tabsId){
+  var tabs=document.querySelectorAll('#'+tabsId+' .tab');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click',function(){
+      var target=tab.getAttribute('data-tab');
+      var section=tab.closest('section');
+      section.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+      tab.classList.add('active');
+      section.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});
+      var panel=document.getElementById(target);
+      if(panel)panel.classList.add('active');
+    });
+  });
+}
+initTabs('comp-tabs');
+initTabs('func-tabs');
+initTabs('ui-tabs');
+
+// 折叠面板
+document.querySelectorAll('.fold-head').forEach(function(head){
+  head.addEventListener('click',function(){
+    head.parentElement.classList.toggle('open');
+  });
+});
+
+// 导航高亮
+var navLinks=document.querySelectorAll('.nav-links a');
+var sections=document.querySelectorAll('section[id]');
+function updateNav(){
+  var scrollY=window.scrollY+100;
+  var current='';
+  sections.forEach(function(sec){
+    if(sec.offsetTop<=scrollY)current=sec.id;
+  });
+  navLinks.forEach(function(link){
+    link.classList.remove('active');
+    if(link.getAttribute('href')==='#'+current)link.classList.add('active');
+  });
+}
+window.addEventListener('scroll',updateNav);
+updateNav();
+</script>
+</body>
+</html>
